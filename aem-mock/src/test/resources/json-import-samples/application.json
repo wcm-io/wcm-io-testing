@@ -1,0 +1,470 @@
+/*
+ * #%L
+ * wcm.io
+ * %%
+ * Copyright (C) 2014 wcm.io
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+{
+  "jcr:primaryType": "nt:folder",
+  "jcr:createdBy": "admin",
+  "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+  "components": {
+    "jcr:primaryType": "nt:folder",
+    "jcr:createdBy": "admin",
+    "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+    "topnav": {
+      "jcr:primaryType": "nt:folder",
+      "jcr:createdBy": "admin",
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "topnav.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 2432,
+          "jcr:uuid": "63e90b46-70a3-4462-a54c-696f8db870cd"
+        }
+      }
+    },
+    "title": {
+      "jcr:primaryType": "cq:Component",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Title",
+      "allowedParents": ["*/parsys"],
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "sling:resourceSuperType": "foundation/components/title",
+      "componentGroup": "General",
+      "cq:editConfig": {
+        "jcr:primaryType": "cq:EditConfig",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "cq:inplaceEditing": {
+          "jcr:primaryType": "cq:InplaceEditingConfig",
+          "editorType": "title",
+          "active": true,
+          "config": {
+            "jcr:primaryType": "nt:unstructured",
+            "titleTag": [
+              "h1",
+              "h2",
+              "h3",
+              "p"
+            ]
+          }
+        }
+      },
+      "title.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 2129,
+          "jcr:uuid": "e84288d7-195c-423d-a60f-d407187ba204"
+        }
+      }
+    },
+    "list": {
+      "jcr:primaryType": "cq:Component",
+      "jcr:createdBy": "admin",
+      "jcr:title": "List",
+      "cq:cellName": "geolist",
+      "allowedParents": ["*/parsys"],
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "sling:resourceSuperType": "foundation/components/list",
+      "componentGroup": "General",
+      "listitem_news.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1877,
+          "jcr:uuid": "74843b26-a905-4113-93d9-593651525c8c"
+        }
+      },
+      "listitem_linklist.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:mixinTypes": ["mix:title"],
+        "jcr:createdBy": "admin",
+        "jcr:title": "Small links",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "system",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1020,
+          "jcr:uuid": "6bcf8991-fb4b-4c84-9150-db8a4813f67a"
+        }
+      },
+      "listitem_default.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1159,
+          "jcr:uuid": "7f84b395-f762-4016-9c38-6d1c9e756d76"
+        }
+      }
+    },
+    "homepage": {
+      "jcr:primaryType": "cq:Component",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Home Page",
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "sling:resourceSuperType": "sample/components/page",
+      "componentGroup": ".hidden",
+      "content.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1292,
+          "jcr:uuid": "092cb4e0-29f4-4000-a974-b7a90e2fca9d"
+        }
+      }
+    },
+    "contentpage": {
+      "jcr:primaryType": "cq:Component",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Sample Content Page",
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "sling:resourceSuperType": "sample/components/page",
+      "jcr:description": "The Sample Content Page Component",
+      "content.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1268,
+          "jcr:uuid": "11c6af44-8ea7-4fab-9278-43bdcac9504b"
+        }
+      },
+      "teaser.html.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1316,
+          "jcr:uuid": "d3a09545-c040-4eb7-bd17-ad467ec252cf"
+        }
+      }
+    },
+    "page": {
+      "jcr:primaryType": "cq:Component",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Sample default Page",
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "sling:resourceSuperType": "foundation/components/page",
+      "jcr:description": "The Sample Page Component",
+      "body.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1335,
+          "jcr:uuid": "b7187ad0-f8cc-4507-978a-cb87186ce6ae"
+        }
+      },
+      "content.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1133,
+          "jcr:uuid": "eeca9c4a-8bef-4b6e-bf4a-cac08ee0e1e1"
+        }
+      },
+      "footer.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 2613,
+          "jcr:uuid": "e29bb2ee-e4a0-4daa-bf35-11a27a1ddf55"
+        }
+      },
+      "body.portlet.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1046,
+          "jcr:uuid": "48a3787a-74a7-4d21-8eaa-c57b0a4cb2c0"
+        }
+      },
+      "header.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 2762,
+          "jcr:uuid": "17c3cb0a-f996-4659-9b24-e727746aae34"
+        }
+      },
+      "headlibs.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 2312,
+          "jcr:uuid": "9fc24bb8-5705-4048-b07d-e466769a9243"
+        }
+      },
+      "init.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 140,
+          "jcr:uuid": "576e7728-a025-4da7-b5d8-709b5a58acd5"
+        }
+      },
+      "wfsummary.json.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1204,
+          "jcr:uuid": "524ccefa-545f-4d3a-ae6e-2eecee1e8c39"
+        }
+      },
+      "topnav.jsp": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "text/plain",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 1798,
+          "jcr:uuid": "5705c44f-59a5-465f-9bcf-36754f534d92"
+        }
+      }
+    }
+  },
+  "templates": {
+    "jcr:primaryType": "nt:folder",
+    "jcr:createdBy": "admin",
+    "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+    "homepage": {
+      "jcr:primaryType": "cq:Template",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Sample Homepage",
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "jcr:description": "Create a Sample top level homepage - usually used as entry page for a new language tree.",
+      "ranking": 110,
+      "shortTitle": "Homepage",
+      "thumbnail.png": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:mixinTypes": ["dam:Thumbnails"],
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "image/png",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 29109,
+          "jcr:uuid": "05716dc9-5d76-49f4-8ce3-463b83d972f5",
+          "dam:thumbnails": {
+            "jcr:primaryType": "nt:folder",
+            "jcr:createdBy": "admin",
+            "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+            "dam:thumbnail_140.png": {
+              "jcr:primaryType": "nt:file",
+              "jcr:createdBy": "admin",
+              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+              "jcr:content": {
+                "jcr:primaryType": "nt:resource",
+                "jcr:lastModifiedBy": "admin",
+                "jcr:mimeType": "image/png",
+                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+                ":jcr:data": 22938,
+                "jcr:uuid": "053d4890-8627-4051-9c10-8f744c2ba1a5"
+              }
+            },
+            "dam:thumbnail_319.png": {
+              "jcr:primaryType": "nt:file",
+              "jcr:createdBy": "admin",
+              "jcr:created": "Thu Aug 14 2014 14:51:54 GMT+0200",
+              "jcr:content": {
+                "jcr:primaryType": "nt:resource",
+                "jcr:lastModifiedBy": "admin",
+                "jcr:mimeType": "image/png",
+                "jcr:lastModified": "Thu Aug 14 2014 14:51:54 GMT+0200",
+                ":jcr:data": 83756,
+                "jcr:uuid": "69a16a83-e01f-4ab9-a9ab-76027be0ce2b"
+              }
+            },
+            "dam:thumbnail_48.png": {
+              "jcr:primaryType": "nt:file",
+              "jcr:createdBy": "admin",
+              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+              "jcr:content": {
+                "jcr:primaryType": "nt:resource",
+                "jcr:lastModifiedBy": "admin",
+                "jcr:mimeType": "image/png",
+                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+                ":jcr:data": 4189,
+                "jcr:uuid": "1a75fcc3-46b4-4a83-bb8a-f1b9b4be43dc"
+              }
+            }
+          }
+        }
+      },
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "sling:resourceType": "sample/components/homepage",
+        "cq:designPath": "/etc/designs/sample"
+      }
+    },
+    "contentpage": {
+      "jcr:primaryType": "cq:Template",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Sample Content Page",
+      "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+      "jcr:description": "Generic template for most Sample pages",
+      "ranking": 90,
+      "thumbnail.png": {
+        "jcr:primaryType": "nt:file",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "jcr:content": {
+          "jcr:primaryType": "nt:resource",
+          "jcr:mixinTypes": ["dam:Thumbnails"],
+          "jcr:lastModifiedBy": "admin",
+          "jcr:mimeType": "image/png",
+          "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+          ":jcr:data": 24268,
+          "jcr:uuid": "0c760976-1b09-4fcc-a0e1-999a8b566b63",
+          "dam:thumbnails": {
+            "jcr:primaryType": "nt:folder",
+            "jcr:createdBy": "admin",
+            "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+            "dam:thumbnail_140.png": {
+              "jcr:primaryType": "nt:file",
+              "jcr:createdBy": "admin",
+              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+              "jcr:content": {
+                "jcr:primaryType": "nt:resource",
+                "jcr:lastModifiedBy": "admin",
+                "jcr:mimeType": "image/png",
+                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+                ":jcr:data": 15275,
+                "jcr:uuid": "659af11d-e4a7-40ee-915e-5ce5b8421f8b"
+              }
+            },
+            "dam:thumbnail_319.png": {
+              "jcr:primaryType": "nt:file",
+              "jcr:createdBy": "admin",
+              "jcr:created": "Thu Aug 14 2014 14:51:57 GMT+0200",
+              "jcr:content": {
+                "jcr:primaryType": "nt:resource",
+                "jcr:lastModifiedBy": "admin",
+                "jcr:mimeType": "image/png",
+                "jcr:lastModified": "Thu Aug 14 2014 14:51:57 GMT+0200",
+                ":jcr:data": 65029,
+                "jcr:uuid": "97614e5e-fd33-4cb1-bdea-53e4a4e5f8ab"
+              }
+            },
+            "dam:thumbnail_48.png": {
+              "jcr:primaryType": "nt:file",
+              "jcr:createdBy": "admin",
+              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+              "jcr:content": {
+                "jcr:primaryType": "nt:resource",
+                "jcr:lastModifiedBy": "admin",
+                "jcr:mimeType": "image/png",
+                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
+                ":jcr:data": 3067,
+                "jcr:uuid": "57ac5529-ff24-403c-b65e-e8971bc15da2"
+              }
+            }
+          }
+        }
+      },
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:createdBy": "admin",
+        "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
+        "sling:resourceType": "sample/components/contentpage"
+      }
+    }
+  }
+}
