@@ -14,8 +14,12 @@
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>io.wcm.testing.junit-commons</name>
+  <name>JUnit Commons</name>
   <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>
+
+  <properties>
+    <site.url.module.prefix>testing/junit-commons</site.url.module.prefix>
+  </properties>
 
   <dependencies>
 
@@ -46,7 +50,7 @@
   <distributionManagement>
     <site>
       <id>${site.deploy.id}</id>
-      <url>${site.deploy.url}${project.artifactId}</url>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
     </site>
   </distributionManagement>
 

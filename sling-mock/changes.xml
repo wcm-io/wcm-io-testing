@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/changes/1.0.0"
+    xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
+  <body>
+    
+    <release version="0.1.0-SNAPSHOT" date="not released">
+      <action type="add" dev="sseifert">
+        Initial release.
+      </action>
+    </release>
+
+  </body>
+</document>

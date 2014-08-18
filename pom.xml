@@ -11,10 +11,10 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <packaging>pom</packaging>
 
-  <name>io.wcm.testing</name>
+  <name>Testing root</name>
   <description>Helper tools for supporting Unit Tests, Integration test and test automization in AEM-based projects.</description>
 
   <modules>
@@ -39,14 +39,16 @@
         </configuration>
       </plugin>
 
+      <!-- do not generate github site for this hierarchy pom -->
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
-
-  <distributionManagement>
-    <site>
-      <id>${site.deploy.id}</id>
-      <url>${site.deploy.url}${project.artifactId}</url>
-    </site>
-  </distributionManagement>
 
 </project>

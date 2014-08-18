@@ -1,0 +1,22 @@
+#[[##]]# About ${project.name}
+
+${project.description}
+
+#[[###]]# Maven Dependency
+
+```xml
+<dependency>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+#[[###]]# Documentation
+
+* [Usage][usage]
+* [API Documentation][apidocs]
+* [Changelog][changelog]
+
+[apidocs]: apidocs/
+[usage]: usage.html
+[changelog]: changes-report.html

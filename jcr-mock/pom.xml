@@ -14,8 +14,12 @@
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>io.wcm.testing.jcr-mock</name>
+  <name>JCR Mocks</name>
   <description>Mock implementation of selected JCR APIs.</description>
+
+  <properties>
+    <site.url.module.prefix>testing/jcr-mock</site.url.module.prefix>
+  </properties>
 
   <dependencies>
 
@@ -77,7 +81,7 @@
   <distributionManagement>
     <site>
       <id>${site.deploy.id}</id>
-      <url>${site.deploy.url}${project.artifactId}</url>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
     </site>
   </distributionManagement>
 
