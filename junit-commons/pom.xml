@@ -14,6 +14,9 @@
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <name>io.wcm.testing.junit-commons</name>
+  <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>
+
   <dependencies>
 
     <dependency>

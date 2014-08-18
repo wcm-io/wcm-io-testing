@@ -14,6 +14,9 @@
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <name>io.wcm.testing</name>
+  <description>Helper tools for supporting Unit Tests, Integration test and test automization in AEM-based projects.</description>
+
   <modules>
     <module>parent</module>
     <module>junit-commons</module>

@@ -14,6 +14,9 @@
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <name>io.wcm.testing.sling-mock</name>
+  <description>Mock implementation of selected Sling APIs.</description>
+
   <dependencies>
 
     <dependency>
