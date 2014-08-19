@@ -28,7 +28,7 @@ import javax.jcr.observation.ObservationManager;
 /**
  * Mock {@link ObservationManager} implementation.
  */
-public class MockObservationManager implements ObservationManager {
+class MockObservationManager implements ObservationManager {
 
   @Override
   public void addEventListener(final EventListener listener, final int eventTypes, final String absPath,
