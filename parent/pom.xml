@@ -37,6 +37,13 @@
   <name>Testing</name>
   <description>Parent POM for wcm.io testing projects.</description>
 
+  <scm>
+    <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
+    <developerConnection>scm:git:git@github.com:wcm-io/wcm-io.git</developerConnection>
+    <url>https://github.com/wcm-io/wcm-io</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <site.url.module.prefix>testing</site.url.module.prefix>
   </properties>

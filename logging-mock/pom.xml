@@ -37,6 +37,13 @@
   <name>Logging Config for Mocks</name>
   <description>Logging definition for mock implementations that run standalone in JUnit context.</description>
 
+  <scm>
+    <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
+    <developerConnection>scm:git:git@github.com:wcm-io/wcm-io.git</developerConnection>
+    <url>https://github.com/wcm-io/wcm-io</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <site.url.module.prefix>testing/logging-mock</site.url.module.prefix>
   </properties>
