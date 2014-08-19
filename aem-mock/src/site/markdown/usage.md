@@ -38,6 +38,7 @@ The `AemContext` object provides access to mock implementations of:
 * Sling Script Helper
 
 Additionally it supports:
+
 * Registering OSGi services
 * Registering adapter factories
 * Accessing JSON Importer
@@ -146,7 +147,8 @@ public class ExampleTest {
   @Test
   public void testPageManagerOperations() {
     PageManager pageManager = context.resourceResolver().adaptTo(PageManager.class);
-    Page page = pageManager.create("/content/sample/en", "test1", "/apps/sample/templates/homepage", "title1");
+    Page page = pageManager.create("/content/sample/en", "test1",
+        "/apps/sample/templates/homepage", "title1");
     // further testing
     pageManager.delete(page, false);
   }
