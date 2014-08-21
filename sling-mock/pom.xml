@@ -100,17 +100,6 @@
       <artifactId>org.apache.sling.commons.mime</artifactId>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.resourceresolver-mock</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <!-- include only as test dependeny to avoid transitive dependency for all it's dependencies -->
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.commons.testing</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>commons-collections</groupId>

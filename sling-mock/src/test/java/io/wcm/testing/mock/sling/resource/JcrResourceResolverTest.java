@@ -22,8 +22,6 @@ package io.wcm.testing.mock.sling.resource;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import io.wcm.testing.junit.rules.parameterized.Generator;
-import io.wcm.testing.junit.rules.parameterized.GeneratorFactory;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
@@ -45,10 +43,8 @@ import org.apache.jackrabbit.JcrConstants;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.commons.testing.jcr.RepositoryUtil;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -57,15 +53,6 @@ import org.junit.Test;
  */
 @SuppressWarnings("javadoc")
 public class JcrResourceResolverTest {
-
-  //CHECKSTYLE:OFF
-  // Run all unit tests for each resource resolver typ listed here
-  @Rule
-  public final Generator<ResourceResolverType> resourceResolverType = GeneratorFactory.list(
-      ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.JCR_JACKRABBIT
-      );
-  //CHECKSTYLE:ON
 
   private static final String STRING_VALUE = "value1";
   private static final String[] STRING_ARRAY_VALUE = new String[] {
@@ -85,14 +72,18 @@ public class JcrResourceResolverTest {
   protected Node testRoot;
   private static volatile long rootNodeCounter;
 
-  @Before
-  public void setUp() throws RepositoryException, IOException {
-    this.resourceResolver = MockSlingFactory.newResourceResolver(this.resourceResolverType.value());
-    this.session = this.resourceResolver.adaptTo(Session.class);
+  protected ResourceResolverType getResourceResolverType() {
+    return ResourceResolverType.JCR_MOCK;
+  }
 
-    if (this.resourceResolverType.value() == ResourceResolverType.JCR_JACKRABBIT) {
-      RepositoryUtil.registerSlingNodeTypes(this.session);
-    }
+  protected ResourceResolver newResourceResolver() {
+    return MockSlingFactory.newResourceResolver(getResourceResolverType());
+  }
+
+  @Before
+  public final void setUp() throws RepositoryException {
+    this.resourceResolver = newResourceResolver();
+    this.session = this.resourceResolver.adaptTo(Session.class);
 
     // prepare some test data using JCR API
     Node rootNode = getTestRootNode();
@@ -114,7 +105,7 @@ public class JcrResourceResolverTest {
   }
 
   @After
-  public void tearDown() {
+  public final void tearDown() {
     this.testRoot = null;
   }
 
@@ -124,7 +115,7 @@ public class JcrResourceResolverTest {
   private Node getTestRootNode() throws RepositoryException {
     if (this.testRoot == null) {
       final Node root = this.session.getRootNode();
-      if (this.resourceResolverType.value() == ResourceResolverType.JCR_JACKRABBIT) {
+      if (getResourceResolverType() == ResourceResolverType.JCR_JACKRABBIT) {
         final Node classRoot = root.addNode(getClass().getSimpleName());
         this.testRoot = classRoot.addNode(System.currentTimeMillis() + "_" + (rootNodeCounter++));
       }

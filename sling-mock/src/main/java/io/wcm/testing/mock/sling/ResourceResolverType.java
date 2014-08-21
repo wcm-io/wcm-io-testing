@@ -33,7 +33,8 @@ public enum ResourceResolverType {
    * <li>This resource resolver type is very fast.</li>
    * </ul>
    */
-  RESOURCERESOLVER_MOCK,
+  RESOURCERESOLVER_MOCK("io.wcm.testing.mock.sling.resourceresolvertype.rrmock.RRMockMockResourceResolverAdapter",
+      "io.wcm:io.wcm.testing.sling-mock-resolvertype.resourceresolver-mock"),
 
   /**
    * Uses a simple JCR "in-memory" mock as underlying repository.
@@ -45,7 +46,7 @@ public enum ResourceResolverType {
    * <li>This resource resolver type is quite fast.</li>
    * </ul>
    */
-  JCR_MOCK,
+  JCR_MOCK(JcrMockResourceResolverAdapter.class.getName(), null),
 
   /**
    * Uses a real JCR Jackrabbit repository.
@@ -56,6 +57,24 @@ public enum ResourceResolverType {
    * test.</li>
    * </ul>
    */
-  JCR_JACKRABBIT
+  JCR_JACKRABBIT("io.wcm.testing.mock.sling.resourceresolvertype.jackrabbit.JackrabbitMockResourceResolverAdapter",
+      "io.wcm:io.wcm.testing.sling-mock-resolvertype.jackrabbit");
+
+
+  private final String resourceResolverTypeAdapterClass;
+  private final String artifactCoordinates;
+
+  private ResourceResolverType(final String resourceResolverTypeAdapterClass, final String artifactCoordinates) {
+    this.resourceResolverTypeAdapterClass = resourceResolverTypeAdapterClass;
+    this.artifactCoordinates = artifactCoordinates;
+  }
+
+  String getResourceResolverTypeAdapterClass() {
+    return this.resourceResolverTypeAdapterClass;
+  }
+
+  String getArtifactCoordinates() {
+    return this.artifactCoordinates;
+  }
 
 }

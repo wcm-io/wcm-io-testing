@@ -19,14 +19,10 @@
  */
 package io.wcm.testing.mock.sling;
 
-import io.wcm.testing.mock.jcr.MockJcrFactory;
 import io.wcm.testing.mock.osgi.MockOsgiFactory;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
-
-import java.lang.reflect.Method;
-
-import javax.jcr.Repository;
+import io.wcm.testing.mock.sling.spi.ResourceResolverTypeAdapter;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -65,22 +61,28 @@ public final class MockSlingFactory {
    * @return Resource resolver factory instance
    */
   public static ResourceResolverFactory newResourceResolverFactory(final ResourceResolverType type) {
-    switch (type) {
+    ResourceResolverTypeAdapter adapter = getResourceResolverTypeAdapter(type);
+    ResourceResolverFactory factory = adapter.newResourceResolverFactory();
+    if (factory == null) {
+      SlingRepository repository = adapter.newSlingRepository();
+      if (repository == null) {
+        throw new RuntimeException("Adapter neither provides resource resolver factory nor sling repository.");
+      }
+      factory = new MockJcrResourceResolverFactory(repository);
+    }
+    return factory;
+  }
 
-      case RESOURCERESOLVER_MOCK:
-        // implementation from org.apache.sling.testing.resourceresolver-mock
-        return new org.apache.sling.testing.resourceresolver.MockResourceResolverFactory();
-
-      case JCR_MOCK:
-        // use lightweight wcm.io Mock JCR repository implementation
-        return new MockJcrResourceResolverFactory(getJcrMockSlingRepository());
-
-      case JCR_JACKRABBIT:
-        // use real JCR repository started for unit tests
-        return new MockJcrResourceResolverFactory(getJcrSlingRepository());
-
-      default:
-        throw new IllegalArgumentException("Repository type not supported: " + type);
+  private static ResourceResolverTypeAdapter getResourceResolverTypeAdapter(final ResourceResolverType type) {
+    try {
+      Class clazz = Class.forName(type.getResourceResolverTypeAdapterClass());
+      return (ResourceResolverTypeAdapter)clazz.newInstance();
+    }
+    catch (ClassNotFoundException|InstantiationException|IllegalAccessException ex) {
+      throw new RuntimeException("Unable to instantiate resourcer resolver: "
+          + type.getResourceResolverTypeAdapterClass()
+          + (type.getArtifactCoordinates() != null ?
+              "Make sure this maven dependency is included: " + type.getArtifactCoordinates() : ""));
     }
   }
 
@@ -90,27 +92,6 @@ public final class MockSlingFactory {
    */
   public static ResourceResolverFactory newResourceResolverFactory() {
     return newResourceResolverFactory(DEFAULT_RESOURCERESOLVER_TYPE);
-  }
-
-  private static SlingRepository getJcrMockSlingRepository() {
-    Repository repository = MockJcrFactory.newRepository();
-    return new MockSlingRepository(repository);
-  }
-
-  private static synchronized SlingRepository getJcrSlingRepository() {
-    try {
-      // instantiate using reflection to avoid compile-time dependency to commons/testing artifact
-      // because otherwise in IDE where tests are running classpath is polluted with lots of transitive dependencies
-      // this is equivalent to: RepositoryProvider.instance().getRepository()
-      Class<?> clazz = MockSlingFactory.class.getClassLoader().loadClass("org.apache.sling.commons.testing.jcr.RepositoryProvider");
-      Method instanceMethod = clazz.getDeclaredMethod("instance");
-      Object instance = instanceMethod.invoke(null);
-      Method repositoryMethod = clazz.getDeclaredMethod("getRepository");
-      return (SlingRepository)repositoryMethod.invoke(instance);
-    }
-    catch (Throwable ex) {
-      throw new RuntimeException("Unable to start JCR repository.", ex);
-    }
   }
 
   /**

@@ -116,8 +116,8 @@ public class ExampleTest {
 
 ```
 
-Different resource resolver mock types are supported with pros and cons, see [Sling Mocks Usage][sling-mock-usage]
-for details.
+Different resource resolver mock types are supported with pros and cons, see
+[Resource Resolver Types][sling-mock-rrtypes] for details.
 
 It is even possible to supply multiple resource resolver types in the constructor argument - in this case the
 unit test is run multiple times, once for each type. But this is only relevant if you want to develop your own
@@ -211,4 +211,4 @@ You do not have to care about cleaning up the registrations - this is done autom
 
 [mockito-testrunner]: http://docs.mockito.googlecode.com/hg/latest/org/mockito/runners/MockitoJUnitRunner.html
 [sling-mock]: http://wcm.io/testing/sling-mock/
-[sling-mock-usage]: http://wcm.io/testing/sling-mock/usage-mocks.html
+[sling-mock-rrtypes]: http://wcm.io/testing/sling-mock/resource-resolver-types.html

@@ -22,8 +22,6 @@ package io.wcm.testing.mock.sling.resource;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import io.wcm.testing.junit.rules.parameterized.Generator;
-import io.wcm.testing.junit.rules.parameterized.GeneratorFactory;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
@@ -36,19 +34,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.commons.testing.jcr.RepositoryUtil;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -57,16 +50,6 @@ import org.junit.Test;
  */
 @SuppressWarnings("javadoc")
 public class SlingCrudResourceResolverTest {
-
-  //CHECKSTYLE:OFF
-  // Run all unit tests for each resource resolver typ listed here
-  @Rule
-  public final Generator<ResourceResolverType> resourceResolverType = GeneratorFactory.list(
-      ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.JCR_JACKRABBIT,
-      ResourceResolverType.RESOURCERESOLVER_MOCK
-      );
-  //CHECKSTYLE:ON
 
   private static final String STRING_VALUE = "value1";
   private static final String[] STRING_ARRAY_VALUE = new String[] {
@@ -85,14 +68,17 @@ public class SlingCrudResourceResolverTest {
   protected Resource testRoot;
   private static volatile long rootNodeCounter;
 
-  @Before
-  public void setUp() throws RepositoryException, IOException {
-    this.resourceResolver = MockSlingFactory.newResourceResolver(this.resourceResolverType.value());
+  protected ResourceResolverType getResourceResolverType() {
+    return ResourceResolverType.JCR_MOCK;
+  }
 
-    if (this.resourceResolverType.value() == ResourceResolverType.JCR_JACKRABBIT) {
-      Session session = this.resourceResolver.adaptTo(Session.class);
-      RepositoryUtil.registerSlingNodeTypes(session);
-    }
+  protected ResourceResolver newResourceResolver() {
+    return MockSlingFactory.newResourceResolver(getResourceResolverType());
+  }
+
+  @Before
+  public final void setUp() throws IOException {
+    this.resourceResolver = newResourceResolver();
 
     // prepare some test data using Sling CRUD API
     Resource rootNode = getTestRootResource();
@@ -115,7 +101,7 @@ public class SlingCrudResourceResolverTest {
   }
 
   @After
-  public void tearDown() {
+  public final void tearDown() {
     this.testRoot = null;
   }
 
@@ -126,7 +112,7 @@ public class SlingCrudResourceResolverTest {
   private Resource getTestRootResource() throws PersistenceException {
     if (this.testRoot == null) {
       final Resource root = this.resourceResolver.getResource("/");
-      if (this.resourceResolverType.value() == ResourceResolverType.JCR_JACKRABBIT) {
+      if (getResourceResolverType() == ResourceResolverType.JCR_JACKRABBIT) {
         final Resource classRoot = this.resourceResolver.create(root, getClass().getSimpleName(), ValueMap.EMPTY);
         this.testRoot = this.resourceResolver.create(classRoot, System.currentTimeMillis() + "_" + (rootNodeCounter++), ValueMap.EMPTY);
       }
@@ -154,7 +140,7 @@ public class SlingCrudResourceResolverTest {
     assertEquals(CALENDAR_VALUE.getTime(), props.get("calendarProp", Calendar.class).getTime());
 
     // TODO: enable this tests when resource resolver mock supports binary data
-    if (this.resourceResolverType.value() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
+    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
       Resource binaryPropResource = resource1.getChild("binaryProp");
       InputStream is = binaryPropResource.adaptTo(InputStream.class);
       byte[] dataFromResource = IOUtils.toByteArray(is);
@@ -171,7 +157,7 @@ public class SlingCrudResourceResolverTest {
     List<Resource> children = IteratorUtils.toList(resource1.listChildren());
     assertEquals(2, children.size());
     // TODO: enable this tests when resource resolver mock preserves child ordering (SLING-3847)
-    if (this.resourceResolverType.value() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
+    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
       assertEquals("node11", children.get(0).getName());
       assertEquals("node12", children.get(1).getName());
     }

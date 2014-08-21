@@ -30,22 +30,16 @@
   </parent>
 
   <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing</artifactId>
+  <artifactId>io.wcm.testing.sling-mock-resolvertype</artifactId>
   <version>1</version>
   <packaging>pom</packaging>
 
-  <name>Testing root</name>
-  <description>Helper tools for supporting Unit Tests, Integration test and test automization in AEM-based projects.</description>
+  <name>Sling Mocks Resource Types Root</name>
+  <description>Implementation for different resource types supported by the resource resolving mock implementation.</description>
 
   <modules>
-    <module>parent</module>
-    <module>junit-commons</module>
-    <module>logging-mock</module>
-    <module>osgi-mock</module>
-    <module>jcr-mock</module>
-    <module>sling-mock</module>
-    <module>sling-mock-resourcetype</module>
-    <module>aem-mock</module>
+    <module>jackrabbit</module>
+    <module>resourceresolver-mock</module>
   </modules>
 
   <build>
@@ -60,7 +54,7 @@
         </configuration>
       </plugin>
 
-      <!-- do not generate site for this hierarchy pom -->
+      <!-- do not generate github site for this hierarchy pom -->
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>

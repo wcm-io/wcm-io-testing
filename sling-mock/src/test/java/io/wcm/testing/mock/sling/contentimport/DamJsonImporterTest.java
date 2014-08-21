@@ -21,8 +21,6 @@ package io.wcm.testing.mock.sling.contentimport;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import io.wcm.testing.junit.rules.parameterized.Generator;
-import io.wcm.testing.junit.rules.parameterized.GeneratorFactory;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
@@ -37,35 +35,40 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class DamJsonImporterTest {
 
-  //CHECKSTYLE:OFF
-  // Run all unit tests for each resource resolver typ listed here
-  @Rule
-  public final Generator<ResourceResolverType> resourceResolverType = GeneratorFactory.list(
-      ResourceResolverType.RESOURCERESOLVER_MOCK,
-      ResourceResolverType.JCR_MOCK
-      );
-  //CHECKSTYLE:ON
-
   private ResourceResolver resourceResolver;
 
-  @Before
-  public void setUp() throws RepositoryException, PersistenceException, IOException {
-    this.resourceResolver = MockSlingFactory.newResourceResolver(this.resourceResolverType.value());
-    JsonImporter jsonImporter = new JsonImporter(this.resourceResolver);
+  protected ResourceResolverType getResourceResolverType() {
+    return ResourceResolverType.JCR_MOCK;
+  }
 
-    if (this.resourceResolverType.value() == ResourceResolverType.JCR_MOCK) {
-      NamespaceRegistry namespaceRegistry = this.resourceResolver.adaptTo(Session.class).getWorkspace().getNamespaceRegistry();
-      namespaceRegistry.registerNamespace("sling", "http://mock/sling");
-      namespaceRegistry.registerNamespace("cq", "http://mock/cq");
-      namespaceRegistry.registerNamespace("dam", "http://mock/dam");
+  protected ResourceResolver newResourceResolver() {
+    ResourceResolver resolver = MockSlingFactory.newResourceResolver(getResourceResolverType());
+
+    if (getResourceResolverType() == ResourceResolverType.JCR_MOCK) {
+      try {
+        // dummy namespace registrations to make sure sling JCR resolver does not get mixed up with the prefixes
+        NamespaceRegistry namespaceRegistry = resolver.adaptTo(Session.class).getWorkspace().getNamespaceRegistry();
+        namespaceRegistry.registerNamespace("sling", "http://mock/sling");
+        namespaceRegistry.registerNamespace("cq", "http://mock/cq");
+        namespaceRegistry.registerNamespace("dam", "http://mock/dam");
+      }
+      catch (RepositoryException ex) {
+        throw new RuntimeException("Unable to register namespaces.", ex);
+      }
     }
 
+    return resolver;
+  }
+
+  @Before
+  public final void setUp() throws PersistenceException, IOException {
+    this.resourceResolver = newResourceResolver();
+    JsonImporter jsonImporter = new JsonImporter(this.resourceResolver);
     jsonImporter.importTo("/json-import-samples/dam.json", "/content/dam/sample");
   }
 

@@ -13,25 +13,7 @@ ResourceResolver resolver = MockSlingFactory.newResourceResolver();
 // get a resource resolver backed by a specific repository type
 ResourceResolver resolver = MockSlingFactory.newResourceResolver(ResourceResolverType.JCR_MOCK);
 ```
-
-The following resource resolver types are supported:
-
-* **JCR_MOCK** (default)
-    * Based on the [JCR Mocks][jcr-mock] implementation
-    * Uses the productive [Sling JCR resource provider implementation][jcr-resource] internally to do the Resource-JCR mapping
-    * Is quite fast because data is stored only in-memory
-* **JCR_JACKRABBIT**
-    * Uses a real JCR Jackrabbit implementation (not Oak) as provded by [sling/commons/testing][sling-comons-testing]
-    * Uses the productive [Sling JCR resource provider implementation][jcr-resource] internally to do the Resource-JCR mapping
-    * Takes some seconds for startup on the first access 
-    * All node types that are used when reading/writing data have to be registered
-    * Beware: The repository is not cleared for each unit test, so make sure us use a unique node path for each unit test.
-* **RESOURCERESOLVER_MOCK** 
-    * Simulates an In-Memory resource tree, does not provide adaptions to JCR API.
-    * Based on the [Sling resourceresolver-mock implementation][resourceresolver-mock] implementation
-    * You can use it to make sure the code you want to test does not contain references to JCR API.
-    * Behaves slightly different from JCR resource mapping e.g. handling binary and date values.
-    * This resource resolver type is very fast because data is stored in memory and no JCR mapping is applied.
+The following types are supported currently: [Resource Resolver Types](resource-resolver-types.html)
 
 ### Adapter Factories
 
@@ -92,7 +74,4 @@ requestPathInfo.setExtension("html");
 
 
 [jcr-mock]: http://wcm.io/testing/jcr-mock/
-[jcr-resource]: http://svn.apache.org/repos/asf/sling/trunk/bundles/jcr/resource
-[sling-comons-testing]: http://svn.apache.org/repos/asf/sling/trunk/bundles/commons/testing
-[resourceresolver-mock]: http://svn.eu.apache.org/repos/asf/sling/trunk/testing/resourceresolver-moc
 [aem-mock]: http://wcm.io/testing/aem-mock/
