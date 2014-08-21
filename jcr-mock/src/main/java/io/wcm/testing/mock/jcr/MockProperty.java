@@ -243,75 +243,7 @@ class MockProperty extends MockItem implements Property {
 
   @Override
   public PropertyDefinition getDefinition() {
-    return new PropertyDefinition() {
-
-      @Override
-      public boolean isMultiple() {
-        return MockProperty.this.isMultiple();
-      }
-
-      // --- unsupported operations ---
-      @Override
-      public Value[] getDefaultValues() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public int getRequiredType() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public String[] getValueConstraints() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public NodeType getDeclaringNodeType() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public String getName() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public int getOnParentVersion() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public boolean isAutoCreated() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public boolean isMandatory() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public boolean isProtected() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public String[] getAvailableQueryOperators() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public boolean isFullTextSearchable() {
-        throw new UnsupportedOperationException();
-      }
-
-      @Override
-      public boolean isQueryOrderable() {
-        throw new UnsupportedOperationException();
-      }
-
-    };
+    return new MockPropertyDefinition();
   }
 
   // --- unsupported operations ---
@@ -323,6 +255,76 @@ class MockProperty extends MockItem implements Property {
   @Override
   public Property getProperty() {
     throw new UnsupportedOperationException();
+  }
+
+
+  private final class MockPropertyDefinition implements PropertyDefinition {
+
+    @Override
+    public boolean isMultiple() {
+      return MockProperty.this.isMultiple();
+    }
+
+    // --- unsupported operations ---
+    @Override
+    public Value[] getDefaultValues() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getRequiredType() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String[] getValueConstraints() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public NodeType getDeclaringNodeType() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getName() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getOnParentVersion() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isAutoCreated() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isMandatory() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isProtected() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String[] getAvailableQueryOperators() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isFullTextSearchable() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isQueryOrderable() {
+      throw new UnsupportedOperationException();
+    }
   }
 
 }

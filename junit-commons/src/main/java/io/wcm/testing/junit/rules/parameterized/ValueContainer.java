@@ -26,7 +26,7 @@ package io.wcm.testing.junit.rules.parameterized;
  */
 class ValueContainer<T> {
 
-  private T value = null;
+  private T value;
 
   public void set(final T t) {
     this.value = t;
