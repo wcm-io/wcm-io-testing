@@ -20,6 +20,8 @@
 package io.wcm.testing.mock.sling.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.osgi.MockOsgiFactory;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
@@ -29,13 +31,16 @@ import java.util.Hashtable;
 
 import javax.inject.Inject;
 
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.adapter.AdapterFactory;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.commons.mime.MimeTypeService;
+import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.impl.injectors.OSGiServiceInjector;
 import org.apache.sling.models.impl.injectors.RequestAttributeInjector;
 import org.apache.sling.models.spi.Injector;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -74,9 +79,7 @@ public class MockModelAdapterFactoryTest {
     MockSlingFactory.clearAdapterManagerBundleContext();
   }
 
-  // TODO: finalize implementation, then activate test
   @Test
-  @Ignore
   public void testRequestAttribute() {
     MockSlingHttpServletRequest request = new MockSlingHttpServletRequest();
     request.setAttribute("prop1", "myValue");
@@ -84,9 +87,33 @@ public class MockModelAdapterFactoryTest {
     assertEquals("myValue", model.getProp1());
   }
 
+  @Model(adaptables = SlingHttpServletRequest.class)
   private interface RequestAttributeModel {
     @Inject
     String getProp1();
+  }
+
+  @Test
+  public void testOsgiService() {
+    bundleContext.registerService(MimeTypeService.class.getName(), new MockMimeTypeService(), null);
+
+    ResourceResolver resolver = MockSlingFactory.newResourceResolver();
+    OsgiServiceModel model = resolver.adaptTo(OsgiServiceModel.class);
+    assertNotNull(model.getMimeTypeService());
+    assertEquals("text/html", model.getMimeTypeService().getMimeType("html"));
+  }
+
+  @Model(adaptables = ResourceResolver.class)
+  private interface OsgiServiceModel {
+    @Inject
+    MimeTypeService getMimeTypeService();
+  }
+
+  @Test
+  public void testInvalidAdapt() {
+    MockSlingHttpServletRequest request = new MockSlingHttpServletRequest();
+    OsgiServiceModel model = request.adaptTo(OsgiServiceModel.class);
+    assertNull(model);
   }
 
 }
