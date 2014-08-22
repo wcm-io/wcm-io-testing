@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,15 +40,13 @@ import com.day.cq.wcm.api.Template;
 @SuppressWarnings("javadoc")
 public class MockAemAdapterFactoryTest {
 
-  //CHECKSTYLE:OFF
   // Run all unit tests for each resource resolver types listed here
   @Rule
-  public final AemContext context = new AemContext(
+  public AemContext context = new AemContext(
       // TODO: disabled until MockResourveResolver extends SlingAdaptable (SLING-3853)
       //ResourceResolverType.RESOURCERESOLVER_MOCK,
       ResourceResolverType.JCR_MOCK
       );
-  //CHECKSTYLE:ON
 
   @Before
   public void setUp() throws PersistenceException, IOException {

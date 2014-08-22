@@ -36,7 +36,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-//CHECKSTYLE:OFF
 @SuppressWarnings("javadoc")
 @RunWith(MockitoJUnitRunner.class)
 public class ListRuleWithCallbacksTest {

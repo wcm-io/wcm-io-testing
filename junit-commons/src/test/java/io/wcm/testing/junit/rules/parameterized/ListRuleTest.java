@@ -31,7 +31,6 @@ import java.util.Arrays;
 import org.junit.Rule;
 import org.junit.Test;
 
-//CHECKSTYLE:OFF
 @SuppressWarnings("javadoc")
 public class ListRuleTest {
 
