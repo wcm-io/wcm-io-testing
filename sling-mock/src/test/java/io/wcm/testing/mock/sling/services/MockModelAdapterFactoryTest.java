@@ -26,9 +26,6 @@ import io.wcm.testing.mock.osgi.MockOsgiFactory;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 import javax.inject.Inject;
 
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -43,7 +40,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.component.ComponentContext;
 
 @SuppressWarnings("javadoc")
@@ -62,16 +58,10 @@ public class MockModelAdapterFactoryTest {
     bundleContext.registerService(AdapterFactory.class.getName(), new MockModelAdapterFactory(componentContext), null);
 
     // register some injectors
-    registerInjector(new RequestAttributeInjector(), 4000);
+    bundleContext.registerService(Injector.class.getName(), new RequestAttributeInjector(), null);
     OSGiServiceInjector osgiServiceInjector = new OSGiServiceInjector();
     osgiServiceInjector.activate(componentContext);
-    registerInjector(osgiServiceInjector, 5000);
-  }
-
-  private void registerInjector(Injector injector, int serviceRanking) {
-    Dictionary<String, Object> props = new Hashtable<>();
-    props.put(Constants.SERVICE_RANKING, serviceRanking);
-    bundleContext.registerService(Injector.class.getName(), injector, props);
+    bundleContext.registerService(Injector.class.getName(), osgiServiceInjector, null);
   }
 
   @After

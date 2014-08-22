@@ -19,19 +19,27 @@
  */
 package io.wcm.testing.mock.sling.services;
 
+import io.wcm.testing.mock.osgi.MockOsgiFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.models.impl.ModelAdapterFactory;
 import org.apache.sling.models.spi.Injector;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
 
 /**
  * Mock {@link ModelAdapterFactory} implementation.
  */
+@Component
+@Service(AdapterFactory.class)
 public class MockModelAdapterFactory extends ModelAdapterFactory {
 
   private final BundleContext bundleContext;
@@ -41,46 +49,47 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
    */
   public MockModelAdapterFactory(ComponentContext componentContext) {
     bundleContext = componentContext.getBundleContext();
+
+    // register service listener to collect injectors
+    // this is done because mock OSGi service does not support automatically binding and unbinding services
+    bundleContext.addServiceListener(new InjectorServiceListener());
+
     // activate service in simulated OSGi environment
     activate(componentContext);
   }
 
-  @Override
-  public <AdapterType> AdapterType getAdapter(Object adaptable, Class<AdapterType> type) {
-
-    // get all injectors for component context
-    // this is done because mock OSGi service does not support automatically binding and unbinding services
-    try {
-      ServiceReference[] injectorReferences = bundleContext.getServiceReferences(Injector.class.getName(), null);
-      for (ServiceReference serviceReference : injectorReferences) {
-        Injector injector = (Injector)bundleContext.getService(serviceReference);
-        bindInjector(injector, getServiceProperties(serviceReference));
-      }
-
-      // do adapter work
-      AdapterType result = super.getAdapter(adaptable, type);
-
-      // unbind all injectors
-      for (ServiceReference serviceReference : injectorReferences) {
-        Injector injector = (Injector)bundleContext.getService(serviceReference);
-        unbindInjector(injector, getServiceProperties(serviceReference));
-      }
-
-      return result;
-    }
-    catch (InvalidSyntaxException ex) {
-      throw new RuntimeException("Unable to get injector references.", ex);
-    }
-
+  /**
+   * Constructor with default component context
+   */
+  public MockModelAdapterFactory() {
+    this(MockOsgiFactory.newComponentContext());
   }
 
-  private Map<String,Object> getServiceProperties(ServiceReference reference) {
-    Map<String,Object> props = new HashMap<>();
-    String[] propertyKeys = reference.getPropertyKeys();
-    for (String key : propertyKeys) {
-      props.put(key, reference.getProperty(key));
+  private class InjectorServiceListener implements ServiceListener {
+
+    @Override
+    public void serviceChanged(ServiceEvent event) {
+      Object service = bundleContext.getService(event.getServiceReference());
+      if (!(service instanceof Injector)) {
+        return;
+      }
+      if (event.getType() == ServiceEvent.REGISTERED) {
+        bindInjector((Injector)service, getServiceProperties(event.getServiceReference()));
+      }
+      else if (event.getType() == ServiceEvent.UNREGISTERING) {
+        unbindInjector((Injector)service, getServiceProperties(event.getServiceReference()));
+      }
     }
-    return props;
+
+    private Map<String, Object> getServiceProperties(ServiceReference reference) {
+      Map<String, Object> props = new HashMap<>();
+      String[] propertyKeys = reference.getPropertyKeys();
+      for (String key : propertyKeys) {
+        props.put(key, reference.getProperty(key));
+      }
+      return props;
+    }
+
   }
 
 }

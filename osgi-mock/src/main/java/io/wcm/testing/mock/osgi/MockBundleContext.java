@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,11 +27,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkListener;
+import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
@@ -43,6 +45,7 @@ class MockBundleContext implements BundleContext {
 
   private final MockBundle bundle;
   private final List<MockServiceRegistration> registeredServices = new ArrayList<>();
+  private final List<ServiceListener> serviceListeners = new ArrayList<>();
 
   public MockBundleContext(final MockBundle bundle) {
     this.bundle = bundle;
@@ -61,9 +64,15 @@ class MockBundleContext implements BundleContext {
 
   @Override
   public ServiceRegistration registerService(final String clazz, final Object service, final Dictionary properties) {
-    String[] clazzes = new String[] {
-        clazz
-    };
+    String[] clazzes;
+    if (StringUtils.isBlank(clazz)) {
+      clazzes = new String[0];
+    }
+    else {
+      clazzes = new String[] {
+          clazz
+      };
+    }
     return registerService(clazzes, service, properties);
   }
 
@@ -72,6 +81,7 @@ class MockBundleContext implements BundleContext {
   public ServiceRegistration registerService(final String[] clazzes, final Object service, final Dictionary properties) {
     MockServiceRegistration registration = new MockServiceRegistration(this.bundle, clazzes, service, properties);
     this.registeredServices.add(registration);
+    notifyServiceListeners(ServiceEvent.REGISTERED, registration.getReference());
     return registration;
   }
 
@@ -121,17 +131,26 @@ class MockBundleContext implements BundleContext {
 
   @Override
   public void addServiceListener(final ServiceListener serviceListener) {
-    // accept method, but ignore it
+    addServiceListener(serviceListener, null);
   }
 
   @Override
   public void addServiceListener(final ServiceListener serviceListener, final String s) {
-    // accept method, but ignore it
+    if (!serviceListeners.contains(serviceListener)) {
+      serviceListeners.add(serviceListener);
+    }
   }
 
   @Override
   public void removeServiceListener(final ServiceListener serviceListener) {
-    // accept method, but ignore it
+    serviceListeners.remove(serviceListener);
+  }
+
+  private void notifyServiceListeners(int eventType, ServiceReference serviceReference) {
+    final ServiceEvent event = new ServiceEvent(eventType, serviceReference);
+    for (ServiceListener serviceListener : serviceListeners) {
+      serviceListener.serviceChanged(event);
+    }
   }
 
   @Override

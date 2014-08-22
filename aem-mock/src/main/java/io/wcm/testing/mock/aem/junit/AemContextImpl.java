@@ -25,6 +25,7 @@ import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
+import io.wcm.testing.mock.sling.services.MockModelAdapterFactory;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
@@ -38,16 +39,25 @@ import javax.jcr.Session;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.adapter.AdapterFactory;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.commons.mime.MimeTypeService;
+import org.apache.sling.models.impl.injectors.BindingsInjector;
+import org.apache.sling.models.impl.injectors.ChildResourceInjector;
+import org.apache.sling.models.impl.injectors.OSGiServiceInjector;
+import org.apache.sling.models.impl.injectors.RequestAttributeInjector;
+import org.apache.sling.models.impl.injectors.ValueMapInjector;
+import org.apache.sling.models.spi.Injector;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
+
+import com.day.cq.commons.jcr.JcrConstants;
 
 /**
  * Defines AEM context objects with lazy initialization.
  */
-class AemContextImpl {
+class AemContextImpl<RuleType> {
 
   private ResourceResolverType resourceResolverType;
   private ComponentContext componentContext;
@@ -77,6 +87,19 @@ class AemContextImpl {
    */
   private void registerDefaultServices() {
     registerService(AdapterFactory.class, new MockAemAdapterFactory());
+
+    // adapter factory and built-in injectors
+    registerService(AdapterFactory.class, new MockModelAdapterFactory(componentContext()));
+    registerService(Injector.class, new BindingsInjector());
+    registerService(Injector.class, new ChildResourceInjector());
+    OSGiServiceInjector osgiServiceInjector = new OSGiServiceInjector();
+    osgiServiceInjector.activate(componentContext());
+    registerService(Injector.class, osgiServiceInjector);
+    registerService(Injector.class, new RequestAttributeInjector());
+    registerService(Injector.class, new ValueMapInjector());
+    // TODO: add new injectors when new sling models version is reference
+
+    // mime type service
     registerService(MimeTypeService.class, new MockMimeTypeService());
   }
 
@@ -184,11 +207,25 @@ class AemContextImpl {
 
   /**
    * Registers a service in the mocked OSGi environment.
+   * @param service Service instance
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public <T> RuleType registerService(final T service) {
+    registerService(null, service, null);
+    return (RuleType)this;
+  }
+
+  /**
+   * Registers a service in the mocked OSGi environment.
    * @param serviceClass Service class
    * @param service Service instance
+   * @return this
    */
-  public <T> void registerService(final Class<T> serviceClass, final T service) {
+  @SuppressWarnings("unchecked")
+  public <T> RuleType registerService(final Class<T> serviceClass, final T service) {
     registerService(serviceClass, service, null);
+    return (RuleType)this;
   }
 
   /**
@@ -196,13 +233,42 @@ class AemContextImpl {
    * @param serviceClass Service class
    * @param service Service instance
    * @param properties Service properties (optional)
+   * @return this
    */
-  public <T> void registerService(final Class<T> serviceClass, final T service, final Map<String, Object> properties) {
+  @SuppressWarnings("unchecked")
+  public <T> RuleType registerService(final Class<T> serviceClass, final T service, final Map<String, Object> properties) {
     Dictionary<String, Object> serviceProperties = null;
     if (properties != null) {
       serviceProperties = new Hashtable<>(properties);
     }
-    bundleContext().registerService(serviceClass.getName(), service, serviceProperties);
+    bundleContext().registerService(serviceClass != null ? serviceClass.getName() : null, service, serviceProperties);
+    return (RuleType)this;
+  }
+
+  /**
+   * Set current resource in request.
+   * @param resourcePath Resource path
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public RuleType currentResource(String resourcePath) {
+    Resource resource = resourceResolver().getResource(resourcePath);
+    if (resource == null) {
+      throw new IllegalArgumentException("Resource does not exist: " + resourcePath);
+    }
+    ((MockSlingHttpServletRequest)request()).setResource(resource);
+    return (RuleType)this;
+  }
+
+  /**
+   * Set current Page in request (set to content resource of page).
+   * @param pagePath Page path
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public RuleType currentPage(String pagePath) {
+    currentResource(pagePath + "/" + JcrConstants.JCR_CONTENT);
+    return (RuleType)this;
   }
 
 }

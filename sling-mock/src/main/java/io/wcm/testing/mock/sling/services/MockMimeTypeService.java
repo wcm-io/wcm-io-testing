@@ -24,6 +24,8 @@ import io.wcm.testing.mock.osgi.MockOsgiFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.commons.mime.internal.MimeTypeServiceImpl;
 import org.osgi.service.component.ComponentContext;
@@ -31,6 +33,8 @@ import org.osgi.service.component.ComponentContext;
 /**
  * Mock {@link MimeTypeService} implementation.
  */
+@Component(inherit = false)
+@Service(MimeTypeService.class)
 public class MockMimeTypeService extends MimeTypeServiceImpl {
 
   private boolean initialized;
