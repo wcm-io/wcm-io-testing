@@ -73,6 +73,7 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
       if (!(service instanceof Injector)) {
         return;
       }
+      // TODO register annotation processor as well after switching to latest sling models version
       if (event.getType() == ServiceEvent.REGISTERED) {
         bindInjector((Injector)service, getServiceProperties(event.getServiceReference()));
       }
