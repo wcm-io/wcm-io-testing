@@ -49,7 +49,7 @@ import org.apache.jackrabbit.commons.iterator.PropertyIteratorAdapter;
 /**
  * Mock {@link Node} implementation
  */
-class MockNode extends MockItem implements Node {
+class MockNode extends AbstractItem implements Node {
 
   private final UUID uuid = UUID.randomUUID();
   private final NodeType nodeType;

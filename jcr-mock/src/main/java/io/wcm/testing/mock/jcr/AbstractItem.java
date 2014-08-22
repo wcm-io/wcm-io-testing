@@ -32,12 +32,12 @@ import org.apache.sling.api.resource.ResourceUtil;
 /**
  * Mock {@link Item} implementation.
  */
-abstract class MockItem implements Item {
+abstract class AbstractItem implements Item {
 
   private final String path;
   private final Session session;
 
-  public MockItem(final String path, final Session session) {
+  public AbstractItem(final String path, final Session session) {
     this.path = path;
     this.session = session;
   }

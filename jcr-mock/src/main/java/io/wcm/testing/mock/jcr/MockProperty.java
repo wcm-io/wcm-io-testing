@@ -38,7 +38,7 @@ import org.apache.jackrabbit.value.BinaryValue;
 /**
  * Mock {@link Property} implementation
  */
-class MockProperty extends MockItem implements Property {
+class MockProperty extends AbstractItem implements Property {
 
   private Value[] values;
   private boolean isMultiple;
