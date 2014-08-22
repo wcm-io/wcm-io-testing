@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,8 @@
  */
 package io.wcm.testing.mock.sling;
 
-import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.adapter.AdapterManager;
+import org.osgi.framework.BundleContext;
 
 /**
  * Wrapper for {@link MockAdapterManager} which makes sure multiple unit tests running in parallel do not
@@ -42,20 +42,20 @@ class ThreadsafeMockAdapterManagerWrapper implements AdapterManager {
   }
 
   /**
-   * Register a adapter factory
-   * @param adapterFactory Adapter factory
+   * Sets bundle context.
+   * @param bundleContext Bundle context
    */
-  public void register(final AdapterFactory adapterFactory) {
+  public void setBundleContext(final BundleContext bundleContext) {
     MockAdapterManager adapterManager = THREAD_LOCAL.get();
-    adapterManager.register(adapterFactory);
+    adapterManager.setBundleContext(bundleContext);
   }
 
   /**
-   * Removes all registrations from adapter factory.
+   * Removes bundle context reference.
    */
-  public void clearRegistrations() {
+  public void clearBundleContext() {
     MockAdapterManager adapterManager = THREAD_LOCAL.get();
-    adapterManager.clearRegistrations();
+    adapterManager.clearBundleContext();
   }
 
 }

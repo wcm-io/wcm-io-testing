@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,11 +19,11 @@
  */
 package io.wcm.testing.mock.sling;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.adapter.AdapterManager;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 /**
  * Mock {@link AdapterManager} implementation.
@@ -31,11 +31,9 @@ import org.apache.sling.api.adapter.AdapterManager;
 class MockAdapterManager implements AdapterManager {
 
   /**
-   * Simple list of all adapter factories, they are processed in thier order of registration.
-   * The official sling implementation does not have a "controllable" order as well, it calls the
-   * factories in alphabetical order of their bundle IDs.
+   * OSGi bundle context to detect all services that implement {@link AdapterFactory}.
    */
-  private final List<AdapterFactory> adapterFactories = new ArrayList<AdapterFactory>();
+  private BundleContext bundleContext;
 
   /**
    * Returns the adapted <code>adaptable</code> or <code>null</code> if the object cannot be adapted.
@@ -44,10 +42,19 @@ class MockAdapterManager implements AdapterManager {
   public <AdapterType> AdapterType getAdapter(final Object adaptable, final Class<AdapterType> type) {
 
     // iterate over all adapter factories and try to adapt the object
-    for (AdapterFactory adapterFactory : this.adapterFactories) {
-      AdapterType instance = adapterFactory.getAdapter(adaptable, type);
-      if (instance != null) {
-        return instance;
+    if (this.bundleContext != null) {
+      try {
+        ServiceReference[] references = bundleContext.getServiceReferences(AdapterFactory.class.getName(), null);
+        for (ServiceReference serviceReference : references) {
+          AdapterFactory adapterFactory = (AdapterFactory)bundleContext.getService(serviceReference);
+          AdapterType instance = adapterFactory.getAdapter(adaptable, type);
+          if (instance != null) {
+            return instance;
+          }
+        }
+      }
+      catch (InvalidSyntaxException ex) {
+        throw new RuntimeException("Unable to get adapter factories.", ex);
       }
     }
 
@@ -56,20 +63,18 @@ class MockAdapterManager implements AdapterManager {
   }
 
   /**
-   * Register a adapter factory
-   * @param adapterFactory Adapter factory
+   * Sets bundle context.
+   * @param bundleContext Bundle context
    */
-  public void register(final AdapterFactory adapterFactory) {
-    if (!this.adapterFactories.contains(adapterFactory)) {
-      this.adapterFactories.add(adapterFactory);
-    }
+  public void setBundleContext(final BundleContext bundleContext) {
+    this.bundleContext = bundleContext;
   }
 
   /**
-   * Removes all registrations from adapter factory.
+   * Removes bundle context reference.
    */
-  public void clearRegistrations() {
-    this.adapterFactories.clear();
+  public void clearBundleContext() {
+    this.bundleContext = null;
   }
 
 }

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,6 @@ import io.wcm.testing.mock.sling.spi.ResourceResolverTypeAdapter;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -141,18 +140,18 @@ public final class MockSlingFactory {
   }
 
   /**
-   * Register adapter factory
-   * @param adapterFactory Adapter factory
+   * Set bundle context for adapter manager. From this bundle context the adapter factories are detected.
+   * @param bundleContext OSGi bundle context
    */
-  public static void registerAdapterFactory(final AdapterFactory adapterFactory) {
-    ADAPTER_MANAGER.register(adapterFactory);
+  public static void setAdapterManagerBundleContext(final BundleContext bundleContext) {
+    ADAPTER_MANAGER.setBundleContext(bundleContext);
   }
 
   /**
    * Clear adapter registrations..
    */
-  public static void clearAdapterRegistrations() {
-    ADAPTER_MANAGER.clearRegistrations();
+  public static void clearAdapterManagerBundleContext() {
+    ADAPTER_MANAGER.clearBundleContext();
   }
 
 }

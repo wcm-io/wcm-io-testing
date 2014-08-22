@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,10 +21,10 @@ package io.wcm.testing.mock.aem.junit;
 
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.osgi.MockOsgiFactory;
-import io.wcm.testing.mock.sling.MockMimeTypeService;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.contentimport.JsonImporter;
+import io.wcm.testing.mock.sling.services.MockMimeTypeService;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
@@ -68,21 +68,15 @@ class AemContextImpl {
    * Setup actions before test method execution
    */
   protected void setUp() {
-    registerDefaultAdapterFactories();
+    MockSlingFactory.setAdapterManagerBundleContext(bundleContext());
     registerDefaultServices();
-  }
-
-  /**
-   * Default adapter factories that should be available for every unit test
-   */
-  private void registerDefaultAdapterFactories() {
-    registerAdapterFactory(new MockAemAdapterFactory());
   }
 
   /**
    * Default services that should be available for every unit test
    */
   private void registerDefaultServices() {
+    registerService(AdapterFactory.class, new MockAemAdapterFactory());
     registerService(MimeTypeService.class, new MockMimeTypeService());
   }
 
@@ -111,7 +105,7 @@ class AemContextImpl {
     this.response = null;
     this.slingScriptHelper = null;
 
-    MockSlingFactory.clearAdapterRegistrations();
+    MockSlingFactory.clearAdapterManagerBundleContext();
   }
 
   /**
@@ -186,14 +180,6 @@ class AemContextImpl {
       this.jsonImporter = new JsonImporter(resourceResolver());
     }
     return this.jsonImporter;
-  }
-
-  /**
-   * Register adapter factory
-   * @param adapterFactory Adapter factory
-   */
-  public void registerAdapterFactory(final AdapterFactory adapterFactory) {
-    MockSlingFactory.registerAdapterFactory(adapterFactory);
   }
 
   /**

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.sling;
+package io.wcm.testing.mock.sling.services;
 
 import io.wcm.testing.mock.osgi.MockOsgiFactory;
 
@@ -35,10 +35,13 @@ public class MockMimeTypeService extends MimeTypeServiceImpl {
 
   private boolean initialized;
 
+  /**
+   * Do lazy initializing because reading to avoid reading all defined mime types from disk if not required
+   */
   private void lazyInitialization() {
     if (!this.initialized) {
       this.initialized = true;
-      // activate mimetype service in simulated OSGi environment
+      // activate service in simulated OSGi environment
       ComponentContext componentContext = MockOsgiFactory.newComponentContext();
       this.bindLogService(MockOsgiFactory.newLogService(getClass()));
       activate(componentContext);

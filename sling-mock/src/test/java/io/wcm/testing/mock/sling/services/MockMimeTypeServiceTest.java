@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.sling;
+package io.wcm.testing.mock.sling.services;
 
 import static org.junit.Assert.assertEquals;
 

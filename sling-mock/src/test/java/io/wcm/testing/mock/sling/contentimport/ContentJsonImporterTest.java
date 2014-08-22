@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -79,7 +79,7 @@ public class ContentJsonImporterTest {
   @Test
   public void testPageResourceType() {
     Resource resource = this.resourceResolver.getResource("/content/sample/en");
-    // TODO: sseifert@sseifert this is an incompatibility in resourceresolver-mock - can it be solved?
+    // TODO: this is an incompatibility in resourceresolver-mock - can it be solved?
     if (getResourceResolverType() == ResourceResolverType.JCR_MOCK
         || getResourceResolverType() == ResourceResolverType.JCR_JACKRABBIT) {
       assertEquals("cq:Page", resource.getResourceType());
