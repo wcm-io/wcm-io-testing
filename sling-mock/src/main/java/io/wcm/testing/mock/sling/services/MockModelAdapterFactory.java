@@ -29,6 +29,7 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.models.impl.ModelAdapterFactory;
 import org.apache.sling.models.spi.Injector;
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
@@ -70,15 +71,25 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
     @Override
     public void serviceChanged(ServiceEvent event) {
       Object service = bundleContext.getService(event.getServiceReference());
-      if (!(service instanceof Injector)) {
-        return;
+      if (service instanceof Injector) {
+        if (event.getType() == ServiceEvent.REGISTERED) {
+          bindInjector((Injector)service,
+              getServiceProperties(event.getServiceReference()));
+        }
+        else if (event.getType() == ServiceEvent.UNREGISTERING) {
+          unbindInjector((Injector)service,
+              getServiceProperties(event.getServiceReference()));
+        }
       }
-      // TODO register annotation processor as well after switching to latest sling models version
-      if (event.getType() == ServiceEvent.REGISTERED) {
-        bindInjector((Injector)service, getServiceProperties(event.getServiceReference()));
-      }
-      else if (event.getType() == ServiceEvent.UNREGISTERING) {
-        unbindInjector((Injector)service, getServiceProperties(event.getServiceReference()));
+      if (service instanceof InjectAnnotationProcessorFactory) {
+        if (event.getType() == ServiceEvent.REGISTERED) {
+          bindInjectAnnotationProcessorFactory((InjectAnnotationProcessorFactory)service,
+              getServiceProperties(event.getServiceReference()));
+        }
+        else if (event.getType() == ServiceEvent.UNREGISTERING) {
+          unbindInjectAnnotationProcessorFactory((InjectAnnotationProcessorFactory)service,
+              getServiceProperties(event.getServiceReference()));
+        }
       }
     }
 

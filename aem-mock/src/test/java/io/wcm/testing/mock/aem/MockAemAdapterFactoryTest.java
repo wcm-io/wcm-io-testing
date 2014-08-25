@@ -43,9 +43,8 @@ public class MockAemAdapterFactoryTest {
   // Run all unit tests for each resource resolver types listed here
   @Rule
   public AemContext context = new AemContext(
-      // TODO: disabled until MockResourveResolver extends SlingAdaptable (SLING-3853)
-      //ResourceResolverType.RESOURCERESOLVER_MOCK,
-      ResourceResolverType.JCR_MOCK
+      ResourceResolverType.JCR_MOCK,
+      ResourceResolverType.RESOURCERESOLVER_MOCK
       );
 
   @Before

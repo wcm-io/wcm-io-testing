@@ -47,6 +47,10 @@ import org.apache.sling.models.impl.injectors.BindingsInjector;
 import org.apache.sling.models.impl.injectors.ChildResourceInjector;
 import org.apache.sling.models.impl.injectors.OSGiServiceInjector;
 import org.apache.sling.models.impl.injectors.RequestAttributeInjector;
+import org.apache.sling.models.impl.injectors.ResourcePathInjector;
+import org.apache.sling.models.impl.injectors.ResourceResolverInjector;
+import org.apache.sling.models.impl.injectors.SelfInjector;
+import org.apache.sling.models.impl.injectors.SlingObjectInjector;
 import org.apache.sling.models.impl.injectors.ValueMapInjector;
 import org.apache.sling.models.spi.Injector;
 import org.osgi.framework.BundleContext;
@@ -96,8 +100,11 @@ class AemContextImpl<RuleType> {
     osgiServiceInjector.activate(componentContext());
     registerService(Injector.class, osgiServiceInjector);
     registerService(Injector.class, new RequestAttributeInjector());
+    registerService(Injector.class, new ResourcePathInjector());
+    registerService(Injector.class, new ResourceResolverInjector());
+    registerService(Injector.class, new SelfInjector());
+    registerService(Injector.class, new SlingObjectInjector());
     registerService(Injector.class, new ValueMapInjector());
-    // TODO: add new injectors when new sling models version is reference
 
     // mime type service
     registerService(MimeTypeService.class, new MockMimeTypeService());
@@ -127,6 +134,7 @@ class AemContextImpl<RuleType> {
     this.request = null;
     this.response = null;
     this.slingScriptHelper = null;
+    this.jsonImporter = null;
 
     MockSlingFactory.clearAdapterManagerBundleContext();
   }

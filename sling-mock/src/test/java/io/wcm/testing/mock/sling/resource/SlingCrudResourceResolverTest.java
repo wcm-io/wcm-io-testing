@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -156,11 +156,8 @@ public class SlingCrudResourceResolverTest {
 
     List<Resource> children = IteratorUtils.toList(resource1.listChildren());
     assertEquals(2, children.size());
-    // TODO: enable this tests when resource resolver mock preserves child ordering (SLING-3847)
-    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
-      assertEquals("node11", children.get(0).getName());
-      assertEquals("node12", children.get(1).getName());
-    }
+    assertEquals("node11", children.get(0).getName());
+    assertEquals("node12", children.get(1).getName());
   }
 
 }
