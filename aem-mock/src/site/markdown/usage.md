@@ -172,6 +172,9 @@ request.setResource(resourceResolver.getResource("/content/sample"));
 MockRequestPathInfo requestPathInfo = (MockRequestPathInfo)request.getRequestPathInfo();
 requestPathInfo.setSelectorString("selector1.selector2");
 requestPathInfo.setExtension("html");
+
+// set current page
+context.currentPage("/content/sample/en");
 ```
 
 ### Registering OSGi service
@@ -199,13 +202,30 @@ Example:
 
 ```java
 // register adapter factory
-context.registerAdapterFactory(myAdapterFactory);
+context.registerService(myAdapterFactory);
 
 // test adaption
 MyClass object = resource.adaptTo(MyClass.class);
 ```
 
 You do not have to care about cleaning up the registrations - this is done automatically by the `AemContext` rule.
+
+
+### Sling Models
+
+Example:
+
+```java
+@Model(adaptables = SlingHttpServletRequest.class)
+interface RequestAttributeModel {
+
+  @Inject
+  String getProp1();
+
+}
+
+RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
+```
 
 
 

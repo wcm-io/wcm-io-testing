@@ -4,7 +4,7 @@ The factory class `MockSlingFactory` allows to instantiate the different mock im
 
 ### Sling Resource Resolver
 
-Examples:
+Example:
 
 ```java
 // get a resource resolver
@@ -23,17 +23,19 @@ Example:
 
 ```java
 // register adapter factory
-MockSlingFactory.registerAdapterFactory(myAdapterFactory);
+BundleContext bundleContext = MockOsgiFactory.newBundleContext();
+MockSlingFactory.setAdapterManagerBundleContext(bundleContext);
+bundleContext.registerService(myAdapterFactory);
 
 // test adaption
 MyClass object = resource.adaptTo(MyClass.class);
 
 // cleanup after unit test
-MockSlingFactory.clearAdapterRegistrations();
+MockSlingFactory.clearAdapterManagerBundleContext();
 ```
 
-Make sure you clean up the registrations after running the unit test otherwise they can interfere with the following
-tests. In the [AEM Mocks][aem-mock] this is done automatically using a JUnit rule.
+Make sure you clean up the adapter manager bundle association after running the unit test otherwise it can 
+interfere with the following tests. In the [AEM Mocks][aem-mock] this is done automatically using a JUnit rule.
 
 
 ### SlingScriptHelper

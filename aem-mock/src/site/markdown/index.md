@@ -27,6 +27,7 @@ The mock implementation supports:
 * Implementation of AEM WCM API objects `PageManager`, `Page` and `Template`
 * JUnit rule for easy access to all context objects and registering adapter factories and OSGi services
 * Registers OSGi services and adapter factories supported by the mock implementations
+* Full support for Sling Models
 
 The following features are *not supported*:
 

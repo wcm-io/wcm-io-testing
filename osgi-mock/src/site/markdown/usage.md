@@ -4,7 +4,7 @@
 
 The factory class `MockOsgiFactory` allows to instantiate the different mock implementations.
 
-Examples:
+Example:
 
 ```java
 // get bundle context

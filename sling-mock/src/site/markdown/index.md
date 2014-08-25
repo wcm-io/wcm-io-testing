@@ -34,7 +34,7 @@ The mock implementation supports:
    OSGi services from the [mocked OSGi][osgi-mock] environment.
 * Implementations of the servlet-related Sling API classes like `SlingHttpServletRequest` and `SlingHttpServletRequest`
     * It is possible to set request data to simulate a certian Sling HTTP request
-* Additional services like `MimeTypeService` 
+* Additional services like `MockModelAdapterFactory` and  `MimeTypeService` 
 
 [osgi-mock]: http://wcm.io/testing/osgi-mock/
 [jcr-mock]: http://wcm.io/testing/jcr-mock/
