@@ -55,7 +55,7 @@ public class MockAemAdapterFactoryTest {
 
   @Test
   public void testPageManager() {
-    PageManager pageManager = this.context.resourceResolver().adaptTo(PageManager.class);
+    PageManager pageManager = this.context.pageManager();
     assertNotNull(pageManager);
 
     Page page = pageManager.getPage("/content/sample/en");

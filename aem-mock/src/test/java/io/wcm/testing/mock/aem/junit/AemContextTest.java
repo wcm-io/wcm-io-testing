@@ -72,6 +72,7 @@ public class AemContextTest {
     assertNotNull(context.request());
     assertNotNull(context.response());
     assertNotNull(context.slingScriptHelper());
+    assertNotNull(context.pageManager());
   }
 
   @Test

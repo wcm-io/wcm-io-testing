@@ -58,6 +58,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.wcm.api.PageManager;
 
 /**
  * Defines AEM context objects with lazy initialization.
@@ -209,6 +210,13 @@ class AemContextImpl<RuleType> {
       this.slingScriptHelper = MockSlingFactory.newSlingScriptHelper(this.request(), this.response(), this.bundleContext());
     }
     return this.slingScriptHelper;
+  }
+
+  /**
+   * @return Page manager
+   */
+  public PageManager pageManager() {
+    return resourceResolver().adaptTo(PageManager.class);
   }
 
   /**
