@@ -140,4 +140,25 @@ public class MockSlingHttpServletRequestTest {
     assertEquals("p1=a&p2=b&p2=c", this.request.getQueryString());
   }
 
+  @Test
+  public void testSchemeSecure() {
+    assertEquals("http", this.request.getScheme());
+    assertFalse(this.request.isSecure());
+
+    this.request.setScheme("https");
+    assertEquals("https", this.request.getScheme());
+    assertTrue(this.request.isSecure());
+  }
+
+  @Test
+  public void testServerNamePort() {
+    assertEquals("localhost", this.request.getServerName());
+    assertEquals(80, this.request.getServerPort());
+
+    this.request.setServerName("myhost");
+    this.request.setServerPort(12345);
+    assertEquals("myhost", this.request.getServerName());
+    assertEquals(12345, this.request.getServerPort());
+  }
+
 }

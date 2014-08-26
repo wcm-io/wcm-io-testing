@@ -51,6 +51,7 @@ import javax.servlet.http.Part;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.request.RequestDispatcherOptions;
@@ -74,6 +75,9 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
   private Resource resource;
   private String contextPath;
   private String queryString;
+  private String scheme = "http";
+  private String serverName = "localhost";
+  private int serverPort = 80;
 
   /**
    * Instantiate with default resource resolver
@@ -271,6 +275,37 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     return this.queryString;
   }
 
+  @Override
+  public String getScheme() {
+    return this.scheme;
+  }
+
+  public void setScheme(String scheme) {
+    this.scheme = scheme;
+  }
+
+  @Override
+  public String getServerName() {
+    return this.serverName;
+  }
+
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
+  }
+
+  @Override
+  public int getServerPort() {
+    return this.serverPort;
+  }
+
+  public void setServerPort(int serverPort) {
+    this.serverPort = serverPort;
+  }
+
+  @Override
+  public boolean isSecure() {
+    return StringUtils.equals("https", getScheme());
+  }
 
   // --- unsupported operations ---
   @Override
@@ -510,26 +545,6 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
 
   @Override
   public RequestDispatcher getRequestDispatcher(final String path) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getScheme() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getServerName() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int getServerPort() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isSecure() {
     throw new UnsupportedOperationException();
   }
 
