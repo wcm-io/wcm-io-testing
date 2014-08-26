@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.annotations.Model;
 import org.junit.Before;
@@ -71,6 +72,15 @@ public class AemContextTest {
     assertNotNull(context.request());
     assertNotNull(context.response());
     assertNotNull(context.slingScriptHelper());
+  }
+
+  @Test
+  public void testSlingBindings() {
+    SlingBindings bindings = (SlingBindings)context.request().getAttribute(SlingBindings.class.getName());
+    assertNotNull(bindings);
+    assertSame(context.request(), bindings.get(SlingBindings.REQUEST));
+    assertSame(context.response(), bindings.get(SlingBindings.RESPONSE));
+    assertSame(context.slingScriptHelper(), bindings.get(SlingBindings.SLING));
   }
 
   @Test

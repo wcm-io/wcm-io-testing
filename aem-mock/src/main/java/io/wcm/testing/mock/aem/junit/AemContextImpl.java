@@ -41,6 +41,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.impl.injectors.BindingsInjector;
@@ -179,6 +180,13 @@ class AemContextImpl<RuleType> {
   public SlingHttpServletRequest request() {
     if (this.request == null) {
       this.request = new MockSlingHttpServletRequest(this.resourceResolver());
+
+      // initialize sling bindings
+      SlingBindings bindings = new SlingBindings();
+      bindings.put(SlingBindings.REQUEST, this.request);
+      bindings.put(SlingBindings.RESPONSE, response());
+      bindings.put(SlingBindings.SLING, slingScriptHelper());
+      this.request.setAttribute(SlingBindings.class.getName(), bindings);
     }
     return this.request;
   }
