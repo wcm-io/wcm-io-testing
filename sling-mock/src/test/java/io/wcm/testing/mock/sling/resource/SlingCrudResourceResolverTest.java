@@ -48,7 +48,6 @@ import org.junit.Test;
  * Implements simple write and read resource and values test.
  * Sling CRUD API is used to create the test data.
  */
-@SuppressWarnings("javadoc")
 public class SlingCrudResourceResolverTest {
 
   private static final String STRING_VALUE = "value1";

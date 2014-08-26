@@ -51,7 +51,6 @@ import org.junit.Test;
  * Implements simple write and read resource and values test.
  * JCR API is used to create the test data.
  */
-@SuppressWarnings("javadoc")
 public class JcrResourceResolverTest {
 
   private static final String STRING_VALUE = "value1";

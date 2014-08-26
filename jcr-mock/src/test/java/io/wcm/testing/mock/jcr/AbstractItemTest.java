@@ -32,7 +32,6 @@ import javax.jcr.Session;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public abstract class AbstractItemTest {
 
   private Session session;

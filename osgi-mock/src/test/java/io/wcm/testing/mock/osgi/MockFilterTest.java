@@ -28,7 +28,6 @@ import org.junit.Test;
 import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceReference;
 
-@SuppressWarnings("javadoc")
 public class MockFilterTest {
 
   private Filter filter;

@@ -42,7 +42,6 @@ import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
 
-@SuppressWarnings("javadoc")
 public class MockModelAdapterFactoryTest {
 
   private ComponentContext componentContext;

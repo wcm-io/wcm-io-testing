@@ -23,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.service.log.LogService;
 
-@SuppressWarnings("javadoc")
 public class MockLogServiceTest {
 
   private LogService logService;

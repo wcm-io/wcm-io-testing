@@ -25,7 +25,6 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockSlingHttpServletResponseTest {
 
   private SlingHttpServletResponse response;

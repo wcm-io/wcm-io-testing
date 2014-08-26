@@ -37,7 +37,6 @@ import org.junit.Test;
 import org.junit.runners.model.Statement;
 
 //CHECKSTYLE:OFF
-@SuppressWarnings("javadoc")
 public class GeneratorFactoryTest {
 
   public class CollectingStatement<T> extends Statement {

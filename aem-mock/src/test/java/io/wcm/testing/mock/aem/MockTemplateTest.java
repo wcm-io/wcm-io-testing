@@ -32,7 +32,6 @@ import org.junit.Test;
 
 import com.day.cq.wcm.api.Template;
 
-@SuppressWarnings("javadoc")
 public class MockTemplateTest {
 
   @Rule

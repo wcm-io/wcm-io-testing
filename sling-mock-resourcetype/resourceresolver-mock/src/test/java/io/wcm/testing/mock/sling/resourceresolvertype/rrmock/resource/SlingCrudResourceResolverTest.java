@@ -24,7 +24,6 @@ import io.wcm.testing.mock.sling.ResourceResolverType;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
-@SuppressWarnings("javadoc")
 public class SlingCrudResourceResolverTest extends io.wcm.testing.mock.sling.resource.SlingCrudResourceResolverTest {
 
   @Override

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -203,7 +203,7 @@ public class JsonImporter {
     return this.resourceResolver.create(parentResource, ResourceUtil.getName(path), props);
   }
 
-  protected Resource createResource(final Resource parentResource, final String childName, final JSONObject jsonObject)
+  private Resource createResource(final Resource parentResource, final String childName, final JSONObject jsonObject)
       throws JSONException, PersistenceException {
 
     // collect all properties first
@@ -247,7 +247,7 @@ public class JsonImporter {
     return resource;
   }
 
-  protected void setProperty(final Map<String, Object> props, final String name, final Object value) throws JSONException {
+  private void setProperty(final Map<String, Object> props, final String name, final Object value) throws JSONException {
     if (value instanceof JSONArray) {
       // multivalue
       final JSONArray array = (JSONArray)value;
@@ -318,7 +318,7 @@ public class JsonImporter {
     }
   }
 
-  protected String getName(final String name) {
+  private String getName(final String name) {
     if (name.startsWith(REFERENCE)) {
       return name.substring(REFERENCE.length());
     }

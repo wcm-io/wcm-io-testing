@@ -33,7 +33,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 
-@SuppressWarnings("javadoc")
 public class MockServiceReferenceTest {
 
   private BundleContext bundleContext;

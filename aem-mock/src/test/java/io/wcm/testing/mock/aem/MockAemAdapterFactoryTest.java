@@ -37,7 +37,6 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.Template;
 
-@SuppressWarnings("javadoc")
 public class MockAemAdapterFactoryTest {
 
   // Run all unit tests for each resource resolver types listed here

@@ -25,7 +25,6 @@ import org.apache.sling.commons.mime.MimeTypeService;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockMimeTypeServiceTest {
 
   private MimeTypeService mimeTypeService;

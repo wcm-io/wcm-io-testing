@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockServletContextTest {
 
   private ServletContext servletContext;

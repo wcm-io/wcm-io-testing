@@ -47,7 +47,6 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
 
-@SuppressWarnings("javadoc")
 @RunWith(MockitoJUnitRunner.class)
 public class MockPageManagerTest {
 

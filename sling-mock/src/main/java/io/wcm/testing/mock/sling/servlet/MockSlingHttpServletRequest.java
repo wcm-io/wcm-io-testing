@@ -137,9 +137,6 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     return this.resource;
   }
 
-  /**
-   * @param resource
-   */
   public void setResource(final Resource resource) {
     this.resource = resource;
   }
@@ -184,7 +181,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
   }
 
   /**
-   * @param parameterMap
+   * @param parameterMap Map of parameters
    */
   public void setParameterMap(final Map<String, String[]> parameterMap) {
     this.parameterMap.clear();

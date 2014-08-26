@@ -29,7 +29,6 @@ import javax.servlet.http.HttpSession;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockHttpSessionTest {
 
   private HttpSession httpSession;

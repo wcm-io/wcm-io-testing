@@ -40,7 +40,6 @@ import org.apache.jackrabbit.value.BinaryValue;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockPropertyTest {
 
   private Session session;

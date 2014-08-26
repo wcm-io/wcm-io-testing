@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 
-@SuppressWarnings("javadoc")
 public class MockSlingScriptHelperTest {
 
   private ResourceResolver resourceResolver;

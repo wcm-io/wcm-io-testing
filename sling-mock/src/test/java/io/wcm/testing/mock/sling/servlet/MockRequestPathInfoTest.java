@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockRequestPathInfoTest {
 
   private MockRequestPathInfo requestPathInfo;

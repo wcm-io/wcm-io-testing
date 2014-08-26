@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
-@SuppressWarnings("javadoc")
 public class MockBundleTest {
 
   private Bundle bundle;

@@ -41,7 +41,6 @@ import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class ContentJsonImporterTest {
 
   private ResourceResolver resourceResolver;

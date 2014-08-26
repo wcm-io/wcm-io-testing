@@ -28,7 +28,6 @@ import org.apache.sling.api.adapter.SlingAdaptable;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 
-@SuppressWarnings("javadoc")
 public class MockAdapterManagerTest {
 
   @Test

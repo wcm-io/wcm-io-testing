@@ -24,7 +24,6 @@ import io.wcm.testing.mock.sling.ResourceResolverType;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
-@SuppressWarnings("javadoc")
 public class ContentJsonImporterTest extends io.wcm.testing.mock.sling.contentimport.ContentJsonImporterTest {
 
   @Override

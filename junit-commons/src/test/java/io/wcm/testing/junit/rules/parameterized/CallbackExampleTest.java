@@ -26,7 +26,6 @@ import java.util.Arrays;
 import org.junit.Rule;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class CallbackExampleTest {
 
   private final Callback<String> setUpCallback = new Callback<String>() {

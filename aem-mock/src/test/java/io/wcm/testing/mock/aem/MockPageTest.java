@@ -44,7 +44,6 @@ import com.day.cq.commons.Filter;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 
-@SuppressWarnings("javadoc")
 public class MockPageTest {
 
   @Rule

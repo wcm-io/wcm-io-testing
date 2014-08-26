@@ -28,7 +28,6 @@ import java.util.Set;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-@SuppressWarnings("javadoc")
 public class OsgiMetadataUtilTest {
 
   @Test

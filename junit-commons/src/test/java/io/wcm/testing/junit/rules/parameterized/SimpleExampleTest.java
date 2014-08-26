@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class SimpleExampleTest {
 
   @Rule

@@ -30,7 +30,6 @@ import javax.jcr.Session;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.commons.testing.jcr.RepositoryUtil;
 
-@SuppressWarnings("javadoc")
 public class JcrResourceResolverTest extends io.wcm.testing.mock.sling.resource.JcrResourceResolverTest {
 
   @Override

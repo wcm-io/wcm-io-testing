@@ -28,7 +28,6 @@ import org.apache.sling.jcr.api.SlingRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockSlingRepositoryTest {
 
   private SlingRepository repository;

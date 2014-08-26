@@ -28,7 +28,6 @@ import javax.jcr.observation.ObservationManager;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockWorkspaceTest {
 
   private Workspace workspace;

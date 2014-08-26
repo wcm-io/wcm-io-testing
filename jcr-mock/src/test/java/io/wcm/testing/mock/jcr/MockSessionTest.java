@@ -39,7 +39,6 @@ import org.apache.jackrabbit.JcrConstants;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockSessionTest {
 
   private Session session;

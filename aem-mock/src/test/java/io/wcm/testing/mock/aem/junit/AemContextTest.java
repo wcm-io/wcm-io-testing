@@ -47,7 +47,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.osgi.framework.ServiceReference;
 
-@SuppressWarnings("javadoc")
 public class AemContextTest {
 
   // Run all unit tests for each resource resolver types listed here

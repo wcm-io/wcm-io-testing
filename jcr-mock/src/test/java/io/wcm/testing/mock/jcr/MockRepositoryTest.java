@@ -31,7 +31,6 @@ import javax.jcr.SimpleCredentials;
 import org.junit.Before;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class MockRepositoryTest {
 
   private static final String USER_NAME = "user";

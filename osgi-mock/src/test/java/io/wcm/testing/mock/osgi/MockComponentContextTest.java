@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
 
-@SuppressWarnings("javadoc")
 public class MockComponentContextTest {
 
   private ComponentContext componentContext;
