@@ -31,6 +31,9 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.Rendition;
+import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -56,15 +59,17 @@ public class MockAemAdapterFactory implements AdapterFactory {
 
   @SuppressWarnings("unchecked")
   private <AdapterType> AdapterType getAdapter(final Resource resource, final Class<AdapterType> type) {
-    if (type == Page.class) {
-      if (isPrimaryType(resource, NameConstants.NT_PAGE)) {
-        return (AdapterType)new MockPage(resource);
-      }
+    if (type == Page.class && isPrimaryType(resource, NameConstants.NT_PAGE)) {
+      return (AdapterType)new MockPage(resource);
     }
-    if (type == Template.class) {
-      if (isPrimaryType(resource, NameConstants.NT_TEMPLATE)) {
-        return (AdapterType)new MockTemplate(resource);
-      }
+    if (type == Template.class && isPrimaryType(resource, NameConstants.NT_TEMPLATE)) {
+      return (AdapterType)new MockTemplate(resource);
+    }
+    if (type == Asset.class && DamUtil.isAsset(resource)) {
+      return (AdapterType)new MockAsset(resource);
+    }
+    if (type == Rendition.class && DamUtil.isRendition(resource)) {
+      return (AdapterType)new MockRendition(resource);
     }
     return null;
   }

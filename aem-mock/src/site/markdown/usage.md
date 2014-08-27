@@ -227,6 +227,57 @@ interface RequestAttributeModel {
 RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
 ```
 
+### Application-specific AEM context
+
+When building unit test suites for your AEM application you have usually to execute always some application-specific
+preparation tasks, e.g. register custom services, adapter factories or import sample content. This can be done
+in a convenience class using a `SetupCallback`. Example:
+
+```java
+public final class AppAemContext {
+
+  public static AemContext newAemContext() {
+    return new AemContext(new SetUpCallback());
+  }
+
+  private static final class SetUpCallback implements AemContextCallback {
+
+    @Override
+    public void execute(AemContext context) throws PersistenceException, IOException {
+
+      // application-specific services for unit tests
+      context.registerService(AdapterFactory.class, new AppAdapterFactory());
+      context.registerService(new AemObjectInjector());
+
+      // import sample content
+      context.jsonImporter().importTo("/sample-content.json", "/content/sample/en");
+
+      // set default current page
+      context.currentPage("/content/sample/en");
+    }
+
+  }
+
+}
+```
+
+In the unit test you can use this customized AEM context:
+
+```java
+public class MyTest {
+
+  @Rule
+  public final AemContext context = AppAemContext.newAemContext();
+
+  @Test
+  public void testSomething() {
+    // do test
+  }
+
+}
+```
+
+
 
 
 [mockito-testrunner]: http://docs.mockito.googlecode.com/hg/latest/org/mockito/runners/MockitoJUnitRunner.html

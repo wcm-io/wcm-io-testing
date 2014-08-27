@@ -92,10 +92,12 @@ class AemContextImpl<RuleType> {
    * Default services that should be available for every unit test
    */
   private void registerDefaultServices() {
-    registerService(AdapterFactory.class, new MockAemAdapterFactory());
 
-    // adapter factory and built-in injectors
+    // adapter factories
+    registerService(AdapterFactory.class, new MockAemAdapterFactory());
     registerService(AdapterFactory.class, new MockModelAdapterFactory(componentContext()));
+
+    // sling models injectors
     registerService(Injector.class, new BindingsInjector());
     registerService(Injector.class, new ChildResourceInjector());
     OSGiServiceInjector osgiServiceInjector = new OSGiServiceInjector();
@@ -108,7 +110,7 @@ class AemContextImpl<RuleType> {
     registerService(Injector.class, new SlingObjectInjector());
     registerService(Injector.class, new ValueMapInjector());
 
-    // mime type service
+    // other services
     registerService(MimeTypeService.class, new MockMimeTypeService());
   }
 

@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,8 @@
  */
 package io.wcm.testing.mock.aem;
 
-import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.io.JSONWriter;
@@ -32,24 +32,15 @@ import com.day.cq.wcm.api.Template;
 /**
  * Mock implementation of {@link Template}.
  */
-class MockTemplate extends SlingAdaptable implements Template {
+class MockTemplate extends ResourceWrapper implements Template {
 
   private final Resource resource;
   private final ValueMap properties;
 
-  public MockTemplate(final Resource resource) {
+  public MockTemplate(Resource resource) {
+    super(resource);
     this.resource = resource;
     this.properties = resource.getValueMap();
-  }
-
-  @Override
-  public String getPath() {
-    return this.resource.getPath();
-  }
-
-  @Override
-  public String getName() {
-    return this.resource.getName();
   }
 
   @Override
