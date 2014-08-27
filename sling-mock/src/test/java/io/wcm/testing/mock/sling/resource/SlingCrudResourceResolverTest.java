@@ -22,6 +22,7 @@ package io.wcm.testing.mock.sling.resource;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.sling.MockSlingFactory;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
@@ -43,6 +44,8 @@ import org.apache.sling.api.resource.ValueMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.day.cq.commons.jcr.JcrConstants;
 
 /**
  * Implements simple write and read resource and values test.
@@ -83,6 +86,7 @@ public class SlingCrudResourceResolverTest {
     Resource rootNode = getTestRootResource();
 
     Map<String, Object> props = new HashMap<>();
+    props.put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_UNSTRUCTURED);
     props.put("stringProp", STRING_VALUE);
     props.put("stringArrayProp", STRING_ARRAY_VALUE);
     props.put("integerProp", INTEGER_VALUE);
@@ -110,20 +114,22 @@ public class SlingCrudResourceResolverTest {
    */
   private Resource getTestRootResource() throws PersistenceException {
     if (this.testRoot == null) {
+      Map<String, Object> props = new HashMap<>();
+      props.put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_UNSTRUCTURED);
       final Resource root = this.resourceResolver.getResource("/");
       if (getResourceResolverType() == ResourceResolverType.JCR_JACKRABBIT) {
-        final Resource classRoot = this.resourceResolver.create(root, getClass().getSimpleName(), ValueMap.EMPTY);
-        this.testRoot = this.resourceResolver.create(classRoot, System.currentTimeMillis() + "_" + (rootNodeCounter++), ValueMap.EMPTY);
+        final Resource classRoot = this.resourceResolver.create(root, getClass().getSimpleName(), props);
+        this.testRoot = this.resourceResolver.create(classRoot, System.currentTimeMillis() + "_" + (rootNodeCounter++), props);
       }
       else {
-        this.testRoot = this.resourceResolver.create(root, "test", ValueMap.EMPTY);
+        this.testRoot = this.resourceResolver.create(root, "test", props);
       }
     }
     return this.testRoot;
   }
 
   @Test
-  public void testGetResourcesAndValues() throws IOException {
+  public void testSimpleProperties() throws IOException {
     Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
     assertNotNull(resource1);
     assertEquals("node1", resource1.getName());
@@ -134,9 +140,66 @@ public class SlingCrudResourceResolverTest {
     assertEquals((Integer)INTEGER_VALUE, props.get("integerProp", Integer.class));
     assertEquals(DOUBLE_VALUE, props.get("doubleProp", Double.class), 0.0001);
     assertEquals(BOOLEAN_VALUE, props.get("booleanProp", Boolean.class));
+  }
+
+  @Test
+  public void testDateProperty() throws IOException {
+    Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
+    ValueMap props = resource1.getValueMap();
     // TODO: enable this test when JCR resource implementation supports writing Date objects (SLING-3846)
-    //assertEquals(DATE_VALUE, props.get("dateProp", Date.class));
+    if (getResourceResolverType() != ResourceResolverType.JCR_MOCK
+        && getResourceResolverType() != ResourceResolverType.JCR_JACKRABBIT) {
+      assertEquals(DATE_VALUE, props.get("dateProp", Date.class));
+    }
+  }
+
+  @Test
+  public void testDatePropertyToCalendar() throws IOException {
+    Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
+    ValueMap props = resource1.getValueMap();
+    // TODO: enable this test when JCR resource implementation supports writing Date objects (SLING-3846)
+    // TODO: enable this test when sling mockresourceresolver implementation supports converting Date/Calender objects
+    if (getResourceResolverType() != ResourceResolverType.JCR_MOCK
+        && getResourceResolverType() != ResourceResolverType.JCR_JACKRABBIT
+        && getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      Calendar calendarValue = props.get("dateProp", Calendar.class);
+      assertNotNull(calendarValue);
+      assertEquals(DATE_VALUE, calendarValue.getTime());
+    }
+  }
+
+  @Test
+  public void testCalendarProperty() throws IOException {
+    Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
+    ValueMap props = resource1.getValueMap();
     assertEquals(CALENDAR_VALUE.getTime(), props.get("calendarProp", Calendar.class).getTime());
+  }
+
+  @Test
+  public void testCalendarPropertyToDate() throws IOException {
+    Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
+    ValueMap props = resource1.getValueMap();
+    // TODO: enable this test when sling mockresourceresolver implementation supports converting Date/Calender objects
+    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      Date dateValue = props.get("calendarProp", Date.class);
+      assertNotNull(dateValue);
+      assertEquals(CALENDAR_VALUE.getTime(), dateValue);
+    }
+  }
+
+  @Test
+  public void testListChildren() throws IOException {
+    Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
+
+    List<Resource> children = IteratorUtils.toList(resource1.listChildren());
+    assertEquals(2, children.size());
+    assertEquals("node11", children.get(0).getName());
+    assertEquals("node12", children.get(1).getName());
+  }
+
+  @Test
+  public void testBinaryData() throws IOException {
+    Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
 
     // TODO: enable this tests when resource resolver mock supports binary data
     if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
@@ -147,16 +210,25 @@ public class SlingCrudResourceResolverTest {
       assertArrayEquals(BINARY_VALUE, dataFromResource);
 
       // read second time to ensure not the original input stream was returned
-      InputStream is2 = binaryPropResource.adaptTo(InputStream.class);
+      // and this time using another syntax
+      InputStream is2 = resource1.getValueMap().get("binaryProp", InputStream.class);
       byte[] dataFromResource2 = IOUtils.toByteArray(is2);
       is2.close();
       assertArrayEquals(BINARY_VALUE, dataFromResource2);
     }
+  }
 
-    List<Resource> children = IteratorUtils.toList(resource1.listChildren());
-    assertEquals(2, children.size());
-    assertEquals("node11", children.get(0).getName());
-    assertEquals("node12", children.get(1).getName());
+
+  @Test
+  public void testPrimaryTypeResourceType() throws PersistenceException {
+    // TODO: this is an incompatibility in resourceresolver-mock - can it be solved?
+    Resource resource = this.resourceResolver.getResource(getTestRootResource().getPath());
+    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      assertEquals(JcrConstants.NT_UNSTRUCTURED, resource.getResourceType());
+    }
+    else {
+      assertNull(resource.getResourceType());
+    }
   }
 
 }
