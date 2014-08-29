@@ -35,6 +35,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
@@ -132,13 +134,26 @@ public class MockBundleContextTest {
     this.bundleContext.registerService(clazz1, service1, null);
 
     verify(serviceListener).serviceChanged(any(ServiceEvent.class));
+
+    bundleContext.removeServiceListener(serviceListener);
   }
 
   @Test
-  public void testListener() throws Exception {
+  public void testBundleListener() throws Exception {
+    BundleListener bundleListener = mock(BundleListener.class);
+    BundleEvent bundleEvent = mock(BundleEvent.class);
+
+    bundleContext.addBundleListener(bundleListener);
+
+    MockOsgiFactory.sendBundleEvent(bundleContext, bundleEvent);
+    verify(bundleListener).bundleChanged(bundleEvent);
+
+    bundleContext.removeBundleListener(bundleListener);
+  }
+
+  @Test
+  public void testFrameworkListener() throws Exception {
     // ensure that listeners can be called (although they are not expected to to anything)
-    this.bundleContext.addBundleListener(null);
-    this.bundleContext.removeBundleListener(null);
     this.bundleContext.addFrameworkListener(null);
     this.bundleContext.removeFrameworkListener(null);
   }

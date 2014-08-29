@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkListener;
@@ -46,6 +47,7 @@ class MockBundleContext implements BundleContext {
   private final MockBundle bundle;
   private final List<MockServiceRegistration> registeredServices = new ArrayList<>();
   private final List<ServiceListener> serviceListeners = new ArrayList<>();
+  private final List<BundleListener> bundleListeners = new ArrayList<>();
 
   public MockBundleContext(final MockBundle bundle) {
     this.bundle = bundle;
@@ -155,12 +157,20 @@ class MockBundleContext implements BundleContext {
 
   @Override
   public void addBundleListener(final BundleListener bundleListener) {
-    // accept method, but ignore it
+    if (!bundleListeners.contains(bundleListener)) {
+      bundleListeners.add(bundleListener);
+    }
   }
 
   @Override
   public void removeBundleListener(final BundleListener bundleListener) {
-    // accept method, but ignore it
+    bundleListeners.remove(bundleListener);
+  }
+
+  void sendBundleEvent(BundleEvent bundleEvent) {
+    for (BundleListener bundleListener : bundleListeners) {
+      bundleListener.bundleChanged(bundleEvent);
+    }
   }
 
   @Override

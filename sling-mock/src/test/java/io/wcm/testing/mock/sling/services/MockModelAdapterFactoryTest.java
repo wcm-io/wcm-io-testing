@@ -33,8 +33,10 @@ import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.impl.FirstImplementationPicker;
 import org.apache.sling.models.impl.injectors.OSGiServiceInjector;
 import org.apache.sling.models.impl.injectors.RequestAttributeInjector;
+import org.apache.sling.models.spi.ImplementationPicker;
 import org.apache.sling.models.spi.Injector;
 import org.junit.After;
 import org.junit.Before;
@@ -54,13 +56,20 @@ public class MockModelAdapterFactoryTest {
     MockSlingFactory.setAdapterManagerBundleContext(bundleContext);
 
     // register sling models adapter factory
-    bundleContext.registerService(AdapterFactory.class.getName(), new MockModelAdapterFactory(componentContext), null);
+    MockModelAdapterFactory mockModelAdapterFactory = new MockModelAdapterFactory(componentContext);
+    bundleContext.registerService(AdapterFactory.class.getName(), mockModelAdapterFactory, null);
 
     // register some injectors
     bundleContext.registerService(Injector.class.getName(), new RequestAttributeInjector(), null);
     OSGiServiceInjector osgiServiceInjector = new OSGiServiceInjector();
     osgiServiceInjector.activate(componentContext);
     bundleContext.registerService(Injector.class.getName(), osgiServiceInjector, null);
+
+    // register implementation pickers
+    bundleContext.registerService(ImplementationPicker.class.getName(), new FirstImplementationPicker(), null);
+
+    // scan for @Model classes
+    mockModelAdapterFactory.addModelsForPackage("io.wcm.testing.mock.sling.services");
   }
 
   @After
@@ -73,13 +82,8 @@ public class MockModelAdapterFactoryTest {
     MockSlingHttpServletRequest request = new MockSlingHttpServletRequest();
     request.setAttribute("prop1", "myValue");
     RequestAttributeModel model = request.adaptTo(RequestAttributeModel.class);
+    assertNotNull(model);
     assertEquals("myValue", model.getProp1());
-  }
-
-  @Model(adaptables = SlingHttpServletRequest.class)
-  private interface RequestAttributeModel {
-    @Inject
-    String getProp1();
   }
 
   @Test
@@ -88,14 +92,9 @@ public class MockModelAdapterFactoryTest {
 
     ResourceResolver resolver = MockSlingFactory.newResourceResolver();
     OsgiServiceModel model = resolver.adaptTo(OsgiServiceModel.class);
+    assertNotNull(model);
     assertNotNull(model.getMimeTypeService());
     assertEquals("text/html", model.getMimeTypeService().getMimeType("html"));
-  }
-
-  @Model(adaptables = ResourceResolver.class)
-  private interface OsgiServiceModel {
-    @Inject
-    MimeTypeService getMimeTypeService();
   }
 
   @Test
@@ -103,6 +102,41 @@ public class MockModelAdapterFactoryTest {
     MockSlingHttpServletRequest request = new MockSlingHttpServletRequest();
     OsgiServiceModel model = request.adaptTo(OsgiServiceModel.class);
     assertNull(model);
+  }
+
+  @Test
+  public void testAdaptToInterface() {
+    MockSlingHttpServletRequest request = new MockSlingHttpServletRequest();
+    request.setAttribute("prop1", "myValue");
+    ServiceInterface model = request.adaptTo(ServiceInterface.class);
+    assertNotNull(model);
+    assertEquals("myValue", model.getPropValue());
+  }
+
+  @Model(adaptables = SlingHttpServletRequest.class)
+  public interface RequestAttributeModel {
+    @Inject
+    String getProp1();
+  }
+
+  @Model(adaptables = ResourceResolver.class)
+  public interface OsgiServiceModel {
+    @Inject
+    MimeTypeService getMimeTypeService();
+  }
+
+  public interface ServiceInterface {
+    String getPropValue();
+  }
+
+  @Model(adaptables = SlingHttpServletRequest.class, adapters = ServiceInterface.class)
+  public static class ServiceInterfaceImpl implements ServiceInterface {
+    @Inject
+    private String prop1;
+    @Override
+    public String getPropValue() {
+      return this.prop1;
+    }
   }
 
 }

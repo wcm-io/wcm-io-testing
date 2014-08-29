@@ -44,6 +44,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.commons.mime.MimeTypeService;
+import org.apache.sling.models.impl.FirstImplementationPicker;
 import org.apache.sling.models.impl.injectors.BindingsInjector;
 import org.apache.sling.models.impl.injectors.ChildResourceInjector;
 import org.apache.sling.models.impl.injectors.OSGiServiceInjector;
@@ -53,6 +54,7 @@ import org.apache.sling.models.impl.injectors.ResourceResolverInjector;
 import org.apache.sling.models.impl.injectors.SelfInjector;
 import org.apache.sling.models.impl.injectors.SlingObjectInjector;
 import org.apache.sling.models.impl.injectors.ValueMapInjector;
+import org.apache.sling.models.spi.ImplementationPicker;
 import org.apache.sling.models.spi.Injector;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
@@ -65,6 +67,7 @@ import com.day.cq.wcm.api.PageManager;
  */
 class AemContextImpl<RuleType> {
 
+  private MockModelAdapterFactory modelAdapterFactory;
   private ResourceResolverType resourceResolverType;
   private ComponentContext componentContext;
   private ResourceResolver resourceResolver;
@@ -95,7 +98,8 @@ class AemContextImpl<RuleType> {
 
     // adapter factories
     registerService(AdapterFactory.class, new MockAemAdapterFactory());
-    registerService(AdapterFactory.class, new MockModelAdapterFactory(componentContext()));
+    modelAdapterFactory = new MockModelAdapterFactory(componentContext());
+    registerService(AdapterFactory.class, modelAdapterFactory);
 
     // sling models injectors
     registerService(Injector.class, new BindingsInjector());
@@ -109,6 +113,9 @@ class AemContextImpl<RuleType> {
     registerService(Injector.class, new SelfInjector());
     registerService(Injector.class, new SlingObjectInjector());
     registerService(Injector.class, new ValueMapInjector());
+
+    // sling models implementation pickers
+    registerService(ImplementationPicker.class, new FirstImplementationPicker());
 
     // other services
     registerService(MimeTypeService.class, new MockMimeTypeService());
@@ -133,6 +140,7 @@ class AemContextImpl<RuleType> {
       }
     }
 
+    this.modelAdapterFactory = null;
     this.componentContext = null;
     this.resourceResolver = null;
     this.request = null;
@@ -294,6 +302,18 @@ class AemContextImpl<RuleType> {
   @SuppressWarnings("unchecked")
   public RuleType currentPage(String pagePath) {
     currentResource(pagePath + "/" + JcrConstants.JCR_CONTENT);
+    return (RuleType)this;
+  }
+
+  /**
+   * Scan classpaths for given package name (and sub packages) to scan for and register all classes
+   * with @Model annotation.
+   * @param packageName Java package name
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public RuleType addModelsForPackage(String packageName) {
+    this.modelAdapterFactory.addModelsForPackage(packageName);
     return (RuleType)this;
   }
 

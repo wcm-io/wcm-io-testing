@@ -108,42 +108,6 @@ public class AemContextTest {
   }
 
   @Test
-  public void testSlingModelsRequestAttribute() {
-    MockSlingHttpServletRequest request = (MockSlingHttpServletRequest)context.request();
-    request.setAttribute("prop1", "myValue");
-    RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
-    assertEquals("myValue", model.getProp1());
-  }
-
-  @Model(adaptables = SlingHttpServletRequest.class)
-  private interface RequestAttributeModel {
-    @Inject
-    String getProp1();
-  }
-
-  @Test
-  public void testSlingModelsOsgiService() {
-    context.registerService(new MockMimeTypeService());
-
-    ResourceResolver resolver = MockSlingFactory.newResourceResolver();
-    OsgiServiceModel model = resolver.adaptTo(OsgiServiceModel.class);
-    assertNotNull(model.getMimeTypeService());
-    assertEquals("text/html", model.getMimeTypeService().getMimeType("html"));
-  }
-
-  @Model(adaptables = ResourceResolver.class)
-  private interface OsgiServiceModel {
-    @Inject
-    MimeTypeService getMimeTypeService();
-  }
-
-  @Test
-  public void testSlingModelsInvalidAdapt() {
-    OsgiServiceModel model = context.request().adaptTo(OsgiServiceModel.class);
-    assertNull(model);
-  }
-
-  @Test
   public void testSetCurrentResource() {
     context.currentResource("/content/sample/en/jcr:content/par/colctrl");
     assertEquals("/content/sample/en/jcr:content/par/colctrl", context.request().getResource().getPath());
@@ -158,6 +122,68 @@ public class AemContextTest {
   public void testSetCurrentPage() {
     context.currentPage("/content/sample/en/toolbar/profiles");
     assertEquals("/content/sample/en/toolbar/profiles/jcr:content", context.request().getResource().getPath());
+  }
+
+  @Test
+  public void testSlingModelsRequestAttribute() {
+    MockSlingHttpServletRequest request = (MockSlingHttpServletRequest)context.request();
+    request.setAttribute("prop1", "myValue");
+    RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
+    assertEquals("myValue", model.getProp1());
+  }
+
+  @Test
+  public void testSlingModelsOsgiService() {
+    context.registerService(new MockMimeTypeService());
+
+    ResourceResolver resolver = MockSlingFactory.newResourceResolver();
+    OsgiServiceModel model = resolver.adaptTo(OsgiServiceModel.class);
+    assertNotNull(model.getMimeTypeService());
+    assertEquals("text/html", model.getMimeTypeService().getMimeType("html"));
+  }
+
+  @Test
+  public void testSlingModelsInvalidAdapt() {
+    OsgiServiceModel model = context.request().adaptTo(OsgiServiceModel.class);
+    assertNull(model);
+  }
+
+  @Test
+  public void testAdaptToInterface() {
+    context.addModelsForPackage("io.wcm.testing.mock.aem.junit");
+
+    MockSlingHttpServletRequest request = new MockSlingHttpServletRequest();
+    request.setAttribute("prop1", "myValue");
+    ServiceInterface model = request.adaptTo(ServiceInterface.class);
+    assertNotNull(model);
+    assertEquals("myValue", model.getPropValue());
+  }
+  @Model(adaptables = SlingHttpServletRequest.class)
+  public interface RequestAttributeModel {
+    @Inject
+    String getProp1();
+  }
+
+  @Model(adaptables = ResourceResolver.class)
+  public interface OsgiServiceModel {
+    @Inject
+    MimeTypeService getMimeTypeService();
+  }
+
+  public interface ServiceInterface {
+    String getPropValue();
+  }
+
+  @Model(adaptables = SlingHttpServletRequest.class, adapters = ServiceInterface.class)
+  public static class ServiceInterfaceImpl implements ServiceInterface {
+
+    @Inject
+    private String prop1;
+
+    @Override
+    public String getPropValue() {
+      return this.prop1;
+    }
   }
 
 }
