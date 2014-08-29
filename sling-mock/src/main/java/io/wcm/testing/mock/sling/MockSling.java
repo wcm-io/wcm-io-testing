@@ -19,7 +19,7 @@
  */
 package io.wcm.testing.mock.sling;
 
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 import io.wcm.testing.mock.sling.spi.ResourceResolverTypeAdapter;
@@ -37,7 +37,7 @@ import org.osgi.framework.BundleContext;
 /**
  * Factory for mock Sling objects.
  */
-public final class MockSlingFactory {
+public final class MockSling {
 
   /**
    * Default resource resolver type is {@link ResourceResolverType#JCR_MOCK}.
@@ -50,7 +50,7 @@ public final class MockSlingFactory {
     SlingAdaptable.setAdapterManager(ADAPTER_MANAGER);
   }
 
-  private MockSlingFactory() {
+  private MockSling() {
     // static methods only
   }
 
@@ -135,7 +135,7 @@ public final class MockSlingFactory {
   public static SlingScriptHelper newSlingScriptHelper() {
     SlingHttpServletRequest request = new MockSlingHttpServletRequest(newResourceResolver());
     SlingHttpServletResponse response = new MockSlingHttpServletResponse();
-    BundleContext bundleContext = MockOsgiFactory.newBundleContext();
+    BundleContext bundleContext = MockOsgi.newBundleContext();
     return newSlingScriptHelper(request, response, bundleContext);
   }
 

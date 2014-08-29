@@ -41,7 +41,7 @@ public class MockServiceReferenceTest {
 
   @Before
   public void setUp() {
-    this.bundleContext = MockOsgiFactory.newBundleContext();
+    this.bundleContext = MockOsgi.newBundleContext();
 
     this.service = new Object();
     String clazz = String.class.getName();

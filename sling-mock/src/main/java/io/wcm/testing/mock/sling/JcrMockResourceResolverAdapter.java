@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,7 @@
  */
 package io.wcm.testing.mock.sling;
 
-import io.wcm.testing.mock.jcr.MockJcrFactory;
+import io.wcm.testing.mock.jcr.MockJcr;
 import io.wcm.testing.mock.sling.spi.ResourceResolverTypeAdapter;
 
 import javax.jcr.Repository;
@@ -39,7 +39,7 @@ class JcrMockResourceResolverAdapter implements ResourceResolverTypeAdapter {
 
   @Override
   public SlingRepository newSlingRepository() {
-    Repository repository = MockJcrFactory.newRepository();
+    Repository repository = MockJcr.newRepository();
     return new MockSlingRepository(repository);
   }
 

@@ -19,7 +19,7 @@
  */
 package io.wcm.testing.mock.sling.services;
 
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,7 +79,7 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
    * Constructor with default component context
    */
   public MockModelAdapterFactory() {
-    this(MockOsgiFactory.newComponentContext());
+    this(MockOsgi.newComponentContext());
   }
 
   /**
@@ -90,7 +90,7 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
   public void addModelsForPackage(String packageName) {
     Bundle bundle = new ModelsPackageBundle(packageName, Bundle.ACTIVE);
     BundleEvent event = new BundleEvent(BundleEvent.STARTED, bundle);
-    MockOsgiFactory.sendBundleEvent(this.bundleContext, event);
+    MockOsgi.sendBundleEvent(this.bundleContext, event);
   }
 
   private class InjectorServiceListener implements ServiceListener {

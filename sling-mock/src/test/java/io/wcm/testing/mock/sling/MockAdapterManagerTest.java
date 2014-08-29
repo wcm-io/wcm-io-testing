@@ -21,7 +21,7 @@ package io.wcm.testing.mock.sling;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
 
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.adapter.SlingAdaptable;
@@ -35,8 +35,8 @@ public class MockAdapterManagerTest {
     AdaptableTest sampleObject = new AdaptableTest();
     assertNull(sampleObject.adaptTo(String.class));
 
-    BundleContext bundleContext = MockOsgiFactory.newBundleContext();
-    MockSlingFactory.setAdapterManagerBundleContext(bundleContext);
+    BundleContext bundleContext = MockOsgi.newBundleContext();
+    MockSling.setAdapterManagerBundleContext(bundleContext);
 
     bundleContext.registerService(AdapterFactory.class.getName(), new AdapterFactory() {
       @SuppressWarnings("unchecked")
@@ -52,7 +52,7 @@ public class MockAdapterManagerTest {
     sampleObject = new AdaptableTest();
     assertEquals("adaptedString", sampleObject.adaptTo(String.class));
 
-    MockSlingFactory.clearAdapterManagerBundleContext();
+    MockSling.clearAdapterManagerBundleContext();
 
     sampleObject = new AdaptableTest();
     assertNull(sampleObject.adaptTo(String.class));

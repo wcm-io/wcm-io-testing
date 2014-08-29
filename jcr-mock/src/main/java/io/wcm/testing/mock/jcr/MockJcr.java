@@ -26,14 +26,14 @@ import javax.jcr.Session;
 /**
  * Factory for mock JCR objects.
  */
-public final class MockJcrFactory {
+public final class MockJcr {
 
   /**
    * Default workspace name
    */
   public static final String DEFAULT_WORKSPACE = "mockedWorkspace";
 
-  private MockJcrFactory() {
+  private MockJcr() {
     // static methods only
   }
 

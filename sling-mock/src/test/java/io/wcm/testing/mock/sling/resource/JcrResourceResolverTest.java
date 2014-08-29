@@ -22,7 +22,7 @@ package io.wcm.testing.mock.sling.resource;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
 import java.io.ByteArrayInputStream;
@@ -76,7 +76,7 @@ public class JcrResourceResolverTest {
   }
 
   protected ResourceResolver newResourceResolver() {
-    return MockSlingFactory.newResourceResolver(getResourceResolverType());
+    return MockSling.newResourceResolver(getResourceResolverType());
   }
 
   @Before

@@ -22,8 +22,8 @@ package io.wcm.testing.mock.sling.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
+import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 
 import javax.inject.Inject;
@@ -51,9 +51,9 @@ public class MockModelAdapterFactoryTest {
 
   @Before
   public void setUp() throws Exception {
-    componentContext = MockOsgiFactory.newComponentContext();
+    componentContext = MockOsgi.newComponentContext();
     bundleContext = componentContext.getBundleContext();
-    MockSlingFactory.setAdapterManagerBundleContext(bundleContext);
+    MockSling.setAdapterManagerBundleContext(bundleContext);
 
     // register sling models adapter factory
     MockModelAdapterFactory mockModelAdapterFactory = new MockModelAdapterFactory(componentContext);
@@ -74,7 +74,7 @@ public class MockModelAdapterFactoryTest {
 
   @After
   public void tearDown() throws Exception {
-    MockSlingFactory.clearAdapterManagerBundleContext();
+    MockSling.clearAdapterManagerBundleContext();
   }
 
   @Test
@@ -90,7 +90,7 @@ public class MockModelAdapterFactoryTest {
   public void testOsgiService() {
     bundleContext.registerService(MimeTypeService.class.getName(), new MockMimeTypeService(), null);
 
-    ResourceResolver resolver = MockSlingFactory.newResourceResolver();
+    ResourceResolver resolver = MockSling.newResourceResolver();
     OsgiServiceModel model = resolver.adaptTo(OsgiServiceModel.class);
     assertNotNull(model);
     assertNotNull(model.getMimeTypeService());

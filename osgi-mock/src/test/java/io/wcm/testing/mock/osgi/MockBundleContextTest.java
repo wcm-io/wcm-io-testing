@@ -51,7 +51,7 @@ public class MockBundleContextTest {
 
   @Before
   public void setUp() {
-    this.bundleContext = MockOsgiFactory.newBundleContext();
+    this.bundleContext = MockOsgi.newBundleContext();
   }
 
   @Test
@@ -145,7 +145,7 @@ public class MockBundleContextTest {
 
     bundleContext.addBundleListener(bundleListener);
 
-    MockOsgiFactory.sendBundleEvent(bundleContext, bundleEvent);
+    MockOsgi.sendBundleEvent(bundleContext, bundleEvent);
     verify(bundleListener).bundleChanged(bundleEvent);
 
     bundleContext.removeBundleListener(bundleListener);

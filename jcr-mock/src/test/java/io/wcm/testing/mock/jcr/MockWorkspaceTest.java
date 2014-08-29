@@ -34,12 +34,12 @@ public class MockWorkspaceTest {
 
   @Before
   public void setUp() {
-    this.workspace = MockJcrFactory.newSession().getWorkspace();
+    this.workspace = MockJcr.newSession().getWorkspace();
   }
 
   @Test
   public void testName() {
-    assertEquals(MockJcrFactory.DEFAULT_WORKSPACE, this.workspace.getName());
+    assertEquals(MockJcr.DEFAULT_WORKSPACE, this.workspace.getName());
   }
 
   @Test

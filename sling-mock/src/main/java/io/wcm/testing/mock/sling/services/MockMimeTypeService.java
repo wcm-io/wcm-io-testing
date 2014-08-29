@@ -19,7 +19,7 @@
  */
 package io.wcm.testing.mock.sling.services;
 
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +46,8 @@ public class MockMimeTypeService extends MimeTypeServiceImpl {
     if (!this.initialized) {
       this.initialized = true;
       // activate service in simulated OSGi environment
-      ComponentContext componentContext = MockOsgiFactory.newComponentContext();
-      this.bindLogService(MockOsgiFactory.newLogService(getClass()));
+      ComponentContext componentContext = MockOsgi.newComponentContext();
+      this.bindLogService(MockOsgi.newLogService(getClass()));
       activate(componentContext);
     }
   }

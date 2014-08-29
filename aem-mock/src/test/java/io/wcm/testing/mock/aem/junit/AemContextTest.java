@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
@@ -136,7 +136,7 @@ public class AemContextTest {
   public void testSlingModelsOsgiService() {
     context.registerService(new MockMimeTypeService());
 
-    ResourceResolver resolver = MockSlingFactory.newResourceResolver();
+    ResourceResolver resolver = MockSling.newResourceResolver();
     OsgiServiceModel model = resolver.adaptTo(OsgiServiceModel.class);
     assertNotNull(model.getMimeTypeService());
     assertEquals("text/html", model.getMimeTypeService().getMimeType("html"));

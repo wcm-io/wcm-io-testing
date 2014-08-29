@@ -45,7 +45,7 @@ public class MockSessionTest {
 
   @Before
   public void setUp() {
-    this.session = MockJcrFactory.newSession();
+    this.session = MockJcr.newSession();
   }
 
   @Test

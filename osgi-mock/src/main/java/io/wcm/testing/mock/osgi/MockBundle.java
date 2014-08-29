@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,9 +44,9 @@ class MockBundle implements Bundle {
   /**
    * Constructor
    */
-  public MockBundle() {
+  public MockBundle(BundleContext bundleContext) {
     this.bundleId = ++bundleCounter;
-    this.bundleContext = new MockBundleContext(this);
+    this.bundleContext = bundleContext;
   }
 
   @Override
@@ -64,6 +64,12 @@ class MockBundle implements Bundle {
     // try to load resource from classpath
     return getClass().getResource(name);
   }
+
+  @Override
+  public int getState() {
+    return Bundle.ACTIVE;
+  }
+
 
   // --- unsupported operations ---
   @Override
@@ -113,11 +119,6 @@ class MockBundle implements Bundle {
 
   @Override
   public ServiceReference[] getServicesInUse() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int getState() {
     throw new UnsupportedOperationException();
   }
 

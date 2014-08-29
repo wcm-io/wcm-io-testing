@@ -49,8 +49,8 @@ class MockBundleContext implements BundleContext {
   private final List<ServiceListener> serviceListeners = new ArrayList<>();
   private final List<BundleListener> bundleListeners = new ArrayList<>();
 
-  public MockBundleContext(final MockBundle bundle) {
-    this.bundle = bundle;
+  public MockBundleContext() {
+    this.bundle = new MockBundle(this);
   }
 
   @Override

@@ -21,7 +21,6 @@ package io.wcm.testing.mock.osgi;
 
 import java.util.Dictionary;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.service.component.ComponentContext;
@@ -30,24 +29,17 @@ import org.osgi.service.log.LogService;
 /**
  * Factory for mock OSGi objects.
  */
-public final class MockOsgiFactory {
+public final class MockOsgi {
 
-  private MockOsgiFactory() {
+  private MockOsgi() {
     // static methods only
-  }
-
-  /**
-   * @return Mocked {@link Bundle} instance
-   */
-  public static Bundle newBundle() {
-    return new MockBundle();
   }
 
   /**
    * @return Mocked {@link BundleContext} instance
    */
   public static BundleContext newBundleContext() {
-    return newBundle().getBundleContext();
+    return new MockBundleContext();
   }
 
   /**
@@ -70,8 +62,17 @@ public final class MockOsgiFactory {
    * @param properties Properties
    * @return Mocked {@link ComponentContext} instance
    */
-  public static ComponentContext newComponentContext(final Dictionary<String, Object> properties) {
-    return new MockComponentContext((MockBundleContext)newBundleContext(), properties);
+  public static ComponentContext newComponentContext(Dictionary<String, Object> properties) {
+    return newComponentContext(newBundleContext(), properties);
+  }
+
+  /**
+   * @param bundleContext Bundle context
+   * @param properties Properties
+   * @return Mocked {@link ComponentContext} instance
+   */
+  public static ComponentContext newComponentContext(BundleContext bundleContext, Dictionary<String, Object> properties) {
+    return new MockComponentContext((MockBundleContext)bundleContext, properties);
   }
 
   /**

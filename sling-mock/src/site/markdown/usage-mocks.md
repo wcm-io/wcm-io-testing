@@ -1,6 +1,6 @@
 ## Usage
 
-The factory class `MockSlingFactory` allows to instantiate the different mock implementations.
+The factory class `MockSling` allows to instantiate the different mock implementations.
 
 ### Sling Resource Resolver
 
@@ -8,10 +8,10 @@ Example:
 
 ```java
 // get a resource resolver
-ResourceResolver resolver = MockSlingFactory.newResourceResolver();
+ResourceResolver resolver = MockSling.newResourceResolver();
 
 // get a resource resolver backed by a specific repository type
-ResourceResolver resolver = MockSlingFactory.newResourceResolver(ResourceResolverType.JCR_MOCK);
+ResourceResolver resolver = MockSling.newResourceResolver(ResourceResolverType.JCR_MOCK);
 ```
 The following types are supported currently: [Resource Resolver Types](resource-resolver-types.html)
 
@@ -24,14 +24,14 @@ Example:
 ```java
 // register adapter factory
 BundleContext bundleContext = MockOsgiFactory.newBundleContext();
-MockSlingFactory.setAdapterManagerBundleContext(bundleContext);
+MockSling.setAdapterManagerBundleContext(bundleContext);
 bundleContext.registerService(myAdapterFactory);
 
 // test adaption
 MyClass object = resource.adaptTo(MyClass.class);
 
 // cleanup after unit test
-MockSlingFactory.clearAdapterManagerBundleContext();
+MockSling.clearAdapterManagerBundleContext();
 ```
 
 Make sure you clean up the adapter manager bundle association after running the unit test otherwise it can 
@@ -44,7 +44,7 @@ Example:
 
 ```java
 // get script helper
-SlingScriptHelper scriptHelper = MockSlingFactory.newSlingScriptHelper();
+SlingScriptHelper scriptHelper = MockSling.newSlingScriptHelper();
 
 // get request
 SlingHttpServletRequest request = scriptHelper.getRequest();
@@ -63,7 +63,7 @@ Example for preparing a sling request with custom request data:
 
 ```java
 // prepare sling request
-ResourceResolver resourceResolver = MockSlingFactory.newResourceResolver();
+ResourceResolver resourceResolver = MockSling.newResourceResolver();
 MockSlingHttpServletRequest request = new MockSlingHttpServletRequest(resourceResolver);
 
 request.setQueryString("param1=aaa&param2=bbb");

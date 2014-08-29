@@ -40,15 +40,15 @@ public class MockRepositoryTest {
 
   @Before
   public void setUp() {
-    this.repository = MockJcrFactory.newRepository();
+    this.repository = MockJcr.newRepository();
   }
 
   @Test
   public void testLogin() throws RepositoryException {
     assertNotNull(this.repository.login());
     assertNotNull(this.repository.login(new SimpleCredentials(USER_NAME, PASSWORD)));
-    assertNotNull(this.repository.login(MockJcrFactory.DEFAULT_WORKSPACE));
-    assertNotNull(this.repository.login(new SimpleCredentials(USER_NAME, PASSWORD), MockJcrFactory.DEFAULT_WORKSPACE));
+    assertNotNull(this.repository.login(MockJcr.DEFAULT_WORKSPACE));
+    assertNotNull(this.repository.login(new SimpleCredentials(USER_NAME, PASSWORD), MockJcr.DEFAULT_WORKSPACE));
   }
 
   @Test

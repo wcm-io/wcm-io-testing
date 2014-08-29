@@ -56,7 +56,7 @@ class MockWorkspace implements Workspace {
 
   @Override
   public String getName() {
-    return MockJcrFactory.DEFAULT_WORKSPACE;
+    return MockJcr.DEFAULT_WORKSPACE;
   }
 
   @Override

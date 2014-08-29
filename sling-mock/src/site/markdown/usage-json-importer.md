@@ -33,7 +33,7 @@ Example JSON data:
 Example code to import the JSON data:
 
 ```java
-ResourceResolver resolver = MockSlingFactory.newResourceResolver();
+ResourceResolver resolver = MockSling.newResourceResolver();
 JsonImporter jsonImporter = new JsonImporter(resolver);
 jsonImporter.importTo("/sample-data.json", "/content/sample/en");
 ```

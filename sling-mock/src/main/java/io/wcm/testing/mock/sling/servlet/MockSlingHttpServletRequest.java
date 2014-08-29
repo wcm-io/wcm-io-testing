@@ -19,7 +19,7 @@
  */
 package io.wcm.testing.mock.sling.servlet;
 
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.sling.MockSling;
 
 import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
@@ -83,7 +83,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
    * Instantiate with default resource resolver
    */
   public MockSlingHttpServletRequest() {
-    this.resourceResolver = MockSlingFactory.newResourceResolver();
+    this.resourceResolver = MockSling.newResourceResolver();
   }
 
   /**

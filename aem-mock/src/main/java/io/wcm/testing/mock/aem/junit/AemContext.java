@@ -21,7 +21,7 @@ package io.wcm.testing.mock.aem.junit;
 
 import io.wcm.testing.junit.rules.parameterized.Callback;
 import io.wcm.testing.junit.rules.parameterized.ListGenerator;
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
 import java.util.Arrays;
@@ -47,7 +47,7 @@ public final class AemContext extends AemContextImpl<AemContext> implements Test
    * If context is initialized with:
    * </p>
    * <ul>
-   * <li>No resource resolver type - default is used {@link MockSlingFactory#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
+   * <li>No resource resolver type - default is used {@link MockSling#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
    * <li>One resource resolver type - exactly this is used.</li>
    * <li>More than one: all unit test methods are executed for all resource resolver types using {@link ListGenerator}.</li>
    * </ul>
@@ -63,7 +63,7 @@ public final class AemContext extends AemContextImpl<AemContext> implements Test
    * If context is initialized with:
    * </p>
    * <ul>
-   * <li>No resource resolver type - default is used {@link MockSlingFactory#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
+   * <li>No resource resolver type - default is used {@link MockSling#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
    * <li>One resource resolver type - exactly this is used.</li>
    * <li>More than one: all unit test methods are executed for all resource resolver types using {@link ListGenerator}.</li>
    * </ul>
@@ -81,7 +81,7 @@ public final class AemContext extends AemContextImpl<AemContext> implements Test
    * If context is initialized with:
    * </p>
    * <ul>
-   * <li>No resource resolver type - default is used {@link MockSlingFactory#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
+   * <li>No resource resolver type - default is used {@link MockSling#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
    * <li>One resource resolver type - exactly this is used.</li>
    * <li>More than one: all unit test methods are executed for all resource resolver types using {@link ListGenerator}.</li>
    * </ul>
@@ -100,7 +100,7 @@ public final class AemContext extends AemContextImpl<AemContext> implements Test
 
     if (resourceResolverTypes == null || resourceResolverTypes.length == 0) {
       this.resourceResolverTypes = new ResourceResolverType[] {
-          MockSlingFactory.DEFAULT_RESOURCERESOLVER_TYPE
+          MockSling.DEFAULT_RESOURCERESOLVER_TYPE
       };
     }
     else {

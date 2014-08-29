@@ -22,7 +22,7 @@ package io.wcm.testing.mock.sling.contentimport;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class ContentJsonImporterTest {
   }
 
   protected ResourceResolver newResourceResolver() {
-    ResourceResolver resolver = MockSlingFactory.newResourceResolver(getResourceResolverType());
+    ResourceResolver resolver = MockSling.newResourceResolver(getResourceResolverType());
 
     if (getResourceResolverType() == ResourceResolverType.JCR_MOCK) {
       try {

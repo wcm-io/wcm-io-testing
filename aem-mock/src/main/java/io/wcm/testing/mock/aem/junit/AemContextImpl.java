@@ -20,8 +20,8 @@
 package io.wcm.testing.mock.aem.junit;
 
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
-import io.wcm.testing.mock.sling.MockSlingFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
+import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
@@ -87,7 +87,7 @@ class AemContextImpl<RuleType> {
    * Setup actions before test method execution
    */
   protected void setUp() {
-    MockSlingFactory.setAdapterManagerBundleContext(bundleContext());
+    MockSling.setAdapterManagerBundleContext(bundleContext());
     registerDefaultServices();
   }
 
@@ -148,7 +148,7 @@ class AemContextImpl<RuleType> {
     this.slingScriptHelper = null;
     this.jsonImporter = null;
 
-    MockSlingFactory.clearAdapterManagerBundleContext();
+    MockSling.clearAdapterManagerBundleContext();
   }
 
   /**
@@ -163,7 +163,7 @@ class AemContextImpl<RuleType> {
    */
   public ComponentContext componentContext() {
     if (this.componentContext == null) {
-      this.componentContext = MockOsgiFactory.newComponentContext();
+      this.componentContext = MockOsgi.newComponentContext();
     }
     return this.componentContext;
   }
@@ -217,7 +217,7 @@ class AemContextImpl<RuleType> {
    */
   public SlingScriptHelper slingScriptHelper() {
     if (this.slingScriptHelper == null) {
-      this.slingScriptHelper = MockSlingFactory.newSlingScriptHelper(this.request(), this.response(), this.bundleContext());
+      this.slingScriptHelper = MockSling.newSlingScriptHelper(this.request(), this.response(), this.bundleContext());
     }
     return this.slingScriptHelper;
   }

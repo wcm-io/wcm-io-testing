@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ package io.wcm.testing.mock.sling;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import io.wcm.testing.mock.osgi.MockOsgiFactory;
+import io.wcm.testing.mock.osgi.MockOsgi;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
@@ -44,11 +44,11 @@ public class MockSlingScriptHelperTest {
 
   @Before
   public void setUp() throws Exception {
-    this.resourceResolver = MockSlingFactory.newResourceResolver();
+    this.resourceResolver = MockSling.newResourceResolver();
     this.request = new MockSlingHttpServletRequest(this.resourceResolver);
     this.response = new MockSlingHttpServletResponse();
-    this.bundleContext = MockOsgiFactory.newBundleContext();
-    this.scriptHelper = MockSlingFactory.newSlingScriptHelper(this.request, this.response, this.bundleContext);
+    this.bundleContext = MockOsgi.newBundleContext();
+    this.scriptHelper = MockSling.newSlingScriptHelper(this.request, this.response, this.bundleContext);
   }
 
   @Test

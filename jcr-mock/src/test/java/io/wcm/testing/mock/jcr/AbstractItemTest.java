@@ -42,7 +42,7 @@ public abstract class AbstractItemTest {
 
   @Before
   public void setUp() throws RepositoryException {
-    this.session = MockJcrFactory.newSession();
+    this.session = MockJcr.newSession();
     this.rootNode = this.session.getRootNode();
     this.node1 = this.rootNode.addNode("node1");
     this.prop1 = this.node1.setProperty("prop1", "value1");

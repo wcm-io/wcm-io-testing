@@ -37,7 +37,7 @@ public class MockComponentContextTest {
 
   @Before
   public void setUp() {
-    this.componentContext = MockOsgiFactory.newComponentContext();
+    this.componentContext = MockOsgi.newComponentContext();
   }
 
   @Test
@@ -55,7 +55,7 @@ public class MockComponentContextTest {
     Dictionary<String,Object> props = new Hashtable<>();
     props.put("prop1", "value1");
     props.put("prop2", 25);
-    ComponentContext componentContextWithProperties = MockOsgiFactory.newComponentContext(props);
+    ComponentContext componentContextWithProperties = MockOsgi.newComponentContext(props);
 
     Dictionary contextProps = componentContextWithProperties.getProperties();
     assertEquals(2, contextProps.size());
