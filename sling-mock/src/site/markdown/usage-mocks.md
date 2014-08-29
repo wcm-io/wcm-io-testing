@@ -23,7 +23,7 @@ Example:
 
 ```java
 // register adapter factory
-BundleContext bundleContext = MockOsgiFactory.newBundleContext();
+BundleContext bundleContext = MockOsgi.newBundleContext();
 MockSling.setAdapterManagerBundleContext(bundleContext);
 bundleContext.registerService(myAdapterFactory);
 
