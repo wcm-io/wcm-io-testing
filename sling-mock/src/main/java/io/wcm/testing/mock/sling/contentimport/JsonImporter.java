@@ -89,7 +89,13 @@ public class JsonImporter {
     if (is == null) {
       throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
     }
-    return importTo(is, parentResource, childName);
+    try {
+      return importTo(is, parentResource, childName);
+    }
+    finally {
+      is.close();
+    }
+
   }
 
   /**
@@ -121,7 +127,12 @@ public class JsonImporter {
     if (is == null) {
       throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
     }
-    return importTo(is, destPath, autoCreateParent);
+    try {
+      return importTo(is, destPath, autoCreateParent);
+    }
+    finally {
+      is.close();
+    }
   }
 
   /**
