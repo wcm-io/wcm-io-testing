@@ -48,30 +48,20 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   private final ResourceResolver resourceResolver;
   private final Resource resource;
-  private final Resource contentResource;
   private final ValueMap contentProps;
-  private final Resource metadataResource;
   private final ValueMap metadataProps;
   private final Resource renditionsResource;
 
+  @SuppressWarnings("deprecation")
   public MockAsset(Resource resource) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
     this.resource = resource;
-    this.contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
-    this.contentProps = getValueMap(this.contentResource);
-    this.metadataResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER);
-    this.metadataProps = getValueMap(this.metadataResource);
+    Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
+    this.contentProps = ResourceUtil.getValueMap(contentResource);
+    Resource metadataResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER);
+    this.metadataProps = ResourceUtil.getValueMap(metadataResource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
-  }
-
-  private ValueMap getValueMap(Resource res) {
-    if (res == null) {
-      return ValueMap.EMPTY;
-    }
-    else {
-      return res.getValueMap();
-    }
   }
 
   @SuppressWarnings("unchecked")
@@ -186,17 +176,17 @@ class MockAsset extends ResourceWrapper implements Asset {
   }
 
   @Override
-  public Revision createRevision(String label, String comment) throws Exception {
+  public Revision createRevision(String label, String comment) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Asset restore(String revisionId) throws Exception {
+  public Asset restore(String revisionId) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Collection<Revision> getRevisions(Calendar cal) throws Exception {
+  public Collection<Revision> getRevisions(Calendar cal) {
     throw new UnsupportedOperationException();
   }
 

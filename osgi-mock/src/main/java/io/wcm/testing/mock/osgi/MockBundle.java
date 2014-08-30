@@ -27,7 +27,6 @@ import java.util.Map;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 
@@ -133,7 +132,7 @@ class MockBundle implements Bundle {
   }
 
   @Override
-  public Class<?> loadClass(final String name) throws ClassNotFoundException {
+  public Class<?> loadClass(final String name) {
     throw new UnsupportedOperationException();
   }
 
@@ -158,17 +157,17 @@ class MockBundle implements Bundle {
   }
 
   @Override
-  public void update(final InputStream in) {
+  public void update(final InputStream inputStream) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void start(final int options) throws BundleException {
+  public void start(final int options) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void stop(final int options) throws BundleException {
+  public void stop(final int options) {
     throw new UnsupportedOperationException();
   }
 

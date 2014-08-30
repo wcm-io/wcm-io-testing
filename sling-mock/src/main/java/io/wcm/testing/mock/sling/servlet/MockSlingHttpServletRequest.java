@@ -171,7 +171,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
   }
 
   @Override
-  public String[] getParameterValues(final String name) {
+  public String[] getParameterValues(final String name) { //NOPMD
     Object object = this.parameterMap.get(name);
     if (object instanceof String) {
       return new String[] {
@@ -181,7 +181,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     else if (object instanceof String[]) {
       return (String[])object;
     }
-    return null;
+    return null; //NOPMD
   }
 
   /**
@@ -204,10 +204,10 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
       if (entry.getValue() != null) {
         for (String value : entry.getValue()) {
           if (querystring.length() != 0) {
-            querystring.append("&");
+            querystring.append('&');
           }
           querystring.append(URLEncoder.encode(entry.getKey(), CharEncoding.UTF_8));
-          querystring.append("=");
+          querystring.append('=');
           querystring.append(URLEncoder.encode(value, CharEncoding.UTF_8));
         }
       }
@@ -256,7 +256,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
     final String[] pairs = query.split("&");
     for (String pair : pairs) {
-      final int idx = pair.indexOf("=");
+      final int idx = pair.indexOf('=');
       final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), CharEncoding.UTF_8) : pair;
       if (!queryPairs.containsKey(key)) {
         queryPairs.put(key, new ArrayList<String>());

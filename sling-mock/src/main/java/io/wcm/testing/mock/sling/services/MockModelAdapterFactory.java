@@ -163,7 +163,7 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
     public Enumeration findEntries(String path, String filePattern, boolean recurse) {
       Reflections reflections = new Reflections(this.packageName);
       Set<Class<?>> types = reflections.getTypesAnnotatedWith(Model.class);
-      Vector<URL> urls = new Vector<>();
+      Vector<URL> urls = new Vector<>(); //NOPMD
       try {
         for (Class<?> type : types) {
           urls.add(new URL("file:/" + type.getName().replace('.', '/') + ".class"));
@@ -232,12 +232,12 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
     }
 
     @Override
-    public ServiceReference[] getRegisteredServices() {
+    public ServiceReference[] getRegisteredServices() { //NOPMD
       return null;
     }
 
     @Override
-    public ServiceReference[] getServicesInUse() {
+    public ServiceReference[] getServicesInUse() { //NOPMD
       return null;
     }
 

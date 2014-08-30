@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 
@@ -41,11 +42,12 @@ class MockRendition extends ResourceWrapper implements Rendition {
   private final Resource contentResource;
   private final ValueMap contentProps;
 
+  @SuppressWarnings("deprecation")
   public MockRendition(Resource resource) {
     super(resource);
     this.resource = resource;
     this.contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
-    this.contentProps = getValueMap(this.contentResource);
+    this.contentProps = ResourceUtil.getValueMap(this.contentResource);
   }
 
   @SuppressWarnings("unchecked")
@@ -55,15 +57,6 @@ class MockRendition extends ResourceWrapper implements Rendition {
       return (AdapterType)resource;
     }
     return super.adaptTo(type);
-  }
-
-  private ValueMap getValueMap(Resource res) {
-    if (res == null) {
-      return ValueMap.EMPTY;
-    }
-    else {
-      return res.getValueMap();
-    }
   }
 
   @Override

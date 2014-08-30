@@ -81,7 +81,7 @@ public final class MockSling {
       throw new RuntimeException("Unable to instantiate resourcer resolver: "
           + type.getResourceResolverTypeAdapterClass()
           + (type.getArtifactCoordinates() != null ?
-              "Make sure this maven dependency is included: " + type.getArtifactCoordinates() : ""));
+              "Make sure this maven dependency is included: " + type.getArtifactCoordinates() : ""), ex);
     }
   }
 

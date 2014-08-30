@@ -19,6 +19,10 @@
  */
 package io.wcm.testing.mock.aem.junit;
 
+import java.io.IOException;
+
+import org.apache.sling.api.resource.PersistenceException;
+
 /**
  * Callback-interface for application-specific setup and teardown operations to customize the {@link AemContext} JUnit
  * rule.
@@ -29,6 +33,6 @@ public interface AemContextCallback {
    * Execute callback action
    * @param context AEM context
    */
-  void execute(AemContext context) throws Exception;
+  void execute(AemContext context) throws IOException, PersistenceException;
 
 }

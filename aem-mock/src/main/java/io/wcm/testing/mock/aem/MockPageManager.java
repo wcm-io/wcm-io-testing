@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,14 +53,14 @@ class MockPageManager extends SlingAdaptable implements PageManager {
   }
 
   @Override
-  public Page create(final String parentPath, final String pageName, final String template, final String title)
-      throws WCMException {
+  public Page create(final String parentPath, final String pageName, final String template, final String title) //NOPMD
+      throws WCMException { //NOPMD
     return create(parentPath, pageName, template, title, false);
   }
 
   @Override
-  public Page create(final String parentPath, final String pageName, final String template, final String title,
-      final boolean autoSave) throws WCMException {
+  public Page create(final String parentPath, final String pageName, final String template, final String title, //NOPMD
+      final boolean autoSave) throws WCMException { //NOPMD
     Resource parentResource = this.resourceResolver.getResource(parentPath);
     if (parentResource == null) {
       throw new WCMException(String.format("Parent path '%s' does not exist.", parentPath));

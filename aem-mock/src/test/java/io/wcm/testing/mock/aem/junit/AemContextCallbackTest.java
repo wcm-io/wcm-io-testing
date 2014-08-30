@@ -25,6 +25,9 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
+import java.io.IOException;
+
+import org.apache.sling.api.resource.PersistenceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,7 +51,7 @@ public class AemContextCallbackTest {
       );
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() throws IOException, PersistenceException {
     verify(contextSetup).execute(context);
   }
 

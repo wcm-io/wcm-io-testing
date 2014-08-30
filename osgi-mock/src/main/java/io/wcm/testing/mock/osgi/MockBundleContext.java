@@ -106,7 +106,7 @@ class MockBundleContext implements BundleContext {
         result.add(serviceRegistration.getReference());
       }
     }
-    if (result.size() == 0) {
+    if (result.isEmpty()) {
       return null;
     }
     else {
