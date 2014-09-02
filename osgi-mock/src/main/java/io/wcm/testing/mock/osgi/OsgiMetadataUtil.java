@@ -42,6 +42,8 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -51,6 +53,8 @@ import org.xml.sax.SAXException;
  * Helper methods to parse OSGi metadata.
  */
 final class OsgiMetadataUtil {
+
+  private static final Logger log = LoggerFactory.getLogger(OsgiMetadataUtil.class);
 
   private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY;
   static {
@@ -93,6 +97,7 @@ final class OsgiMetadataUtil {
     String metadataPath = "/OSGI-INF/" + StringUtils.substringBefore(clazz.getName(), "$") + ".xml";
     InputStream metadataStream = clazz.getResourceAsStream(metadataPath);
     if (metadataStream == null) {
+      log.debug("No OSGi metadata found at {}", metadataPath);
       return null;
     }
     try {

@@ -35,12 +35,16 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 /**
  * Helper methods to inject dependencies and activate services via reflection.
  */
 final class ReflectionServiceUtil {
+
+  private static final Logger log = LoggerFactory.getLogger(ReflectionServiceUtil.class);
 
   private ReflectionServiceUtil() {
     // static methods only
@@ -54,7 +58,22 @@ final class ReflectionServiceUtil {
    */
   public static boolean activateDeactivate(Object target, ComponentContext componentContext, boolean activate) {
     Class<?> targetClass = target.getClass();
-    Method method = getActivateDeactivateMethod(targetClass, new Class<?>[] {
+
+    // get method name for activation/deactivation from osgi metadata
+    Document metadata = OsgiMetadataUtil.getMetadata(targetClass);
+    String methodName;
+    if (activate) {
+      methodName = OsgiMetadataUtil.getActivateMethodName(targetClass, metadata);
+    }
+    else {
+      methodName = OsgiMetadataUtil.getDeactivateMethodName(targetClass, metadata);
+    }
+    if (StringUtils.isEmpty(methodName)) {
+      return false;
+    }
+
+    // if method is defined try to execute it
+    Method method = getMethod(targetClass, methodName, new Class<?>[] {
         ComponentContext.class
     }, activate);
     if (method != null) {
@@ -67,21 +86,11 @@ final class ReflectionServiceUtil {
         throw new RuntimeException("Unable to invoke activate/deactivate method for class " + targetClass.getName(), ex);
       }
     }
+    log.warn("Method {}(ComponentContext) not found in class {}", methodName, targetClass.getName());
     return false;
   }
 
-  private static Method getActivateDeactivateMethod(Class clazz, Class<?>[] signature, boolean activate) {
-    Document metadata = OsgiMetadataUtil.getMetadata(clazz);
-    String methodName;
-    if (activate) {
-      methodName = OsgiMetadataUtil.getActivateMethodName(clazz, metadata);
-    }
-    else {
-      methodName = OsgiMetadataUtil.getDeactivateMethodName(clazz, metadata);
-    }
-    if (StringUtils.isEmpty(methodName)) {
-      return null;
-    }
+  private static Method getMethod(Class clazz, String methodName, Class<?>[] signature, boolean activate) {
     Method[] methods = clazz.getDeclaredMethods();
     for (Method method : methods) {
       if (StringUtils.equals(method.getName(), methodName) && Arrays.equals(method.getParameterTypes(), signature)) {
@@ -118,6 +127,7 @@ final class ReflectionServiceUtil {
   }
 
   private static boolean injectServiceReference(Reference reference, Object target, Object... services) {
+    Class<?> targetClass = target.getClass();
 
     // get reference type
     Class<?> type;
@@ -133,21 +143,25 @@ final class ReflectionServiceUtil {
 
     // no references found? check if reference was optional
     if (matchingServices.isEmpty()) {
-      return (reference.getCardinality() == ReferenceCardinality.OPTIONAL_UNARY
+      boolean isOptional = (reference.getCardinality() == ReferenceCardinality.OPTIONAL_UNARY
           || reference.getCardinality() == ReferenceCardinality.OPTIONAL_MULTIPLE);
+      if (!isOptional) {
+        log.warn("Unable to inject mandatory reference '{}' for class {}", reference.getName(), targetClass.getName());
+      }
+      return isOptional;
     }
 
     // multiple references found? check if reference is not multiple
     if (matchingServices.size() > 1
         && (reference.getCardinality() == ReferenceCardinality.MANDATORY_UNARY
         || reference.getCardinality() == ReferenceCardinality.OPTIONAL_UNARY)) {
+      log.warn("Multiple matches found for unary reference '{}' for class {}", reference.getName(), targetClass.getName());
       return false;
     }
 
     // try to invoke bind method
     String bindMethodName = reference.getBind();
     if (StringUtils.isNotEmpty(bindMethodName)) {
-      Class<?> targetClass = target.getClass();
       Method bindMethod = getFirstMethodWithNameAndSignature(targetClass, bindMethodName, new Class<?>[] {
           type
       });
@@ -183,6 +197,7 @@ final class ReflectionServiceUtil {
       }
     }
 
+    log.warn("Bind method not found for reference '{}' for class {}", reference.getName(), targetClass.getName());
     return false;
   }
 
