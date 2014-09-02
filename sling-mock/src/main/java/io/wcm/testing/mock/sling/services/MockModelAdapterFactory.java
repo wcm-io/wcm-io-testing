@@ -55,7 +55,7 @@ import org.reflections.Reflections;
 /**
  * Mock {@link ModelAdapterFactory} implementation.
  */
-@Component
+@Component(inherit = false)
 @Service(AdapterFactory.class)
 public class MockModelAdapterFactory extends ModelAdapterFactory {
 
