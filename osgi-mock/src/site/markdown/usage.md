@@ -56,4 +56,4 @@ MockOsgi.deactivate(service);
 Please note: The injectServices, activate and deactivate Methods can only work properly when the SCR XML metadata files
 are preset in the classpath at `/OSGI-INF`. They are generated automatically by the Maven SCR plugin, but might be
 missing if your clean and build the project within your IDE (e.g. Eclipse). In this case you have to compile the
-project again with maven and can run the tests.
+project again with maven and can run the tests - or use a Maven IDE Integration like m2eclipse.
