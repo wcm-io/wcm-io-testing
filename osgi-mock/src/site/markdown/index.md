@@ -31,5 +31,5 @@ The mock implementation supports:
 
 The following features are *not supported*:
 
-* Activation and deactivation methods of services are not called automatically
-* No dependency injection takes place, the dependencies has to be set manually (e.g. via reflection)
+* Activation and deactivation methods of services are not called automatically (but helper methods exist)
+* Dependency injection does not take place automatically (but helper methods exist)

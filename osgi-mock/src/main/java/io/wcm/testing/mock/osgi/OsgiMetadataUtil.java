@@ -21,9 +21,11 @@ package io.wcm.testing.mock.osgi;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +41,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -86,8 +89,8 @@ final class OsgiMetadataUtil {
    * @param clazz OSGi service implementation class
    * @return Metadata document or null
    */
-  public static Document geDocument(Class clazz) {
-    String metadataPath = "/OSGI-INF/" + clazz.getName() + ".xml";
+  public static Document getMetadata(Class clazz) {
+    String metadataPath = "/OSGI-INF/" + StringUtils.substringBefore(clazz.getName(), "$") + ".xml";
     InputStream metadataStream = clazz.getResourceAsStream(metadataPath);
     if (metadataStream == null) {
       return null;
@@ -110,65 +113,161 @@ final class OsgiMetadataUtil {
     }
   }
 
-  public static Set<String> getServiceInterfaces(Document document) {
+  public static Set<String> getServiceInterfaces(Class clazz, Document metadata) {
     Set<String> serviceInterfaces = new HashSet<>();
-
-    if (document != null) {
-      try {
-        XPath xpath = XPATH_FACTORY.newXPath();
-        xpath.setNamespaceContext(NAMESPACE_CONTEXT);
-        NodeList nodes = (NodeList)xpath.evaluate("/components/component[1]/service/provide[@interface!='']", document, XPathConstants.NODESET);
-        if (nodes != null) {
-          for (int i = 0; i < nodes.getLength(); i++) {
-            Node node = nodes.item(i);
-            String serviceInterface = node.getAttributes().getNamedItem("interface").getNodeValue();
-            if (StringUtils.isNotBlank(serviceInterface)) {
-              serviceInterfaces.add(serviceInterface);
-            }
+    if (metadata != null) {
+      String query = "/components/component[@name='" + clazz.getName() + "']/service/provide[@interface!='']";
+      NodeList nodes = queryNodes(metadata, query);
+      if (nodes != null) {
+        for (int i = 0; i < nodes.getLength(); i++) {
+          Node node = nodes.item(i);
+          String serviceInterface = getAttributeValue(node, "interface");
+          if (StringUtils.isNotBlank(serviceInterface)) {
+            serviceInterfaces.add(serviceInterface);
           }
         }
       }
-      catch (XPathExpressionException ex) {
-        throw new RuntimeException("Error evaluating XPath.", ex);
-      }
     }
-
     return serviceInterfaces;
   }
 
-  public static Map<String, Object> getProperties(Document document) {
+  public static Map<String, Object> getProperties(Class clazz, Document metadata) {
     Map<String, Object> props = new HashMap<>();
-
-    if (document != null) {
-      try {
-        XPath xpath = XPATH_FACTORY.newXPath();
-        xpath.setNamespaceContext(NAMESPACE_CONTEXT);
-        NodeList nodes = (NodeList)xpath.evaluate("/components/component[1]/property[@name!='' and @value!='']", document, XPathConstants.NODESET);
-        if (nodes != null) {
-          for (int i = 0; i < nodes.getLength(); i++) {
-            Node node = nodes.item(i);
-            String name = node.getAttributes().getNamedItem("name").getNodeValue();
-            String value = node.getAttributes().getNamedItem("value").getNodeValue();
-            String type = null;
-            Node typeAttribute = node.getAttributes().getNamedItem("type");
-            if (typeAttribute != null) {
-              type = typeAttribute.getNodeValue();
-            }
-            if (StringUtils.equals("Integer", type)) {
-              props.put(name, Integer.parseInt(value));
-            }
-            else {
-              props.put(name, value);
-            }
+    if (metadata != null) {
+      String query = "/components/component[@name='" + clazz.getName() + "']/property[@name!='' and @value!='']";
+      NodeList nodes = queryNodes(metadata, query);
+      if (nodes != null) {
+        for (int i = 0; i < nodes.getLength(); i++) {
+          Node node = nodes.item(i);
+          String name = getAttributeValue(node, "name");
+          String value = getAttributeValue(node, "value");
+          String type = getAttributeValue(node, "type");
+          if (StringUtils.equals("Integer", type)) {
+            props.put(name, Integer.parseInt(value));
+          }
+          else {
+            props.put(name, value);
           }
         }
       }
-      catch (XPathExpressionException ex) {
-        throw new RuntimeException("Error evaluating XPath.", ex);
+    }
+    return props;
+  }
+
+  public static List<Reference> getReferences(Class clazz, Document metadata) {
+    List<Reference> references = new ArrayList<>();
+    if (metadata != null) {
+      String query = "/components/component[@name='" + clazz.getName() + "']/reference[@name!='']";
+      NodeList nodes = queryNodes(metadata, query);
+      if (nodes != null) {
+        for (int i = 0; i < nodes.getLength(); i++) {
+          Node node = nodes.item(i);
+          references.add(new Reference(node));
+        }
       }
     }
+    return references;
+  }
 
-    return props;
+  public static String getActivateMethodName(Class clazz, Document metadata) {
+    if (metadata != null) {
+      String query = "/components/component[@name='" + clazz.getName() + "']";
+      Node node = queryNode(metadata, query);
+      if (node != null) {
+        return getAttributeValue(node, "activate");
+      }
+    }
+    return null;
+  }
+
+  public static String getDeactivateMethodName(Class clazz, Document metadata) {
+    if (metadata != null) {
+      String query = "/components/component[@name='" + clazz.getName() + "']";
+      Node node = queryNode(metadata, query);
+      if (node != null) {
+        return getAttributeValue(node, "deactivate");
+      }
+    }
+    return null;
+  }
+
+  private static NodeList queryNodes(Document metadata, String xpathQuery) {
+    try {
+      XPath xpath = XPATH_FACTORY.newXPath();
+      xpath.setNamespaceContext(NAMESPACE_CONTEXT);
+      return (NodeList)xpath.evaluate(xpathQuery, metadata, XPathConstants.NODESET);
+    }
+    catch (XPathExpressionException ex) {
+      throw new RuntimeException("Error evaluating XPath: " + xpathQuery, ex);
+    }
+  }
+
+  private static Node queryNode(Document metadata, String xpathQuery) {
+    try {
+      XPath xpath = XPATH_FACTORY.newXPath();
+      xpath.setNamespaceContext(NAMESPACE_CONTEXT);
+      return (Node)xpath.evaluate(xpathQuery, metadata, XPathConstants.NODE);
+    }
+    catch (XPathExpressionException ex) {
+      throw new RuntimeException("Error evaluating XPath: " + xpathQuery, ex);
+    }
+  }
+
+  private static String getAttributeValue(Node node, String attributeName) {
+    Node namedItem = node.getAttributes().getNamedItem(attributeName);
+    if (namedItem != null) {
+      return namedItem.getNodeValue();
+    }
+    else {
+      return null;
+    }
+  }
+
+  public static class Reference {
+
+    private final String name;
+    private final String interfaceType;
+    private final ReferenceCardinality cardinality;
+    private final String bind;
+    private final String unbind;
+
+    public Reference(Node node) {
+      this.name = getAttributeValue(node, "name");
+      this.interfaceType = getAttributeValue(node, "interface");
+      this.cardinality = toCardinality(getAttributeValue(node, "cardinality"));
+      this.bind = getAttributeValue(node, "bind");
+      this.unbind = getAttributeValue(node, "unbind");
+    }
+
+    private ReferenceCardinality toCardinality(String value) {
+      for (ReferenceCardinality item : ReferenceCardinality.values()) {
+        if (StringUtils.equals(item.getCardinalityString(), value)) {
+          return item;
+        }
+      }
+      return ReferenceCardinality.MANDATORY_UNARY;
+    }
+
+    public String getName() {
+      return this.name;
+    }
+
+    public String getInterfaceType() {
+      return this.interfaceType;
+    }
+
+    public ReferenceCardinality getCardinality() {
+      return this.cardinality;
+    }
+
+    public String getBind() {
+      return this.bind;
+    }
+
+    public String getUnbind() {
+      return this.unbind;
+    }
+
   }
 
 }

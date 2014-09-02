@@ -88,13 +88,14 @@ class MockServiceRegistration implements ServiceRegistration {
    * Try to read OSGI-metadata from /OSGI-INF and read all implemented interfaces and service properties
    */
   private void readOsgiMetadata() {
-    Document doc = OsgiMetadataUtil.geDocument(service.getClass());
+    Class<?> serviceClass = service.getClass();
+    Document doc = OsgiMetadataUtil.getMetadata(serviceClass);
 
     // add service interfaces from OSGi metadata
-    clazzes.addAll(OsgiMetadataUtil.getServiceInterfaces(doc));
+    clazzes.addAll(OsgiMetadataUtil.getServiceInterfaces(serviceClass, doc));
 
     // add properties from OSGi metadata
-    Map<String, Object> props = OsgiMetadataUtil.getProperties(doc);
+    Map<String, Object> props = OsgiMetadataUtil.getProperties(serviceClass, doc);
     for (Map.Entry<String, Object> entry : props.entrySet()) {
       properties.put(entry.getKey(), entry.getValue());
     }

@@ -21,10 +21,13 @@ package io.wcm.testing.mock.osgi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.osgi.OsgiMetadataUtil.Reference;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -32,15 +35,15 @@ public class OsgiMetadataUtilTest {
 
   @Test
   public void testMetadata() {
-    Document doc = OsgiMetadataUtil.geDocument(ServiceWithMetadata.class);
+    Document doc = OsgiMetadataUtil.getMetadata(ServiceWithMetadata.class);
 
-    Set<String> serviceInterfaces = OsgiMetadataUtil.getServiceInterfaces(doc);
+    Set<String> serviceInterfaces = OsgiMetadataUtil.getServiceInterfaces(ServiceWithMetadata.class, doc);
     assertEquals(3, serviceInterfaces.size());
     assertTrue(serviceInterfaces.contains("org.apache.sling.models.spi.Injector"));
     assertTrue(serviceInterfaces.contains("org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory"));
     assertTrue(serviceInterfaces.contains("java.lang.Comparable"));
 
-    Map<String, Object> props = OsgiMetadataUtil.getProperties(doc);
+    Map<String, Object> props = OsgiMetadataUtil.getProperties(ServiceWithMetadata.class, doc);
     assertEquals(3, props.size());
     assertEquals(5000, props.get("service.ranking"));
     assertEquals("The Apache Software Foundation", props.get("service.vendor"));
@@ -49,13 +52,34 @@ public class OsgiMetadataUtilTest {
 
   @Test
   public void testNoMetadata() {
-    Document doc = OsgiMetadataUtil.geDocument(ServiceWithoutMetadata.class);
+    Document doc = OsgiMetadataUtil.getMetadata(ServiceWithoutMetadata.class);
 
-    Set<String> serviceInterfaces = OsgiMetadataUtil.getServiceInterfaces(doc);
+    Set<String> serviceInterfaces = OsgiMetadataUtil.getServiceInterfaces(ServiceWithoutMetadata.class, doc);
     assertEquals(0, serviceInterfaces.size());
 
-    Map<String, Object> props = OsgiMetadataUtil.getProperties(doc);
+    Map<String, Object> props = OsgiMetadataUtil.getProperties(ServiceWithoutMetadata.class, doc);
     assertEquals(0, props.size());
+  }
+
+  @Test
+  public void testReferences() {
+    Document doc = OsgiMetadataUtil.getMetadata(ReflectionServiceUtilTest.Service3.class);
+    List<Reference> references = OsgiMetadataUtil.getReferences(ReflectionServiceUtilTest.Service3.class, doc);
+    assertEquals(3, references.size());
+
+    Reference ref1 = references.get(0);
+    assertEquals("reference2", ref1.getName());
+    assertEquals("io.wcm.testing.mock.osgi.ReflectionServiceUtilTest$ServiceInterface2", ref1.getInterfaceType());
+    assertEquals(ReferenceCardinality.MANDATORY_MULTIPLE, ref1.getCardinality());
+    assertEquals("bindReference2", ref1.getBind());
+    assertEquals("unbindReference2", ref1.getUnbind());
+  }
+
+  @Test
+  public void testActivateMethodName() {
+    Document doc = OsgiMetadataUtil.getMetadata(ReflectionServiceUtilTest.Service3.class);
+    String methodName = OsgiMetadataUtil.getActivateMethodName(ReflectionServiceUtilTest.Service3.class, doc);
+    assertEquals("activate", methodName);
   }
 
   static class ServiceWithMetadata {
