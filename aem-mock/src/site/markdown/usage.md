@@ -185,10 +185,13 @@ Example for registering and getting an OSGi service for a unit test:
 // register OSGi service
 context.registerService(MyClass.class, myService);
 
+// or alternatively: inject dependencies, activate and register OSGi service
+context.registerInjectActivateService(myService);
+
 // get OSGi service
 MyClass service = context.slingScriptHelper().getService(MyClass.class);
 
-// or alternatively
+// or alternatively: get OSGi service via bundle context
 ServiceReference ref = context.bundleContext().getServiceReference(MyClass.class.getName());
 MyClass service2 = bundleContext.getService(ref);
 ```

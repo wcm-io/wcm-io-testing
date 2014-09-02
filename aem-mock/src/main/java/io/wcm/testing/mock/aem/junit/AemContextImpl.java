@@ -29,6 +29,7 @@ import io.wcm.testing.mock.sling.services.MockModelAdapterFactory;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
@@ -278,6 +279,30 @@ class AemContextImpl<RuleType> {
     bundleContext().registerService(serviceClass != null ? serviceClass.getName() : null, service, serviceProperties);
     return (RuleType)this;
   }
+
+  /**
+   * Injects dependencies, activates and registers a service in the mocked OSGi environment.
+   * @param service Service instance
+   * @return this
+   */
+  public <T> RuleType registerInjectActivateService(final T service) {
+    return registerInjectActivateService(service, Collections.<String, Object>emptyMap());
+  }
+
+  /**
+   * Injects dependencies, activates and registers a service in the mocked OSGi environment.
+   * @param service Service instance
+   * @param properties Service properties (optional)
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public <T> RuleType registerInjectActivateService(final T service, final Map<String, Object> properties) {
+    MockOsgi.injectServices(service, bundleContext());
+    MockOsgi.activate(service, bundleContext(), properties);
+    registerService(null, service, null);
+    return (RuleType)this;
+  }
+
 
   /**
    * Set current resource in request.

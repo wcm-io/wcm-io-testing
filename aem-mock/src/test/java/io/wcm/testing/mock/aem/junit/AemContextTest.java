@@ -158,6 +158,13 @@ public class AemContextTest {
     assertNotNull(model);
     assertEquals("myValue", model.getPropValue());
   }
+
+  @Test
+  public void testRegisterInjectActivate() {
+    context.registerInjectActivateService(new Object());
+  }
+
+
   @Model(adaptables = SlingHttpServletRequest.class)
   public interface RequestAttributeModel {
     @Inject
