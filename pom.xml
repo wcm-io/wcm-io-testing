@@ -34,7 +34,7 @@
   <version>1</version>
   <packaging>pom</packaging>
 
-  <name>Testing root</name>
+  <name>Testing Root</name>
   <description>Helper tools for supporting Unit Tests, Integration test and test automization in AEM-based projects.</description>
 
   <modules>
