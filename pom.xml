@@ -44,7 +44,8 @@
     <module>osgi-mock</module>
     <module>jcr-mock</module>
     <module>sling-mock</module>
-    <module>sling-mock-resourcetype</module>
+    <module>sling-mock-resourcetype/resourceresolver-mock</module>
+    <module>sling-mock-resourcetype/jackrabbit</module>
     <module>aem-mock</module>
   </modules>
 
