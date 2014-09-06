@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.contentimport.JsonImporter;
@@ -43,6 +44,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.commons.mime.MimeTypeService;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.settings.SlingSettingsService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -162,6 +164,18 @@ public class AemContextTest {
   @Test
   public void testRegisterInjectActivate() {
     context.registerInjectActivateService(new Object());
+  }
+
+  @Test
+  public void testRunModes() {
+    SlingSettingsService slingSettings = context.slingScriptHelper().getService(SlingSettingsService.class);
+    assertEquals(AemContextImpl.DEFAULT_RUN_MODES, slingSettings.getRunModes());
+
+    context.runMode("mode1", "mode2");
+    Set<String> newRunModes = slingSettings.getRunModes();
+    assertEquals(2, newRunModes.size());
+    assertTrue(newRunModes.contains("mode1"));
+    assertTrue(newRunModes.contains("mode2"));
   }
 
 

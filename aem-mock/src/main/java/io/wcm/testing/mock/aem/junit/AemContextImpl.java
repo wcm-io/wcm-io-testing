@@ -26,6 +26,7 @@ import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
 import io.wcm.testing.mock.sling.services.MockModelAdapterFactory;
+import io.wcm.testing.mock.sling.services.MockSlingSettingService;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
@@ -33,6 +34,7 @@ import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -57,16 +59,22 @@ import org.apache.sling.models.impl.injectors.SlingObjectInjector;
 import org.apache.sling.models.impl.injectors.ValueMapInjector;
 import org.apache.sling.models.spi.ImplementationPicker;
 import org.apache.sling.models.spi.Injector;
+import org.apache.sling.settings.SlingSettingsService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.PageManager;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Defines AEM context objects with lazy initialization.
  */
 class AemContextImpl<RuleType> {
+
+  // default to publish instance run mode
+  static final Set<String> DEFAULT_RUN_MODES = ImmutableSet.<String>builder().add("publish").build();
 
   private MockModelAdapterFactory modelAdapterFactory;
   private ResourceResolverType resourceResolverType;
@@ -119,6 +127,7 @@ class AemContextImpl<RuleType> {
     registerService(ImplementationPicker.class, new FirstImplementationPicker());
 
     // other services
+    registerService(SlingSettingsService.class, new MockSlingSettingService(DEFAULT_RUN_MODES));
     registerService(MimeTypeService.class, new MockMimeTypeService());
   }
 
@@ -339,6 +348,22 @@ class AemContextImpl<RuleType> {
   @SuppressWarnings("unchecked")
   public RuleType addModelsForPackage(String packageName) {
     this.modelAdapterFactory.addModelsForPackage(packageName);
+    return (RuleType)this;
+  }
+
+  /**
+   * Set current run mode(s).
+   * @param runModes Run mode(s).
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public RuleType runMode(String... runModes) {
+    Set<String> newRunModes = ImmutableSet.<String>builder().add(runModes).build();
+    ServiceReference ref = bundleContext().getServiceReference(SlingSettingsService.class.getName());
+    if (ref != null) {
+      MockSlingSettingService slingSettings = (MockSlingSettingService)bundleContext().getService(ref);
+      slingSettings.setRunModes(newRunModes);
+    }
     return (RuleType)this;
   }
 
