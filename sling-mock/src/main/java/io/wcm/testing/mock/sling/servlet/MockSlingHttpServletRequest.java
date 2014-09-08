@@ -208,7 +208,9 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
           }
           querystring.append(URLEncoder.encode(entry.getKey(), CharEncoding.UTF_8));
           querystring.append('=');
-          querystring.append(URLEncoder.encode(value, CharEncoding.UTF_8));
+          if (value != null) {
+            querystring.append(URLEncoder.encode(value, CharEncoding.UTF_8));
+          }
         }
       }
     }

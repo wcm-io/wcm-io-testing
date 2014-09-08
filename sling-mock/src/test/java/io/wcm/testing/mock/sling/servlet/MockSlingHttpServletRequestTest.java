@@ -135,9 +135,13 @@ public class MockSlingHttpServletRequestTest {
     paramMap.put("p2", new String[] {
         "b", "c"
     });
+    paramMap.put("p3", null);
+    paramMap.put("p4", new String[] {
+        null
+    });
     this.request.setParameterMap(paramMap);
 
-    assertEquals("p1=a&p2=b&p2=c", this.request.getQueryString());
+    assertEquals("p1=a&p2=b&p2=c&p4=", this.request.getQueryString());
   }
 
   @Test
