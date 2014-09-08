@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem.context;
 
+import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.osgi.MockOsgi;
 import io.wcm.testing.mock.sling.MockSling;
@@ -27,6 +28,7 @@ import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
 import io.wcm.testing.mock.sling.services.MockModelAdapterFactory;
 import io.wcm.testing.mock.sling.services.MockSlingSettingService;
+import io.wcm.testing.mock.sling.servlet.MockRequestPathInfo;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
@@ -39,8 +41,6 @@ import java.util.Set;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -81,8 +81,8 @@ public class AemContextImpl<WrapperType> {
   private ResourceResolverType resourceResolverType;
   private ComponentContext componentContext;
   private ResourceResolver resourceResolver;
-  private SlingHttpServletRequest request;
-  private SlingHttpServletResponse response;
+  private MockSlingHttpServletRequest request;
+  private MockSlingHttpServletResponse response;
   private SlingScriptHelper slingScriptHelper;
   private JsonImporter jsonImporter;
   private ContentBuilder contentBuilder;
@@ -124,6 +124,7 @@ public class AemContextImpl<WrapperType> {
     registerService(Injector.class, new SelfInjector());
     registerService(Injector.class, new SlingObjectInjector());
     registerService(Injector.class, new ValueMapInjector());
+    registerService(Injector.class, new AemObjectInjector());
 
     // sling models implementation pickers
     registerService(ImplementationPicker.class, new FirstImplementationPicker());
@@ -201,7 +202,7 @@ public class AemContextImpl<WrapperType> {
   /**
    * @return Sling request
    */
-  public SlingHttpServletRequest request() {
+  public MockSlingHttpServletRequest request() {
     if (this.request == null) {
       this.request = new MockSlingHttpServletRequest(this.resourceResolver());
 
@@ -216,9 +217,16 @@ public class AemContextImpl<WrapperType> {
   }
 
   /**
+   * @return Request path info
+   */
+  public MockRequestPathInfo requestPathInfo() {
+    return (MockRequestPathInfo)request().getRequestPathInfo();
+  }
+
+  /**
    * @return Sling response
    */
-  public SlingHttpServletResponse response() {
+  public MockSlingHttpServletResponse response() {
     if (this.response == null) {
       this.response = new MockSlingHttpServletResponse();
     }
@@ -346,7 +354,7 @@ public class AemContextImpl<WrapperType> {
    */
   @SuppressWarnings("unchecked")
   public WrapperType currentResource(Resource resource) {
-    ((MockSlingHttpServletRequest)request()).setResource(resource);
+    request().setResource(resource);
     return (WrapperType)this;
   }
 

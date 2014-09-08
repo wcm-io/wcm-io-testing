@@ -77,6 +77,7 @@ public class AemContextImplTest {
     assertNotNull(context.bundleContext());
     assertNotNull(context.resourceResolver());
     assertNotNull(context.request());
+    assertNotNull(context.requestPathInfo());
     assertNotNull(context.response());
     assertNotNull(context.slingScriptHelper());
     assertNotNull(context.pageManager());
@@ -144,8 +145,7 @@ public class AemContextImplTest {
 
   @Test
   public void testSlingModelsRequestAttribute() {
-    MockSlingHttpServletRequest request = (MockSlingHttpServletRequest)context.request();
-    request.setAttribute("prop1", "myValue");
+    context.request().setAttribute("prop1", "myValue");
     RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
     assertEquals("myValue", model.getProp1());
   }
