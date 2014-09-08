@@ -64,14 +64,15 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentContext;
 
-import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.google.common.collect.ImmutableSet;
 
 /**
  * Defines AEM context objects with lazy initialization.
+ * Should not be used directly but via the {@link io.wcm.testing.mock.aem.junit.AemContext} JUnit rule.
  */
-public class AemContextImpl<RuleType> {
+public class AemContextImpl<WrapperType> {
 
   // default to publish instance run mode
   static final Set<String> DEFAULT_RUN_MODES = ImmutableSet.<String>builder().add("publish").build();
@@ -84,6 +85,7 @@ public class AemContextImpl<RuleType> {
   private SlingHttpServletResponse response;
   private SlingScriptHelper slingScriptHelper;
   private JsonImporter jsonImporter;
+  private ContentBuilder contentBuilder;
 
   /**
    * @param resourceResolverType Resource resolver type
@@ -157,6 +159,7 @@ public class AemContextImpl<RuleType> {
     this.response = null;
     this.slingScriptHelper = null;
     this.jsonImporter = null;
+    this.contentBuilder = null;
 
     MockSling.clearAdapterManagerBundleContext();
   }
@@ -250,14 +253,24 @@ public class AemContextImpl<RuleType> {
   }
 
   /**
+   * @return Content builder for building test content
+   */
+  public ContentBuilder create() {
+    if (this.contentBuilder == null) {
+      this.contentBuilder = new ContentBuilder(this);
+    }
+    return this.contentBuilder;
+  }
+
+  /**
    * Registers a service in the mocked OSGi environment.
    * @param service Service instance
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public <T> RuleType registerService(final T service) {
+  public <T> WrapperType registerService(final T service) {
     registerService(null, service, null);
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
   /**
@@ -267,9 +280,9 @@ public class AemContextImpl<RuleType> {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public <T> RuleType registerService(final Class<T> serviceClass, final T service) {
+  public <T> WrapperType registerService(final Class<T> serviceClass, final T service) {
     registerService(serviceClass, service, null);
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
   /**
@@ -280,13 +293,13 @@ public class AemContextImpl<RuleType> {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public <T> RuleType registerService(final Class<T> serviceClass, final T service, final Map<String, Object> properties) {
+  public <T> WrapperType registerService(final Class<T> serviceClass, final T service, final Map<String, Object> properties) {
     Dictionary<String, Object> serviceProperties = null;
     if (properties != null) {
       serviceProperties = new Hashtable<>(properties);
     }
     bundleContext().registerService(serviceClass != null ? serviceClass.getName() : null, service, serviceProperties);
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
   /**
@@ -294,7 +307,7 @@ public class AemContextImpl<RuleType> {
    * @param service Service instance
    * @return this
    */
-  public <T> RuleType registerInjectActivateService(final T service) {
+  public <T> WrapperType registerInjectActivateService(final T service) {
     return registerInjectActivateService(service, Collections.<String, Object>emptyMap());
   }
 
@@ -305,11 +318,11 @@ public class AemContextImpl<RuleType> {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public <T> RuleType registerInjectActivateService(final T service, final Map<String, Object> properties) {
+  public <T> WrapperType registerInjectActivateService(final T service, final Map<String, Object> properties) {
     MockOsgi.injectServices(service, bundleContext());
     MockOsgi.activate(service, bundleContext(), properties);
     registerService(null, service, null);
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
 
@@ -318,14 +331,23 @@ public class AemContextImpl<RuleType> {
    * @param resourcePath Resource path
    * @return this
    */
-  @SuppressWarnings("unchecked")
-  public RuleType currentResource(String resourcePath) {
+  public WrapperType currentResource(String resourcePath) {
     Resource resource = resourceResolver().getResource(resourcePath);
     if (resource == null) {
       throw new IllegalArgumentException("Resource does not exist: " + resourcePath);
     }
+    return currentResource(resource);
+  }
+
+  /**
+   * Set current resource in request.
+   * @param resource Resource
+   * @return this
+   */
+  @SuppressWarnings("unchecked")
+  public WrapperType currentResource(Resource resource) {
     ((MockSlingHttpServletRequest)request()).setResource(resource);
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
   /**
@@ -333,10 +355,21 @@ public class AemContextImpl<RuleType> {
    * @param pagePath Page path
    * @return this
    */
-  @SuppressWarnings("unchecked")
-  public RuleType currentPage(String pagePath) {
-    currentResource(pagePath + "/" + JcrConstants.JCR_CONTENT);
-    return (RuleType)this;
+  public WrapperType currentPage(String pagePath) {
+    Page page = pageManager().getPage(pagePath);
+    if (page == null) {
+      throw new IllegalArgumentException("Page does not exist: " + pagePath);
+    }
+    return currentPage(page);
+  }
+
+  /**
+   * Set current Page in request (set to content resource of page).
+   * @param page Page
+   * @return this
+   */
+  public WrapperType currentPage(Page page) {
+    return currentResource(page.getContentResource());
   }
 
   /**
@@ -346,9 +379,9 @@ public class AemContextImpl<RuleType> {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public RuleType addModelsForPackage(String packageName) {
+  public WrapperType addModelsForPackage(String packageName) {
     this.modelAdapterFactory.addModelsForPackage(packageName);
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
   /**
@@ -357,14 +390,14 @@ public class AemContextImpl<RuleType> {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public RuleType runMode(String... runModes) {
+  public WrapperType runMode(String... runModes) {
     Set<String> newRunModes = ImmutableSet.<String>builder().add(runModes).build();
     ServiceReference ref = bundleContext().getServiceReference(SlingSettingsService.class.getName());
     if (ref != null) {
       MockSlingSettingService slingSettings = (MockSlingSettingService)bundleContext().getService(ref);
       slingSettings.setRunModes(newRunModes);
     }
-    return (RuleType)this;
+    return (WrapperType)this;
   }
 
 }

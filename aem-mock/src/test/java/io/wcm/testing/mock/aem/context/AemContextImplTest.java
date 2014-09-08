@@ -118,6 +118,9 @@ public class AemContextImplTest {
   public void testSetCurrentResource() {
     context.currentResource("/content/sample/en/jcr:content/par/colctrl");
     assertEquals("/content/sample/en/jcr:content/par/colctrl", context.request().getResource().getPath());
+
+    context.currentResource(context.resourceResolver().getResource("/content/sample/en/jcr:content/par"));
+    assertEquals("/content/sample/en/jcr:content/par", context.request().getResource().getPath());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -129,6 +132,14 @@ public class AemContextImplTest {
   public void testSetCurrentPage() {
     context.currentPage("/content/sample/en/toolbar/profiles");
     assertEquals("/content/sample/en/toolbar/profiles/jcr:content", context.request().getResource().getPath());
+
+    context.currentPage(context.pageManager().getPage("/content/sample/en/toolbar"));
+    assertEquals("/content/sample/en/toolbar/jcr:content", context.request().getResource().getPath());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCurrentPageNonExisting() {
+    context.currentPage("/non/existing");
   }
 
   @Test

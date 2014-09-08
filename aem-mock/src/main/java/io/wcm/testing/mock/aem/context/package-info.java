@@ -19,6 +19,5 @@
  */
 /**
  * AEM context implementation for unit tests.
- * Should not be used directly but via the {@link io.wcm.testing.mock.aem.junit.AemContext} JUnit rule.
  */
 package io.wcm.testing.mock.aem.context;
