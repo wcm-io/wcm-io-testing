@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem.junit;
+package io.wcm.testing.mock.aem.context;
 
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.osgi.MockOsgi;
@@ -71,7 +71,7 @@ import com.google.common.collect.ImmutableSet;
 /**
  * Defines AEM context objects with lazy initialization.
  */
-class AemContextImpl<RuleType> {
+public class AemContextImpl<RuleType> {
 
   // default to publish instance run mode
   static final Set<String> DEFAULT_RUN_MODES = ImmutableSet.<String>builder().add("publish").build();
