@@ -170,12 +170,12 @@ final class ReflectionServiceUtil {
         for (ServiceInfo matchingService : matchingServices) {
           try {
             bindMethod.invoke(target, matchingService.getServiceInstance());
-            return true;
           }
           catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new RuntimeException("Unable to invoke method " + bindMethodName + " for class " + targetClass.getName(), ex);
           }
         }
+        return true;
       }
       else {
         Method bindMethodWithConfig = getFirstMethodWithNameAndSignature(targetClass, bindMethodName, new Class<?>[] {
@@ -187,12 +187,12 @@ final class ReflectionServiceUtil {
           for (ServiceInfo matchingService : matchingServices) {
             try {
               bindMethodWithConfig.invoke(target, matchingService.getServiceInstance(), matchingService.getServiceConfig());
-              return true;
             }
             catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
               throw new RuntimeException("Unable to invoke method " + bindMethodName + " for class " + targetClass.getName(), ex);
             }
           }
+          return true;
         }
       }
     }
