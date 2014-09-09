@@ -60,6 +60,7 @@ class MockJcrResourceResolverFactory implements ResourceResolverFactory {
     Dictionary<String, Object> resourceProviderFactoryProps = new Hashtable<>();
     resourceProviderFactoryProps.put(Constants.SERVICE_VENDOR, "sling-mock");
     resourceProviderFactoryProps.put(Constants.SERVICE_DESCRIPTION, "sling-mock");
+    resourceProviderFactoryProps.put("resource.resolver.manglenamespaces", true);
     ComponentContext componentContext = MockOsgi.newComponentContext(resourceProviderFactoryProps);
 
     // setup mocked JCR environment
