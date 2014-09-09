@@ -40,6 +40,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.commons.mime.MimeTypeService;
@@ -49,6 +50,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.osgi.framework.ServiceReference;
+
+import com.day.cq.wcm.api.Page;
 
 public class AemContextImplTest {
 
@@ -122,6 +125,12 @@ public class AemContextImplTest {
 
     context.currentResource(context.resourceResolver().getResource("/content/sample/en/jcr:content/par"));
     assertEquals("/content/sample/en/jcr:content/par", context.request().getResource().getPath());
+
+    context.currentResource((Resource)null);
+    assertNull(context.request().getResource());
+
+    context.currentResource((String)null);
+    assertNull(context.request().getResource());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -136,6 +145,12 @@ public class AemContextImplTest {
 
     context.currentPage(context.pageManager().getPage("/content/sample/en/toolbar"));
     assertEquals("/content/sample/en/toolbar/jcr:content", context.request().getResource().getPath());
+
+    context.currentPage((Page)null);
+    assertNull(context.request().getResource());
+
+    context.currentPage((String)null);
+    assertNull(context.request().getResource());
   }
 
   @Test(expected = IllegalArgumentException.class)

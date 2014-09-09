@@ -340,11 +340,16 @@ public class AemContextImpl<WrapperType> {
    * @return this
    */
   public WrapperType currentResource(String resourcePath) {
-    Resource resource = resourceResolver().getResource(resourcePath);
-    if (resource == null) {
-      throw new IllegalArgumentException("Resource does not exist: " + resourcePath);
+    if (resourcePath != null) {
+      Resource resource = resourceResolver().getResource(resourcePath);
+      if (resource == null) {
+        throw new IllegalArgumentException("Resource does not exist: " + resourcePath);
+      }
+      return currentResource(resource);
     }
-    return currentResource(resource);
+    else {
+      return currentResource((Resource)null);
+    }
   }
 
   /**
@@ -364,11 +369,16 @@ public class AemContextImpl<WrapperType> {
    * @return this
    */
   public WrapperType currentPage(String pagePath) {
-    Page page = pageManager().getPage(pagePath);
-    if (page == null) {
-      throw new IllegalArgumentException("Page does not exist: " + pagePath);
+    if (pagePath != null) {
+      Page page = pageManager().getPage(pagePath);
+      if (page == null) {
+        throw new IllegalArgumentException("Page does not exist: " + pagePath);
+      }
+      return currentPage(page);
     }
-    return currentPage(page);
+    else {
+      return currentResource((Resource)null);
+    }
   }
 
   /**
@@ -377,7 +387,7 @@ public class AemContextImpl<WrapperType> {
    * @return this
    */
   public WrapperType currentPage(Page page) {
-    return currentResource(page.getContentResource());
+    return currentResource(page != null ? page.getContentResource() : null);
   }
 
   /**
