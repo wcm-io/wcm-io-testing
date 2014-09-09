@@ -22,7 +22,6 @@ package io.wcm.testing.mock.sling.resource;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
@@ -158,10 +157,8 @@ public class SlingCrudResourceResolverTest {
     Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
     ValueMap props = resource1.getValueMap();
     // TODO: enable this test when JCR resource implementation supports writing Date objects (SLING-3846)
-    // TODO: enable this test when sling mockresourceresolver implementation supports converting Date/Calender objects
     if (getResourceResolverType() != ResourceResolverType.JCR_MOCK
-        && getResourceResolverType() != ResourceResolverType.JCR_JACKRABBIT
-        && getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
+        && getResourceResolverType() != ResourceResolverType.JCR_JACKRABBIT) {
       Calendar calendarValue = props.get("dateProp", Calendar.class);
       assertNotNull(calendarValue);
       assertEquals(DATE_VALUE, calendarValue.getTime());
@@ -179,12 +176,9 @@ public class SlingCrudResourceResolverTest {
   public void testCalendarPropertyToDate() throws IOException {
     Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
     ValueMap props = resource1.getValueMap();
-    // TODO: enable this test when sling mockresourceresolver implementation supports converting Date/Calender objects
-    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
-      Date dateValue = props.get("calendarProp", Date.class);
-      assertNotNull(dateValue);
-      assertEquals(CALENDAR_VALUE.getTime(), dateValue);
-    }
+    Date dateValue = props.get("calendarProp", Date.class);
+    assertNotNull(dateValue);
+    assertEquals(CALENDAR_VALUE.getTime(), dateValue);
   }
 
   @Test
@@ -201,34 +195,25 @@ public class SlingCrudResourceResolverTest {
   public void testBinaryData() throws IOException {
     Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
 
-    // TODO: enable this tests when resource resolver mock supports binary data
-    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
-      Resource binaryPropResource = resource1.getChild("binaryProp");
-      InputStream is = binaryPropResource.adaptTo(InputStream.class);
-      byte[] dataFromResource = IOUtils.toByteArray(is);
-      is.close();
-      assertArrayEquals(BINARY_VALUE, dataFromResource);
+    Resource binaryPropResource = resource1.getChild("binaryProp");
+    InputStream is = binaryPropResource.adaptTo(InputStream.class);
+    byte[] dataFromResource = IOUtils.toByteArray(is);
+    is.close();
+    assertArrayEquals(BINARY_VALUE, dataFromResource);
 
-      // read second time to ensure not the original input stream was returned
-      // and this time using another syntax
-      InputStream is2 = resource1.getValueMap().get("binaryProp", InputStream.class);
-      byte[] dataFromResource2 = IOUtils.toByteArray(is2);
-      is2.close();
-      assertArrayEquals(BINARY_VALUE, dataFromResource2);
-    }
+    // read second time to ensure not the original input stream was returned
+    // and this time using another syntax
+    InputStream is2 = resource1.getValueMap().get("binaryProp", InputStream.class);
+    byte[] dataFromResource2 = IOUtils.toByteArray(is2);
+    is2.close();
+    assertArrayEquals(BINARY_VALUE, dataFromResource2);
   }
 
 
   @Test
   public void testPrimaryTypeResourceType() throws PersistenceException {
-    // TODO: this is an incompatibility in resourceresolver-mock - can it be solved?
     Resource resource = this.resourceResolver.getResource(getTestRootResource().getPath());
-    if (getResourceResolverType() != ResourceResolverType.RESOURCERESOLVER_MOCK) {
-      assertEquals(JcrConstants.NT_UNSTRUCTURED, resource.getResourceType());
-    }
-    else {
-      assertNull(resource.getResourceType());
-    }
+    assertEquals(JcrConstants.NT_UNSTRUCTURED, resource.getResourceType());
   }
 
 }

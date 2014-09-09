@@ -21,7 +21,6 @@ package io.wcm.testing.mock.sling.contentimport;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
@@ -78,14 +77,7 @@ public class ContentJsonImporterTest {
   @Test
   public void testPageResourceType() {
     Resource resource = this.resourceResolver.getResource("/content/sample/en");
-    // TODO: this is an incompatibility in resourceresolver-mock - can it be solved?
-    if (getResourceResolverType() == ResourceResolverType.JCR_MOCK
-        || getResourceResolverType() == ResourceResolverType.JCR_JACKRABBIT) {
-      assertEquals("cq:Page", resource.getResourceType());
-    }
-    else {
-      assertNull(resource.getResourceType());
-    }
+    assertEquals("cq:Page", resource.getResourceType());
   }
 
   @Test
