@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="0.1.0-SNAPSHOT" date="not released">
+    <release version="1.0.0" date="2014-09-12">
       <action type="add" dev="sseifert">
         Initial release.
       </action>
