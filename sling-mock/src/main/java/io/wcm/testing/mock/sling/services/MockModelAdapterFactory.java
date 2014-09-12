@@ -68,7 +68,8 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
     bundleContext = componentContext.getBundleContext();
 
     // register service listener to collect injectors
-    // this is done because mock OSGi service does not support automatically binding and unbinding services
+    // this allows detecting injectors even if they are registered after this bundle
+    // (which is otherwise currently not supported in the osgi mock environment)
     bundleContext.addServiceListener(new InjectorServiceListener());
 
     // activate service in simulated OSGi environment
@@ -80,17 +81,6 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
    */
   public MockModelAdapterFactory() {
     this(MockOsgi.newComponentContext());
-  }
-
-  /**
-   * Scan classpaths for given package name (and sub packages) to scan for and register all classes
-   * with @Model annotation.
-   * @param packageName Java package name
-   */
-  public void addModelsForPackage(String packageName) {
-    Bundle bundle = new ModelsPackageBundle(packageName, Bundle.ACTIVE);
-    BundleEvent event = new BundleEvent(BundleEvent.STARTED, bundle);
-    MockOsgi.sendBundleEvent(this.bundleContext, event);
   }
 
   private class InjectorServiceListener implements ServiceListener {
@@ -135,6 +125,17 @@ public class MockModelAdapterFactory extends ModelAdapterFactory {
       return props;
     }
 
+  }
+
+  /**
+   * Scan classpaths for given package name (and sub packages) to scan for and register all classes
+   * with @Model annotation.
+   * @param packageName Java package name
+   */
+  public void addModelsForPackage(String packageName) {
+    Bundle bundle = new ModelsPackageBundle(packageName, Bundle.ACTIVE);
+    BundleEvent event = new BundleEvent(BundleEvent.STARTED, bundle);
+    MockOsgi.sendBundleEvent(this.bundleContext, event);
   }
 
   private class ModelsPackageBundle implements Bundle {
