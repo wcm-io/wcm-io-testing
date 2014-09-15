@@ -21,6 +21,7 @@ package io.wcm.testing.mock.wcmio.config;
 
 import io.wcm.config.api.Parameter;
 import io.wcm.config.api.management.ParameterPersistence;
+import io.wcm.config.api.management.ParameterPersistenceData;
 import io.wcm.config.api.management.PersistenceException;
 import io.wcm.config.core.impl.ApplicationImplementationPicker;
 import io.wcm.config.core.impl.ConfigurationAdapterFactory;
@@ -43,6 +44,7 @@ import java.util.Set;
 
 import com.day.jcr.vault.util.Text;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.
@@ -141,7 +143,8 @@ public final class MockConfig {
   public static void writeConfiguration(AemContext context, String configurationId, Map<String, Object> values) {
     try {
       ParameterPersistence persistence = context.slingScriptHelper().getService(ParameterPersistence.class);
-      persistence.storeParameterValues(context.resourceResolver(), configurationId, values);
+      persistence.storeData(context.resourceResolver(), configurationId,
+          new ParameterPersistenceData(values, ImmutableSortedSet.<String>of()));
     }
     catch (PersistenceException ex) {
       throw new RuntimeException("Storing parameter values for " + configurationId + " failed.", ex);
