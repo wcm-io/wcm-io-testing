@@ -94,6 +94,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.day.commons</groupId>
+      <artifactId>day-commons-gfx</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
       <groupId>com.adobe.aem</groupId>
       <artifactId>aem-api</artifactId>
       <scope>compile</scope>

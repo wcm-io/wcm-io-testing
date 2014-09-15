@@ -29,6 +29,7 @@ The mock implementation supports:
 * JUnit rule for easy access to all context objects and registering adapter factories and OSGi services
 * Registers OSGi services and adapter factories supported by the mock implementations
 * Full support for Sling Models
+* Layer adapter factory
 
 The following features are *not supported*:
 

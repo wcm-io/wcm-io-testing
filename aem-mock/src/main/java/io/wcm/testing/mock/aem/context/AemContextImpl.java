@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem.context;
 
 import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
+import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.osgi.MockOsgi;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
@@ -109,6 +110,7 @@ public class AemContextImpl<WrapperType> {
 
     // adapter factories
     registerService(AdapterFactory.class, new MockAemAdapterFactory());
+    registerService(AdapterFactory.class, new MockLayerAdapterFactory());
     modelAdapterFactory = new MockModelAdapterFactory(componentContext());
     registerService(AdapterFactory.class, modelAdapterFactory);
 
