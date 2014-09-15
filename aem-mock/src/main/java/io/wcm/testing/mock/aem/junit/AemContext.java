@@ -25,12 +25,12 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
-import java.util.Arrays;
-
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * JUnit rule for setting up and tearing down AEM context objects for unit tests.
@@ -141,7 +141,7 @@ public final class AemContext extends AemContextImpl<AemContext> implements Test
           AemContext.this.tearDown();
         }
       };
-      this.delegate = new ListGenerator<ResourceResolverType>(Arrays.asList(this.resourceResolverTypes),
+      this.delegate = new ListGenerator<ResourceResolverType>(ImmutableList.copyOf(this.resourceResolverTypes),
           parameterizedSetUpCallback, parameterizedTearDownCallback);
     }
   }

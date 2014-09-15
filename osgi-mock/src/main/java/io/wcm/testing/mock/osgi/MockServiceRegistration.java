@@ -19,7 +19,6 @@
  */
 package io.wcm.testing.mock.osgi;
 
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -31,6 +30,8 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.w3c.dom.Document;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Mock {@link ServiceRegistration} implementation.
@@ -47,7 +48,7 @@ class MockServiceRegistration implements ServiceRegistration {
   @SuppressWarnings("unchecked")
   public MockServiceRegistration(final Bundle bundle, final String[] clazzes, final Object service,
       final Dictionary<String, Object> properties) {
-    this.clazzes = new HashSet<>(Arrays.asList(clazzes));
+    this.clazzes = new HashSet<>(ImmutableList.copyOf(clazzes));
     this.service = service;
     this.properties = properties != null ? properties : new Hashtable();
     this.properties.put(Constants.SERVICE_ID, ++serviceCounter);

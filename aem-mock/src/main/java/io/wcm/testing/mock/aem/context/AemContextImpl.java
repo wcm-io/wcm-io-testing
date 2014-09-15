@@ -32,7 +32,6 @@ import io.wcm.testing.mock.sling.servlet.MockRequestPathInfo;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletResponse;
 
-import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
@@ -66,6 +65,7 @@ import org.osgi.service.component.ComponentContext;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -316,7 +316,7 @@ public class AemContextImpl<WrapperType> {
    * @return this
    */
   public <T> WrapperType registerInjectActivateService(final T service) {
-    return registerInjectActivateService(service, Collections.<String, Object>emptyMap());
+    return registerInjectActivateService(service, ImmutableMap.<String, Object>of());
   }
 
   /**

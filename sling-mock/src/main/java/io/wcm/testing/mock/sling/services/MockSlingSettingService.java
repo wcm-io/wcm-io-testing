@@ -20,10 +20,11 @@
 package io.wcm.testing.mock.sling.services;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.Set;
 
 import org.apache.sling.settings.SlingSettingsService;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Mock implementation of {@link SlingSettingsService}.
@@ -36,7 +37,7 @@ public class MockSlingSettingService implements SlingSettingsService {
    * Instantiate with no default run modes.
    */
   public MockSlingSettingService() {
-    this(Collections.<String>emptySet());
+    this(ImmutableSet.<String>of());
   }
 
   /**
@@ -49,7 +50,7 @@ public class MockSlingSettingService implements SlingSettingsService {
 
   @Override
   public Set<String> getRunModes() {
-    return Collections.unmodifiableSet(this.runModes);
+    return ImmutableSet.copyOf(this.runModes);
   }
 
   public void setRunModes(Set<String> runModes) {
