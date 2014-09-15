@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -45,6 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Implements simple write and read resource and values test.
@@ -185,7 +185,7 @@ public class SlingCrudResourceResolverTest {
   public void testListChildren() throws IOException {
     Resource resource1 = this.resourceResolver.getResource(getTestRootResource().getPath() + "/node1");
 
-    List<Resource> children = IteratorUtils.toList(resource1.listChildren());
+    List<Resource> children = ImmutableList.copyOf(resource1.listChildren());
     assertEquals(2, children.size());
     assertEquals("node11", children.get(0).getName());
     assertEquals("node12", children.get(1).getName());

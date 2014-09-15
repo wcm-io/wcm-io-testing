@@ -38,8 +38,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.commons.collections4.BidiMap;
-import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
@@ -48,6 +46,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * Helper methods to parse OSGi metadata.
@@ -64,7 +65,7 @@ final class OsgiMetadataUtil {
 
   private static final XPathFactory XPATH_FACTORY = XPathFactory.newInstance();
 
-  private static final BidiMap<String,String> NAMESPACES = new DualHashBidiMap<>();
+  private static final BiMap<String, String> NAMESPACES = HashBiMap.create();
   static {
     NAMESPACES.put("scr", "http://www.osgi.org/xmlns/scr/v1.1.0");
   }
@@ -80,7 +81,7 @@ final class OsgiMetadataUtil {
     }
     @Override
     public String getPrefix(String namespaceURI) {
-      return NAMESPACES.getKey(namespaceURI);
+      return NAMESPACES.inverse().get(namespaceURI);
     }
     @Override
     public Iterator getPrefixes(String namespaceURI) {

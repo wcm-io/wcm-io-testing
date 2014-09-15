@@ -27,7 +27,7 @@ import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.collections.IteratorUtils;
 
 /**
  * Mock {@link HttpSession} implementation.
@@ -49,6 +49,7 @@ public class MockHttpSession implements HttpSession {
     return this.attributeMap.get(name);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Enumeration<String> getAttributeNames() {
     return IteratorUtils.asEnumeration(this.attributeMap.keySet().iterator());

@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
@@ -43,6 +42,7 @@ import org.junit.Test;
 import com.day.cq.commons.Filter;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
+import com.google.common.collect.ImmutableList;
 
 public class MockPageTest {
 
@@ -183,10 +183,10 @@ public class MockPageTest {
 
   @Test
   public void testListChildren() {
-    List<Page> childPages = IteratorUtils.toList(this.page.listChildren());
+    List<Page> childPages = ImmutableList.copyOf(this.page.listChildren());
     assertEquals(1, childPages.size());
 
-    childPages = IteratorUtils.toList(this.page.listChildren(new Filter<Page>() {
+    childPages = ImmutableList.copyOf(this.page.listChildren(new Filter<Page>() {
       @Override
       public boolean includes(final Page element) {
         return !StringUtils.equals("toolbar", element.getName());

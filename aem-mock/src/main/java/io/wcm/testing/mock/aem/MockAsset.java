@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -40,6 +39,7 @@ import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.api.Revision;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Mock implementation of {@link Asset}.
@@ -118,13 +118,13 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public List<Rendition> getRenditions() {
-    return IteratorUtils.toList(listRenditions());
+    return ImmutableList.copyOf(listRenditions());
   }
 
   @Override
   public Iterator<Rendition> listRenditions() {
     if (this.renditionsResource == null) {
-      return IteratorUtils.emptyIterator();
+      return ImmutableList.<Rendition>of().iterator();
     }
     Iterator<Resource> renditionResources = this.resourceResolver.listChildren(this.renditionsResource);
     return ResourceUtil.adaptTo(renditionResources, Rendition.class);

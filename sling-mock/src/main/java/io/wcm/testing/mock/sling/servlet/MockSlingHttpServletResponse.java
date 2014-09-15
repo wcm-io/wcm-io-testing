@@ -36,8 +36,6 @@ import java.util.TimeZone;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 
-import org.apache.commons.collections4.KeyValue;
-import org.apache.commons.collections4.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.adapter.SlingAdaptable;
@@ -59,7 +57,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
   private String characterEncoding;
   private int contentLength;
   private int status = 200;
-  private final List<KeyValue<String, String>> headers = new ArrayList<>();
+  private final List<HeaderValue> headers = new ArrayList<>();
 
   @Override
   public void flushBuffer() throws IOException {
@@ -132,17 +130,17 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
 
   @Override
   public void addHeader(final String name, final String value) {
-    headers.add(new DefaultKeyValue<String, String>(name, value));
+    headers.add(new HeaderValue(name, value));
   }
 
   @Override
   public void addIntHeader(final String name, final int value) {
-    headers.add(new DefaultKeyValue<String, String>(name, Integer.toString(value)));
+    headers.add(new HeaderValue(name, Integer.toString(value)));
   }
 
   @Override
   public void addDateHeader(final String name, final long date) {
-    headers.add(new DefaultKeyValue<String, String>(name, formatDate(new Date(date))));
+    headers.add(new HeaderValue(name, formatDate(new Date(date))));
   }
 
   @Override
@@ -190,7 +188,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
   @Override
   public Collection<String> getHeaders(final String name) {
     List<String> values = new ArrayList<>();
-    for (KeyValue<String, String> entry : headers) {
+    for (HeaderValue entry : headers) {
       if (StringUtils.equals(entry.getKey(), name)) {
         values.add(entry.getValue());
       }
@@ -201,7 +199,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
   @Override
   public Collection<String> getHeaderNames() {
     Set<String> values = new HashSet<>();
-    for (KeyValue<String, String> entry : headers) {
+    for (HeaderValue entry : headers) {
       values.add(entry.getKey());
     }
     return values;
@@ -285,6 +283,27 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
   @Override
   public String encodeURL(final String url) {
     throw new UnsupportedOperationException();
+  }
+
+
+  private static class HeaderValue {
+
+    private final String key;
+    private final String value;
+
+    public HeaderValue(String key, String value) {
+      this.key = key;
+      this.value = value;
+    }
+
+    public String getKey() {
+      return this.key;
+    }
+
+    public String getValue() {
+      return this.value;
+    }
+
   }
 
 }

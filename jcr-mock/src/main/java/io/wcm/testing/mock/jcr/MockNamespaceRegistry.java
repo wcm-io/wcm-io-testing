@@ -24,15 +24,15 @@ import java.util.Set;
 import javax.jcr.NamespaceRegistry;
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.collections4.BidiMap;
-import org.apache.commons.collections4.bidimap.DualLinkedHashBidiMap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * Mock {@link NamespaceRegistry} implementation.
  */
 class MockNamespaceRegistry implements NamespaceRegistry {
 
-  private final BidiMap<String, String> namespacePrefixMapping = new DualLinkedHashBidiMap<>();
+  private final BiMap<String, String> namespacePrefixMapping = HashBiMap.create();
 
   public MockNamespaceRegistry() {
     this.namespacePrefixMapping.put("jcr", "http://www.jcp.org/jcr/1.0");
@@ -45,7 +45,7 @@ class MockNamespaceRegistry implements NamespaceRegistry {
 
   @Override
   public String getPrefix(final String uri) {
-    return this.namespacePrefixMapping.getKey(uri);
+    return this.namespacePrefixMapping.inverse().get(uri);
   }
 
   @Override

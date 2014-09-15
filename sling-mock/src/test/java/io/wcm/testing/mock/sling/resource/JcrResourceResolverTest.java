@@ -36,7 +36,6 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.jackrabbit.JcrConstants;
@@ -46,6 +45,8 @@ import org.apache.sling.api.resource.ValueMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Implements simple write and read resource and values test.
@@ -152,7 +153,7 @@ public class JcrResourceResolverTest {
     is2.close();
     assertArrayEquals(BINARY_VALUE, dataFromResource2);
 
-    List<Resource> children = IteratorUtils.toList(resource1.listChildren());
+    List<Resource> children = ImmutableList.copyOf(resource1.listChildren());
     assertEquals(2, children.size());
     assertEquals("node11", children.get(0).getName());
     assertEquals("node12", children.get(1).getName());

@@ -49,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -121,6 +121,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     return this.attributeMap.get(name);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Enumeration<String> getAttributeNames() {
     return IteratorUtils.asEnumeration(this.attributeMap.keySet().iterator());
@@ -165,6 +166,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     return this.parameterMap;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Enumeration<String> getParameterNames() {
     return IteratorUtils.asEnumeration(this.parameterMap.keySet().iterator());

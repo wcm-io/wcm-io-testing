@@ -22,6 +22,7 @@ package io.wcm.testing.mock.jcr;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -41,7 +42,6 @@ import javax.jcr.Workspace;
 import javax.jcr.retention.RetentionManager;
 import javax.jcr.security.AccessControlManager;
 
-import org.apache.commons.collections4.map.ListOrderedMap;
 import org.apache.jackrabbit.commons.iterator.RangeIteratorAdapter;
 import org.apache.jackrabbit.value.ValueFactoryImpl;
 import org.xml.sax.ContentHandler;
@@ -55,8 +55,8 @@ class MockSession implements Session {
   private final Repository repository;
   private final Workspace workspace;
 
-  // Use ordered map to ensure ordering when adding items is preserved.
-  private final Map<String, Item> items = new ListOrderedMap<>();
+  // Use linked hashmap to ensure ordering when adding items is preserved.
+  private final Map<String, Item> items = new LinkedHashMap<>();
 
   public MockSession(final Repository repository) {
     this.repository = repository;
