@@ -26,7 +26,7 @@ import org.apache.sling.api.resource.Resource;
 /**
  * Mock {@link RequestPathInfo} implementation.
  */
-public class MockRequestPathInfo implements RequestPathInfo {
+public final class MockRequestPathInfo implements RequestPathInfo {
 
   private String extension;
   private String resourcePath;

@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableSet;
 /**
  * Mock implementation of {@link SlingSettingsService}.
  */
-public class MockSlingSettingService implements SlingSettingsService {
+public final class MockSlingSettingService implements SlingSettingsService {
 
   private Set<String> runModes;
 

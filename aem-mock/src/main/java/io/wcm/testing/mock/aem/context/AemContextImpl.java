@@ -25,7 +25,7 @@ import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.osgi.MockOsgi;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
-import io.wcm.testing.mock.sling.contentimport.JsonImporter;
+import io.wcm.testing.mock.sling.loader.ContentLoader;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
 import io.wcm.testing.mock.sling.services.MockModelAdapterFactory;
 import io.wcm.testing.mock.sling.services.MockSlingSettingService;
@@ -85,7 +85,7 @@ public class AemContextImpl<WrapperType> {
   private MockSlingHttpServletRequest request;
   private MockSlingHttpServletResponse response;
   private SlingScriptHelper slingScriptHelper;
-  private JsonImporter jsonImporter;
+  private ContentLoader contentLoader;
   private ContentBuilder contentBuilder;
 
   /**
@@ -161,7 +161,7 @@ public class AemContextImpl<WrapperType> {
     this.request = null;
     this.response = null;
     this.slingScriptHelper = null;
-    this.jsonImporter = null;
+    this.contentLoader = null;
     this.contentBuilder = null;
 
     MockSling.clearAdapterManagerBundleContext();
@@ -253,13 +253,13 @@ public class AemContextImpl<WrapperType> {
   }
 
   /**
-   * @return JSON importer
+   * @return Content loader
    */
-  public JsonImporter jsonImporter() {
-    if (this.jsonImporter == null) {
-      this.jsonImporter = new JsonImporter(resourceResolver());
+  public ContentLoader contentLoader() {
+    if (this.contentLoader == null) {
+      this.contentLoader = new ContentLoader(resourceResolver());
     }
-    return this.jsonImporter;
+    return this.contentLoader;
   }
 
   /**

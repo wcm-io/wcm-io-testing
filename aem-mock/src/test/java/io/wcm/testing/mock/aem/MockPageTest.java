@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -53,8 +52,7 @@ public class MockPageTest {
 
   @Before
   public void setUp() throws Exception {
-    JsonImporter jsonImporter = this.context.jsonImporter();
-    jsonImporter.importTo("/json-import-samples/content.json", "/content/sample/en");
+    context.contentLoader().importTo("/json-import-samples/content.json", "/content/sample/en");
 
     Resource resource = this.context.resourceResolver().getResource("/content/sample/en");
     this.page = resource.adaptTo(Page.class);
@@ -177,7 +175,7 @@ public class MockPageTest {
 
   @Test
   public void testTemplate() throws PersistenceException, IOException {
-    this.context.jsonImporter().importTo("/json-import-samples/application.json", "/apps/sample");
+    this.context.contentLoader().importTo("/json-import-samples/application.json", "/apps/sample");
     assertNotNull(this.page.getTemplate());
   }
 

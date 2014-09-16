@@ -57,7 +57,7 @@ import org.reflections.Reflections;
  */
 @Component(inherit = false)
 @Service(AdapterFactory.class)
-public class MockModelAdapterFactory extends ModelAdapterFactory {
+public final class MockModelAdapterFactory extends ModelAdapterFactory {
 
   private final BundleContext bundleContext;
 

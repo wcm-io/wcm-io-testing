@@ -43,7 +43,7 @@ import org.apache.sling.api.adapter.SlingAdaptable;
 /**
  * Mock {@link SlingHttpServletResponse} implementation.
  */
-public class MockSlingHttpServletResponse extends SlingAdaptable implements SlingHttpServletResponse {
+public final class MockSlingHttpServletResponse extends SlingAdaptable implements SlingHttpServletResponse {
 
   private static final String CHARSET_SEPARATOR = ";charset=";
 

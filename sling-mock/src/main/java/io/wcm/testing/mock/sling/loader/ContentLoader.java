@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.sling.contentimport;
+package io.wcm.testing.mock.sling.loader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,25 +42,26 @@ import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.commons.json.jcr.JsonItemWriter;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
  * Mounts a JSON file into a sling resource hierarchy.
  */
-public class JsonImporter {
+public final class ContentLoader {
 
   private static final String REFERENCE = "jcr:reference:";
   private static final String PATH = "jcr:path:";
 
-  private static final Set<String> IGNORED_NAMES = new HashSet<>();
-  static {
-    IGNORED_NAMES.add(JcrConstants.JCR_PRIMARYTYPE);
-    IGNORED_NAMES.add(JcrConstants.JCR_MIXINTYPES);
-    IGNORED_NAMES.add(JcrConstants.JCR_UUID);
-    IGNORED_NAMES.add(JcrConstants.JCR_BASEVERSION);
-    IGNORED_NAMES.add(JcrConstants.JCR_PREDECESSORS);
-    IGNORED_NAMES.add(JcrConstants.JCR_SUCCESSORS);
-    IGNORED_NAMES.add(JcrConstants.JCR_CREATED);
-    IGNORED_NAMES.add("jcr:checkedOut");
-  }
+  private static final Set<String> IGNORED_NAMES = ImmutableSet.of(
+      JcrConstants.JCR_PRIMARYTYPE,
+      JcrConstants.JCR_MIXINTYPES,
+      JcrConstants.JCR_UUID,
+      JcrConstants.JCR_BASEVERSION,
+      JcrConstants.JCR_PREDECESSORS,
+      JcrConstants.JCR_SUCCESSORS,
+      JcrConstants.JCR_CREATED,
+      "jcr:checkedOut"
+      );
 
   private final ResourceResolver resourceResolver;
   private final DateFormat calendarFormat;
@@ -69,7 +69,7 @@ public class JsonImporter {
   /**
    * @param resourceResolver Resource resolver
    */
-  public JsonImporter(final ResourceResolver resourceResolver) {
+  public ContentLoader(ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
     this.calendarFormat = new SimpleDateFormat(JsonItemWriter.ECMA_DATE_FORMAT, JsonItemWriter.DATE_FORMAT_LOCALE);
   }
@@ -83,9 +83,9 @@ public class JsonImporter {
    * @throws IOException
    * @throws PersistenceException
    */
-  public Resource importTo(final String classpathResource, final Resource parentResource, final String childName)
+  public Resource importTo(String classpathResource, Resource parentResource, String childName)
       throws IOException, PersistenceException {
-    InputStream is = JsonImporter.class.getResourceAsStream(classpathResource);
+    InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
     if (is == null) {
       throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
     }
@@ -107,7 +107,7 @@ public class JsonImporter {
    * @throws IOException
    * @throws PersistenceException
    */
-  public Resource importTo(final String classpathResource, final String destPath)
+  public Resource importTo(String classpathResource, String destPath)
       throws IOException, PersistenceException {
     return importTo(classpathResource, destPath, true);
   }
@@ -121,9 +121,9 @@ public class JsonImporter {
    * @throws IOException
    * @throws PersistenceException
    */
-  public Resource importTo(final String classpathResource, final String destPath, final boolean autoCreateParent)
+  public Resource importTo(String classpathResource, String destPath, boolean autoCreateParent)
       throws IOException, PersistenceException {
-    InputStream is = JsonImporter.class.getResourceAsStream(classpathResource);
+    InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
     if (is == null) {
       throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
     }
@@ -144,7 +144,7 @@ public class JsonImporter {
    * @throws IOException
    * @throws PersistenceException
    */
-  public Resource importTo(final InputStream inputStream, final Resource parentResource, final String childName)
+  public Resource importTo(InputStream inputStream, Resource parentResource, String childName)
       throws IOException, PersistenceException {
     return importTo(inputStream, parentResource.getPath() + "/" + childName);
   }
@@ -158,7 +158,7 @@ public class JsonImporter {
    * @throws IOException
    * @throws PersistenceException
    */
-  public Resource importTo(final InputStream inputStream, final String destPath)
+  public Resource importTo(InputStream inputStream, String destPath)
       throws IOException, PersistenceException {
     return importTo(inputStream, destPath, true);
   }
@@ -172,7 +172,7 @@ public class JsonImporter {
    * @throws IOException
    * @throws PersistenceException
    */
-  public Resource importTo(final InputStream inputStream, final String destPath, final boolean autoCreateParent)
+  public Resource importTo(InputStream inputStream, String destPath, boolean autoCreateParent)
       throws IOException, PersistenceException {
     try {
       String parentPath = ResourceUtil.getParent(destPath);
@@ -200,7 +200,7 @@ public class JsonImporter {
     }
   }
 
-  private Resource createResourceHierarchy(final String path) throws PersistenceException {
+  private Resource createResourceHierarchy(String path) throws PersistenceException {
     String parentPath = ResourceUtil.getParent(path);
     if (parentPath == null) {
       return null;
@@ -214,7 +214,7 @@ public class JsonImporter {
     return this.resourceResolver.create(parentResource, ResourceUtil.getName(path), props);
   }
 
-  private Resource createResource(final Resource parentResource, final String childName, final JSONObject jsonObject)
+  private Resource createResource(Resource parentResource, String childName, JSONObject jsonObject)
       throws JSONException, PersistenceException {
 
     // collect all properties first
@@ -258,7 +258,7 @@ public class JsonImporter {
     return resource;
   }
 
-  private void setProperty(final Map<String, Object> props, final String name, final Object value) throws JSONException {
+  private void setProperty(Map<String, Object> props, String name, Object value) throws JSONException {
     if (value instanceof JSONArray) {
       // multivalue
       final JSONArray array = (JSONArray)value;
@@ -329,7 +329,7 @@ public class JsonImporter {
     }
   }
 
-  private String getName(final String name) {
+  private String getName(String name) {
     if (name.startsWith(REFERENCE)) {
       return name.substring(REFERENCE.length());
     }
@@ -339,7 +339,7 @@ public class JsonImporter {
     return name;
   }
 
-  private String convertToJsonString(final InputStream inputStream) throws IOException {
+  private String convertToJsonString(InputStream inputStream) throws IOException {
     try {
       return IOUtils.toString(inputStream);
     }
@@ -348,7 +348,7 @@ public class JsonImporter {
     }
   }
 
-  private Calendar tryParseCalendarValue(final String value) {
+  private Calendar tryParseCalendarValue(String value) {
     if (StringUtils.isNotBlank(value)) {
       synchronized (this.calendarFormat) {
         try {

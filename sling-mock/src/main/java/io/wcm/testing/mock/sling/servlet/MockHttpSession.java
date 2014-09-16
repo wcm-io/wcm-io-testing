@@ -32,7 +32,7 @@ import org.apache.commons.collections.IteratorUtils;
 /**
  * Mock {@link HttpSession} implementation.
  */
-public class MockHttpSession implements HttpSession {
+public final class MockHttpSession implements HttpSession {
 
   private final ServletContext servletContext = new MockServletContext();
   private final Map<String, Object> attributeMap = new HashMap<String, Object>();

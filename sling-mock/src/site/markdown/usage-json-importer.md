@@ -2,7 +2,7 @@
 
 ### Import resource data from JSON file
 
-With the `JsonImporter` it is possible to import structured resource and property data from a JSON file stored
+With the `ContentLoader` it is possible to import structured resource and property data from a JSON file stored
 in the classpath beneath the unit tests. This data can be used as text fixture for unit tests.
 
 Example JSON data:
@@ -34,8 +34,8 @@ Example code to import the JSON data:
 
 ```java
 ResourceResolver resolver = MockSling.newResourceResolver();
-JsonImporter jsonImporter = new JsonImporter(resolver);
-jsonImporter.importTo("/sample-data.json", "/content/sample/en");
+ContentLoader contentLoader = new ContentLoader(resolver);
+contentLoader.importTo("/sample-data.json", "/content/sample/en");
 ```
 
 This codes creates a new resource at `/content/sample/en` (and - if not existent - the parent resources) and

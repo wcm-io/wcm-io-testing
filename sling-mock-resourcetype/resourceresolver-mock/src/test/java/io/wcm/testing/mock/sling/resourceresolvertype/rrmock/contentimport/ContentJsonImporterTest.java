@@ -24,7 +24,7 @@ import io.wcm.testing.mock.sling.ResourceResolverType;
 
 import org.apache.sling.api.resource.ResourceResolver;
 
-public class ContentJsonImporterTest extends io.wcm.testing.mock.sling.contentimport.ContentJsonImporterTest {
+public class ContentJsonImporterTest extends io.wcm.testing.mock.sling.loader.ContentLoaderTest {
 
   @Override
   protected ResourceResolverType getResourceResolverType() {

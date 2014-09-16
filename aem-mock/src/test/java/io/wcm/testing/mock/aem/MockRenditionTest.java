@@ -22,7 +22,6 @@ package io.wcm.testing.mock.aem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
@@ -41,8 +40,7 @@ public class MockRenditionTest {
 
   @Before
   public void setUp() throws Exception {
-    JsonImporter jsonImporter = this.context.jsonImporter();
-    jsonImporter.importTo("/json-import-samples/dam.json", "/content/dam/sample");
+    context.contentLoader().importTo("/json-import-samples/dam.json", "/content/dam/sample");
 
     Resource resource = this.context.resourceResolver()
         .getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/original");

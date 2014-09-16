@@ -33,7 +33,7 @@ import org.junit.Ignore;
 
 // TEST IS DISABLED currently, it does not work with jackrabbit repository yet
 @Ignore
-public class ContentJsonImporterTest extends io.wcm.testing.mock.sling.contentimport.ContentJsonImporterTest {
+public class ContentJsonImporterTest extends io.wcm.testing.mock.sling.loader.ContentLoaderTest {
 
   @Override
   protected ResourceResolverType getResourceResolverType() {

@@ -28,7 +28,7 @@ import io.wcm.testing.junit.rules.parameterized.Generator;
 import io.wcm.testing.junit.rules.parameterized.GeneratorFactory;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
-import io.wcm.testing.mock.sling.contentimport.JsonImporter;
+import io.wcm.testing.mock.sling.loader.ContentLoader;
 import io.wcm.testing.mock.sling.services.MockMimeTypeService;
 import io.wcm.testing.mock.sling.servlet.MockSlingHttpServletRequest;
 
@@ -69,9 +69,9 @@ public class AemContextImplTest {
     this.context.setResourceResolverType(resourceResolverType.value());
     this.context.setUp();
 
-    JsonImporter jsonImporter = this.context.jsonImporter();
-    jsonImporter.importTo("/json-import-samples/application.json", "/apps/sample");
-    jsonImporter.importTo("/json-import-samples/content.json", "/content/sample/en");
+    ContentLoader contentLoader = this.context.contentLoader();
+    contentLoader.importTo("/json-import-samples/application.json", "/apps/sample");
+    contentLoader.importTo("/json-import-samples/content.json", "/content/sample/en");
   }
 
   @Test

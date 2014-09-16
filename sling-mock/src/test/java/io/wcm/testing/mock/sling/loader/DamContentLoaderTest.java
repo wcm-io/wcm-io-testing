@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.sling.contentimport;
+package io.wcm.testing.mock.sling.loader;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -37,7 +37,7 @@ import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DamJsonImporterTest {
+public class DamContentLoaderTest {
 
   private ResourceResolver resourceResolver;
 
@@ -67,8 +67,8 @@ public class DamJsonImporterTest {
   @Before
   public final void setUp() throws PersistenceException, IOException {
     this.resourceResolver = newResourceResolver();
-    JsonImporter jsonImporter = new JsonImporter(this.resourceResolver);
-    jsonImporter.importTo("/json-import-samples/dam.json", "/content/dam/sample");
+    ContentLoader contentLoader = new ContentLoader(this.resourceResolver);
+    contentLoader.importTo("/json-import-samples/dam.json", "/content/dam/sample");
   }
 
   @Test

@@ -65,7 +65,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 /**
  * Mock {@link SlingHttpServletRequest} implementation.
  */
-public class MockSlingHttpServletRequest extends SlingAdaptable implements SlingHttpServletRequest {
+public final class MockSlingHttpServletRequest extends SlingAdaptable implements SlingHttpServletRequest {
 
   private final ResourceResolver resourceResolver;
   private final RequestPathInfo requestPathInfo = new MockRequestPathInfo();

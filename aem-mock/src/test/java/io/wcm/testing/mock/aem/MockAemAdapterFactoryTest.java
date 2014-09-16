@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.sling.ResourceResolverType;
-import io.wcm.testing.mock.sling.contentimport.JsonImporter;
+import io.wcm.testing.mock.sling.loader.ContentLoader;
 
 import java.io.IOException;
 
@@ -48,9 +48,9 @@ public class MockAemAdapterFactoryTest {
 
   @Before
   public void setUp() throws PersistenceException, IOException {
-    JsonImporter jsonImporter = this.context.jsonImporter();
-    jsonImporter.importTo("/json-import-samples/application.json", "/apps/sample");
-    jsonImporter.importTo("/json-import-samples/content.json", "/content/sample/en");
+    ContentLoader contentLoader = this.context.contentLoader();
+    contentLoader.importTo("/json-import-samples/application.json", "/apps/sample");
+    contentLoader.importTo("/json-import-samples/content.json", "/content/sample/en");
   }
 
   @Test

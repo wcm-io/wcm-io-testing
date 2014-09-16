@@ -41,7 +41,7 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 /**
  * Mock {@link ServletContext} implementation.
  */
-public class MockServletContext implements ServletContext {
+public final class MockServletContext implements ServletContext {
 
   @Override
   public String getMimeType(final String file) {

@@ -52,7 +52,7 @@ See [Sling Mocks Usage][usage-mocks].
 
 Additional features provided:
 
-* `JsonImporter` supports importing JSON data into the mock resource hierarchy to easily prepare a test fixture
+* `ContentLoader` supports importing JSON data into the mock resource hierarchy to easily prepare a test fixture
   consisting of a hierarchy of resources and properties.
     * The same JSON format can be used that is provided by the Sling GET servlet for output
 

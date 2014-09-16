@@ -33,7 +33,7 @@ import org.junit.Ignore;
 
 //TEST IS DISABLED currently, it does not work with jackrabbit repository yet
 @Ignore
-public class DamJsonImporterTest extends io.wcm.testing.mock.sling.contentimport.DamJsonImporterTest {
+public class DamJsonImporterTest extends io.wcm.testing.mock.sling.loader.DamContentLoaderTest {
 
   @Override
   protected ResourceResolverType getResourceResolverType() {

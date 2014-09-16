@@ -35,7 +35,7 @@ import org.osgi.service.component.ComponentContext;
  */
 @Component(inherit = false)
 @Service(MimeTypeService.class)
-public class MockMimeTypeService extends MimeTypeServiceImpl {
+public final class MockMimeTypeService extends MimeTypeServiceImpl {
 
   private boolean initialized;
 

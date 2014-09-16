@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.sling.contentimport.JsonImporter;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
@@ -41,8 +40,7 @@ public class MockTemplateTest {
 
   @Before
   public void setUp() throws Exception {
-    JsonImporter jsonImporter = this.context.jsonImporter();
-    jsonImporter.importTo("/json-import-samples/application.json", "/apps/sample");
+    context.contentLoader().importTo("/json-import-samples/application.json", "/apps/sample");
 
     Resource resource = this.context.resourceResolver().getResource("/apps/sample/templates/homepage");
     this.template = resource.adaptTo(Template.class);

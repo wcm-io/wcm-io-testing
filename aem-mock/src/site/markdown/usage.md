@@ -47,7 +47,7 @@ Additionally it supports:
 ### JSON Data as Test Fixture
 
 Although it is possible to create a resource data hierarchy as text fixture manually using either Sling CRUD API
-or JCR API this can getting very tedious and affords a lot of boilerplate code. To make this easier a `JsonImporter`
+or JCR API this can getting very tedious and affords a lot of boilerplate code. To make this easier a `ContentLoader`
 is provided which allows importing sample data stored as a JSON file in the classpath of the unit test and running
 the tests against this. This importer is provided by the [Sling Mocks][sling-mock] implementation.
 
@@ -86,7 +86,7 @@ public class ExampleTest {
 
   @Before
   public void setUp() throws Exception {
-    context.jsonImporter().importTo("/sample-data.json", "/content/sample/en");
+    context.contentLoader().importTo("/sample-data.json", "/content/sample/en");
   }
 
   @Test
@@ -253,7 +253,7 @@ public final class AppAemContext {
       context.registerService(new AemObjectInjector());
 
       // import sample content
-      context.jsonImporter().importTo("/sample-content.json", "/content/sample/en");
+      context.contentLoader().importTo("/sample-content.json", "/content/sample/en");
 
       // set default current page
       context.currentPage("/content/sample/en");
