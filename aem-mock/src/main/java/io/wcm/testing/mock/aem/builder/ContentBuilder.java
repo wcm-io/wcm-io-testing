@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem.context;
+package io.wcm.testing.mock.aem.builder;
 
 import java.util.Map;
 
@@ -25,12 +25,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
 import com.google.common.collect.ImmutableMap;
 
@@ -39,10 +41,13 @@ import com.google.common.collect.ImmutableMap;
  */
 public final class ContentBuilder {
 
-  private final AemContextImpl context;
+  private final ResourceResolver resourceResolver;
 
-  ContentBuilder(AemContextImpl context) {
-    this.context = context;
+  /**
+   * @param resourceResolver Resource resolver
+   */
+  public ContentBuilder(ResourceResolver resourceResolver) {
+    this.resourceResolver = resourceResolver;
   }
 
   /**
@@ -83,15 +88,45 @@ public final class ContentBuilder {
     ensureResourceExists(parentPath);
     String name = ResourceUtil.getName(path);
     try {
-      Page page = context.pageManager().create(parentPath, name, template, name, true);
+      PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
+      Page page = pageManager.create(parentPath, name, template, name, true);
       if (!contentProperties.isEmpty()) {
         ModifiableValueMap pageProperties = page.getContentResource().adaptTo(ModifiableValueMap.class);
         pageProperties.putAll(contentProperties);
-        context.resourceResolver().commit();
+        resourceResolver.commit();
       }
       return page;
     }
     catch (WCMException | PersistenceException ex) {
+      throw new RuntimeException("Unable to create page at " + path, ex);
+    }
+  }
+
+  /**
+   * Create resource.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param path Page path
+   * @return Resource object
+   */
+  public Resource resource(String path) {
+    return resource(path, ValueMap.EMPTY);
+  }
+
+  /**
+   * Create resource.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param path Page path
+   * @param properties Properties for resource.
+   * @return Resource object
+   */
+  public Resource resource(String path, Map<String, Object> properties) {
+    String parentPath = ResourceUtil.getParent(path);
+    Resource parentResource = ensureResourceExists(parentPath);
+    String name = ResourceUtil.getName(path);
+    try {
+      return resourceResolver.create(parentResource, name, properties);
+    }
+    catch (PersistenceException ex) {
       throw new RuntimeException("Unable to create page at " + path, ex);
     }
   }
@@ -104,9 +139,9 @@ public final class ContentBuilder {
    */
   private Resource ensureResourceExists(String path) {
     if (StringUtils.isEmpty(path) || StringUtils.equals(path, "/")) {
-      return context.resourceResolver().getResource("/");
+      return resourceResolver.getResource("/");
     }
-    Resource resource = context.resourceResolver().getResource(path);
+    Resource resource = resourceResolver.getResource(path);
     if (resource != null) {
       return resource;
     }
@@ -114,9 +149,9 @@ public final class ContentBuilder {
     String name = ResourceUtil.getName(path);
     Resource parentResource = ensureResourceExists(parentPath);
     try {
-      resource = context.resourceResolver().create(parentResource, name, ImmutableMap.<String, Object>builder()
+      resource = resourceResolver.create(parentResource, name, ImmutableMap.<String, Object>builder()
           .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_UNSTRUCTURED).build());
-      context.resourceResolver().commit();
+      resourceResolver.commit();
       return resource;
     }
     catch (PersistenceException ex) {

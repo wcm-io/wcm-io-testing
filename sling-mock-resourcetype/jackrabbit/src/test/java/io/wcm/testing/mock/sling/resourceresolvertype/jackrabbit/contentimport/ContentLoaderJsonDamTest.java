@@ -17,23 +17,42 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.sling.resourceresolvertype.rrmock.contentimport;
+package io.wcm.testing.mock.sling.resourceresolvertype.jackrabbit.contentimport;
 
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
-import org.apache.sling.api.resource.ResourceResolver;
+import java.io.IOException;
 
-public class ContentJsonImporterTest extends io.wcm.testing.mock.sling.loader.ContentLoaderTest {
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.commons.testing.jcr.RepositoryUtil;
+import org.junit.Ignore;
+
+//TEST IS DISABLED currently, it does not work with jackrabbit repository yet
+@Ignore
+public class ContentLoaderJsonDamTest extends io.wcm.testing.mock.sling.loader.ContentLoaderJsonDamTest {
 
   @Override
   protected ResourceResolverType getResourceResolverType() {
-    return ResourceResolverType.RESOURCERESOLVER_MOCK;
+    return ResourceResolverType.JCR_JACKRABBIT;
   }
 
   @Override
   protected ResourceResolver newResourceResolver() {
-    return MockSling.newResourceResolver(getResourceResolverType());
+    ResourceResolver resolver = MockSling.newResourceResolver(getResourceResolverType());
+
+    // register sling node types
+    try {
+      RepositoryUtil.registerSlingNodeTypes(resolver.adaptTo(Session.class));
+    }
+    catch (IOException | RepositoryException ex) {
+      throw new RuntimeException("Unable to register sling node types.", ex);
+    }
+
+    return resolver;
   }
 
 }

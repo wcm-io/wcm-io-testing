@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class MockPageTest {
 
   @Before
   public void setUp() throws Exception {
-    context.contentLoader().importTo("/json-import-samples/content.json", "/content/sample/en");
+    context.load().json("/json-import-samples/content.json", "/content/sample/en");
 
     Resource resource = this.context.resourceResolver().getResource("/content/sample/en");
     this.page = resource.adaptTo(Page.class);
@@ -174,8 +173,8 @@ public class MockPageTest {
   }
 
   @Test
-  public void testTemplate() throws PersistenceException, IOException {
-    this.context.contentLoader().importTo("/json-import-samples/application.json", "/apps/sample");
+  public void testTemplate() {
+    this.context.load().json("/json-import-samples/application.json", "/apps/sample");
     assertNotNull(this.page.getTemplate());
   }
 

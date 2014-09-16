@@ -15,6 +15,7 @@ Mock implementation of selected AEM APIs.
 ### Documentation
 
 * [Usage](usage.html)
+* [Test content loading and creation](usage-content-loader-builder.html)
 * [API Documentation](apidocs/)
 * [Changelog](changes-report.html)
 
@@ -27,8 +28,10 @@ The mock implementation supports:
 * Implementation of AEM WCM API objects `PageManager`, `Page` and `Template`
 * Implementation of AEM DAM API objects `Asset` and `Rendition`
 * JUnit rule for easy access to all context objects and registering adapter factories and OSGi services
+* Import and create test content for unit tests (see [Test content loading and creation](usage-content-loader-builder.html))
 * Registers OSGi services and adapter factories supported by the mock implementations
 * Full support for Sling Models
+* Setting run modes
 * Layer adapter factory
 
 The following features are *not supported*:

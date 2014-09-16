@@ -40,7 +40,7 @@ public class MockRenditionTest {
 
   @Before
   public void setUp() throws Exception {
-    context.contentLoader().importTo("/json-import-samples/dam.json", "/content/dam/sample");
+    context.load().json("/json-import-samples/dam.json", "/content/dam/sample");
 
     Resource resource = this.context.resourceResolver()
         .getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/original");

@@ -28,8 +28,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-import java.io.IOException;
-
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -61,7 +59,7 @@ public class MockPageManagerTest {
     // allow to verify calls to resource resolver
     this.resourceResolver = spy(this.context.resourceResolver());
 
-    context.contentLoader().importTo("/json-import-samples/content.json", "/content/sample/en");
+    context.load().json("/json-import-samples/content.json", "/content/sample/en");
 
     this.pageManager = this.resourceResolver.adaptTo(PageManager.class);
   }
@@ -164,8 +162,8 @@ public class MockPageManagerTest {
   }
 
   @Test
-  public void testGetTemplate() throws PersistenceException, IOException {
-    this.context.contentLoader().importTo("/json-import-samples/application.json", "/apps/sample");
+  public void testGetTemplate() {
+    this.context.load().json("/json-import-samples/application.json", "/apps/sample");
     assertNotNull(this.pageManager.getTemplate("/apps/sample/templates/homepage"));
     assertNull(this.pageManager.getTemplate("/apps/sample/templates/nonExisting"));
   }

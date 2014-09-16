@@ -40,7 +40,7 @@ public class MockTemplateTest {
 
   @Before
   public void setUp() throws Exception {
-    context.contentLoader().importTo("/json-import-samples/application.json", "/apps/sample");
+    context.load().json("/json-import-samples/application.json", "/apps/sample");
 
     Resource resource = this.context.resourceResolver().getResource("/apps/sample/templates/homepage");
     this.template = resource.adaptTo(Template.class);

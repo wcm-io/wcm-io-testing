@@ -19,12 +19,12 @@
  */
 package io.wcm.testing.mock.sling.loader;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import javax.jcr.NamespaceRegistry;
@@ -33,14 +33,13 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.jackrabbit.JcrConstants;
-import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ContentLoaderTest {
+public class ContentLoaderJsonTest {
 
   private ResourceResolver resourceResolver;
 
@@ -68,10 +67,10 @@ public class ContentLoaderTest {
   }
 
   @Before
-  public final void setUp() throws PersistenceException, IOException {
+  public final void setUp() {
     this.resourceResolver = newResourceResolver();
     ContentLoader contentLoader = new ContentLoader(this.resourceResolver);
-    contentLoader.importTo("/json-import-samples/content.json", "/content/sample/en");
+    contentLoader.json("/json-import-samples/content.json", "/content/sample/en");
   }
 
   @Test
@@ -109,6 +108,20 @@ public class ContentLoaderTest {
     assertEquals(2009, calendar.get(Calendar.YEAR));
     assertEquals(10, calendar.get(Calendar.MONTH));
     assertEquals(5, calendar.get(Calendar.DAY_OF_MONTH));
+
+    assertEquals((Long)1234567890123L, props.get("longProp", Long.class));
+    assertEquals(1.2345d, props.get("decimalProp", Double.class), 0.00001d);
+    assertEquals(true, props.get("booleanProp", Boolean.class));
+
+    assertArrayEquals(new Long[] {
+        1234567890123L, 55L
+    }, props.get("longPropMulti", Long[].class));
+    assertArrayEquals(new Double[] {
+        1.2345d, 1.1d
+    }, props.get("decimalPropMulti", Double[].class));
+    assertArrayEquals(new Boolean[] {
+        true, false
+    }, props.get("booleanPropMulti", Boolean[].class));
   }
 
   @Test

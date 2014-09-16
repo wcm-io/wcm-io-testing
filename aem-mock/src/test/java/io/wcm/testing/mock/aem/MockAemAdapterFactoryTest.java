@@ -25,9 +25,6 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 import io.wcm.testing.mock.sling.loader.ContentLoader;
 
-import java.io.IOException;
-
-import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,10 +44,10 @@ public class MockAemAdapterFactoryTest {
       );
 
   @Before
-  public void setUp() throws PersistenceException, IOException {
-    ContentLoader contentLoader = this.context.contentLoader();
-    contentLoader.importTo("/json-import-samples/application.json", "/apps/sample");
-    contentLoader.importTo("/json-import-samples/content.json", "/content/sample/en");
+  public void setUp() {
+    ContentLoader contentLoader = this.context.load();
+    contentLoader.json("/json-import-samples/application.json", "/apps/sample");
+    contentLoader.json("/json-import-samples/content.json", "/content/sample/en");
   }
 
   @Test

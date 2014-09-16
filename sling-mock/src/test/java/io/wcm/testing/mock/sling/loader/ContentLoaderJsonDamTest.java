@@ -24,20 +24,17 @@ import static org.junit.Assert.assertEquals;
 import io.wcm.testing.mock.sling.MockSling;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
-import java.io.IOException;
-
 import javax.jcr.NamespaceRegistry;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DamContentLoaderTest {
+public class ContentLoaderJsonDamTest {
 
   private ResourceResolver resourceResolver;
 
@@ -65,10 +62,10 @@ public class DamContentLoaderTest {
   }
 
   @Before
-  public final void setUp() throws PersistenceException, IOException {
+  public final void setUp() {
     this.resourceResolver = newResourceResolver();
     ContentLoader contentLoader = new ContentLoader(this.resourceResolver);
-    contentLoader.importTo("/json-import-samples/dam.json", "/content/dam/sample");
+    contentLoader.json("/json-import-samples/dam.json", "/content/dam/sample");
   }
 
   @Test

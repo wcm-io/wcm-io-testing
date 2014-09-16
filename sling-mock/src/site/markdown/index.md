@@ -15,7 +15,7 @@ Mock implementation of selected Sling APIs.
 ### Documentation
 
 * [Sling Mocks Usage][usage-mocks]
-* [JSON Importer Usage][usage-json-importer]
+* [Content Loader Usage][usage-content-loader]
 * [API Documentation][apidocs]
 * [Changelog][changelog]
 
@@ -52,13 +52,13 @@ See [Sling Mocks Usage][usage-mocks].
 
 Additional features provided:
 
-* `ContentLoader` supports importing JSON data into the mock resource hierarchy to easily prepare a test fixture
-  consisting of a hierarchy of resources and properties.
+* `ContentLoader` supports importing JSON data and binary data into the mock resource hierarchy to easily 
+  prepare a test fixture consisting of a hierarchy of resources and properties.
     * The same JSON format can be used that is provided by the Sling GET servlet for output
 
-See [JSON Importer Usage][usage-json-importer].
+See [Content Loader Usage][usage-content-loader].
 
 [usage-mocks]: usage-mocks.html
-[usage-json-importer]: usage-json-importer.html
+[usage-content-loader]: usage-content-loader.html
 [apidocs]: apidocs/
 [changelog]: changes-report.html

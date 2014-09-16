@@ -41,16 +41,21 @@ import org.apache.sling.commons.json.JSONArray;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.commons.json.jcr.JsonItemWriter;
+import org.apache.sling.commons.mime.MimeTypeService;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * Mounts a JSON file into a sling resource hierarchy.
+ * Imports JSON data and binary data into Sling resource hierarchy.
  */
 public final class ContentLoader {
 
   private static final String REFERENCE = "jcr:reference:";
   private static final String PATH = "jcr:path:";
+  private static final String CONTENTTYPE_OCTET_STREAM = "application/octet-stream";
 
   private static final Set<String> IGNORED_NAMES = ImmutableSet.of(
       JcrConstants.JCR_PRIMARYTYPE,
@@ -64,128 +69,102 @@ public final class ContentLoader {
       );
 
   private final ResourceResolver resourceResolver;
+  private final BundleContext bundleContext;
   private final DateFormat calendarFormat;
 
   /**
    * @param resourceResolver Resource resolver
    */
   public ContentLoader(ResourceResolver resourceResolver) {
+    this(resourceResolver, null);
+  }
+
+  /**
+   * @param resourceResolver Resource resolver
+   * @param bundleContext Bundle context
+   */
+  public ContentLoader(ResourceResolver resourceResolver, BundleContext bundleContext) {
     this.resourceResolver = resourceResolver;
+    this.bundleContext = bundleContext;
     this.calendarFormat = new SimpleDateFormat(JsonItemWriter.ECMA_DATE_FORMAT, JsonItemWriter.DATE_FORMAT_LOCALE);
   }
 
   /**
-   * Mount content of JSON file.
+   * Import content of JSON file into repository.
    * @param classpathResource Classpath resource URL for JSON content
    * @param parentResource Parent resource
    * @param childName Name of child resource to create with JSON content
    * @return Resource
-   * @throws IOException
-   * @throws PersistenceException
    */
-  public Resource importTo(String classpathResource, Resource parentResource, String childName)
-      throws IOException, PersistenceException {
+  public Resource json(String classpathResource, Resource parentResource, String childName) {
     InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
     if (is == null) {
       throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
     }
     try {
-      return importTo(is, parentResource, childName);
+      return json(is, parentResource, childName);
     }
     finally {
-      is.close();
+      try {
+        is.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
     }
-
   }
 
   /**
-   * Mount content of JSON file.
-   * Auto-create parent hierarchies as nt:unstrucured nodes if missing.
+   * Import content of JSON file into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
    * @param classpathResource Classpath resource URL for JSON content
    * @param destPath Path to import the JSON content to
    * @return Resource
-   * @throws IOException
-   * @throws PersistenceException
    */
-  public Resource importTo(String classpathResource, String destPath)
-      throws IOException, PersistenceException {
-    return importTo(classpathResource, destPath, true);
-  }
-
-  /**
-   * Mount content of JSON file.
-   * @param classpathResource Classpath resource URL for JSON content
-   * @param destPath Path to import the JSON content to
-   * @param autoCreateParent Auto-create parent hierarchies as nt:unstrucured nodes if missing.
-   * @return Resource
-   * @throws IOException
-   * @throws PersistenceException
-   */
-  public Resource importTo(String classpathResource, String destPath, boolean autoCreateParent)
-      throws IOException, PersistenceException {
+  public Resource json(String classpathResource, String destPath) {
     InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
     if (is == null) {
       throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
     }
     try {
-      return importTo(is, destPath, autoCreateParent);
+      return json(is, destPath);
     }
     finally {
-      is.close();
+      try {
+        is.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
     }
   }
 
   /**
-   * Mount content of JSON file.
+   * Import content of JSON file into repository.
    * @param inputStream Input stream with JSON content
    * @param parentResource Parent resource
    * @param childName Name of child resource to create with JSON content
    * @return Resource
-   * @throws IOException
-   * @throws PersistenceException
    */
-  public Resource importTo(InputStream inputStream, Resource parentResource, String childName)
-      throws IOException, PersistenceException {
-    return importTo(inputStream, parentResource.getPath() + "/" + childName);
+  public Resource json(InputStream inputStream, Resource parentResource, String childName) {
+    return json(inputStream, parentResource.getPath() + "/" + childName);
   }
 
   /**
-   * Mount content of JSON file.
-   * Auto-create parent hierarchies as nt:unstrucured nodes if missing.
+   * Import content of JSON file into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
    * @param inputStream Input stream with JSON content
    * @param destPath Path to import the JSON content to
    * @return Resource
-   * @throws IOException
-   * @throws PersistenceException
    */
-  public Resource importTo(InputStream inputStream, String destPath)
-      throws IOException, PersistenceException {
-    return importTo(inputStream, destPath, true);
-  }
-
-  /**
-   * Mount content of JSON file
-   * @param inputStream Input stream with JSON content
-   * @param destPath Path to import the JSON content to
-   * @param autoCreateParent Auto-create parent hierarchies as nt:unstrucured nodes if missing.
-   * @return Resource
-   * @throws IOException
-   * @throws PersistenceException
-   */
-  public Resource importTo(InputStream inputStream, String destPath, boolean autoCreateParent)
-      throws IOException, PersistenceException {
+  public Resource json(InputStream inputStream, String destPath) {
     try {
       String parentPath = ResourceUtil.getParent(destPath);
       String childName = ResourceUtil.getName(destPath);
 
-      Resource parentResource = this.resourceResolver.getResource(parentPath);
+      Resource parentResource = resourceResolver.getResource(parentPath);
       if (parentResource == null) {
-        if (autoCreateParent) {
-          parentResource = createResourceHierarchy(parentPath);
-        }
-        else {
-          throw new IllegalArgumentException("Parent resource does not exist: " + parentPath);
-        }
+        parentResource = createResourceHierarchy(parentPath);
       }
       if (parentResource.getChild(childName) != null) {
         throw new IllegalArgumentException("Resource does already exist: " + destPath);
@@ -195,27 +174,32 @@ public final class ContentLoader {
       JSONObject json = new JSONObject(jsonString);
       return this.createResource(parentResource, childName, json);
     }
-    catch (JSONException je) {
-      throw (IOException)new IOException(je.getMessage()).initCause(je);
+    catch (JSONException | IOException ex) {
+      throw new RuntimeException(ex);
     }
   }
 
-  private Resource createResourceHierarchy(String path) throws PersistenceException {
+  private Resource createResourceHierarchy(String path) {
     String parentPath = ResourceUtil.getParent(path);
     if (parentPath == null) {
       return null;
     }
-    Resource parentResource = this.resourceResolver.getResource(parentPath);
+    Resource parentResource = resourceResolver.getResource(parentPath);
     if (parentResource == null) {
       parentResource = createResourceHierarchy(parentPath);
     }
     Map<String, Object> props = new HashMap<>();
     props.put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_UNSTRUCTURED);
-    return this.resourceResolver.create(parentResource, ResourceUtil.getName(path), props);
+    try {
+      return resourceResolver.create(parentResource, ResourceUtil.getName(path), props);
+    }
+    catch (PersistenceException ex) {
+      throw new RuntimeException(ex);
+    }
   }
 
   private Resource createResource(Resource parentResource, String childName, JSONObject jsonObject)
-      throws JSONException, PersistenceException {
+      throws IOException, JSONException {
 
     // collect all properties first
     Map<String, Object> props = new HashMap<>();
@@ -242,7 +226,7 @@ public final class ContentLoader {
     props.put(JcrConstants.JCR_PRIMARYTYPE, primaryType);
 
     // create resource
-    Resource resource = this.resourceResolver.create(parentResource, childName, props);
+    Resource resource = resourceResolver.create(parentResource, childName, props);
 
     // add child resources
     for (int i = 0; names != null && i < names.length(); i++) {
@@ -273,45 +257,45 @@ public final class ContentLoader {
           for (int i = 0; i < values.length; i++) {
             arrayValues[i] = (Double)values[i];
           }
-          props.put(getName(name), arrayValues);
+          props.put(cleanupJsonName(name), arrayValues);
         }
         else if (values[0] instanceof Number) {
           Long[] arrayValues = new Long[values.length];
           for (int i = 0; i < values.length; i++) {
             arrayValues[i] = ((Number)values[i]).longValue();
           }
-          props.put(getName(name), arrayValues);
+          props.put(cleanupJsonName(name), arrayValues);
         }
         else if (values[0] instanceof Boolean) {
           Boolean[] arrayValues = new Boolean[values.length];
           for (int i = 0; i < values.length; i++) {
             arrayValues[i] = (Boolean)values[i];
           }
-          props.put(getName(name), arrayValues);
+          props.put(cleanupJsonName(name), arrayValues);
         }
         else {
           String[] arrayValues = new String[values.length];
           for (int i = 0; i < values.length; i++) {
             arrayValues[i] = values[i].toString();
           }
-          props.put(getName(name), arrayValues);
+          props.put(cleanupJsonName(name), arrayValues);
         }
       }
       else {
-        props.put(getName(name), new String[0]);
+        props.put(cleanupJsonName(name), new String[0]);
       }
 
     }
     else {
       // single value
       if (value instanceof Double || value instanceof Float) {
-        props.put(getName(name), value);
+        props.put(cleanupJsonName(name), value);
       }
       else if (value instanceof Number) {
-        props.put(getName(name), ((Number)value).longValue());
+        props.put(cleanupJsonName(name), ((Number)value).longValue());
       }
       else if (value instanceof Boolean) {
-        props.put(getName(name), value);
+        props.put(cleanupJsonName(name), value);
       }
       else {
         String stringValue = value.toString();
@@ -319,17 +303,17 @@ public final class ContentLoader {
         // check if value is a Calendar object
         Calendar calendar = tryParseCalendarValue(stringValue);
         if (calendar != null) {
-          props.put(getName(name), calendar);
+          props.put(cleanupJsonName(name), calendar);
         }
         else {
-          props.put(getName(name), stringValue);
+          props.put(cleanupJsonName(name), stringValue);
         }
 
       }
     }
   }
 
-  private String getName(String name) {
+  private String cleanupJsonName(String name) {
     if (name.startsWith(REFERENCE)) {
       return name.substring(REFERENCE.length());
     }
@@ -339,20 +323,28 @@ public final class ContentLoader {
     return name;
   }
 
-  private String convertToJsonString(InputStream inputStream) throws IOException {
+  private String convertToJsonString(InputStream inputStream) {
     try {
       return IOUtils.toString(inputStream);
     }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
     finally {
-      inputStream.close();
+      try {
+        inputStream.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
     }
   }
 
   private Calendar tryParseCalendarValue(String value) {
     if (StringUtils.isNotBlank(value)) {
-      synchronized (this.calendarFormat) {
+      synchronized (calendarFormat) {
         try {
-          Date date = this.calendarFormat.parse(value);
+          Date date = calendarFormat.parse(value);
           Calendar calendar = Calendar.getInstance();
           calendar.setTime(date);
           return calendar;
@@ -363,6 +355,261 @@ public final class ContentLoader {
       }
     }
     return null;
+  }
+
+  /**
+   * Import binary file as nt:file binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * Mime type is auto-detected from resource name.
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @return Resource with binary data
+   */
+  public Resource binaryFile(String classpathResource, String path) {
+    InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
+    if (is == null) {
+      throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
+    }
+    try {
+      return binaryFile(is, path, detectMimeTypeFromName(path));
+    }
+    finally {
+      try {
+        is.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
+    }
+  }
+
+  /**
+   * Import binary file as nt:file binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @param mimeType Mime type of binary data
+   * @return Resource with binary data
+   */
+  public Resource binaryFile(String classpathResource, String path, String mimeType) {
+    InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
+    if (is == null) {
+      throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
+    }
+    try {
+      return binaryFile(is, path, mimeType);
+    }
+    finally {
+      try {
+        is.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
+    }
+  }
+
+  /**
+   * Import binary file as nt:file binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * Mime type is auto-detected from resource name.
+   * @param inputStream Input stream for binary data
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @return Resource with binary data
+   */
+  public Resource binaryFile(InputStream inputStream, String path) {
+    return binaryFile(inputStream, path, detectMimeTypeFromName(path));
+  }
+
+  /**
+   * Import binary file as nt:file binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * @param inputStream Input stream for binary data
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @param mimeType Mime type of binary data
+   * @return Resource with binary data
+   */
+  public Resource binaryFile(InputStream inputStream, String path, String mimeType) {
+    String parentPath = ResourceUtil.getParent(path, 1);
+    String name = ResourceUtil.getName(path);
+    Resource parentResource = resourceResolver.getResource(parentPath);
+    if (parentResource == null) {
+      parentResource = createResourceHierarchy(parentPath);
+    }
+    return binaryFile(inputStream, parentResource, name, mimeType);
+  }
+
+  /**
+   * Import binary file as nt:file binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * Mime type is auto-detected from resource name.
+   * @param inputStream Input stream for binary data
+   * @param parentResource Parent resource
+   * @param name Resource name for nt:file
+   * @return Resource with binary data
+   */
+  public Resource binaryFile(InputStream inputStream, Resource parentResource, String name) {
+    return binaryFile(inputStream, parentResource, name, detectMimeTypeFromName(name));
+  }
+
+  /**
+   * Import binary file as nt:file binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * @param inputStream Input stream for binary data
+   * @param parentResource Parent resource
+   * @param name Resource name for nt:file
+   * @param mimeType Mime type of binary data
+   * @return Resource with binary data
+   */
+  public Resource binaryFile(InputStream inputStream, Resource parentResource, String name, String mimeType) {
+    try {
+      Resource file = resourceResolver.create(parentResource, name, ImmutableMap.<String, Object>builder()
+          .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_FILE)
+          .build());
+      return resourceResolver.create(file, JcrConstants.JCR_CONTENT, ImmutableMap.<String, Object>builder()
+          .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_RESOURCE)
+          .put(JcrConstants.JCR_DATA, inputStream)
+          .put(JcrConstants.JCR_MIMETYPE, mimeType)
+          .build());
+    }
+    catch (PersistenceException ex) {
+      throw new RuntimeException("Unable to create resource at " + parentResource.getPath() + "/" + name, ex);
+    }
+  }
+
+  /**
+   * Import binary file as nt:resource binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * Mime type is auto-detected from resource name.
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @return Resource with binary data
+   */
+  public Resource binaryResource(String classpathResource, String path) {
+    InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
+    if (is == null) {
+      throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
+    }
+    try {
+      return binaryResource(is, path, detectMimeTypeFromName(path));
+    }
+    finally {
+      try {
+        is.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
+    }
+  }
+
+  /**
+   * Import binary file as nt:resource binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @param mimeType Mime type of binary data
+   * @return Resource with binary data
+   */
+  public Resource binaryResource(String classpathResource, String path, String mimeType) {
+    InputStream is = ContentLoader.class.getResourceAsStream(classpathResource);
+    if (is == null) {
+      throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
+    }
+    try {
+      return binaryResource(is, path, mimeType);
+    }
+    finally {
+      try {
+        is.close();
+      }
+      catch (IOException ex) {
+        // ignore
+      }
+    }
+  }
+
+  /**
+   * Import binary file as nt:resource binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * Mime type is auto-detected from resource name.
+   * @param inputStream Input stream for binary data
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @return Resource with binary data
+   */
+  public Resource binaryResource(InputStream inputStream, String path) {
+    return binaryResource(inputStream, path, detectMimeTypeFromName(path));
+  }
+
+  /**
+   * Import binary file as nt:resource binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * @param inputStream Input stream for binary data
+   * @param path Path to mount binary data to (parent nodes created automatically)
+   * @param mimeType Mime type of binary data
+   * @return Resource with binary data
+   */
+  public Resource binaryResource(InputStream inputStream, String path, String mimeType) {
+    String parentPath = ResourceUtil.getParent(path, 1);
+    String name = ResourceUtil.getName(path);
+    Resource parentResource = resourceResolver.getResource(parentPath);
+    if (parentResource == null) {
+      parentResource = createResourceHierarchy(parentPath);
+    }
+    return binaryResource(inputStream, parentResource, name, mimeType);
+  }
+
+  /**
+   * Import binary file as nt:resource binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * Mime type is auto-detected from resource name.
+   * @param inputStream Input stream for binary data
+   * @param parentResource Parent resource
+   * @param name Resource name for nt:resource
+   * @return Resource with binary data
+   */
+  public Resource binaryResource(InputStream inputStream, Resource parentResource, String name) {
+    return binaryResource(inputStream, parentResource, name, detectMimeTypeFromName(name));
+  }
+
+  /**
+   * Import binary file as nt:resource binary node into repository.
+   * Auto-creates parent hierarchies as nt:unstrucured nodes if missing.
+   * @param inputStream Input stream for binary data
+   * @param parentResource Parent resource
+   * @param name Resource name for nt:resource
+   * @param mimeType Mime type of binary data
+   * @return Resource with binary data
+   */
+  public Resource binaryResource(InputStream inputStream, Resource parentResource, String name, String mimeType) {
+    try {
+      return resourceResolver.create(parentResource, name, ImmutableMap.<String, Object>builder()
+          .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_RESOURCE)
+          .put(JcrConstants.JCR_DATA, inputStream)
+          .put(JcrConstants.JCR_MIMETYPE, mimeType)
+          .build());
+    }
+    catch (PersistenceException ex) {
+      throw new RuntimeException("Unable to create resource at " + parentResource.getPath() + "/" + name, ex);
+    }
+  }
+
+  /**
+   * Detected mime type from name (file extension) using Mime Type service. Fallback to application/octet-stream.
+   * @param name Node name
+   * @return Mime type (never null)
+   */
+  private String detectMimeTypeFromName(String name) {
+    String mimeType = null;
+    String fileExtension = StringUtils.substringAfterLast(name, ".");
+    if (bundleContext != null && StringUtils.isNotEmpty(fileExtension)) {
+      ServiceReference ref = bundleContext.getServiceReference(MimeTypeService.class.getName());
+      if (ref != null) {
+        MimeTypeService mimeTypeService = (MimeTypeService)bundleContext.getService(ref);
+        mimeType = mimeTypeService.getMimeType(fileExtension);
+      }
+    }
+    return StringUtils.defaultString(mimeType, CONTENTTYPE_OCTET_STREAM);
   }
 
 }

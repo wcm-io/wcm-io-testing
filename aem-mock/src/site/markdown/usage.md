@@ -44,63 +44,6 @@ Additionally it supports:
 * Accessing JSON Importer
 
 
-### JSON Data as Test Fixture
-
-Although it is possible to create a resource data hierarchy as text fixture manually using either Sling CRUD API
-or JCR API this can getting very tedious and affords a lot of boilerplate code. To make this easier a `ContentLoader`
-is provided which allows importing sample data stored as a JSON file in the classpath of the unit test and running
-the tests against this. This importer is provided by the [Sling Mocks][sling-mock] implementation.
-
-Example JSON data:
-
-```json
-{
-  "jcr:primaryType": "cq:Page",
-  "jcr:content": {
-    "jcr:primaryType": "cq:PageContent",
-    "jcr:title": "English",
-    "cq:template": "/apps/sample/templates/homepage",
-    "sling:resourceType": "sample/components/homepage",
-    "jcr:createdBy": "admin",
-    "jcr:created": "Thu Aug 07 2014 16:32:59 GMT+0200",
-    "par": {
-      "jcr:primaryType": "nt:unstructured",
-      "sling:resourceType": "foundation/components/parsys",
-      "colctrl": {
-        "jcr:primaryType": "nt:unstructured",
-        "layout": "2;cq-colctrl-lt0",
-        "sling:resourceType": "foundation/components/parsys/colctrl"
-      }
-    }
-  }
-}
-```
-
-Example unit test:
-
-```java
-public class ExampleTest {
-
-  @Rule
-  public final AemContext context = new AemContext();
-
-  @Before
-  public void setUp() throws Exception {
-    context.contentLoader().importTo("/sample-data.json", "/content/sample/en");
-  }
-
-  @Test
-  public void testSomething() {
-    Resource resource = context.resourceResolver().getResource("/content/sample/en");
-    Page page = resource.adaptTo(Page.class);
-    // further testing
-  }
-
-}
-
-```
-
-
 ### Choosing Resource Resolver Mock Type
 
 The AEM mock context supports different resource resolver types (provided by the [Sling Mocks][sling-mock]
@@ -230,6 +173,19 @@ interface RequestAttributeModel {
 RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
 ```
 
+
+### Setting run modes
+
+Example:
+
+```java
+// set runmode for unit test
+context().runMode("author");
+```
+
+This sets the current run mode(s) in a mock version of `SlingSettingsService`.
+
+
 ### Application-specific AEM context
 
 When building unit test suites for your AEM application you have usually to execute always some application-specific
@@ -253,7 +209,7 @@ public final class AppAemContext {
       context.registerService(new AemObjectInjector());
 
       // import sample content
-      context.contentLoader().importTo("/sample-content.json", "/content/sample/en");
+      context.contentLoader().json("/sample-content.json", "/content/sample/en");
 
       // set default current page
       context.currentPage("/content/sample/en");
@@ -279,8 +235,6 @@ public class MyTest {
 
 }
 ```
-
-
 
 
 [mockito-testrunner]: http://docs.mockito.googlecode.com/hg/latest/org/mockito/runners/MockitoJUnitRunner.html

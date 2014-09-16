@@ -17,13 +17,15 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem.context;
+package io.wcm.testing.mock.aem.builder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.sling.ResourceResolverType;
 
+import org.apache.sling.api.resource.Resource;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -70,6 +72,26 @@ public class ContentBuilderTest {
     assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
     assertEquals("Test Title", page.getTitle());
     assertEquals("value1", page.getProperties().get("stringProp", String.class));
+  }
+
+  @Test
+  public void testResource() {
+    Resource resource = context.create().resource("/content/test1/resource1");
+    assertNotNull(resource);
+    assertEquals("resource1", resource.getName());
+    assertTrue(resource.getValueMap().isEmpty());
+  }
+
+  @Test
+  public void testResourceWithProperties() {
+    Resource resource = context.create().resource("/content/test1/resource2", ImmutableMap.<String, Object>builder()
+        .put(NameConstants.PN_TITLE, "Test Title")
+        .put("stringProp", "value1")
+        .build());
+    assertNotNull(resource);
+    assertEquals("resource2", resource.getName());
+    assertEquals("Test Title", resource.getValueMap().get(NameConstants.PN_TITLE, String.class));
+    assertEquals("value1", resource.getValueMap().get("stringProp", String.class));
   }
 
 }

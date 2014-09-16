@@ -69,9 +69,9 @@ public class AemContextImplTest {
     this.context.setResourceResolverType(resourceResolverType.value());
     this.context.setUp();
 
-    ContentLoader contentLoader = this.context.contentLoader();
-    contentLoader.importTo("/json-import-samples/application.json", "/apps/sample");
-    contentLoader.importTo("/json-import-samples/content.json", "/content/sample/en");
+    ContentLoader contentLoader = this.context.load();
+    contentLoader.json("/json-import-samples/application.json", "/apps/sample");
+    contentLoader.json("/json-import-samples/content.json", "/content/sample/en");
   }
 
   @Test
