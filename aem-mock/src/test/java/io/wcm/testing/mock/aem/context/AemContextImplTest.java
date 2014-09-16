@@ -121,10 +121,10 @@ public class AemContextImplTest {
   @Test
   public void testSetCurrentResource() {
     context.currentResource("/content/sample/en/jcr:content/par/colctrl");
-    assertEquals("/content/sample/en/jcr:content/par/colctrl", context.request().getResource().getPath());
+    assertEquals("/content/sample/en/jcr:content/par/colctrl", context.currentResource().getPath());
 
     context.currentResource(context.resourceResolver().getResource("/content/sample/en/jcr:content/par"));
-    assertEquals("/content/sample/en/jcr:content/par", context.request().getResource().getPath());
+    assertEquals("/content/sample/en/jcr:content/par", context.currentResource().getPath());
 
     context.currentResource((Resource)null);
     assertNull(context.request().getResource());
@@ -141,16 +141,18 @@ public class AemContextImplTest {
   @Test
   public void testSetCurrentPage() {
     context.currentPage("/content/sample/en/toolbar/profiles");
-    assertEquals("/content/sample/en/toolbar/profiles/jcr:content", context.request().getResource().getPath());
+    assertEquals("/content/sample/en/toolbar/profiles", context.currentPage().getPath());
+    assertEquals("/content/sample/en/toolbar/profiles/jcr:content", context.currentResource().getPath());
 
     context.currentPage(context.pageManager().getPage("/content/sample/en/toolbar"));
-    assertEquals("/content/sample/en/toolbar/jcr:content", context.request().getResource().getPath());
+    assertEquals("/content/sample/en/toolbar", context.currentPage().getPath());
+    assertEquals("/content/sample/en/toolbar/jcr:content", context.currentResource().getPath());
 
     context.currentPage((Page)null);
-    assertNull(context.request().getResource());
+    assertNull(context.currentPage());
 
     context.currentPage((String)null);
-    assertNull(context.request().getResource());
+    assertNull(context.currentPage());
   }
 
   @Test(expected = IllegalArgumentException.class)

@@ -335,6 +335,12 @@ public class AemContextImpl<WrapperType> {
     return (WrapperType)this;
   }
 
+  /**
+   * @return Current resource
+   */
+  public Resource currentResource() {
+    return request().getResource();
+  }
 
   /**
    * Set current resource in request.
@@ -363,6 +369,16 @@ public class AemContextImpl<WrapperType> {
   public WrapperType currentResource(Resource resource) {
     request().setResource(resource);
     return (WrapperType)this;
+  }
+
+  /**
+   * @return Current page
+   */
+  public Page currentPage() {
+    if (currentResource() != null) {
+      return pageManager().getContainingPage(currentResource());
+    }
+    return null;
   }
 
   /**
