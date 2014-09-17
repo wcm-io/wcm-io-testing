@@ -466,11 +466,12 @@ public final class ContentLoader {
       Resource file = resourceResolver.create(parentResource, name, ImmutableMap.<String, Object>builder()
           .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_FILE)
           .build());
-      return resourceResolver.create(file, JcrConstants.JCR_CONTENT, ImmutableMap.<String, Object>builder()
+      resourceResolver.create(file, JcrConstants.JCR_CONTENT, ImmutableMap.<String, Object>builder()
           .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_RESOURCE)
           .put(JcrConstants.JCR_DATA, inputStream)
           .put(JcrConstants.JCR_MIMETYPE, mimeType)
           .build());
+      return file;
     }
     catch (PersistenceException ex) {
       throw new RuntimeException("Unable to create resource at " + parentResource.getPath() + "/" + name, ex);
