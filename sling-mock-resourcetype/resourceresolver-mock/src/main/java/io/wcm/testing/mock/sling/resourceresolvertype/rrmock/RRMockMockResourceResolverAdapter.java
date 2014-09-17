@@ -24,15 +24,26 @@ import io.wcm.testing.mock.sling.spi.ResourceResolverTypeAdapter;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.jcr.api.SlingRepository;
 import org.apache.sling.testing.resourceresolver.MockResourceResolverFactory;
+import org.apache.sling.testing.resourceresolver.MockResourceResolverFactoryOptions;
 
 /**
  * Resource resolver type adapter for Sling Resource Resolver Mock implementation.
  */
 public class RRMockMockResourceResolverAdapter implements ResourceResolverTypeAdapter {
 
+  private final MockResourceResolverFactoryOptions options;
+
+  /**
+   * Constructor
+   */
+  public RRMockMockResourceResolverAdapter() {
+    options = new MockResourceResolverFactoryOptions();
+    options.setMangleNamespacePrefixes(true);
+  }
+
   @Override
   public ResourceResolverFactory newResourceResolverFactory() {
-    return new MockResourceResolverFactory();
+    return new MockResourceResolverFactory(options);
   }
 
   @Override
