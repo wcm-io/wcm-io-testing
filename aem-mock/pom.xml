@@ -52,24 +52,6 @@
 
     <dependency>
       <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.testing.logging-mock</artifactId>
-      <version>1.0.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.testing.osgi-mock</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.testing.jcr-mock</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.sling-mock</artifactId>
       <version>0.1.0-SNAPSHOT</version>
       <scope>compile</scope>
