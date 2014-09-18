@@ -8,7 +8,7 @@ Mock implementation of selected OSGi APIs.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.osgi-mock</artifactId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
