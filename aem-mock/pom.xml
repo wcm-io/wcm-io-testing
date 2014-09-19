@@ -59,7 +59,7 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.sling-mock-resolvertype.resourceresolver-mock</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>1.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
