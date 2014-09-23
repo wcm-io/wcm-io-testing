@@ -53,7 +53,7 @@ implementation). Example:
 public class ExampleTest {
 
   @Rule
-  public final AemContext context = new AemContext(ResourceResolverType.JCR_MOCK);
+  public final AemContext context = new AemContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
 }
 
@@ -80,20 +80,18 @@ public class ExampleTest {
 
   @Test
   public void testSomething() {
-    PageManager pageManager = context.resourceResolver().adaptTo(PageManager.class);
-    Page page = pageManager.getPage("/content/sample/en");
+    Page page = context.pageManager().getPage("/content/sample/en");
     Template template = page.getTemplate();
     Iterator<Page> childPages = page.listChildren();
     // further testing
   }
 
   @Test
-  public void testPageManagerOperations() {
-    PageManager pageManager = context.resourceResolver().adaptTo(PageManager.class);
-    Page page = pageManager.create("/content/sample/en", "test1",
+  public void testPageManagerOperations() throws WCMException {
+    Page page = context.pageManager().create("/content/sample/en", "test1",
         "/apps/sample/templates/homepage", "title1");
     // further testing
-    pageManager.delete(page, false);
+    context.pageManager().delete(page, false);
   }
 
 }
@@ -107,17 +105,16 @@ Example for preparing a sling request with custom request data:
 
 ```java
 // prepare sling request
-MockSlingHttpServletRequest request = (MockSlingHttpServletRequest)context.getRequest();
+context.request().setQueryString("param1=aaa&param2=bbb");
 
-request.setQueryString("param1=aaa&param2=bbb");
-request.setResource(resourceResolver.getResource("/content/sample"));
-
-MockRequestPathInfo requestPathInfo = (MockRequestPathInfo)request.getRequestPathInfo();
-requestPathInfo.setSelectorString("selector1.selector2");
-requestPathInfo.setExtension("html");
+context.requestPathInfo().setSelectorString("selector1.selector2");
+context.requestPathInfo().setExtension("html");
 
 // set current page
 context.currentPage("/content/sample/en");
+
+// set WCM Mode
+WCMMode.EDIT.toRequest(context.request());
 ```
 
 ### Registering OSGi service
@@ -136,7 +133,7 @@ MyClass service = context.slingScriptHelper().getService(MyClass.class);
 
 // or alternatively: get OSGi service via bundle context
 ServiceReference ref = context.bundleContext().getServiceReference(MyClass.class.getName());
-MyClass service2 = bundleContext.getService(ref);
+MyClass service2 = context.bundleContext().getService(ref);
 ```
 
 
@@ -162,15 +159,23 @@ You do not have to care about cleaning up the registrations - this is done autom
 Example:
 
 ```java
-@Model(adaptables = SlingHttpServletRequest.class)
-interface RequestAttributeModel {
-
-  @Inject
-  String getProp1();
-
+@Before
+public void setUp() {
+  // register models from package
+  context.addModelsForPackage("com.app1.models");
 }
 
-RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
+@Test
+public void testSomething() {
+  RequestAttributeModel model = context.request().adaptTo(RequestAttributeModel.class);
+  // further testing
+}
+
+@Model(adaptables = SlingHttpServletRequest.class)
+interface RequestAttributeModel {
+  @Inject
+  String getProp1();
+}
 ```
 
 
@@ -180,7 +185,7 @@ Example:
 
 ```java
 // set runmode for unit test
-context().runMode("author");
+context.runMode("author");
 ```
 
 This sets the current run mode(s) in a mock version of `SlingSettingsService`.

@@ -68,7 +68,7 @@ The data is stored usig a nt:file/nt:resource or nt:resource node type.
 Example code to import a binary file:
 
 ```java
-context().load().binaryFile("/sample-file.gif", "/content/binary/sample-file.gif");
+context.load().binaryFile("/sample-file.gif", "/content/binary/sample-file.gif");
 ```
 
 This codes creates a new resource at `/content/binary/sample-file.gif` (and - if not existent - the parent 
@@ -83,10 +83,10 @@ Example:
 
 ```java
 // create page
-context().create().page("/content/sample/en", "/apps/sample/template/homepage");
+context.create().page("/content/sample/en", "/apps/sample/template/homepage");
 
 // create resource
-context().create().resource("/content/test1", ImmutableMap.<String, Object>builder()
+context.create().resource("/content/test1", ImmutableMap.<String, Object>builder()
         .put("prop1", "value1")
         .put("prop2", "value2")
         .build());
