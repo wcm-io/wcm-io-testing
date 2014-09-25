@@ -48,6 +48,7 @@
     <module>sling-mock-resourcetype/jackrabbit</module>
     <module>aem-mock</module>
     <module>wcm-io-mock/config</module>
+    <module>wcm-io-mock/handler</module>
   </modules>
 
   <build>
