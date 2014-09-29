@@ -20,11 +20,10 @@
 package io.wcm.testing.mock.wcmio.config;
 
 import io.wcm.config.api.Parameter;
-import io.wcm.config.api.management.ParameterPersistence;
-import io.wcm.config.api.management.ParameterPersistenceData;
-import io.wcm.config.api.management.PersistenceException;
 import io.wcm.config.core.impl.ApplicationImplementationPicker;
 import io.wcm.config.core.impl.ConfigurationAdapterFactory;
+import io.wcm.config.core.management.ParameterPersistence;
+import io.wcm.config.core.management.ParameterPersistenceData;
 import io.wcm.config.core.management.impl.ApplicationFinderImpl;
 import io.wcm.config.core.management.impl.ConfigurationFinderImpl;
 import io.wcm.config.core.management.impl.ParameterOverrideImpl;
@@ -41,6 +40,8 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.sling.api.resource.PersistenceException;
 
 import com.day.jcr.vault.util.Text;
 import com.google.common.collect.ImmutableMap;
