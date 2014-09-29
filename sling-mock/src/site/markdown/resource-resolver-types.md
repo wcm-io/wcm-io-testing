@@ -26,7 +26,7 @@ To use this type you have to declare an additional dependency in your test proje
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.sling-mock-resolvertype.resourceresolver-mock</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <scope>test</scope>
 </dependency>
 ```
