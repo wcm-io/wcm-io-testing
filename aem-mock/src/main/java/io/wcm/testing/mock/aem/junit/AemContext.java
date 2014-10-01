@@ -35,7 +35,7 @@ import com.google.common.collect.ImmutableList;
 /**
  * JUnit rule for setting up and tearing down AEM context objects for unit tests.
  */
-public final class AemContext extends AemContextImpl<AemContext> implements TestRule {
+public final class AemContext extends AemContextImpl implements TestRule {
 
   private final AemContextCallback setUpCallback;
   private final AemContextCallback tearDownCallback;

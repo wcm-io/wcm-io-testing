@@ -75,7 +75,7 @@ import com.google.common.collect.ImmutableSet;
  * Defines AEM context objects with lazy initialization.
  * Should not be used directly but via the {@link io.wcm.testing.mock.aem.junit.AemContext} JUnit rule.
  */
-public class AemContextImpl<WrapperType> {
+public class AemContextImpl {
 
   // default to publish instance run mode
   static final Set<String> DEFAULT_RUN_MODES = ImmutableSet.<String>builder().add("publish").build();
@@ -277,24 +277,20 @@ public class AemContextImpl<WrapperType> {
   /**
    * Registers a service in the mocked OSGi environment.
    * @param service Service instance
-   * @return this
+   * @return Registered service instance
    */
-  @SuppressWarnings("unchecked")
-  public <T> WrapperType registerService(final T service) {
-    registerService(null, service, null);
-    return (WrapperType)this;
+  public <T> T registerService(final T service) {
+    return registerService(null, service, null);
   }
 
   /**
    * Registers a service in the mocked OSGi environment.
    * @param serviceClass Service class
    * @param service Service instance
-   * @return this
+   * @return Registered service instance
    */
-  @SuppressWarnings("unchecked")
-  public <T> WrapperType registerService(final Class<T> serviceClass, final T service) {
-    registerService(serviceClass, service, null);
-    return (WrapperType)this;
+  public <T> T registerService(final Class<T> serviceClass, final T service) {
+    return registerService(serviceClass, service, null);
   }
 
   /**
@@ -302,24 +298,23 @@ public class AemContextImpl<WrapperType> {
    * @param serviceClass Service class
    * @param service Service instance
    * @param properties Service properties (optional)
-   * @return this
+   * @return Registered service instance
    */
-  @SuppressWarnings("unchecked")
-  public <T> WrapperType registerService(final Class<T> serviceClass, final T service, final Map<String, Object> properties) {
+  public <T> T registerService(final Class<T> serviceClass, final T service, final Map<String, Object> properties) {
     Dictionary<String, Object> serviceProperties = null;
     if (properties != null) {
       serviceProperties = new Hashtable<>(properties);
     }
     bundleContext().registerService(serviceClass != null ? serviceClass.getName() : null, service, serviceProperties);
-    return (WrapperType)this;
+    return service;
   }
 
   /**
    * Injects dependencies, activates and registers a service in the mocked OSGi environment.
    * @param service Service instance
-   * @return this
+   * @return Registered service instance
    */
-  public <T> WrapperType registerInjectActivateService(final T service) {
+  public <T> T registerInjectActivateService(final T service) {
     return registerInjectActivateService(service, ImmutableMap.<String, Object>of());
   }
 
@@ -327,14 +322,13 @@ public class AemContextImpl<WrapperType> {
    * Injects dependencies, activates and registers a service in the mocked OSGi environment.
    * @param service Service instance
    * @param properties Service properties (optional)
-   * @return this
+   * @return Registered service instance
    */
-  @SuppressWarnings("unchecked")
-  public <T> WrapperType registerInjectActivateService(final T service, final Map<String, Object> properties) {
+  public <T> T registerInjectActivateService(final T service, final Map<String, Object> properties) {
     MockOsgi.injectServices(service, bundleContext());
     MockOsgi.activate(service, bundleContext(), properties);
     registerService(null, service, null);
-    return (WrapperType)this;
+    return service;
   }
 
   /**
@@ -368,9 +362,9 @@ public class AemContextImpl<WrapperType> {
   /**
    * Set current resource in request.
    * @param resourcePath Resource path
-   * @return this
+   * @return Current resource
    */
-  public WrapperType currentResource(String resourcePath) {
+  public Resource currentResource(String resourcePath) {
     if (resourcePath != null) {
       Resource resource = resourceResolver().getResource(resourcePath);
       if (resource == null) {
@@ -386,12 +380,11 @@ public class AemContextImpl<WrapperType> {
   /**
    * Set current resource in request.
    * @param resource Resource
-   * @return this
+   * @return Current resource
    */
-  @SuppressWarnings("unchecked")
-  public WrapperType currentResource(Resource resource) {
+  public Resource currentResource(Resource resource) {
     request().setResource(resource);
-    return (WrapperType)this;
+    return resource;
   }
 
   /**
@@ -407,9 +400,9 @@ public class AemContextImpl<WrapperType> {
   /**
    * Set current Page in request (set to content resource of page).
    * @param pagePath Page path
-   * @return this
+   * @return currentPage
    */
-  public WrapperType currentPage(String pagePath) {
+  public Page currentPage(String pagePath) {
     if (pagePath != null) {
       Page page = pageManager().getPage(pagePath);
       if (page == null) {
@@ -418,45 +411,47 @@ public class AemContextImpl<WrapperType> {
       return currentPage(page);
     }
     else {
-      return currentResource((Resource)null);
+      currentResource((Resource)null);
+      return null;
     }
   }
 
   /**
    * Set current Page in request (set to content resource of page).
    * @param page Page
-   * @return this
+   * @return currentPage
    */
-  public WrapperType currentPage(Page page) {
-    return currentResource(page != null ? page.getContentResource() : null);
+  public Page currentPage(Page page) {
+    if (page != null) {
+      currentResource(page.getContentResource());
+      return page;
+    }
+    else {
+      currentResource((Resource)null);
+      return null;
+    }
   }
 
   /**
    * Scan classpaths for given package name (and sub packages) to scan for and register all classes
    * with @Model annotation.
    * @param packageName Java package name
-   * @return this
    */
-  @SuppressWarnings("unchecked")
-  public WrapperType addModelsForPackage(String packageName) {
+  public void addModelsForPackage(String packageName) {
     this.modelAdapterFactory.addModelsForPackage(packageName);
-    return (WrapperType)this;
   }
 
   /**
    * Set current run mode(s).
    * @param runModes Run mode(s).
-   * @return this
    */
-  @SuppressWarnings("unchecked")
-  public WrapperType runMode(String... runModes) {
+  public void runMode(String... runModes) {
     Set<String> newRunModes = ImmutableSet.<String>builder().add(runModes).build();
     ServiceReference ref = bundleContext().getServiceReference(SlingSettingsService.class.getName());
     if (ref != null) {
       MockSlingSettingService slingSettings = (MockSlingSettingService)bundleContext().getService(ref);
       slingSettings.setRunModes(newRunModes);
     }
-    return (WrapperType)this;
   }
 
 }

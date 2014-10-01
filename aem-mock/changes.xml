@@ -28,7 +28,7 @@
         ContentBuilder: Support creating pages with path argument only.
       </action>
       <action type="update" dev="sseifert">
-        AemContext: Add getService and getServices methods.
+        AemContext: Add getService and getServices methods. Return useful values for current* and register* methods.
       </action>
     </release>
 

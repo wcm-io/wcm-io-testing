@@ -61,7 +61,7 @@ public class AemContextImplTest {
       ResourceResolverType.RESOURCERESOLVER_MOCK
       );
 
-  private AemContextImpl<?> context;
+  private AemContextImpl context;
 
   @Before
   public void setUp() throws Exception {
