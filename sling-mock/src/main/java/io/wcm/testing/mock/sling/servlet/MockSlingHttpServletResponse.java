@@ -114,7 +114,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
 
   @Override
   public void sendRedirect(String location) {
-    setStatus(302);
+    setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
     setHeader("Location", location);
   }
 
