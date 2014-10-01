@@ -33,21 +33,21 @@ import org.osgi.service.component.ComponentContext;
 
 public class MockComponentContextTest {
 
-  private ComponentContext componentContext;
+  private ComponentContext underTest;
 
   @Before
   public void setUp() {
-    this.componentContext = MockOsgi.newComponentContext();
+    underTest = MockOsgi.newComponentContext();
   }
 
   @Test
   public void testBundleContext() {
-    assertNotNull(this.componentContext.getBundleContext());
+    assertNotNull(underTest.getBundleContext());
   }
 
   @Test
   public void testInitialProperties() {
-    assertEquals(0, this.componentContext.getProperties().size());
+    assertEquals(0, underTest.getProperties().size());
   }
 
   @Test
@@ -68,12 +68,18 @@ public class MockComponentContextTest {
     // prepare test service
     String clazz = String.class.getName();
     Object service = new Object();
-    this.componentContext.getBundleContext().registerService(clazz, service, null);
-    ServiceReference ref = this.componentContext.getBundleContext().getServiceReference(clazz);
+    underTest.getBundleContext().registerService(clazz, service, null);
+    ServiceReference ref = underTest.getBundleContext().getServiceReference(clazz);
 
     // test locate service
-    Object locatedService = this.componentContext.locateService(null, ref);
+    Object locatedService = underTest.locateService(null, ref);
     assertSame(service, locatedService);
+  }
+
+  @Test
+  public void testIgnoredMethods() {
+    underTest.enableComponent("myComponent");
+    underTest.disableComponent("myComponent");
   }
 
 }

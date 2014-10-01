@@ -60,17 +60,17 @@ class MockComponentContext implements ComponentContext {
     return this.bundleContext;
   }
 
-  // --- unsupported operations ---
   @Override
   public void disableComponent(final String name) {
-    throw new UnsupportedOperationException();
+    // allow calling, but ignore
   }
 
   @Override
   public void enableComponent(final String name) {
-    throw new UnsupportedOperationException();
+    // allow calling, but ignore
   }
 
+  // --- unsupported operations ---
   @Override
   public ComponentInstance getComponentInstance() {
     throw new UnsupportedOperationException();
