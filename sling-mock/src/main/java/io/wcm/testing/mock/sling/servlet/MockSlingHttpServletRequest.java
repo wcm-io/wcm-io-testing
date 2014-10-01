@@ -80,7 +80,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
   private String serverName = "localhost";
   private int serverPort = 80;
   private String method = HttpConstants.METHOD_GET;
-  private HeaderSupport headerSupport = new HeaderSupport();
+  private final HeaderSupport headerSupport = new HeaderSupport();
 
   /**
    * Instantiate with default resource resolver

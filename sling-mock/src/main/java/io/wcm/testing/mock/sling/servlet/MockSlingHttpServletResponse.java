@@ -19,7 +19,6 @@
  */
 package io.wcm.testing.mock.sling.servlet;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Locale;
@@ -27,6 +26,7 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.adapter.SlingAdaptable;
@@ -34,28 +34,31 @@ import org.apache.sling.api.adapter.SlingAdaptable;
 /**
  * Mock {@link SlingHttpServletResponse} implementation.
  */
-public final class MockSlingHttpServletResponse extends SlingAdaptable implements SlingHttpServletResponse {
+public class MockSlingHttpServletResponse extends SlingAdaptable implements SlingHttpServletResponse {
 
   private static final String CHARSET_SEPARATOR = ";charset=";
 
-  private String contentType = "text/html";
-  private String characterEncoding;
+  private String contentType;
+  private String characterEncoding = CharEncoding.ISO_8859_1;
   private int contentLength;
-  private int status = 200;
-  private HeaderSupport headerSupport = new HeaderSupport();
-
-  @Override
-  public void flushBuffer() throws IOException {
-    // ignore
-  }
+  private int status;
+  private int bufferSize = 1024 * 8;
+  private boolean isCommitted;
+  private final HeaderSupport headerSupport = new HeaderSupport();
+  private final ResponseBodySupport bodySupport = new ResponseBodySupport();
 
   @Override
   public String getContentType() {
-    return this.contentType + (StringUtils.isNotBlank(characterEncoding) ? CHARSET_SEPARATOR + characterEncoding : "");
+    if (this.contentType == null) {
+      return null;
+    }
+    else {
+      return this.contentType + (StringUtils.isNotBlank(characterEncoding) ? CHARSET_SEPARATOR + characterEncoding : "");
+    }
   }
 
   @Override
-  public void setContentType(final String type) {
+  public void setContentType(String type) {
     this.contentType = type;
     if (StringUtils.contains(this.contentType, CHARSET_SEPARATOR)) {
       this.characterEncoding = StringUtils.substringAfter(this.contentType, CHARSET_SEPARATOR);
@@ -64,7 +67,7 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
   }
 
   @Override
-  public void setCharacterEncoding(final String charset) {
+  public void setCharacterEncoding(String charset) {
     this.characterEncoding = charset;
   }
 
@@ -74,7 +77,7 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
   }
 
   @Override
-  public void setContentLength(final int len) {
+  public void setContentLength(int len) {
     this.contentLength = len;
   }
 
@@ -83,12 +86,12 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
   }
 
   @Override
-  public void setStatus(final int sc, final String sm) {
+  public void setStatus(int sc, String sm) {
     setStatus(sc);
   }
 
   @Override
-  public void setStatus(final int sc) {
+  public void setStatus(int sc) {
     this.status = sc;
   }
 
@@ -98,63 +101,63 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
   }
 
   @Override
-  public void sendError(final int sc, final String msg) {
+  public void sendError(int sc, String msg) {
     setStatus(sc);
   }
 
   @Override
-  public void sendError(final int sc) {
+  public void sendError(int sc) {
     setStatus(sc);
   }
 
   @Override
-  public void sendRedirect(final String location) {
+  public void sendRedirect(String location) {
     setStatus(302);
     setHeader("Location", location);
   }
 
   @Override
-  public void addHeader(final String name, final String value) {
+  public void addHeader(String name, String value) {
     headerSupport.addHeader(name, value);
   }
 
   @Override
-  public void addIntHeader(final String name, final int value) {
+  public void addIntHeader(String name, int value) {
     headerSupport.addIntHeader(name, value);
   }
 
   @Override
-  public void addDateHeader(final String name, final long date) {
+  public void addDateHeader(String name, long date) {
     headerSupport.addDateHeader(name, date);
   }
 
   @Override
-  public void setHeader(final String name, final String value) {
+  public void setHeader(String name, String value) {
     headerSupport.setHeader(name, value);
   }
 
   @Override
-  public void setIntHeader(final String name, final int value) {
+  public void setIntHeader(String name, int value) {
     headerSupport.setIntHeader(name, value);
   }
 
   @Override
-  public void setDateHeader(final String name, final long date) {
+  public void setDateHeader(String name, long date) {
     headerSupport.setDateHeader(name, date);
   }
 
   @Override
-  public boolean containsHeader(final String name) {
+  public boolean containsHeader(String name) {
     return headerSupport.containsHeader(name);
   }
 
   @Override
-  public String getHeader(final String name) {
+  public String getHeader(String name) {
     return headerSupport.getHeader(name);
   }
 
   @Override
-  public Collection<String> getHeaders(final String name) {
+  public Collection<String> getHeaders(String name) {
     return headerSupport.getHeaders(name);
   }
 
@@ -163,75 +166,97 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
     return headerSupport.getHeaderNames();
   }
 
-  // --- unsupported operations ---
   @Override
-  public int getBufferSize() {
-    throw new UnsupportedOperationException();
+  public PrintWriter getWriter() {
+    return bodySupport.getWriter(getCharacterEncoding());
   }
 
+  @Override
+  public ServletOutputStream getOutputStream() {
+    return bodySupport.getOutputStream();
+  }
+
+  @Override
+  public void reset() {
+    if (isCommitted()) {
+      throw new IllegalStateException("Response already committed.");
+    }
+    bodySupport.reset();
+    headerSupport.reset();
+    status = 0;
+    contentLength = 0;
+  }
+
+  @Override
+  public void resetBuffer() {
+    if (isCommitted()) {
+      throw new IllegalStateException("Response already committed.");
+    }
+    bodySupport.reset();
+  }
+
+  @Override
+  public int getBufferSize() {
+    return this.bufferSize;
+  }
+
+  @Override
+  public void setBufferSize(int size) {
+    this.bufferSize = size;
+  }
+
+  @Override
+  public void flushBuffer() {
+    isCommitted = true;
+  }
+
+  @Override
+  public boolean isCommitted() {
+    return isCommitted;
+  }
+
+  public byte[] getOutput() {
+    return bodySupport.getOutput();
+  }
+
+  public String getOutputAsString() {
+    return bodySupport.getOutputAsString(getCharacterEncoding());
+  }
+
+
+  // --- unsupported operations ---
   @Override
   public Locale getLocale() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public ServletOutputStream getOutputStream() {
+  public void setLocale(Locale loc) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public PrintWriter getWriter() {
+  public void addCookie(Cookie cookie) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isCommitted() {
+  public String encodeRedirectUrl(String url) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void reset() {
+  public String encodeRedirectURL(String url) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void resetBuffer() {
+  public String encodeUrl(String url) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setBufferSize(final int size) {
+  public String encodeURL(String url) {
     throw new UnsupportedOperationException();
   }
-
-  @Override
-  public void setLocale(final Locale loc) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void addCookie(final Cookie cookie) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String encodeRedirectUrl(final String url) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String encodeRedirectURL(final String url) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String encodeUrl(final String url) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String encodeURL(final String url) {
-    throw new UnsupportedOperationException();
-  }
-
 }

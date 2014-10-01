@@ -36,6 +36,9 @@ import java.util.Vector;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * Manage HTTP headers for request and response.
+ */
 class HeaderSupport {
 
   private static final String RFC_1123_DATE_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
@@ -154,6 +157,10 @@ class HeaderSupport {
       values.add(entry.getKey());
     }
     return values;
+  }
+
+  public void reset() {
+    headers.clear();
   }
 
   public static Enumeration<String> toEnumeration(Collection<String> collection) {

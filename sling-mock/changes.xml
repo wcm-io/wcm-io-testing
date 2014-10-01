@@ -29,6 +29,9 @@
         support request headers.
       </action>
       <action type="update" dev="sseifert">
+        MockSlingHttpServletResponse: support writing data to output stream or print writer.
+      </action>
+      <action type="update" dev="sseifert">
         MockSlingScriptHelper: fix casting problem with array from getServices method.
       </action>
     </release>
