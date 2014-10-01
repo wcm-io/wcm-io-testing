@@ -143,7 +143,7 @@ public final class MockConfig {
    */
   public static void writeConfiguration(AemContext context, String configurationId, Map<String, Object> values) {
     try {
-      ParameterPersistence persistence = context.slingScriptHelper().getService(ParameterPersistence.class);
+      ParameterPersistence persistence = context.getService(ParameterPersistence.class);
       persistence.storeData(context.resourceResolver(), configurationId,
           new ParameterPersistenceData(values, ImmutableSortedSet.<String>of()));
     }
