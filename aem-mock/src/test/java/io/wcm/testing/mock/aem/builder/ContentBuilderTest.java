@@ -39,12 +39,21 @@ public class ContentBuilderTest {
 
   @Rule
   public AemContext context = new AemContext(
-      ResourceResolverType.JCR_MOCK/*,
-                                   ResourceResolverType.RESOURCERESOLVER_MOCK*/
+      ResourceResolverType.JCR_MOCK,
+      ResourceResolverType.RESOURCERESOLVER_MOCK
       );
 
   @Test
   public void testPage() {
+    Page page = context.create().page("/content/test1/page1");
+    assertNotNull(page);
+    assertEquals("page1", page.getName());
+    assertEquals(ContentBuilder.DUMMY_TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("page1", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithTemplate() {
     Page page = context.create().page("/content/test1/page1", TEMPLATE);
     assertNotNull(page);
     assertEquals("page1", page.getName());

@@ -41,6 +41,8 @@ import com.google.common.collect.ImmutableMap;
  */
 public final class ContentBuilder {
 
+  static final String DUMMY_TEMPLATE = "/apps/sample/templates/template1";
+
   private final ResourceResolver resourceResolver;
 
   /**
@@ -48,6 +50,16 @@ public final class ContentBuilder {
    */
   public ContentBuilder(ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
+  }
+
+  /**
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param path Page path
+   * @return Page object
+   */
+  public Page page(String path) {
+    return page(path, DUMMY_TEMPLATE, ValueMap.EMPTY);
   }
 
   /**

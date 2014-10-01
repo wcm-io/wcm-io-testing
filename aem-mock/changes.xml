@@ -25,7 +25,7 @@
 
     <release version="1.0.1-SNAPSHOT" date="not released">
       <action type="update" dev="sseifert">
-        Update sling-mock dependency.
+        ContentBuilder: Support creating pages with path argument only.
       </action>
     </release>
 
