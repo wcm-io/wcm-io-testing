@@ -19,6 +19,8 @@
  */
 package io.wcm.testing.mock.sling;
 
+import java.lang.reflect.Array;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -75,11 +77,11 @@ class MockSlingScriptHelper implements SlingScriptHelper {
     try {
       ServiceReference[] serviceReferences = this.bundleContext.getServiceReferences(serviceType.getName(), filter);
       if (serviceReferences != null) {
-        Object[] services = new Object[serviceReferences.length];
+        ServiceType[] services = (ServiceType[])Array.newInstance(serviceType, serviceReferences.length);
         for (int i = 0; i < serviceReferences.length; i++) {
-          services[i] = this.bundleContext.getService(serviceReferences[i]);
+          services[i] = (ServiceType)this.bundleContext.getService(serviceReferences[i]);
         }
-        return (ServiceType[])services;
+        return services;
       }
       else {
         return (ServiceType[])ArrayUtils.EMPTY_OBJECT_ARRAY;

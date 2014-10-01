@@ -97,10 +97,10 @@ public class AemContextImplTest {
 
   @Test
   public void testRegisterService() {
-    Set<String> myService = new HashSet<String>();
+    Set<String> myService = new HashSet<>();
     context.registerService(Set.class, myService);
 
-    Set<?> serviceResult = context.slingScriptHelper().getService(Set.class);
+    Set<?> serviceResult = context.getService(Set.class);
     assertSame(myService, serviceResult);
   }
 
@@ -116,6 +116,18 @@ public class AemContextImplTest {
     Object serviceResult = context.bundleContext().getService(serviceReference);
     assertSame(myService, serviceResult);
     assertEquals("value1", serviceReference.getProperty("prop1"));
+  }
+
+  @Test
+  public void testRegisterMultipleServices() {
+    Set<String> myService1 = new HashSet<>();
+    context.registerService(Set.class, myService1);
+    Set<String> myService2 = new HashSet<>();
+    context.registerService(Set.class, myService2);
+
+    Set[] serviceResults = context.getServices(Set.class, null);
+    assertSame(myService1, serviceResults[0]);
+    assertSame(myService2, serviceResults[1]);
   }
 
   @Test
@@ -201,7 +213,7 @@ public class AemContextImplTest {
 
   @Test
   public void testRunModes() {
-    SlingSettingsService slingSettings = context.slingScriptHelper().getService(SlingSettingsService.class);
+    SlingSettingsService slingSettings = context.getService(SlingSettingsService.class);
     assertEquals(AemContextImpl.DEFAULT_RUN_MODES, slingSettings.getRunModes());
 
     context.runMode("mode1", "mode2");

@@ -45,6 +45,7 @@ import javax.jcr.Session;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.scripting.InvalidServiceFilterSyntaxException;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.commons.mime.MimeTypeService;
@@ -334,6 +335,27 @@ public class AemContextImpl<WrapperType> {
     MockOsgi.activate(service, bundleContext(), properties);
     registerService(null, service, null);
     return (WrapperType)this;
+  }
+
+  /**
+   * Lookup a single service
+   * @param serviceType The type (interface) of the service.
+   * @return The service instance, or null if the service is not available.
+   */
+  public <ServiceType> ServiceType getService(final Class<ServiceType> serviceType) {
+    return slingScriptHelper().getService(serviceType);
+  }
+
+  /**
+   * Lookup one or several services
+   * @param serviceType The type (interface) of the service.
+   * @param filter An optional filter (LDAP-like, see OSGi spec)
+   * @return The services object or null.
+   * @throws InvalidServiceFilterSyntaxException If the <code>filter</code> string is not a valid OSGi service filter
+   *           string.
+   */
+  public <ServiceType> ServiceType[] getServices(final Class<ServiceType> serviceType, final String filter) {
+    return slingScriptHelper().getServices(serviceType, filter);
   }
 
   /**

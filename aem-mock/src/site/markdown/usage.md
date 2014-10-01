@@ -129,7 +129,7 @@ context.registerService(MyClass.class, myService);
 context.registerInjectActivateService(myService);
 
 // get OSGi service
-MyClass service = context.slingScriptHelper().getService(MyClass.class);
+MyClass service = context.getService(MyClass.class);
 
 // or alternatively: get OSGi service via bundle context
 ServiceReference ref = context.bundleContext().getServiceReference(MyClass.class.getName());

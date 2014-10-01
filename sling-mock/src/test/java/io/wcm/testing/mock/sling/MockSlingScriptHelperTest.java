@@ -75,7 +75,8 @@ public class MockSlingScriptHelperTest {
     for (Integer service : services) {
       this.bundleContext.registerService(Integer.class.getName(), service, null);
     }
-    assertArrayEquals(services, this.scriptHelper.getServices(Integer.class, null));
+    Integer[] servicesResult = this.scriptHelper.getServices(Integer.class, null);
+    assertArrayEquals(services, servicesResult);
   }
 
 }

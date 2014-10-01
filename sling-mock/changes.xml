@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         MockSlingHttpServletRequest: accept any map values for setParameterMap method, support HTTP method.
       </action>
+      <action type="update" dev="sseifert">
+        MockSlingScriptHelper: fix casting problem with array from getServices method.
+      </action>
     </release>
 
     <release version="1.0.0" date="2014-09-19">
