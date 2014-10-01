@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.CharEncoding;
@@ -145,6 +146,24 @@ public class MockSlingHttpServletResponseTest {
     assertFalse(response.isCommitted());
     response.flushBuffer();
     assertTrue(response.isCommitted());
+  }
+
+  @Test
+  public void testCookies() {
+    assertNull(response.getCookies());
+
+    response.addCookie(new Cookie("cookie1", "value1"));
+    response.addCookie(new Cookie("cookie2", "value2"));
+
+    assertEquals("value1", response.getCookie("cookie1").getValue());
+
+    Cookie[] cookies = response.getCookies();
+    assertEquals(2, cookies.length);
+    assertEquals("value1", cookies[0].getValue());
+    assertEquals("value2", cookies[1].getValue());
+
+    response.reset();
+    assertNull(response.getCookies());
   }
 
 }

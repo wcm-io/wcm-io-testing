@@ -81,6 +81,7 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
   private int serverPort = 80;
   private String method = HttpConstants.METHOD_GET;
   private final HeaderSupport headerSupport = new HeaderSupport();
+  private final CookieSupport cookieSupport = new CookieSupport();
 
   /**
    * Instantiate with default resource resolver
@@ -416,12 +417,25 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
     headerSupport.setDateHeader(name, date);
   }
 
-
-  // --- unsupported operations ---
   @Override
   public Cookie getCookie(String name) {
-    throw new UnsupportedOperationException();
+    return cookieSupport.getCookie(name);
   }
+
+  @Override
+  public Cookie[] getCookies() {
+    return cookieSupport.getCookies();
+  }
+
+  /**
+   * Set cookie
+   * @param cookie Cookie
+   */
+  public void addCookie(Cookie cookie) {
+    cookieSupport.addCookie(cookie);
+  }
+
+  // --- unsupported operations ---
 
   @Override
   public RequestDispatcher getRequestDispatcher(Resource dispatcherResource) {
@@ -480,11 +494,6 @@ public class MockSlingHttpServletRequest extends SlingAdaptable implements Sling
 
   @Override
   public String getAuthType() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Cookie[] getCookies() {
     throw new UnsupportedOperationException();
   }
 

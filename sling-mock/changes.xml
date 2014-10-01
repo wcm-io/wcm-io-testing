@@ -26,10 +26,10 @@
     <release version="1.0.1-SNAPSHOT" date="not released">
       <action type="update" dev="sseifert">
         MockSlingHttpServletRequest: accept any map values for setParameterMap method, support HTTP method,
-        support request headers.
+        support request headers, support cookies.
       </action>
       <action type="update" dev="sseifert">
-        MockSlingHttpServletResponse: support writing data to output stream or print writer.
+        MockSlingHttpServletResponse: support writing data to output stream or print writer, support cookies.
       </action>
       <action type="update" dev="sseifert">
         MockSlingScriptHelper: fix casting problem with array from getServices method.

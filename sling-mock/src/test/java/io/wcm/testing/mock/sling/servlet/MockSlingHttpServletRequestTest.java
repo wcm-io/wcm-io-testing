@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.CharEncoding;
@@ -176,7 +177,7 @@ public class MockSlingHttpServletRequestTest {
   }
 
   @Test
-  public void testHeaders() throws Exception {
+  public void testHeaders() {
     assertFalse(request.getHeaderNames().hasMoreElements());
 
     Calendar calendar = Calendar.getInstance();
@@ -202,6 +203,21 @@ public class MockSlingHttpServletRequestTest {
     assertEquals("5", header2Values.nextElement());
     assertEquals("10", header2Values.nextElement());
     assertFalse(header2Values.hasMoreElements());
+  }
+
+  @Test
+  public void testCookies() {
+    assertNull(request.getCookies());
+
+    request.addCookie(new Cookie("cookie1", "value1"));
+    request.addCookie(new Cookie("cookie2", "value2"));
+
+    assertEquals("value1", request.getCookie("cookie1").getValue());
+
+    Cookie[] cookies = request.getCookies();
+    assertEquals(2, cookies.length);
+    assertEquals("value1", cookies[0].getValue());
+    assertEquals("value2", cookies[1].getValue());
   }
 
 }

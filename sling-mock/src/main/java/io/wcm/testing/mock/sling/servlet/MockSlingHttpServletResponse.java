@@ -46,6 +46,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
   private boolean isCommitted;
   private final HeaderSupport headerSupport = new HeaderSupport();
   private final ResponseBodySupport bodySupport = new ResponseBodySupport();
+  private final CookieSupport cookieSupport = new CookieSupport();
 
   @Override
   public String getContentType() {
@@ -183,6 +184,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
     }
     bodySupport.reset();
     headerSupport.reset();
+    cookieSupport.reset();
     status = 0;
     contentLength = 0;
   }
@@ -223,6 +225,28 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
     return bodySupport.getOutputAsString(getCharacterEncoding());
   }
 
+  @Override
+  public void addCookie(Cookie cookie) {
+    cookieSupport.addCookie(cookie);
+  }
+
+  /**
+   * Get cookie
+   * @param name Cookie name
+   * @return Cookie or null
+   */
+  public Cookie getCookie(String name) {
+    return cookieSupport.getCookie(name);
+  }
+
+  /**
+   * Get cookies
+   * @return Cookies array or null if no cookie defined
+   */
+  public Cookie[] getCookies() {
+    return cookieSupport.getCookies();
+  }
+
 
   // --- unsupported operations ---
   @Override
@@ -232,11 +256,6 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
 
   @Override
   public void setLocale(Locale loc) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void addCookie(Cookie cookie) {
     throw new UnsupportedOperationException();
   }
 
