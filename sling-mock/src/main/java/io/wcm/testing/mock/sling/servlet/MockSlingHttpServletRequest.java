@@ -66,12 +66,12 @@ import org.apache.sling.api.servlets.HttpConstants;
 /**
  * Mock {@link SlingHttpServletRequest} implementation.
  */
-public final class MockSlingHttpServletRequest extends SlingAdaptable implements SlingHttpServletRequest {
+public class MockSlingHttpServletRequest extends SlingAdaptable implements SlingHttpServletRequest {
 
-  private final ResourceResolver resourceResolver;
-  private final RequestPathInfo requestPathInfo = new MockRequestPathInfo();
-  private final Map<String, Object> attributeMap = new HashMap<>();
-  private final Map<String, String[]> parameterMap = new LinkedHashMap<>();
+  private ResourceResolver resourceResolver;
+  private RequestPathInfo requestPathInfo = new MockRequestPathInfo();
+  private Map<String, Object> attributeMap = new HashMap<>();
+  private Map<String, String[]> parameterMap = new LinkedHashMap<>();
   private HttpSession session;
   private Resource resource;
   private String contextPath;
@@ -80,6 +80,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   private String serverName = "localhost";
   private int serverPort = 80;
   private String method = HttpConstants.METHOD_GET;
+  private HeaderSupport headerSupport = new HeaderSupport();
 
   /**
    * Instantiate with default resource resolver
@@ -91,7 +92,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   /**
    * @param resourceResolver Resource resolver
    */
-  public MockSlingHttpServletRequest(final ResourceResolver resourceResolver) {
+  public MockSlingHttpServletRequest(ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
   }
 
@@ -106,7 +107,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public HttpSession getSession(final boolean create) {
+  public HttpSession getSession(boolean create) {
     if (this.session == null && create) {
       this.session = new MockHttpSession();
     }
@@ -119,7 +120,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public Object getAttribute(final String name) {
+  public Object getAttribute(String name) {
     return this.attributeMap.get(name);
   }
 
@@ -130,12 +131,12 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public void removeAttribute(final String name) {
+  public void removeAttribute(String name) {
     this.attributeMap.remove(name);
   }
 
   @Override
-  public void setAttribute(final String name, final Object object) {
+  public void setAttribute(String name, Object object) {
     this.attributeMap.put(name, object);
   }
 
@@ -144,12 +145,12 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
     return this.resource;
   }
 
-  public void setResource(final Resource resource) {
+  public void setResource(Resource resource) {
     this.resource = resource;
   }
 
   @Override
-  public String getParameter(final String name) {
+  public String getParameter(String name) {
     Object object = this.parameterMap.get(name);
     if (object instanceof String) {
       return (String)object;
@@ -175,7 +176,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public String[] getParameterValues(final String name) { //NOPMD
+  public String[] getParameterValues(String name) { //NOPMD
     Object object = this.parameterMap.get(name);
     if (object instanceof String) {
       return new String[] {
@@ -191,7 +192,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   /**
    * @param parameterMap Map of parameters
    */
-  public void setParameterMap(final Map<String, Object> parameterMap) {
+  public void setParameterMap(Map<String, Object> parameterMap) {
     this.parameterMap.clear();
     for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
       String key = entry.getKey();
@@ -216,7 +217,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
     }
   }
 
-  private String formatQueryString(final Map<String, String[]> map) throws UnsupportedEncodingException {
+  private String formatQueryString(Map<String, String[]> map) throws UnsupportedEncodingException {
     StringBuilder querystring = new StringBuilder();
     for (Map.Entry<String, String[]> entry : this.parameterMap.entrySet()) {
       if (entry.getValue() != null) {
@@ -254,14 +255,14 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   /**
    * @param contextPath Webapp context path
    */
-  public void setContextPath(final String contextPath) {
+  public void setContextPath(String contextPath) {
     this.contextPath = contextPath;
   }
 
   /**
    * @param queryString Query string (with proper URL encoding)
    */
-  public void setQueryString(final String queryString) {
+  public void setQueryString(String queryString) {
     this.queryString = queryString;
     try {
       parseQueryString(this.parameterMap, this.queryString);
@@ -271,17 +272,17 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
     }
   }
 
-  private void parseQueryString(final Map<String, String[]> map,
-      final String query) throws UnsupportedEncodingException {
-    final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
-    final String[] pairs = query.split("&");
+  private void parseQueryString(Map<String, String[]> map,
+      String query) throws UnsupportedEncodingException {
+    Map<String, List<String>> queryPairs = new LinkedHashMap<>();
+    String[] pairs = query.split("&");
     for (String pair : pairs) {
-      final int idx = pair.indexOf('=');
-      final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), CharEncoding.UTF_8) : pair;
+      int idx = pair.indexOf('=');
+      String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), CharEncoding.UTF_8) : pair;
       if (!queryPairs.containsKey(key)) {
         queryPairs.put(key, new ArrayList<String>());
       }
-      final String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), CharEncoding.UTF_8) : null;
+      String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), CharEncoding.UTF_8) : null;
       queryPairs.get(key).add(value);
     }
     map.clear();
@@ -336,30 +337,109 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
     this.method = method;
   }
 
+  @Override
+  public long getDateHeader(String name) {
+    return headerSupport.getDateHeader(name);
+  }
+
+  @Override
+  public String getHeader(String name) {
+    return headerSupport.getHeader(name);
+  }
+
+  @Override
+  public Enumeration<String> getHeaderNames() {
+    return HeaderSupport.toEnumeration(headerSupport.getHeaderNames());
+  }
+
+  @Override
+  public Enumeration<String> getHeaders(String name) {
+    return HeaderSupport.toEnumeration(headerSupport.getHeaders(name));
+  }
+
+  @Override
+  public int getIntHeader(String name) {
+    return headerSupport.getIntHeader(name);
+  }
+
+  /**
+   * Add header, keep existing ones with same name.
+   * @param name Header name
+   * @param value Header value
+   */
+  public void addHeader(String name, String value) {
+    headerSupport.addHeader(name, value);
+  }
+
+  /**
+   * Add header, keep existing ones with same name.
+   * @param name Header name
+   * @param value Header value
+   */
+  public void addIntHeader(String name, int value) {
+    headerSupport.addIntHeader(name, value);
+  }
+
+  /**
+   * Add header, keep existing ones with same name.
+   * @param name Header name
+   * @param date Header value
+   */
+  public void addDateHeader(String name, long date) {
+    headerSupport.addDateHeader(name, date);
+  }
+
+  /**
+   * Set header, overwrite existing ones with same name.
+   * @param name Header name
+   * @param value Header value
+   */
+  public void setHeader(String name, String value) {
+    headerSupport.setHeader(name, value);
+  }
+
+  /**
+   * Set header, overwrite existing ones with same name.
+   * @param name Header name
+   * @param value Header value
+   */
+  public void setIntHeader(String name, int value) {
+    headerSupport.setIntHeader(name, value);
+  }
+
+  /**
+   * Set header, overwrite existing ones with same name.
+   * @param name Header name
+   * @param date Header value
+   */
+  public void setDateHeader(String name, long date) {
+    headerSupport.setDateHeader(name, date);
+  }
+
 
   // --- unsupported operations ---
   @Override
-  public Cookie getCookie(final String name) {
+  public Cookie getCookie(String name) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public RequestDispatcher getRequestDispatcher(final Resource dispatcherResource) {
+  public RequestDispatcher getRequestDispatcher(Resource dispatcherResource) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public RequestDispatcher getRequestDispatcher(final String dispatcherPath, final RequestDispatcherOptions options) {
+  public RequestDispatcher getRequestDispatcher(String dispatcherPath, RequestDispatcherOptions options) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public RequestDispatcher getRequestDispatcher(final Resource dispatcherResource, final RequestDispatcherOptions options) {
+  public RequestDispatcher getRequestDispatcher(Resource dispatcherResource, RequestDispatcherOptions options) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public RequestParameter getRequestParameter(final String name) {
+  public RequestParameter getRequestParameter(String name) {
     throw new UnsupportedOperationException();
   }
 
@@ -369,7 +449,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public RequestParameter[] getRequestParameters(final String name) {
+  public RequestParameter[] getRequestParameters(String name) {
     throw new UnsupportedOperationException();
   }
 
@@ -379,12 +459,12 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public ResourceBundle getResourceBundle(final Locale pLocale) {
+  public ResourceBundle getResourceBundle(Locale pLocale) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public ResourceBundle getResourceBundle(final String baseName, final Locale locale) {
+  public ResourceBundle getResourceBundle(String baseName, Locale locale) {
     throw new UnsupportedOperationException();
   }
 
@@ -405,31 +485,6 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
 
   @Override
   public Cookie[] getCookies() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public long getDateHeader(final String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getHeader(final String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Enumeration<String> getHeaderNames() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Enumeration<String> getHeaders(final String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int getIntHeader(final String name) {
     throw new UnsupportedOperationException();
   }
 
@@ -494,7 +549,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public boolean isUserInRole(final String role) {
+  public boolean isUserInRole(String role) {
     throw new UnsupportedOperationException();
   }
 
@@ -549,7 +604,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public String getRealPath(final String path) {
+  public String getRealPath(String path) {
     throw new UnsupportedOperationException();
   }
 
@@ -569,22 +624,22 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public RequestDispatcher getRequestDispatcher(final String path) {
+  public RequestDispatcher getRequestDispatcher(String path) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setCharacterEncoding(final String env) {
+  public void setCharacterEncoding(String env) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean authenticate(final HttpServletResponse response) {
+  public boolean authenticate(HttpServletResponse response) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void login(final String pUsername, final String password) {
+  public void login(String pUsername, String password) {
     throw new UnsupportedOperationException();
   }
 
@@ -599,7 +654,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public Part getPart(final String name) {
+  public Part getPart(String name) {
     throw new UnsupportedOperationException();
   }
 
@@ -614,7 +669,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   }
 
   @Override
-  public AsyncContext startAsync(final ServletRequest servletRequest, final ServletResponse servletResponse) {
+  public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) {
     throw new UnsupportedOperationException();
   }
 

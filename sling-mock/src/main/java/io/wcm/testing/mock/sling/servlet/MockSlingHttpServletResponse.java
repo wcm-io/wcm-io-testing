@@ -21,17 +21,8 @@ package io.wcm.testing.mock.sling.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -47,17 +38,11 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
 
   private static final String CHARSET_SEPARATOR = ";charset=";
 
-  private static final String RFC_1123_DATE_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
-  private static final DateFormat RFC1123_DATE_FORMAT = new SimpleDateFormat(RFC_1123_DATE_PATTERN, Locale.US);
-  static {
-    RFC1123_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-  }
-
   private String contentType = "text/html";
   private String characterEncoding;
   private int contentLength;
   private int status = 200;
-  private final List<HeaderValue> headers = new ArrayList<>();
+  private HeaderSupport headerSupport = new HeaderSupport();
 
   @Override
   public void flushBuffer() throws IOException {
@@ -130,89 +115,53 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
 
   @Override
   public void addHeader(final String name, final String value) {
-    headers.add(new HeaderValue(name, value));
+    headerSupport.addHeader(name, value);
   }
 
   @Override
   public void addIntHeader(final String name, final int value) {
-    headers.add(new HeaderValue(name, Integer.toString(value)));
+    headerSupport.addIntHeader(name, value);
   }
 
   @Override
   public void addDateHeader(final String name, final long date) {
-    headers.add(new HeaderValue(name, formatDate(new Date(date))));
+    headerSupport.addDateHeader(name, date);
   }
 
   @Override
   public void setHeader(final String name, final String value) {
-    removeHeaders(name);
-    addHeader(name, value);
+    headerSupport.setHeader(name, value);
   }
 
   @Override
   public void setIntHeader(final String name, final int value) {
-    removeHeaders(name);
-    addIntHeader(name, value);
+    headerSupport.setIntHeader(name, value);
   }
 
   @Override
   public void setDateHeader(final String name, final long date) {
-    removeHeaders(name);
-    addDateHeader(name, date);
-  }
-
-  private void removeHeaders(final String name) {
-    for (int i = this.headers.size() - 1; i >= 0; i--) {
-      if (StringUtils.equals(this.headers.get(i).getKey(), name)) {
-        headers.remove(i);
-      }
-    }
+    headerSupport.setDateHeader(name, date);
   }
 
   @Override
   public boolean containsHeader(final String name) {
-    return !getHeaders(name).isEmpty();
+    return headerSupport.containsHeader(name);
   }
 
   @Override
   public String getHeader(final String name) {
-    Collection<String> values = getHeaders(name);
-    if (!values.isEmpty()) {
-      return values.iterator().next();
-    }
-    else {
-      return null;
-    }
+    return headerSupport.getHeader(name);
   }
 
   @Override
   public Collection<String> getHeaders(final String name) {
-    List<String> values = new ArrayList<>();
-    for (HeaderValue entry : headers) {
-      if (StringUtils.equals(entry.getKey(), name)) {
-        values.add(entry.getValue());
-      }
-    }
-    return values;
+    return headerSupport.getHeaders(name);
   }
 
   @Override
   public Collection<String> getHeaderNames() {
-    Set<String> values = new HashSet<>();
-    for (HeaderValue entry : headers) {
-      values.add(entry.getKey());
-    }
-    return values;
+    return headerSupport.getHeaderNames();
   }
-
-  static synchronized String formatDate(Date pDate) {
-    return RFC1123_DATE_FORMAT.format(pDate);
-  }
-
-  static synchronized Date parseDate(String pDateString) throws ParseException {
-    return RFC1123_DATE_FORMAT.parse(pDateString);
-  }
-
 
   // --- unsupported operations ---
   @Override
@@ -283,27 +232,6 @@ public final class MockSlingHttpServletResponse extends SlingAdaptable implement
   @Override
   public String encodeURL(final String url) {
     throw new UnsupportedOperationException();
-  }
-
-
-  private static class HeaderValue {
-
-    private final String key;
-    private final String value;
-
-    public HeaderValue(String key, String value) {
-      this.key = key;
-      this.value = value;
-    }
-
-    public String getKey() {
-      return this.key;
-    }
-
-    public String getValue() {
-      return this.value;
-    }
-
   }
 
 }

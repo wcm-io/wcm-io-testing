@@ -22,6 +22,7 @@ package io.wcm.testing.mock.sling.servlet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -73,6 +74,7 @@ public class MockSlingHttpServletResponseTest {
     response.addDateHeader("header3", System.currentTimeMillis());
 
     assertEquals(3, response.getHeaderNames().size());
+    assertTrue(response.containsHeader("header1"));
     assertEquals("value1", response.getHeader("header1"));
     assertEquals("5", response.getHeader("header2"));
     assertNotNull(response.getHeader("header3"));
@@ -98,6 +100,12 @@ public class MockSlingHttpServletResponseTest {
     response.sendRedirect("/location.html");
     assertEquals(302, response.getStatus());
     assertEquals("/location.html", response.getHeader("Location"));
+  }
+
+  @Test
+  public void testSendError() throws Exception {
+    response.sendError(404);
+    assertEquals(404, response.getStatus());
   }
 
 }
