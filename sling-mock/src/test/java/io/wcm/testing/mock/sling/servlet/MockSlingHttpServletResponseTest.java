@@ -111,11 +111,13 @@ public class MockSlingHttpServletResponseTest {
 
   @Test
   public void testSetStatus() throws Exception {
+    assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+
     response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
     assertEquals(HttpServletResponse.SC_BAD_GATEWAY, response.getStatus());
 
     response.reset();
-    assertEquals(0, response.getStatus());
+    assertEquals(HttpServletResponse.SC_OK, response.getStatus());
   }
 
   @Test

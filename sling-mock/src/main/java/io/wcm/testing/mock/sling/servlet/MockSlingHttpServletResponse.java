@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +42,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
   private String contentType;
   private String characterEncoding = CharEncoding.ISO_8859_1;
   private int contentLength;
-  private int status;
+  private int status = HttpServletResponse.SC_OK;
   private int bufferSize = 1024 * 8;
   private boolean isCommitted;
   private final HeaderSupport headerSupport = new HeaderSupport();
@@ -185,7 +186,7 @@ public class MockSlingHttpServletResponse extends SlingAdaptable implements Slin
     bodySupport.reset();
     headerSupport.reset();
     cookieSupport.reset();
-    status = 0;
+    status = HttpServletResponse.SC_OK;
     contentLength = 0;
   }
 
