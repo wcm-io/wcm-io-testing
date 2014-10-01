@@ -61,6 +61,7 @@ import org.apache.sling.api.request.RequestPathInfo;
 import org.apache.sling.api.request.RequestProgressTracker;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.servlets.HttpConstants;
 
 /**
  * Mock {@link SlingHttpServletRequest} implementation.
@@ -78,6 +79,7 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   private String scheme = "http";
   private String serverName = "localhost";
   private int serverPort = 80;
+  private String method = HttpConstants.METHOD_GET;
 
   /**
    * Instantiate with default resource resolver
@@ -189,9 +191,23 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
   /**
    * @param parameterMap Map of parameters
    */
-  public void setParameterMap(final Map<String, String[]> parameterMap) {
+  public void setParameterMap(final Map<String, Object> parameterMap) {
     this.parameterMap.clear();
-    this.parameterMap.putAll(parameterMap);
+    for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
+      String key = entry.getKey();
+      Object value = entry.getValue();
+      if (value instanceof String[]) {
+        this.parameterMap.put(key, (String[])value);
+      }
+      else if (value != null) {
+        this.parameterMap.put(key, new String[] {
+            value.toString()
+        });
+      }
+      else {
+        this.parameterMap.put(key, null);
+      }
+    }
     try {
       this.queryString = formatQueryString(this.parameterMap);
     }
@@ -311,6 +327,16 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
     return StringUtils.equals("https", getScheme());
   }
 
+  @Override
+  public String getMethod() {
+    return this.method;
+  }
+
+  public void setMethod(String method) {
+    this.method = method;
+  }
+
+
   // --- unsupported operations ---
   @Override
   public Cookie getCookie(final String name) {
@@ -404,11 +430,6 @@ public final class MockSlingHttpServletRequest extends SlingAdaptable implements
 
   @Override
   public int getIntHeader(final String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getMethod() {
     throw new UnsupportedOperationException();
   }
 

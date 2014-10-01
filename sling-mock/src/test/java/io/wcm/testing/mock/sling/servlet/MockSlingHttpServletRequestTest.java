@@ -38,6 +38,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.servlets.HttpConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,10 +129,8 @@ public class MockSlingHttpServletRequestTest {
         "a", "b"
     }, this.request.getParameterValues("param3"));
 
-    Map<String, String[]> paramMap = new LinkedHashMap<>();
-    paramMap.put("p1", new String[] {
-        "a"
-    });
+    Map<String, Object> paramMap = new LinkedHashMap<>();
+    paramMap.put("p1", "a");
     paramMap.put("p2", new String[] {
         "b", "c"
     });
@@ -139,9 +138,10 @@ public class MockSlingHttpServletRequestTest {
     paramMap.put("p4", new String[] {
         null
     });
+    paramMap.put("p5", 22);
     this.request.setParameterMap(paramMap);
 
-    assertEquals("p1=a&p2=b&p2=c&p4=", this.request.getQueryString());
+    assertEquals("p1=a&p2=b&p2=c&p4=&p5=22", this.request.getQueryString());
   }
 
   @Test
@@ -163,6 +163,14 @@ public class MockSlingHttpServletRequestTest {
     this.request.setServerPort(12345);
     assertEquals("myhost", this.request.getServerName());
     assertEquals(12345, this.request.getServerPort());
+  }
+
+  @Test
+  public void testMethod() {
+    assertEquals(HttpConstants.METHOD_GET, this.request.getMethod());
+
+    this.request.setMethod(HttpConstants.METHOD_POST);
+    assertEquals(HttpConstants.METHOD_POST, this.request.getMethod());
   }
 
 }
