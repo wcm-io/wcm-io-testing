@@ -8,7 +8,7 @@ Mock implementation of selected JCR APIs.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.jcr-mock</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 

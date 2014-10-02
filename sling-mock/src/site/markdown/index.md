@@ -2,13 +2,14 @@
 
 Mock implementation of selected Sling APIs.
 
+
 ### Maven Dependency
 
 ```xml
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.sling-mock</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -18,6 +19,7 @@ Mock implementation of selected Sling APIs.
 * [Content Loader Usage][usage-content-loader]
 * [API Documentation][apidocs]
 * [Changelog][changelog]
+
 
 ### Implemented mock features
 
@@ -47,6 +49,7 @@ The following features are *not supported*:
     * The goal is to test supporting classes in Sling context, not the sling components/scripts themselves
 
 See [Sling Mocks Usage][usage-mocks].
+
 
 ### Additional features
 
