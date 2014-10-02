@@ -27,13 +27,13 @@ import io.wcm.config.api.ParameterBuilder;
 import io.wcm.config.spi.ApplicationProvider;
 import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
+import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextCallback;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public class MockConfigTest {
@@ -65,9 +65,8 @@ public class MockConfigTest {
 
       callbackContext.currentPage(callbackContext.create().page("/content/region/site/en", "/apps/templates/sample"));
 
-      MockConfig.writeConfiguration(callbackContext, "/content/region/site", ImmutableMap.<String, Object>builder()
-          .put("param1", "value1")
-          .build());
+      MockConfig.writeConfiguration(callbackContext, "/content/region/site",
+          ImmutableValueMap.of("param1", "value1"));
     }
   });
 

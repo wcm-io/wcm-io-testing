@@ -36,6 +36,7 @@ import io.wcm.config.spi.ParameterProvider;
 import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;
 import io.wcm.config.spi.helpers.AbstractParameterProvider;
 import io.wcm.config.spi.helpers.AbstractPathApplicationProvider;
+import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Map;
@@ -44,7 +45,6 @@ import java.util.Set;
 import org.apache.sling.api.resource.PersistenceException;
 
 import com.day.jcr.vault.util.Text;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
@@ -64,9 +64,7 @@ public final class MockConfig {
 
     // persistence providers
     context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
-        ImmutableMap.<String, Object>builder()
-        .put("enabled", true)
-        .build());
+        ImmutableValueMap.of("enabled", true));
 
     // management services
     context.registerInjectActivateService(new ApplicationFinderImpl());
