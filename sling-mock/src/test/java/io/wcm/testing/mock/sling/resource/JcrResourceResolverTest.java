@@ -162,7 +162,7 @@ public class JcrResourceResolverTest {
   }
 
   @Test
-  public void testCreateNodetype() throws RepositoryException, PersistenceException {
+  public void testCreateNodeType() throws RepositoryException, PersistenceException {
     Resource parent = resourceResolver.getResource(getTestRootNode().getPath());
 
     Resource child = resourceResolver.create(parent, "nodeTypeResource", ImmutableMap.<String, Object>builder()
