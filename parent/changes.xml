@@ -28,7 +28,7 @@
         Deploy site descriptor together with artifact.
       </action>
     </release>
-    
+
     <release version="1.0.0" date="2014-09-12">
       <action type="add" dev="sseifert">
         Initial release.
