@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Handler Mocks</name>
@@ -41,7 +41,7 @@
     <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
     <developerConnection>scm:git:git@github.com:wcm-io/wcm-io.git</developerConnection>
     <url>https://github.com/wcm-io/wcm-io</url>
-    <tag>io.wcm.testing.wcm-io-mock.handler-0.1.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
