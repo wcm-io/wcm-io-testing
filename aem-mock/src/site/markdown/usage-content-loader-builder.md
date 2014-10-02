@@ -1,4 +1,4 @@
-## Usage
+## Test content loading and creation
 
 ### Import resource data from JSON file in classpath
 
