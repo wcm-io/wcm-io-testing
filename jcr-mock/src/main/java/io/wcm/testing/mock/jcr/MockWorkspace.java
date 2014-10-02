@@ -41,6 +41,7 @@ class MockWorkspace implements Workspace {
   private final Session session;
   private final NamespaceRegistry namespaceRegistry = new MockNamespaceRegistry();
   private final ObservationManager observationManager = new MockObservationManager();
+  private final NodeTypeManager nodeTypeManager = new MockNodeTypeManager();
 
   /**
    * @param session JCR session
@@ -67,6 +68,11 @@ class MockWorkspace implements Workspace {
   @Override
   public ObservationManager getObservationManager() {
     return this.observationManager;
+  }
+
+  @Override
+  public NodeTypeManager getNodeTypeManager() {
+    return this.nodeTypeManager;
   }
 
   // --- unsupported operations ---
@@ -102,11 +108,6 @@ class MockWorkspace implements Workspace {
 
   @Override
   public QueryManager getQueryManager() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public NodeTypeManager getNodeTypeManager() {
     throw new UnsupportedOperationException();
   }
 

@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.jcr;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Workspace;
@@ -30,24 +31,34 @@ import org.junit.Test;
 
 public class MockWorkspaceTest {
 
-  private Workspace workspace;
+  private Workspace underTest;
 
   @Before
   public void setUp() {
-    this.workspace = MockJcr.newSession().getWorkspace();
+    underTest = MockJcr.newSession().getWorkspace();
   }
 
   @Test
   public void testName() {
-    assertEquals(MockJcr.DEFAULT_WORKSPACE, this.workspace.getName());
+    assertEquals(MockJcr.DEFAULT_WORKSPACE, underTest.getName());
+  }
+
+  @Test
+  public void testNameSpaceRegistry() throws RepositoryException {
+    assertNotNull(underTest.getNamespaceRegistry());
   }
 
   @Test
   public void testObservationManager() throws RepositoryException {
     // just mage sure listener methods can be called, although they do nothing
-    ObservationManager observationManager = this.workspace.getObservationManager();
+    ObservationManager observationManager = underTest.getObservationManager();
     observationManager.addEventListener(null, 0, null, false, null, null, false);
     observationManager.removeEventListener(null);
+  }
+
+  @Test
+  public void testNodeTypeManager() throws RepositoryException {
+    assertNotNull(underTest.getNodeTypeManager());
   }
 
 }

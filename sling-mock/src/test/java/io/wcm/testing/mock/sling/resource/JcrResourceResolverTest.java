@@ -39,6 +39,7 @@ import javax.jcr.Session;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.jackrabbit.JcrConstants;
+import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
@@ -47,6 +48,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Implements simple write and read resource and values test.
@@ -82,8 +84,8 @@ public class JcrResourceResolverTest {
 
   @Before
   public final void setUp() throws RepositoryException {
-    this.resourceResolver = newResourceResolver();
-    this.session = this.resourceResolver.adaptTo(Session.class);
+    resourceResolver = newResourceResolver();
+    session = resourceResolver.adaptTo(Session.class);
 
     // prepare some test data using JCR API
     Node rootNode = getTestRootNode();
@@ -96,39 +98,39 @@ public class JcrResourceResolverTest {
     node1.setProperty("booleanProp", BOOLEAN_VALUE);
     node1.setProperty("dateProp", DateUtils.toCalendar(DATE_VALUE));
     node1.setProperty("calendarProp", CALENDAR_VALUE);
-    node1.setProperty("binaryProp", this.session.getValueFactory().createBinary(new ByteArrayInputStream(BINARY_VALUE)));
+    node1.setProperty("binaryProp", session.getValueFactory().createBinary(new ByteArrayInputStream(BINARY_VALUE)));
 
     node1.addNode("node11", JcrConstants.NT_UNSTRUCTURED);
     node1.addNode("node12", JcrConstants.NT_UNSTRUCTURED);
 
-    this.session.save();
+    session.save();
   }
 
   @After
   public final void tearDown() {
-    this.testRoot = null;
+    testRoot = null;
   }
 
   /**
    * Return a test root node, created on demand, with a unique path
    */
   private Node getTestRootNode() throws RepositoryException {
-    if (this.testRoot == null) {
-      final Node root = this.session.getRootNode();
+    if (testRoot == null) {
+      final Node root = session.getRootNode();
       if (getResourceResolverType() == ResourceResolverType.JCR_JACKRABBIT) {
         final Node classRoot = root.addNode(getClass().getSimpleName());
-        this.testRoot = classRoot.addNode(System.currentTimeMillis() + "_" + (rootNodeCounter++));
+        testRoot = classRoot.addNode(System.currentTimeMillis() + "_" + (rootNodeCounter++));
       }
       else {
-        this.testRoot = root.addNode("test", JcrConstants.NT_UNSTRUCTURED);
+        testRoot = root.addNode("test", JcrConstants.NT_UNSTRUCTURED);
       }
     }
-    return this.testRoot;
+    return testRoot;
   }
 
   @Test
   public void testGetResourcesAndValues() throws IOException, RepositoryException {
-    Resource resource1 = this.resourceResolver.getResource(getTestRootNode().getPath() + "/node1");
+    Resource resource1 = resourceResolver.getResource(getTestRootNode().getPath() + "/node1");
     assertNotNull(resource1);
     assertEquals("node1", resource1.getName());
 
@@ -157,6 +159,18 @@ public class JcrResourceResolverTest {
     assertEquals(2, children.size());
     assertEquals("node11", children.get(0).getName());
     assertEquals("node12", children.get(1).getName());
+  }
+
+  @Test
+  public void testCreateNodetype() throws RepositoryException, PersistenceException {
+    Resource parent = resourceResolver.getResource(getTestRootNode().getPath());
+
+    Resource child = resourceResolver.create(parent, "nodeTypeResource", ImmutableMap.<String, Object>builder()
+        .put(ResourceResolver.PROPERTY_RESOURCE_TYPE, JcrConstants.NT_UNSTRUCTURED)
+        .build());
+    assertNotNull(child);
+    assertEquals(JcrConstants.NT_UNSTRUCTURED, child.getResourceType());
+    assertEquals(JcrConstants.NT_UNSTRUCTURED, child.adaptTo(Node.class).getPrimaryNodeType().getName());
   }
 
 }
