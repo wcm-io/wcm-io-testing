@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.osgi-mock</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.2</version>
   <packaging>bundle</packaging>
 
   <name>OSGi Mocks</name>
@@ -41,7 +41,7 @@
     <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
     <developerConnection>scm:git:git@github.com:wcm-io/wcm-io.git</developerConnection>
     <url>https://github.com/wcm-io/wcm-io</url>
-    <tag>HEAD</tag>
+    <tag>io.wcm.testing.osgi-mock-1.0.2</tag>
   </scm>
 
   <properties>
