@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.wcmio.handler;
 
+import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.wcmio.config.MockConfig;
 
@@ -39,6 +40,9 @@ public final class MockHandler {
 
     // setup configuration support
     MockConfig.setUp(context);
+
+    // media format provider manager
+    context.registerInjectActivateService(new MediaFormatProviderManagerImpl());
 
     // sling models registration
     context.addModelsForPackage("io.wcm.handler.url");
