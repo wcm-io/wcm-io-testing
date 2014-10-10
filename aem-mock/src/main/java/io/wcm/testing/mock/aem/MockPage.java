@@ -276,7 +276,11 @@ class MockPage extends SlingAdaptable implements Page {
     if (type == Resource.class) {
       return (AdapterType)this.resource;
     }
-    return super.adaptTo(type);
+    AdapterType result = super.adaptTo(type);
+    if (result == null) {
+      result = this.resource.adaptTo(type);
+    }
+    return result;
   }
 
 
