@@ -8,7 +8,7 @@ Mock implementation of selected AEM APIs.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -19,15 +19,16 @@ Mock implementation of selected AEM APIs.
 * [API Documentation](apidocs/)
 * [Changelog](changes-report.html)
 
+
 ### Implemented mock features
 
 The mock implementation supports:
 
-* Access to [mocked OSGi][osgi-mock], [mocked JCR][jcr-mock] and [mocked Sling][sling-mock] environment
-* Resource access using different resource resolver types (see [Sling Mocks Usage][sling-mock-usage])
+* Access to [mocked OSGi][osgi-mock], [mocked JCR][jcr-mock] and [mocked Sling][sling-mock] environment provided by the Apache Sling project
+* Resource access using different resource resolver types (see [Resource Resolver Types][sling-mock-rrtypes])
 * Implementation of AEM WCM API objects `PageManager`, `Page` and `Template`
 * Implementation of AEM DAM API objects `Asset` and `Rendition`
-* JUnit rule for easy access to all context objects and registering adapter factories and OSGi services
+* JUnit rule `AemContext` for easy access to all context objects and registering adapter factories and OSGi services
 * Import and create test content for unit tests (see [Test content loading and creation](usage-content-loader-builder.html))
 * Registers OSGi services and adapter factories supported by the mock implementations
 * Full support for Sling Models
@@ -39,7 +40,7 @@ The following features are *not supported*:
 * Other parts of the AEM API
 
 
-[osgi-mock]: http://wcm.io/testing/osgi-mock/
-[jcr-mock]: http://wcm.io/testing/jcr-mock/
-[sling-mock]: http://wcm.io/testing/sling-mock/
-[sling-mock-usage]: http://wcm.io/testing/sling-mock/usage-mocks.html
+[osgi-mock]: http://sling.apache.org/documentation/development/osgi-mock.html
+[jcr-mock]: http://sling.apache.org/documentation/development/jcr-mock.html
+[sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
+[sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types

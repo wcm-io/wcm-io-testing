@@ -243,5 +243,5 @@ public class MyTest {
 
 
 [mockito-testrunner]: http://docs.mockito.googlecode.com/hg/latest/org/mockito/runners/MockitoJUnitRunner.html
-[sling-mock]: http://wcm.io/testing/sling-mock/
-[sling-mock-rrtypes]: http://wcm.io/testing/sling-mock/resource-resolver-types.html
+[sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
+[sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
