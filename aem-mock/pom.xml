@@ -136,6 +136,27 @@
 
     </plugins>
   </build>
+  
+  <reporting>
+    <plugins>
+    
+      <!-- Aggregate JavaDocs of AEM Mocks and Sling Mocks -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <dependencySourceIncludes>
+            <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
+            <include>org.apache.sling:org.apache.sling.testing.osgi-mock</include>
+            <include>org.apache.sling:org.apache.sling.testing.sling-mock</include>
+          </dependencySourceIncludes>
+          <includeDependencySources>true</includeDependencySources>
+          <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
+        </configuration>
+      </plugin>
+    
+    </plugins>
+  </reporting>
 
   <distributionManagement>
     <site>
