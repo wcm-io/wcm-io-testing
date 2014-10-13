@@ -20,4 +20,5 @@
 /**
  * Rule for providing easy access to AEM context in JUnit tests.
  */
+@aQute.bnd.annotation.Version("1.2.0")
 package io.wcm.testing.mock.aem.junit;

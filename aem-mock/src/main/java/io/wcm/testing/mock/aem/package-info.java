@@ -20,4 +20,5 @@
 /**
  * Mock implementation of selected AEM APIs.
  */
+@aQute.bnd.annotation.Version("1.2.0")
 package io.wcm.testing.mock.aem;

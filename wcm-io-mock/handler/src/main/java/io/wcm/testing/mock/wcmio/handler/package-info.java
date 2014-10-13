@@ -17,27 +17,8 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.junit.rules.parameterized;
-
-/*
- * (C) 2012 Jens Schauder http://blog.schauderhaft.de/
- * Code initially published here https://github.com/schauder/parameterizedTestsWithRules
- * Slightly simplified for wcm.io.
- */
-import org.junit.rules.TestRule;
-
-import aQute.bnd.annotation.ConsumerType;
-
 /**
- * Generic rule for parametrizing JUnit tests.
- * @param <T> Parameter type
+ * Helps setting up mock environment for wcm.io Handler.
  */
-@ConsumerType
-public interface Generator<T> extends TestRule {
-
-  /**
-   * @return Current parameter value
-   */
-  T value();
-
-}
+@aQute.bnd.annotation.Version("0.2.0")
+package io.wcm.testing.mock.wcmio.handler;

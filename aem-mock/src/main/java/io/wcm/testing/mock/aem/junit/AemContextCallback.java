@@ -23,10 +23,13 @@ import java.io.IOException;
 
 import org.apache.sling.api.resource.PersistenceException;
 
+import aQute.bnd.annotation.ConsumerType;
+
 /**
  * Callback-interface for application-specific setup and teardown operations to customize the {@link AemContext} JUnit
  * rule.
  */
+@ConsumerType
 public interface AemContextCallback {
 
   /**

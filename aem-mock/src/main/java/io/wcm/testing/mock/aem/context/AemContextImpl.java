@@ -33,6 +33,8 @@ import org.apache.sling.models.spi.Injector;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.google.common.collect.ImmutableSet;
@@ -41,6 +43,7 @@ import com.google.common.collect.ImmutableSet;
  * Defines AEM context objects with lazy initialization.
  * Should not be used directly but via the {@link io.wcm.testing.mock.aem.junit.AemContext} JUnit rule.
  */
+@ConsumerType
 public class AemContextImpl extends SlingContextImpl {
 
   // default to publish instance run mode

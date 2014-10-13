@@ -29,10 +29,13 @@ import java.util.List;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Parameter generator rule based on a list of values.
  * @param <T> Parameter type
  */
+@ProviderType
 public final class ListGenerator<T> implements Generator<T> {
 
   private final ValueContainer<T> currentValue = new ValueContainer<T>();

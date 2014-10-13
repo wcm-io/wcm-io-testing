@@ -22,10 +22,12 @@ package io.wcm.testing.mock.wcmio.handler;
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.wcmio.config.MockConfig;
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * Helps setting up a mock environment for wcm.io Handler.
  */
+@ProviderType
 public final class MockHandler {
 
   private MockHandler() {

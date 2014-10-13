@@ -20,4 +20,5 @@
 /**
  * AEM context implementation for unit tests.
  */
+@aQute.bnd.annotation.Version("1.2.0")
 package io.wcm.testing.mock.aem.context;

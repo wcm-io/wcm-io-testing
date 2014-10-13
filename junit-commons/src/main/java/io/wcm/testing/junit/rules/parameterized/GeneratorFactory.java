@@ -25,10 +25,12 @@ package io.wcm.testing.junit.rules.parameterized;
  * Slightly simplified for wcm.io.
  */
 import static java.util.Arrays.asList;
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * Factory class for parameter generator rules.
  */
+@ProviderType
 public final class GeneratorFactory {
 
   private GeneratorFactory() {

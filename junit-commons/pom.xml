@@ -32,7 +32,7 @@
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.junit-commons</artifactId>
   <version>1.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
 
   <name>JUnit Commons</name>
   <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>

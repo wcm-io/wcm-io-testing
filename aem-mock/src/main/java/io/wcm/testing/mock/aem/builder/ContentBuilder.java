@@ -27,6 +27,8 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -36,6 +38,7 @@ import com.google.common.collect.ImmutableMap;
 /**
  * Helper class for building test content in the resource hierarchy with as less boilerplate code as possible.
  */
+@ProviderType
 public final class ContentBuilder extends org.apache.sling.testing.mock.sling.builder.ContentBuilder {
 
   static final String DUMMY_TEMPLATE = "/apps/sample/templates/template1";

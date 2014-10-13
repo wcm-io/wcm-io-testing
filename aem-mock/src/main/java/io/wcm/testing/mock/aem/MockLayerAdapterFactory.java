@@ -25,11 +25,14 @@ import java.io.InputStream;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.adapter.AdapterFactory;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.day.image.Layer;
 
 /**
  * Tries to adapt to an InputStream to get a Layer instance for an image binary.
  */
+@ProviderType
 public class MockLayerAdapterFactory implements AdapterFactory {
 
   @SuppressWarnings("unchecked")

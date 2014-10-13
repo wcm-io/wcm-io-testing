@@ -19,10 +19,13 @@
  */
 package io.wcm.testing.junit.rules.parameterized;
 
+import aQute.bnd.annotation.ConsumerType;
+
 /**
  * Callback interface for setup/teardown actions.
  * @param <T> Parameter type
  */
+@ConsumerType
 public interface Callback<T> {
 
   /**

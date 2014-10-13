@@ -30,6 +30,8 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
@@ -44,6 +46,7 @@ import com.day.cq.wcm.api.Template;
  */
 @Component(inherit = false)
 @Service(AdapterFactory.class)
+@ProviderType
 public class MockAemAdapterFactory implements AdapterFactory {
 
   @Override

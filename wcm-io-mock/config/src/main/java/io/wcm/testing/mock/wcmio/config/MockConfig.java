@@ -44,12 +44,15 @@ import java.util.Set;
 
 import org.apache.sling.api.resource.PersistenceException;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.day.jcr.vault.util.Text;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.
  */
+@ProviderType
 public final class MockConfig {
 
   private MockConfig() {
