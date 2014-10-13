@@ -152,6 +152,24 @@
           </dependencySourceIncludes>
           <includeDependencySources>true</includeDependencySources>
           <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
+          <groups>
+            <group>
+              <title>AEM Mocks</title>
+              <packages>io.wcm.testing.mock.aem:io.wcm.testing.mock.aem.*</packages>
+            </group>
+            <group>
+              <title>Sling Mocks</title>
+              <packages>org.apache.sling.testing.mock.sling:org.apache.sling.testing.mock.sling.*</packages>
+            </group>
+            <group>
+              <title>OSGi Mocks</title>
+              <packages>org.apache.sling.testing.mock.osgi:org.apache.sling.testing.mock.osgi.*</packages>
+            </group>
+            <group>
+              <title>JCR Mocks</title>
+              <packages>org.apache.sling.testing.mock.jcr:org.apache.sling.testing.mock.jcr.*</packages>
+            </group>
+          </groups>
         </configuration>
       </plugin>
     

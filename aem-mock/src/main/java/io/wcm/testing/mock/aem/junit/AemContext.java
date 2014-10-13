@@ -22,9 +22,9 @@ package io.wcm.testing.mock.aem.junit;
 import io.wcm.testing.junit.rules.parameterized.Callback;
 import io.wcm.testing.junit.rules.parameterized.ListGenerator;
 import io.wcm.testing.mock.aem.context.AemContextImpl;
+
 import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
-
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
