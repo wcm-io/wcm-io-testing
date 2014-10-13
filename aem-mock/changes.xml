@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.1.1" date="2014-10-02">
+      <action type="update" dev="isechyn">
+        MockPage: Support native behavior of the Page in adaptTo method. If adaption of the page object returned null, try to adapt page's resource.
+      </action>
+    </release>
+
     <release version="1.1.0" date="2014-10-02">
       <action type="update" dev="sseifert">
         ContentBuilder: Support creating pages with path argument only.

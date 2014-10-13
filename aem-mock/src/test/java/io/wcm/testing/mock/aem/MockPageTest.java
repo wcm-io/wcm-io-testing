@@ -24,6 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Calendar;
@@ -36,16 +38,22 @@ import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.day.cq.commons.Filter;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.google.common.collect.ImmutableList;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MockPageTest {
 
   @Rule
   public AemContext context = new AemContext();
+  @Mock
+  private Resource mockResource;
 
   private Page page;
 
@@ -193,4 +201,15 @@ public class MockPageTest {
     assertEquals(0, childPages.size());
   }
 
+  @Test
+  public void testAdaptToPipeline() {
+    Page underTest = new MockPage(mockResource);
+
+    Resource resource = underTest.adaptTo(Resource.class);
+    assertEquals(mockResource, resource);
+    verify(mockResource, times(1)).adaptTo(Long.class);
+
+    underTest.adaptTo(Long.class);
+    verify(mockResource, times(1)).adaptTo(Long.class);
+  }
 }
