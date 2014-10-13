@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import io.wcm.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 
 import java.io.IOException;
 

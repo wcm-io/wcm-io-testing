@@ -22,8 +22,8 @@ package io.wcm.testing.mock.aem.junit;
 import io.wcm.testing.junit.rules.parameterized.Callback;
 import io.wcm.testing.junit.rules.parameterized.ListGenerator;
 import io.wcm.testing.mock.aem.context.AemContextImpl;
-import io.wcm.testing.mock.sling.MockSling;
-import io.wcm.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.MockSling;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TestRule;

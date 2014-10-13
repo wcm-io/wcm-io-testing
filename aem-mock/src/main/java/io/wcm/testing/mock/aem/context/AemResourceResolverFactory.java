@@ -19,8 +19,8 @@
  */
 package io.wcm.testing.mock.aem.context;
 
-import io.wcm.testing.mock.sling.MockSling;
-import io.wcm.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.MockSling;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 
 import javax.jcr.NamespaceRegistry;
 import javax.jcr.RepositoryException;

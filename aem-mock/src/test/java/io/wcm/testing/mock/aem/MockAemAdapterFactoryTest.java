@@ -22,8 +22,8 @@ package io.wcm.testing.mock.aem;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.sling.ResourceResolverType;
-import io.wcm.testing.mock.sling.loader.ContentLoader;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
