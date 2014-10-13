@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -207,9 +208,10 @@ public class MockPageTest {
 
     Resource resource = underTest.adaptTo(Resource.class);
     assertEquals(mockResource, resource);
-    verify(mockResource, times(1)).adaptTo(Long.class);
+    verify(mockResource, never()).adaptTo(Long.class);
 
     underTest.adaptTo(Long.class);
     verify(mockResource, times(1)).adaptTo(Long.class);
   }
+
 }
