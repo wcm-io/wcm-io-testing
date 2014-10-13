@@ -46,6 +46,10 @@
 
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
+    
+    <!-- TODO: remove after next release! -->
+    <baseline.skip>true</baseline.skip>
+    
   </properties>
 
   <dependencies>
