@@ -29,7 +29,7 @@ import io.wcm.config.core.management.impl.ConfigurationFinderImpl;
 import io.wcm.config.core.management.impl.ParameterOverrideImpl;
 import io.wcm.config.core.management.impl.ParameterPersistenceImpl;
 import io.wcm.config.core.management.impl.ParameterResolverImpl;
-import io.wcm.config.core.persistence.ToolsConfigPagePersistenceProvider;
+import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
 import io.wcm.config.spi.ApplicationProvider;
 import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
