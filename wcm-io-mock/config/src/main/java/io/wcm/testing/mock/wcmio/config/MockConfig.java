@@ -43,8 +43,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.sling.api.resource.PersistenceException;
-
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 import com.day.jcr.vault.util.Text;
 import com.google.common.collect.ImmutableSortedSet;

@@ -25,8 +25,7 @@ package io.wcm.testing.junit.rules.parameterized;
  * Slightly simplified for wcm.io.
  */
 import org.junit.rules.TestRule;
-
-import aQute.bnd.annotation.ConsumerType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Generic rule for parametrizing JUnit tests.

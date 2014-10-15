@@ -22,8 +22,7 @@ package io.wcm.testing.mock.aem.junit;
 import java.io.IOException;
 
 import org.apache.sling.api.resource.PersistenceException;
-
-import aQute.bnd.annotation.ConsumerType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Callback-interface for application-specific setup and teardown operations to customize the {@link AemContext} JUnit

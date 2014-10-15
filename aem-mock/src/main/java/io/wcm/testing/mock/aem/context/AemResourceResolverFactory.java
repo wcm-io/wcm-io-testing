@@ -19,14 +19,13 @@
  */
 package io.wcm.testing.mock.aem.context;
 
-import org.apache.sling.testing.mock.sling.MockSling;
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
-
 import javax.jcr.NamespaceRegistry;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.testing.mock.sling.MockSling;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 
 /**
  * Create resolve resolver instance and initialize it depending on it's type.

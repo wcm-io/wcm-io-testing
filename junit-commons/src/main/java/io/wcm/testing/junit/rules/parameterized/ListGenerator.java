@@ -28,8 +28,7 @@ import java.util.List;
 
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-
-import aQute.bnd.annotation.ProviderType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Parameter generator rule based on a list of values.

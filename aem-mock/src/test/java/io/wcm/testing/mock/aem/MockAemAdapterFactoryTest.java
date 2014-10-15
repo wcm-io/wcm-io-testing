@@ -22,10 +22,10 @@ package io.wcm.testing.mock.aem;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
-import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -25,7 +25,8 @@ package io.wcm.testing.junit.rules.parameterized;
  * Slightly simplified for wcm.io.
  */
 import static java.util.Arrays.asList;
-import aQute.bnd.annotation.ProviderType;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Factory class for parameter generator rules.

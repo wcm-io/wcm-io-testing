@@ -19,7 +19,7 @@
  */
 package io.wcm.testing.junit.rules.parameterized;
 
-import aQute.bnd.annotation.ConsumerType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Callback interface for setup/teardown actions.
