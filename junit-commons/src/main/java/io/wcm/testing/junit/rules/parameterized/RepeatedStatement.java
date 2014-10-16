@@ -55,13 +55,19 @@ class RepeatedStatement<T> extends Statement {
           this.setUpCallback.execute(v);
         }
         this.test.evaluate();
-        if (this.tearDownCallback != null) {
-          this.tearDownCallback.execute(v);
-        }
       }
       catch (Throwable t) {
-        this.errorCollector.addError(new AssertionError("For value: "
-            + v, t));
+        this.errorCollector.addError(new AssertionError("For value: " + v, t));
+      }
+      finally {
+        try {
+          if (this.tearDownCallback != null) {
+            this.tearDownCallback.execute(v);
+          }
+        }
+        catch (Throwable t) {
+          this.errorCollector.addError(new AssertionError("For value (teardown): " + v, t));
+        }
       }
     }
     this.errorCollector.verify();
