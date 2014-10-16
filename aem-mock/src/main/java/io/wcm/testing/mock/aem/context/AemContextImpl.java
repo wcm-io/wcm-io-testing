@@ -28,7 +28,7 @@ import java.util.Set;
 
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.models.spi.Injector;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
@@ -66,6 +66,11 @@ public class AemContextImpl extends SlingContextImpl {
   }
 
   @Override
+  protected ResourceResolverFactory newResourceResolverFactory() {
+    return ContextResourceResolverFactory.get(this.resourceResolverType);
+  }
+
+  @Override
   protected void setUp() {
     super.setUp();
   }
@@ -73,11 +78,6 @@ public class AemContextImpl extends SlingContextImpl {
   @Override
   protected void tearDown() {
     super.tearDown();
-  }
-
-  @Override
-  protected ResourceResolver createMockResourceResolver() {
-    return AemResourceResolverFactory.initializeResourceResolver(resourceResolverType());
   }
 
   /**
