@@ -50,6 +50,8 @@ public final class MockHandler {
     // sling models registration
     context.addModelsForPackage("io.wcm.handler.url");
     context.addModelsForPackage("io.wcm.handler.media");
+    context.addModelsForPackage("io.wcm.handler.mediasource.dam");
+    context.addModelsForPackage("io.wcm.handler.mediasource.inline");
     context.addModelsForPackage("io.wcm.handler.link");
     context.addModelsForPackage("io.wcm.handler.richtext");
 
