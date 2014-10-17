@@ -16,7 +16,7 @@ Mock implementation of selected AEM APIs.
 
 * [Usage](usage.html)
 * [Test content loading and creation](usage-content-loader-builder.html)
-* [API Documentation](apidocs/)
+* [API documentation](apidocs/)
 * [Changelog](changes-report.html)
 
 

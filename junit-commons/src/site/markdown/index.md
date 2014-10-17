@@ -14,5 +14,5 @@ Common extensions of JUnit for supporting the wcm.io JUnit tests.
 ### Documentation
 
 * [Usage](usage.html)
-* [API Documentation](apidocs/)
+* [API documentation](apidocs/)
 * [Changelog](changes-report.html)
