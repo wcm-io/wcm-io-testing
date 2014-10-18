@@ -47,6 +47,10 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
     
+    <jcr-mock.version>1.0.0-SNAPSHOT</jcr-mock.version>
+    <osgi-mock.version>1.0.0-SNAPSHOT</osgi-mock.version>
+    <sling-mock.version>1.0.0-SNAPSHOT</sling-mock.version>
+    
     <!-- TODO: remove after next release! -->
     <baseline.skip>true</baseline.skip>
     
@@ -55,9 +59,21 @@
   <dependencies>
 
     <dependency>
-      <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.sling.models</artifactId>
-      <version>1.0.0</version>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.jcr-mock</artifactId>
+      <version>${jcr-mock.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.osgi-mock</artifactId>
+      <version>${osgi-mock.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+      <version>${sling-mock.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -69,8 +85,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.sling.models</artifactId>
+      <version>1.0.0</version>
       <scope>compile</scope>
     </dependency>
 
@@ -158,19 +175,19 @@
           <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
           <groups>
             <group>
-              <title>AEM Mocks</title>
+              <title>AEM Mocks ${project.version}</title>
               <packages>io.wcm.testing.mock.aem:io.wcm.testing.mock.aem.*</packages>
             </group>
             <group>
-              <title>Sling Mocks</title>
+              <title>Sling Mocks ${sling-mock.version}</title>
               <packages>org.apache.sling.testing.mock.sling:org.apache.sling.testing.mock.sling.*</packages>
             </group>
             <group>
-              <title>OSGi Mocks</title>
+              <title>OSGi Mocks ${osgi-mock.version}</title>
               <packages>org.apache.sling.testing.mock.osgi:org.apache.sling.testing.mock.osgi.*</packages>
             </group>
             <group>
-              <title>JCR Mocks</title>
+              <title>JCR Mocks ${jcr-mock.version}</title>
               <packages>org.apache.sling.testing.mock.jcr:org.apache.sling.testing.mock.jcr.*</packages>
             </group>
           </groups>

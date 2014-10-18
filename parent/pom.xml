@@ -51,22 +51,6 @@
   <dependencyManagement>
     <dependencies>
 
-      <dependency>
-        <groupId>org.apache.sling</groupId>
-        <artifactId>org.apache.sling.testing.jcr-mock</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.sling</groupId>
-        <artifactId>org.apache.sling.testing.osgi-mock</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.sling</groupId>
-        <artifactId>org.apache.sling.testing.sling-mock</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-
       <!-- Versions of implementation artefacts from AEM 6 -->
       <dependency>
         <groupId>commons-lang</groupId>
