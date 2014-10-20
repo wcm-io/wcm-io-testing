@@ -27,6 +27,9 @@
       <action type="update" dev="isechyn" issue="WCMIO-16">
         MockPage: Support native behavior of the Page in adaptTo method. If adaption of the page object returned null, try to adapt page's resource.
       </action>
+      <action type="update" dev="sseifert" issue="WCMIO-21">
+        MockPage: Support getLanguage and deep listChildren methods.
+      </action>
       <action type="update" dev="sseifert" issue="WCMIO-15">
         Switch to Sling versions of sling-mock, osgi-mock, jcr-mock.
       </action>

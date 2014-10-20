@@ -31,6 +31,9 @@ import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.Filter;
+import com.day.cq.commons.LanguageUtil;
+import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
+import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.tagging.Tag;
 import com.day.cq.wcm.api.NameConstants;
@@ -38,6 +41,7 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.WCMException;
+import com.day.cq.wcm.commons.DeepResourceIterator;
 import com.day.text.Text;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -251,7 +255,18 @@ class MockPage extends SlingAdaptable implements Page {
 
   @Override
   public Iterator<Page> listChildren(final Filter<Page> filter) {
-    final Iterator<Resource> resources = this.resource.listChildren();
+    return listChildren(filter, false);
+  }
+
+  @Override
+  public Iterator<Page> listChildren(final Filter<Page> filter, final boolean deep) {
+    Iterator<Resource> resources;
+    if (deep) {
+      resources = new DeepResourceIterator(resource);
+    }
+    else {
+      resources = resource.getResourceResolver().listChildren(resource);
+    }
 
     // transform resources to pages
     final Iterator<Page> pages = Iterators.transform(resources, new Function<Resource, Page>() {
@@ -283,18 +298,46 @@ class MockPage extends SlingAdaptable implements Page {
     return result;
   }
 
-
-  // --- unsupported operations ---
-
-  @Override
-  public Iterator<Page> listChildren(final Filter<Page> filter, final boolean deep) {
-    throw new UnsupportedOperationException();
-  }
-
   @Override
   public Locale getLanguage(final boolean ignoreContent) {
-    throw new UnsupportedOperationException();
+    // check for language content property
+    if (!ignoreContent) {
+      InheritanceValueMap inheritanceValueMap = new HierarchyNodeInheritanceValueMap(getContentResource());
+      String language = inheritanceValueMap.getInherited(JcrConstants.JCR_LANGUAGE, String.class);
+      if (language != null) {
+        Locale contentLocale = LanguageUtil.getLocale(language);
+        if (contentLocale != null) {
+          return contentLocale;
+        }
+      }
+    }
+
+    // check for lanugage in path
+    Locale localeFromPath = getLocaleFromPath(this);
+    if (localeFromPath != null) {
+      return localeFromPath;
+    }
+
+    // fallback to default locale
+    return Locale.getDefault();
   }
+
+  private Locale getLocaleFromPath(Page page) {
+    Locale locale = LanguageUtil.getLocale(page.getName());
+    if (locale != null) {
+      return locale;
+    }
+    Page parentPage = page.getParent();
+    if (parentPage != null) {
+      return getLocaleFromPath(parentPage);
+    }
+    else {
+      return null;
+    }
+  }
+
+
+  // --- unsupported operations ---
 
   @Override
   public Tag[] getTags() {

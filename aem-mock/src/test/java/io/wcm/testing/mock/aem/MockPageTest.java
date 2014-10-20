@@ -31,6 +31,7 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
@@ -44,6 +45,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.day.cq.commons.Filter;
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.google.common.collect.ImmutableList;
@@ -191,15 +193,28 @@ public class MockPageTest {
   public void testListChildren() {
     List<Page> childPages = ImmutableList.copyOf(this.page.listChildren());
     assertEquals(1, childPages.size());
+  }
 
-    childPages = ImmutableList.copyOf(this.page.listChildren(new Filter<Page>() {
+  @Test
+  public void testListChildrenFiltered() {
+    List<Page> childPages = ImmutableList.copyOf(this.page.listChildren(new Filter<Page>() {
       @Override
       public boolean includes(final Page element) {
         return !StringUtils.equals("toolbar", element.getName());
       }
-
     }));
     assertEquals(0, childPages.size());
+  }
+
+  @Test
+  public void testListChildrenFilteredDeep() {
+    List<Page> childPages = ImmutableList.copyOf(this.page.listChildren(new Filter<Page>() {
+      @Override
+      public boolean includes(final Page element) {
+        return !StringUtils.equals("toolbar", element.getName());
+      }
+    }, true));
+    assertEquals(1, childPages.size());
   }
 
   @Test
@@ -212,6 +227,23 @@ public class MockPageTest {
 
     underTest.adaptTo(Long.class);
     verify(mockResource, times(1)).adaptTo(Long.class);
+  }
+
+  @Test
+  public void testGetLanguage() {
+    Page profilesPage = context.pageManager().getPage("/content/sample/en/toolbar/profiles");
+
+    // set language in site root
+    ModifiableValueMap props = this.page.getContentResource().adaptTo(ModifiableValueMap.class);
+    props.put(JcrConstants.JCR_LANGUAGE, "fr_FR");
+
+    // test get language from content
+    Locale locale = profilesPage.getLanguage(false);
+    assertEquals(Locale.forLanguageTag("fr-FR"), locale);
+
+    // test get language from path
+    locale = profilesPage.getLanguage(true);
+    assertEquals(Locale.forLanguageTag("en"), locale);
   }
 
 }
