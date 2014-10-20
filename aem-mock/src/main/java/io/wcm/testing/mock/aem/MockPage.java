@@ -156,7 +156,7 @@ class MockPage extends SlingAdaptable implements Page {
 
   @Override
   public Page getAbsoluteParent(final int level) {
-    String parentPath = Text.getAbsoluteParent(this.resource.getPath(), level);
+    String parentPath = Text.getAbsoluteParent(this.resource.getPath(), level - 1);
     return getPage(parentPath);
   }
 

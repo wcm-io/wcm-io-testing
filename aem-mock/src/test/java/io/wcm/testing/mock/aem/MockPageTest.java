@@ -97,8 +97,8 @@ public class MockPageTest {
     assertNotNull(toolbarPage.getParent());
     assertNotNull(toolbarPage.getParent(1));
     assertNull(toolbarPage.getParent(2));
-    assertNotNull(toolbarPage.getAbsoluteParent(2));
-    assertNull(toolbarPage.getAbsoluteParent(1));
+    assertEquals("/content/sample/en", toolbarPage.getAbsoluteParent(3).getPath());
+    assertNull(toolbarPage.getAbsoluteParent(2));
   }
 
   @Test
