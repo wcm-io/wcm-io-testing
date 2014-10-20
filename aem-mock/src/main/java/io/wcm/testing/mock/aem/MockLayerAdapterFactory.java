@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.osgi.annotation.versioning.ProviderType;
@@ -47,14 +48,7 @@ public class MockLayerAdapterFactory implements AdapterFactory {
           // ignore
         }
         finally {
-          if (is != null) {
-            try {
-              is.close();
-            }
-            catch (IOException ex) {
-              // ignore
-            }
-          }
+          IOUtils.closeQuietly(is);
         }
       }
     }
