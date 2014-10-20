@@ -46,14 +46,14 @@
 
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
-    
+
     <jcr-mock.version>1.0.0-SNAPSHOT</jcr-mock.version>
     <osgi-mock.version>1.0.0-SNAPSHOT</osgi-mock.version>
     <sling-mock.version>1.0.0-SNAPSHOT</sling-mock.version>
-    
+
     <!-- TODO: remove after next release! -->
     <baseline.skip>true</baseline.skip>
-    
+
   </properties>
 
   <dependencies>
@@ -157,10 +157,10 @@
 
     </plugins>
   </build>
-  
+
   <reporting>
     <plugins>
-    
+
       <!-- Aggregate JavaDocs of AEM Mocks and Sling Mocks -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -193,7 +193,7 @@
           </groups>
         </configuration>
       </plugin>
-    
+
     </plugins>
   </reporting>
 

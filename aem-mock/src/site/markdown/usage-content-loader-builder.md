@@ -63,7 +63,7 @@ imports the JSON data to this node. It can be accessed using the Sling Resource 
 ### Import binary data from file in classpath
 
 It is also possible to import a binary file stored in the classpath beneath the unit tests using the `ContentLoader`.
-The data is stored usig a nt:file/nt:resource or nt:resource node type. 
+The data is stored usig a nt:file/nt:resource or nt:resource node type.
 
 Example code to import a binary file:
 
@@ -71,7 +71,7 @@ Example code to import a binary file:
 context.load().binaryFile("/sample-file.gif", "/content/binary/sample-file.gif");
 ```
 
-This codes creates a new resource at `/content/binary/sample-file.gif` (and - if not existent - the parent 
+This codes creates a new resource at `/content/binary/sample-file.gif` (and - if not existent - the parent
 resources) and imports the binary data to a jcr:content subnode.
 
 

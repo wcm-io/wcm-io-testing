@@ -3,7 +3,7 @@
 ### AEM Context JUnit Rule
 
 The AEM mock context can be injected into a JUnit test using a custom JUnit rule named `AemContext`.
-This rules takes care of all initialization and cleanup tasks required to make sure all unit tests can run 
+This rules takes care of all initialization and cleanup tasks required to make sure all unit tests can run
 independently (and in parallel, if required).
 
 Example:

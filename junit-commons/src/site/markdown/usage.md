@@ -3,9 +3,9 @@
 ### Parameterized JUnit Rule
 
 The [rules feature][junit-rules] is a hidden gem in JUnit. This library provides
-a "parameterized" JUnit Rule, which is an alternative to the runner-based 
+a "parameterized" JUnit Rule, which is an alternative to the runner-based
 [Parameterized tests feature][junit-parametrized-tests] provided by JUnit.
-The problem with the runner-based concept is that this cannot be combined with other JUnit runners e.g. for 
+The problem with the runner-based concept is that this cannot be combined with other JUnit runners e.g. for
 [Mockito JUnit Runner][mockito-testrunner]. This rules-based approach can be combined with any Runner or other rules.
 
 Simple example for using the parameterized Generator rule:
@@ -25,7 +25,7 @@ public class SimpleExampleTest {
 ```
 
 The annotated test method `testSomething` is executed once for each value provided in the list argument, the rule's
-`value()` method provides access to the current value in the iteration. Using generics any object type can be used 
+`value()` method provides access to the current value in the iteration. Using generics any object type can be used
 for the parameter list.
 
 A variant supports providing callbacks for setUp and tearDown methods that should be executed for and after each
