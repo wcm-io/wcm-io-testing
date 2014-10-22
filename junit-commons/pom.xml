@@ -62,20 +62,12 @@
 
     <plugins>
 
-      <!-- Eclipse configuration -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <addVersionToProjectName>false</addVersionToProjectName>
         </configuration>
-      </plugin>
-
-      <!-- release plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <inherited>false</inherited>
       </plugin>
 
     </plugins>
