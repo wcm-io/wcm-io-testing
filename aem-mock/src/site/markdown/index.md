@@ -8,7 +8,7 @@ Mock implementation of selected AEM APIs.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>1.2.0-SNAPSHOT</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
