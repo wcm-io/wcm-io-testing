@@ -51,9 +51,6 @@
     <osgi-mock.version>1.0.0</osgi-mock.version>
     <sling-mock.version>1.0.0</sling-mock.version>
 
-    <!-- TODO: remove after next release! -->
-    <baseline.skip>true</baseline.skip>
-
   </properties>
 
   <dependencies>
@@ -80,7 +77,7 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.junit-commons</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.0.2</version>
       <scope>compile</scope>
     </dependency>
 
