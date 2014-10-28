@@ -42,10 +42,10 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.resource.PersistenceException;
 import org.osgi.annotation.versioning.ProviderType;
 
-import com.day.jcr.vault.util.Text;
 import com.google.common.collect.ImmutableSortedSet;
 
 /**
