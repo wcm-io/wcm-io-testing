@@ -97,8 +97,24 @@ public class MockPageTest {
     assertNotNull(toolbarPage.getParent());
     assertNotNull(toolbarPage.getParent(1));
     assertNull(toolbarPage.getParent(2));
-    assertEquals("/content/sample/en", toolbarPage.getAbsoluteParent(3).getPath());
-    assertNull(toolbarPage.getAbsoluteParent(2));
+    assertEquals("/content/sample/en", toolbarPage.getAbsoluteParent(2).getPath());
+    assertNull(toolbarPage.getAbsoluteParent(1));
+  }
+
+  @Test
+  public void testGetAbsoluteParent() {
+    // contract: http://dev.day.com/docs/en/cq/current/javadoc/com/day/cq/wcm/api/Page.html#getAbsoluteParent%28int%29
+
+    context.create().page("/content2");
+    context.create().page("/content2/sample");
+    context.create().page("/content2/sample/en");
+    Page testPage = context.create().page("/content2/sample/en/products");
+
+    assertEquals("/content2", testPage.getAbsoluteParent(0).getPath());
+    assertEquals("/content2/sample", testPage.getAbsoluteParent(1).getPath());
+    assertEquals("/content2/sample/en", testPage.getAbsoluteParent(2).getPath());
+    assertEquals("/content2/sample/en/products", testPage.getAbsoluteParent(3).getPath());
+    assertNull(testPage.getAbsoluteParent(4));
   }
 
   @Test
