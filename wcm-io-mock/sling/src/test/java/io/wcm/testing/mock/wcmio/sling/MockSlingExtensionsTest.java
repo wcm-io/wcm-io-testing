@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.wcmio.sling.models;
+package io.wcm.testing.mock.wcmio.sling;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;

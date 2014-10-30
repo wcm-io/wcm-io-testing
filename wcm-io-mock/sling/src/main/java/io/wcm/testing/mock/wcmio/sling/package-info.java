@@ -17,26 +17,8 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.wcmio.sling.models;
-
-import io.wcm.sling.commons.request.RequestContext;
-
-import org.apache.sling.api.SlingHttpServletRequest;
-
 /**
- * Mock implementation of {@link RequestContext}.
+ * Helps setting up mock environment for wcm.io Sling Commons and Sling Models Extensions.
  */
-public final class MockRequestContext implements RequestContext {
-
-  private SlingHttpServletRequest request;
-
-  @Override
-  public SlingHttpServletRequest getThreadRequest() {
-    return request;
-  }
-
-  public void setRequest(SlingHttpServletRequest request) {
-    this.request = request;
-  }
-
-}
+@org.osgi.annotation.versioning.Version("0.2.0")
+package io.wcm.testing.mock.wcmio.sling;
