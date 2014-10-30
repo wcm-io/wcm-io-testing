@@ -27,6 +27,10 @@
       <action type="fix" dev="sseifert" issue="WCMIO-29">
         MockPage.getAbsoluteParent behaves different than AEM.
       </action>
+      <action type="remove" dev="sseifert">
+        Removed default registration of AemObjectInjector to cleanly separate from other wcm.io Features.
+        If you depend on this please use the io.wcm.testing.wcm-io-mock.sling package.
+      </action>
     </release>
 
     <release version="1.2.0" date="2014-10-22">

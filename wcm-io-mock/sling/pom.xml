@@ -30,12 +30,12 @@
   </parent>
 
   <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.wcm-io-mock.config</artifactId>
+  <artifactId>io.wcm.testing.wcm-io-mock.sling</artifactId>
   <version>0.2.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
-  <name>Configuration Mocks</name>
-  <description>Helps setting up mock environment for wcm.io Configuration.</description>
+  <name>Sling Extensions Mocks</name>
+  <description>Helps setting up mock environment for wcm.io Sling Commons and Sling Models Extensions.</description>
 
   <scm>
     <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
@@ -45,7 +45,7 @@
   </scm>
 
   <properties>
-    <site.url.module.prefix>wcm-io-mock/config</site.url.module.prefix>
+    <site.url.module.prefix>wcm-io-mock/sling</site.url.module.prefix>
   </properties>
 
   <dependencies>
@@ -59,15 +59,15 @@
 
     <dependency>
       <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.config.api</artifactId>
+      <artifactId>io.wcm.sling.commons</artifactId>
       <version>0.2.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.config.core</artifactId>
-      <version>0.2.0-SNAPSHOT</version>
+      <artifactId>io.wcm.sling.models</artifactId>
+      <version>1.0.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 

@@ -82,13 +82,6 @@
     </dependency>
 
     <dependency>
-      <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.sling.models</artifactId>
-      <version>1.0.0</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>com.day.commons</groupId>
       <artifactId>day-commons-gfx</artifactId>
       <scope>compile</scope>

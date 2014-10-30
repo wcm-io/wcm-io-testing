@@ -19,7 +19,6 @@
  */
 package io.wcm.testing.mock.aem.context;
 
-import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
@@ -29,7 +28,6 @@ import java.util.Set;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
-import org.apache.sling.models.spi.Injector;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 import org.osgi.annotation.versioning.ConsumerType;
@@ -56,8 +54,6 @@ public class AemContextImpl extends SlingContextImpl {
     registerService(AdapterFactory.class, new MockAemAdapterFactory());
     registerService(AdapterFactory.class, new MockLayerAdapterFactory());
 
-    // sling models injectors
-    registerService(Injector.class, new AemObjectInjector());
   }
 
   @Override

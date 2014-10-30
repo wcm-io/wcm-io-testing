@@ -22,6 +22,7 @@ package io.wcm.testing.mock.wcmio.handler;
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.wcmio.config.MockConfig;
+import io.wcm.testing.mock.wcmio.sling.models.MockSlingExtensions;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -40,6 +41,9 @@ public final class MockHandler {
    * @param context Aem context
    */
   public static void setUp(AemContext context) {
+
+    // wcm.io Sling extensions
+    MockSlingExtensions.setUp(context);
 
     // setup configuration support
     MockConfig.setUp(context);
