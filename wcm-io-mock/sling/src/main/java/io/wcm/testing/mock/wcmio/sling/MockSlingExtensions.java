@@ -31,7 +31,7 @@ import org.osgi.annotation.versioning.ProviderType;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * Helps setting up a mock environment for wcm.io Configuration.
+ * Helps setting up a mock environment for wcm.io Sling Extensions.
  */
 @ProviderType
 public final class MockSlingExtensions {
@@ -41,7 +41,7 @@ public final class MockSlingExtensions {
   }
 
   /**
-   * Set up all mandatory OSGi services for wcm.io Configuration support.
+   * Set up request context and Sling Models Extensions.
    * @param context Aem context
    */
   public static void setUp(AemContext context) {
