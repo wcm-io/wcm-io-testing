@@ -10,7 +10,7 @@ This automatically sets up [Sling Extensions Mock Helper](../sling/) and [Config
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.5.0</version>
 </dependency>
 ```
 ### Documentation
