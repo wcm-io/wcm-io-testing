@@ -34,6 +34,8 @@ public interface AemContextCallback {
   /**
    * Execute callback action
    * @param context AEM context
+   * @throws IOException
+   * @throws PersistenceException
    */
   void execute(AemContext context) throws IOException, PersistenceException;
 
