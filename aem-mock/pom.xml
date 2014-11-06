@@ -148,6 +148,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
+          <failOnError>false</failOnError>
           <dependencySourceIncludes>
             <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
             <include>org.apache.sling:org.apache.sling.testing.osgi-mock</include>
