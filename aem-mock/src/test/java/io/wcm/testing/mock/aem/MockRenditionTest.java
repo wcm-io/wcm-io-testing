@@ -20,7 +20,10 @@
 package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.apache.sling.api.resource.Resource;
@@ -53,6 +56,7 @@ public class MockRenditionTest {
     assertEquals("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/original", rendition.getPath());
     assertEquals("image/jpeg", rendition.getMimeType());
     assertEquals("admin", rendition.getProperties().get(JcrConstants.JCR_LAST_MODIFIED_BY, String.class));
+    assertNotNull(rendition.hashCode());
   }
 
   @Test
@@ -68,6 +72,19 @@ public class MockRenditionTest {
   @Test
   public void testSize() {
     assertEquals(0L, rendition.getSize());
+  }
+
+  @Test
+  public void testEquals() throws Exception {
+    Rendition rendition1 = this.context.resourceResolver()
+        .getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/original").adaptTo(Rendition.class);
+    Rendition rendition2 = this.context.resourceResolver()
+        .getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/original").adaptTo(Rendition.class);
+    Rendition rendition3 = this.context.resourceResolver()
+        .getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/cq5dam.thumbnail.48.48.png").adaptTo(Rendition.class);
+
+    assertTrue(rendition1.equals(rendition2));
+    assertFalse(rendition1.equals(rendition3));
   }
 
 }

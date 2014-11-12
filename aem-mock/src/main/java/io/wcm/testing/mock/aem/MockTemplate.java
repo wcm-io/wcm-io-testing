@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
@@ -83,6 +84,19 @@ class MockTemplate extends ResourceWrapper implements Template {
   @Override
   public Long getRanking() {
     return this.properties.get(NameConstants.PN_RANKING, Long.class);
+  }
+
+  @Override
+  public int hashCode() {
+    return getPath().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MockTemplate)) {
+      return false;
+    }
+    return StringUtils.equals(getPath(), ((MockTemplate)obj).getPath());
   }
 
 

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ResourceWrapper;
@@ -97,6 +98,19 @@ class MockRendition extends ResourceWrapper implements Rendition {
   @Override
   public Asset getAsset() {
     return DamUtil.resolveToAsset(this.resource);
+  }
+
+  @Override
+  public int hashCode() {
+    return getPath().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MockRendition)) {
+      return false;
+    }
+    return StringUtils.equals(getPath(), ((MockRendition)obj).getPath());
   }
 
 }

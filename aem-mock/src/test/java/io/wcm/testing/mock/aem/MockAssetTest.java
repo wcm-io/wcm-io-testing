@@ -20,6 +20,8 @@
 package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class MockAssetTest {
     assertEquals(1368001317000L, asset.getLastModified());
     assertEquals("admin", asset.getModifier());
     assertEquals("image/jpeg", asset.getMimeType());
+    assertNotNull(asset.hashCode());
   }
 
   @Test
@@ -72,6 +75,14 @@ public class MockAssetTest {
     assertEquals("cq5dam.thumbnail.48.48.png", asset.listRenditions().next().getName());
     assertEquals("original", asset.getOriginal().getName());
     assertEquals("original", asset.getRendition(new WCMRenditionPicker()).getName());
+  }
+
+  @Test
+  public void testEquals() throws Exception {
+    Asset asset1 = this.context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg").adaptTo(Asset.class);
+    Asset asset2 = this.context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg").adaptTo(Asset.class);
+
+    assertTrue(asset1.equals(asset2));
   }
 
 }

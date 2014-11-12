@@ -152,6 +152,19 @@ class MockAsset extends ResourceWrapper implements Asset {
     return getRendition(DamConstants.ORIGINAL_FILE);
   }
 
+  @Override
+  public int hashCode() {
+    return getPath().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MockAsset)) {
+      return false;
+    }
+    return StringUtils.equals(getPath(), ((MockAsset)obj).getPath());
+  }
+
 
   // --- unsupported operations ---
 

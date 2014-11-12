@@ -336,6 +336,19 @@ class MockPage extends SlingAdaptable implements Page {
     }
   }
 
+  @Override
+  public int hashCode() {
+    return getPath().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MockPage)) {
+      return false;
+    }
+    return StringUtils.equals(getPath(), ((MockPage)obj).getPath());
+  }
+
 
   // --- unsupported operations ---
 

@@ -79,6 +79,7 @@ public class MockPageTest {
     assertEquals(3, this.page.getDepth());
     assertEquals(false, this.page.isHideInNav());
     assertNull(this.page.getVanityUrl());
+    assertNotNull(this.page.hashCode());
   }
 
   @Test
@@ -260,6 +261,16 @@ public class MockPageTest {
     // test get language from path
     locale = profilesPage.getLanguage(true);
     assertEquals(Locale.forLanguageTag("en"), locale);
+  }
+
+  @Test
+  public void testEquals() throws Exception {
+    Page page1 = context.pageManager().getPage("/content/sample/en");
+    Page page2 = context.pageManager().getPage("/content/sample/en");
+    Page page3 = context.pageManager().getPage("/content/sample/en/toolbar/profiles");
+
+    assertTrue(page1.equals(page2));
+    assertFalse(page1.equals(page3));
   }
 
 }
