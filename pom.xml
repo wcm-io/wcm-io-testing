@@ -41,6 +41,7 @@
     <module>parent</module>
     <module>junit-commons</module>
     <module>aem-mock</module>
+    <module>wcm-io-mock/sling</module>
     <module>wcm-io-mock/config</module>
     <module>wcm-io-mock/handler</module>
   </modules>
