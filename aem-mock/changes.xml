@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="1.2.4" date="not released">
+    <release version="1.2.4" date="2014-12-03">
       <action type="fix" dev="sseifert" issue="WCMIO-34">
         Implement equals and hashCode methods for MockPage, MockTemplate, MockAsset and MockRendition.
       </action>
