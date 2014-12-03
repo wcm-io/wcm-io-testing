@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -47,9 +47,9 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
-    <jcr-mock.version>1.0.0</jcr-mock.version>
-    <osgi-mock.version>1.0.0</osgi-mock.version>
-    <sling-mock.version>1.0.0</sling-mock.version>
+    <jcr-mock.version>1.0.1-SNAPSHOT</jcr-mock.version>
+    <osgi-mock.version>1.0.1-SNAPSHOT</osgi-mock.version>
+    <sling-mock.version>1.0.1-SNAPSHOT</sling-mock.version>
 
   </properties>
 
