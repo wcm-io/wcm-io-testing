@@ -47,9 +47,10 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
-    <jcr-mock.version>1.0.1-SNAPSHOT</jcr-mock.version>
-    <osgi-mock.version>1.0.1-SNAPSHOT</osgi-mock.version>
-    <sling-mock.version>1.0.1-SNAPSHOT</sling-mock.version>
+    <jcr-mock.version>1.1.0</jcr-mock.version>
+    <osgi-mock.version>1.1.0</osgi-mock.version>
+    <sling-mock.version>1.1.0</sling-mock.version>
+    <resourceresolver-mock.version>1.1.0</resourceresolver-mock.version>
 
   </properties>
 
@@ -71,6 +72,12 @@
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.testing.sling-mock</artifactId>
       <version>${sling-mock.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.resourceresolver-mock</artifactId>
+      <version>${resourceresolver-mock.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -148,7 +155,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <failOnError>false</failOnError>
           <dependencySourceIncludes>
             <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
             <include>org.apache.sling:org.apache.sling.testing.osgi-mock</include>
