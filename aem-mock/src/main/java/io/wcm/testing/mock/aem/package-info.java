@@ -20,5 +20,5 @@
 /**
  * Mock implementation of selected AEM APIs.
  */
-@org.osgi.annotation.versioning.Version("1.2.0")
+@org.osgi.annotation.versioning.Version("1.2.1")
 package io.wcm.testing.mock.aem;

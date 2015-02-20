@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Property;
+import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.osgi.annotation.versioning.ProviderType;
@@ -32,8 +35,20 @@ import com.day.image.Layer;
 /**
  * Tries to adapt to an InputStream to get a Layer instance for an image binary.
  */
+@Component
+@Service(AdapterFactory.class)
 @ProviderType
 public class MockLayerAdapterFactory implements AdapterFactory {
+
+  @Property(name = AdapterFactory.ADAPTABLE_CLASSES)
+  private static final String[] ADAPTABLES = {
+    Adaptable.class.getName()
+  };
+
+  @Property(name = AdapterFactory.ADAPTER_CLASSES)
+  private static final String[] ADAPTERS = {
+    Layer.class.getName()
+  };
 
   @SuppressWarnings("unchecked")
   @Override

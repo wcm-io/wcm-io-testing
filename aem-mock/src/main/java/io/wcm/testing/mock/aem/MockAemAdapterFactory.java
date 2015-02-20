@@ -24,6 +24,7 @@ import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
@@ -43,10 +44,25 @@ import com.day.cq.wcm.api.Template;
 /**
  * Mock adapter factory for AEM-related adaptions.
  */
-@Component(inherit = false)
+@Component
 @Service(AdapterFactory.class)
 @ProviderType
 public class MockAemAdapterFactory implements AdapterFactory {
+
+  @Property(name = AdapterFactory.ADAPTABLE_CLASSES)
+  private static final String[] ADAPTABLES = {
+    Resource.class.getName(),
+    ResourceResolver.class.getName()
+  };
+
+  @Property(name = AdapterFactory.ADAPTER_CLASSES)
+  private static final String[] ADAPTERS = {
+    Page.class.getName(),
+    Template.class.getName(),
+    Asset.class.getName(),
+    Rendition.class.getName(),
+    PageManager.class.getName()
+  };
 
   @Override
   public <AdapterType> AdapterType getAdapter(final Object adaptable, final Class<AdapterType> type) {

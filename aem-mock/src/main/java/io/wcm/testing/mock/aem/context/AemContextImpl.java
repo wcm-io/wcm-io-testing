@@ -25,7 +25,6 @@ import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
 import java.util.Set;
 
-import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
@@ -51,9 +50,8 @@ public class AemContextImpl extends SlingContextImpl {
     super.registerDefaultServices();
 
     // adapter factories
-    registerService(AdapterFactory.class, new MockAemAdapterFactory());
-    registerService(AdapterFactory.class, new MockLayerAdapterFactory());
-
+    registerInjectActivateService(new MockAemAdapterFactory());
+    registerInjectActivateService(new MockLayerAdapterFactory());
   }
 
   @Override
