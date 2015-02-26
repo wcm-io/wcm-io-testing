@@ -47,10 +47,10 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
-    <jcr-mock.version>1.1.3-R1661228</jcr-mock.version>
-    <osgi-mock.version>1.1.1-R1661228</osgi-mock.version>
-    <sling-mock.version>1.1.3-R1661228</sling-mock.version>
-    <resourceresolver-mock.version>1.1.3-R1661228</resourceresolver-mock.version>
+    <jcr-mock.version>1.1.4</jcr-mock.version>
+    <osgi-mock.version>1.2.0</osgi-mock.version>
+    <sling-mock.version>1.2.0</sling-mock.version>
+    <resourceresolver-mock.version>1.1.4</resourceresolver-mock.version>
 
   </properties>
 
