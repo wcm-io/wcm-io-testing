@@ -36,6 +36,9 @@ import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.cq.tagging.Tag;
+import com.day.cq.tagging.TagConstants;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -61,7 +64,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
     Template.class.getName(),
     Asset.class.getName(),
     Rendition.class.getName(),
-    PageManager.class.getName()
+    PageManager.class.getName(),
+    Tag.class.getName(),
+    TagManager.class.getName()
   };
 
   @Override
@@ -89,6 +94,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
     if (type == Rendition.class && DamUtil.isRendition(resource)) {
       return (AdapterType)new MockRendition(resource);
     }
+    if (type == Tag.class && isPrimaryType(resource, TagConstants.NT_TAG)) {
+      return (AdapterType)new MockTag(resource);
+    }
     return null;
   }
 
@@ -96,6 +104,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
   private <AdapterType> AdapterType getAdapter(final ResourceResolver resolver, final Class<AdapterType> type) {
     if (type == PageManager.class) {
       return (AdapterType)new MockPageManager(resolver);
+    }
+    if (type == TagManager.class) {
+      return (AdapterType)new MockTagManager(resolver);
     }
     return null;
   }
