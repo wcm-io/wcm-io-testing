@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.wcmio.handler;
 
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
+import io.wcm.handler.url.impl.UrlHandlerParameterProviderImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.wcmio.config.MockConfig;
 import io.wcm.testing.mock.wcmio.sling.MockSlingExtensions;
@@ -44,6 +45,9 @@ public final class MockHandler {
 
     // wcm.io Sling extensions
     MockSlingExtensions.setUp(context);
+
+    // register url handler config parameter
+    context.registerInjectActivateService(new UrlHandlerParameterProviderImpl());
 
     // setup configuration support
     MockConfig.setUp(context);
