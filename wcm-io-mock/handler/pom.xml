@@ -38,8 +38,8 @@
   <description>Helps setting up mock environment for wcm.io Handler.</description>
 
   <scm>
-    <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
-    <developerConnection>scm:git:git@github.com:wcm-io/wcm-io.git</developerConnection>
+    <connection>scm:git:https://github.com/wcm-io/wcm-io.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io.git</developerConnection>
     <url>https://github.com/wcm-io/wcm-io</url>
     <tag>HEAD</tag>
   </scm>

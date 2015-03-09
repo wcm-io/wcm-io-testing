@@ -38,8 +38,8 @@
   <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>
 
   <scm>
-    <connection>scm:git:git@github.com:wcm-io/wcm-io.git</connection>
-    <developerConnection>scm:git:git@github.com:wcm-io/wcm-io.git</developerConnection>
+    <connection>scm:git:https://github.com/wcm-io/wcm-io.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io.git</developerConnection>
     <url>https://github.com/wcm-io/wcm-io</url>
     <tag>HEAD</tag>
   </scm>
