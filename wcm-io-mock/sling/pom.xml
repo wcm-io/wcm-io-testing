@@ -63,7 +63,7 @@
       <version>0.6.0</version>
       <scope>compile</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.sling.models</artifactId>
