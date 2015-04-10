@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert" issue="WCMIO-71">
         Add mocks for ComponentManager and Component.
       </action>
+      <action type="add" dev="sseifert" issue="WCMIO-52">
+        Add mocks for TagManager and Tag.
+      </action>
     </release>
 
     <release version="1.2.6" date="2015-03-09">
