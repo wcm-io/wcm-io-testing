@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -39,9 +40,10 @@ class MockComponent extends SlingAdaptable implements Component {
   private final Resource resource;
   private final ValueMap props;
 
+  @SuppressWarnings("deprecation")
   public MockComponent(Resource resource) {
     this.resource = resource;
-    this.props = resource.getValueMap();
+    this.props = ResourceUtil.getValueMap(resource);
   }
 
   @Override
