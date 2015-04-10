@@ -40,6 +40,7 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.Template;
+import com.day.cq.wcm.api.components.ComponentManager;
 
 /**
  * Mock adapter factory for AEM-related adaptions.
@@ -61,7 +62,8 @@ public class MockAemAdapterFactory implements AdapterFactory {
     Template.class.getName(),
     Asset.class.getName(),
     Rendition.class.getName(),
-    PageManager.class.getName()
+    PageManager.class.getName(),
+    ComponentManager.class.getName(),
   };
 
   @Override
@@ -96,6 +98,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
   private <AdapterType> AdapterType getAdapter(final ResourceResolver resolver, final Class<AdapterType> type) {
     if (type == PageManager.class) {
       return (AdapterType)new MockPageManager(resolver);
+    }
+    if (type == ComponentManager.class) {
+      return (AdapterType)new MockComponentManager(resolver);
     }
     return null;
   }

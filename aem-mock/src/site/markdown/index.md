@@ -26,7 +26,7 @@ The mock implementation supports:
 
 * Access to [mocked OSGi][osgi-mock], [mocked JCR][jcr-mock] and [mocked Sling][sling-mock] environment provided by the Apache Sling project
 * Resource access using different resource resolver types (see [Resource Resolver Types][sling-mock-rrtypes])
-* Implementation of AEM WCM API objects `PageManager`, `Page` and `Template`
+* Implementation of AEM WCM API objects `PageManager`, `Page`, `Template`, `ComponentManager`, `Component`
 * Implementation of AEM DAM API objects `Asset` and `Rendition`
 * JUnit rule `AemContext` for easy access to all context objects and registering adapter factories and OSGi services
 * Import and create test content for unit tests (see [Test content loading and creation](usage-content-loader-builder.html))
