@@ -36,6 +36,9 @@ import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
+import com.day.cq.tagging.Tag;
+import com.day.cq.tagging.TagConstants;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -64,6 +67,8 @@ public class MockAemAdapterFactory implements AdapterFactory {
     Rendition.class.getName(),
     PageManager.class.getName(),
     ComponentManager.class.getName(),
+    TagManager.class.getName(),
+    Tag.class.getName()
   };
 
   @Override
@@ -91,6 +96,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
     if (type == Rendition.class && DamUtil.isRendition(resource)) {
       return (AdapterType)new MockRendition(resource);
     }
+    if (type == Tag.class && isPrimaryType(resource, TagConstants.NT_TAG)) {
+      return (AdapterType)new MockTag(resource);
+    }
     return null;
   }
 
@@ -101,6 +109,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
     }
     if (type == ComponentManager.class) {
       return (AdapterType)new MockComponentManager(resolver);
+    }
+    if (type == TagManager.class) {
+      return (AdapterType)new MockTagManager(resolver);
     }
     return null;
   }

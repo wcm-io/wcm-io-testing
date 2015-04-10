@@ -37,6 +37,7 @@ import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.tagging.Tag;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -354,7 +355,7 @@ class MockPage extends SlingAdaptable implements Page {
 
   @Override
   public Tag[] getTags() {
-    throw new UnsupportedOperationException();
+    return resourceResolver.adaptTo(TagManager.class).getTags(contentResource);
   }
 
   @Override
