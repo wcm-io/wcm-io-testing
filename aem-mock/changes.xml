@@ -30,6 +30,9 @@
       <action type="add" dev="sseifert" issue="WCMIO-52">
         Add mocks for TagManager and Tag.
       </action>
+      <action type="add" dev="sseifert" issue="WCMIO-65">
+        Add mock for Designer.
+      </action>
     </release>
 
     <release version="1.2.6" date="2015-03-09">
