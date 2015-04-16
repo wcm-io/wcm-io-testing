@@ -73,6 +73,13 @@
       <artifactId>org.apache.sling.testing.sling-mock</artifactId>
       <version>${sling-mock.version}</version>
       <scope>compile</scope>
+      <exclusions>
+        <!-- Make sure Sling API from aem-api is used -->
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
