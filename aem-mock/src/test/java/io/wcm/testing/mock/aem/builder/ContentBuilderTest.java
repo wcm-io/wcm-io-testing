@@ -29,6 +29,7 @@ import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.google.common.collect.ImmutableMap;
@@ -88,7 +89,8 @@ public class ContentBuilderTest {
     Resource resource = context.create().resource("/content/test1/resource1");
     assertNotNull(resource);
     assertEquals("resource1", resource.getName());
-    assertTrue(resource.getValueMap().isEmpty());
+    assertTrue(resource.getValueMap().isEmpty()
+        || ImmutableMap.<String, Object>of(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_UNSTRUCTURED).equals(resource.getValueMap()));
   }
 
   @Test

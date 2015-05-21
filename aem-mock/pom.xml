@@ -47,10 +47,11 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
-    <jcr-mock.version>1.1.4</jcr-mock.version>
-    <osgi-mock.version>1.2.0</osgi-mock.version>
-    <sling-mock.version>1.2.0</sling-mock.version>
-    <resourceresolver-mock.version>1.1.4</resourceresolver-mock.version>
+    <jcr-mock.version>1.1.5-SNAPSHOT</jcr-mock.version>
+    <osgi-mock.version>1.2.1-SNAPSHOT</osgi-mock.version>
+    <sling-mock.version>1.2.1-SNAPSHOT</sling-mock.version>
+    <resourceresolver-mock.version>1.1.5-SNAPSHOT</resourceresolver-mock.version>
+    <logging-mock.version>1.0.0-SNAPSHOT</logging-mock.version>
 
   </properties>
 
@@ -117,6 +118,13 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.logging-mock</artifactId>
+      <version>${logging-mock.version}</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
