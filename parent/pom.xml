@@ -38,9 +38,9 @@
   <description>Parent POM for wcm.io testing projects.</description>
 
   <scm>
-    <connection>scm:git:https://github.com/wcm-io/wcm-io.git</connection>
-    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io.git</developerConnection>
-    <url>https://github.com/wcm-io/wcm-io</url>
+    <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</developerConnection>
+    <url>https://github.com/wcm-io/wcm-io-testing</url>
     <tag>HEAD</tag>
   </scm>
 
