@@ -98,4 +98,14 @@ public class MockComponentManagerTest {
     assertEquals("/apps/app1/components/c1", component.getPath());
   }
 
+  @Test
+  public void testGetComponentOfResourceWithoutResourceType() {
+    context.create().resource("/content/myresourceWithoutResourceType", ImmutableMap.<String, Object>builder()
+        .build());
+
+    Resource resource = context.resourceResolver().getResource("/content/myresourceWithoutResourceType");
+    Component component = underTest.getComponentOfResource(resource);
+    assertNull(component);
+  }
+
 }

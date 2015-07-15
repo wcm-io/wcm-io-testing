@@ -50,8 +50,14 @@ class MockComponentManager implements ComponentManager {
 
   @Override
   public Component getComponentOfResource(Resource resource) {
-    String resourceType = ResourceUtil.resourceTypeToPath(resource.getResourceType());
-    return getComponent(resourceType);
+    String resourceType = resource.getResourceType();
+    if (resourceType != null) {
+      resourceType = ResourceUtil.resourceTypeToPath(resource.getResourceType());
+      return getComponent(resourceType);
+    }
+    else {
+      return null;
+    }
   }
 
 

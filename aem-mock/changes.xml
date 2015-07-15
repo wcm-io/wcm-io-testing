@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi mock, JCR mock, Sling Mock and ResourceResolver Mock.
       </action>
+      <action type="fix" dev="sseifert">
+        Fix potential NPE in MockComponentManager when resource has no resource type.
+      </action>
     </release>
 
     <release version="1.3.2" date="2015-05-28">
