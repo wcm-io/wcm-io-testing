@@ -20,3 +20,8 @@ Initially wcm.io provided mocking implementations for JCR, OSGi and Sling. These
 * [Sling Mocks](http://sling.apache.org/documentation/development/sling-mock.html)
 * [OSGi Mocks](http://sling.apache.org/documentation/development/osgi-mock.html)
 * [JCR Mocks](http://sling.apache.org/documentation/development/jcr-mock.html)
+
+
+### GitHub Repository
+
+Sources: https://github.com/wcm-io/wcm-io-testing
