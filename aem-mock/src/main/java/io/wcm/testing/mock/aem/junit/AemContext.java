@@ -159,7 +159,7 @@ public final class AemContext extends AemContextImpl implements TestRule {
         this.setUpCallback.execute(this);
       }
       catch (Throwable ex) {
-        throw new RuntimeException("Executing setup callback failed.", ex);
+        throw new RuntimeException("Setup failed: " + ex.getMessage(), ex);
       }
     }
   }
@@ -170,7 +170,7 @@ public final class AemContext extends AemContextImpl implements TestRule {
         this.tearDownCallback.execute(this);
       }
       catch (Throwable ex) {
-        throw new RuntimeException("Executing setup callback failed.", ex);
+        throw new RuntimeException("Teardown failed: " + ex.getMessage(), ex);
       }
     }
   }
