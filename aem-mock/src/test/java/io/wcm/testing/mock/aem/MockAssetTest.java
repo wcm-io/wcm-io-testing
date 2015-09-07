@@ -21,9 +21,12 @@ package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.sling.api.resource.Resource;
@@ -37,6 +40,10 @@ import com.day.cq.dam.api.Rendition;
 import com.day.cq.wcm.foundation.WCMRenditionPicker;
 
 public class MockAssetTest {
+
+  private static final byte[] BINARY_DATA = new byte[] {
+    0x01, 0x02, 0x03, 0x04, 0x05
+  };
 
   @Rule
   public AemContext context = new AemContext();
@@ -83,6 +90,23 @@ public class MockAssetTest {
     Asset asset2 = this.context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg").adaptTo(Asset.class);
 
     assertTrue(asset1.equals(asset2));
+  }
+
+  @Test
+  public void testAddRemoveRendition() throws Exception {
+    InputStream is = new ByteArrayInputStream(BINARY_DATA);
+    Rendition rendition = asset.addRendition("test.bin", is, "application/octet-stream");
+
+    assertNotNull(rendition);
+    assertNotNull(asset.getRendition("test.bin"));
+    Resource resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/test.bin");
+    assertNotNull(resource);
+
+    asset.removeRendition("test.bin");
+
+    assertNull(asset.getRendition("test.bin"));
+    resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/test.bin");
+    assertNull(resource);
   }
 
 }

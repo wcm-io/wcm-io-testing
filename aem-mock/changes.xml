@@ -23,7 +23,10 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="1.3.4" date="not released">
+    <release version="1.4.0" date="not released">
+      <action type="add" dev="sseifert">
+        DAM Asset Mock: Support adding and removing of renditions.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi mock, JCR mock, Sling Mock and ResourceResolver Mock.
       </action>

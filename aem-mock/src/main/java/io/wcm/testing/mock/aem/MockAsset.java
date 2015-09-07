@@ -27,11 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
@@ -165,8 +167,41 @@ class MockAsset extends ResourceWrapper implements Asset {
     return StringUtils.equals(getPath(), ((MockAsset)obj).getPath());
   }
 
+  @Override
+  public Rendition addRendition(String name, InputStream is, String mimeType) {
+    if (getRendition(name) != null) {
+      removeRendition(name);
+    }
+    Resource rendition = new ContentLoader(resourceResolver).binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType);
+    return rendition.adaptTo(Rendition.class);
+  }
+
+  @Override
+  public void removeRendition(String name) {
+    Resource rendition = renditionsResource.getChild(name);
+    if (rendition != null) {
+      try {
+        resourceResolver.delete(rendition);
+        resourceResolver.commit();
+      }
+      catch (PersistenceException ex) {
+        throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
+      }
+    }
+  }
+
+  @Override
+  public Resource setRendition(String name, InputStream is, String mimeType) {
+    return addRendition(name, is, mimeType);
+  }
+
 
   // --- unsupported operations ---
+
+  @Override
+  public Rendition addRendition(String name, InputStream is, Map<String, Object> map) {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public Rendition getCurrentOriginal() {
@@ -175,11 +210,6 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public boolean isSubAsset() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Resource setRendition(String name, InputStream is, String mimeType) {
     throw new UnsupportedOperationException();
   }
 
@@ -204,27 +234,12 @@ class MockAsset extends ResourceWrapper implements Asset {
   }
 
   @Override
-  public Rendition addRendition(String name, InputStream is, String mimeType) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Rendition addRendition(String name, InputStream is, Map<String, Object> map) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public Asset addSubAsset(String name, String mimeType, InputStream stream) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public Collection<Asset> getSubAssets() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void removeRendition(String name) {
     throw new UnsupportedOperationException();
   }
 
