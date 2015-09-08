@@ -173,6 +173,12 @@ class MockAsset extends ResourceWrapper implements Asset {
       removeRendition(name);
     }
     Resource rendition = new ContentLoader(resourceResolver).binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType);
+    try {
+      resourceResolver.commit();
+    }
+    catch (PersistenceException ex) {
+      throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
+    }
     return rendition.adaptTo(Rendition.class);
   }
 
