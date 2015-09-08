@@ -211,9 +211,9 @@ class MockTagManager implements TagManager {
 
   @Override
   public RangeIterator<Resource> find(String tagID) {
-    /* FIXME: this should be just /, but the mock framework seems to be
-     * buggy around get/listChildren() from the / resource. */
-    return find("/content", new String[]{tagID}, false);
+    return find("/", new String[] {
+      tagID
+    }, false);
   }
 
   @Override
