@@ -25,10 +25,13 @@
 
     <release version="1.4.0" date="not released">
       <action type="add" dev="sseifert">
-        DAM Asset Mock: Support adding and removing of renditions.
+        MockPageManager: Support default content from the template's jcr:content node when creating pages.
       </action>
       <action type="add" dev="sseifert">
-        Content Builder: Add methods for creating DAM assets.
+        MockAsset: Support adding and removing of renditions.
+      </action>
+      <action type="add" dev="sseifert">
+        ContentBuilder: Add methods for creating DAM assets.
       </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi mock, JCR mock, Sling Mock and ResourceResolver Mock.

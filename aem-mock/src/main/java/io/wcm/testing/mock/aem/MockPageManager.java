@@ -26,10 +26,13 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.adapter.SlingAdaptable;
+import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
@@ -78,7 +81,13 @@ class MockPageManager extends SlingAdaptable implements PageManager {
       props.put(JcrConstants.JCR_PRIMARYTYPE, "cq:PageContent");
       props.put(JcrConstants.JCR_TITLE, title);
       props.put(NameConstants.PN_TEMPLATE, template);
-      this.resourceResolver.create(pageResource, JcrConstants.JCR_CONTENT, props);
+      Resource contentResource = this.resourceResolver.create(pageResource, JcrConstants.JCR_CONTENT, props);
+
+      // create default content from template
+      Resource defaultContent = resourceResolver.getResource(template + "/" + JcrConstants.JCR_CONTENT);
+      if (defaultContent != null) {
+        copyContent(defaultContent, contentResource, true);
+      }
 
       if (autoSave) {
         this.resourceResolver.commit();
@@ -89,6 +98,25 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     }
 
     return pageResource.adaptTo(Page.class);
+  }
+
+  private void copyContent(Resource source, Resource target, boolean skipPrimaryType) throws PersistenceException {
+    ValueMap sourceProps = source.adaptTo(ValueMap.class);
+    ModifiableValueMap targetProps = target.adaptTo(ModifiableValueMap.class);
+    for (Map.Entry<String, Object> entry : sourceProps.entrySet()) {
+      if (skipPrimaryType && StringUtils.equals(entry.getKey(), JcrConstants.JCR_PRIMARYTYPE)) {
+        continue;
+      }
+      targetProps.put(entry.getKey(), entry.getValue());
+    }
+    copyChildren(source, target);
+  }
+
+  private void copyChildren(Resource source, Resource target) throws PersistenceException {
+    for (Resource sourceChild : source.getChildren()) {
+      Resource targetChild = resourceResolver.create(target, sourceChild.getName(), sourceChild.adaptTo(ValueMap.class));
+      copyChildren(sourceChild, targetChild);
+    }
   }
 
   @Override

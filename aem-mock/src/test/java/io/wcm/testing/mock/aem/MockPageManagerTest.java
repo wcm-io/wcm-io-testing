@@ -43,6 +43,7 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
+import com.google.common.collect.ImmutableMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MockPageManagerTest {
@@ -80,6 +81,43 @@ public class MockPageManagerTest {
   public void testCreatePageWithAutoSave() throws WCMException, PersistenceException {
     testCreatePageInternal(true);
     verify(this.resourceResolver, times(1)).commit();
+  }
+
+  @Test
+  public void testCreatePageWithDefaultContent() throws WCMException {
+    // prepare some default content for template
+    context.create().resource("/apps/sample/templates/homepage/jcr:content", ImmutableMap.<String, Object>builder()
+        .put("sling:resourceType", "/apps/sample/components/page/homepage")
+        .build());
+    context.create().resource("/apps/sample/templates/homepage/jcr:content/node1", ImmutableMap.<String, Object>builder()
+        .put("prop1", "abc")
+        .put("prop2", "def")
+        .build());
+    context.create().resource("/apps/sample/templates/homepage/jcr:content/node1/node11", ImmutableMap.<String, Object>builder()
+        .put("prop3", 55)
+        .build());
+    context.create().resource("/apps/sample/templates/homepage/jcr:content/node2", ImmutableMap.<String, Object>builder()
+        .put("prop4", true)
+        .build());
+
+    testCreatePageInternal(false);
+
+    Resource pageResource = this.resourceResolver.getResource("/content/sample/en/test1/jcr:content");
+    ValueMap props = pageResource.getValueMap();
+    assertEquals("/apps/sample/components/page/homepage", props.get("sling:resourceType", String.class));
+
+    Resource node1 = pageResource.getChild("node1");
+    props = node1.getValueMap();
+    assertEquals("abc", props.get("prop1", String.class));
+    assertEquals("def", props.get("prop2", String.class));
+
+    Resource node11 = pageResource.getChild("node1/node11");
+    props = node11.getValueMap();
+    assertEquals(55, (int)props.get("prop3", Integer.class));
+
+    Resource node2 = pageResource.getChild("node2");
+    props = node2.getValueMap();
+    assertEquals(true, props.get("prop4", Boolean.class));
   }
 
   private void testCreatePageInternal(final boolean autoSave) throws WCMException {
