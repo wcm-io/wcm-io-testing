@@ -24,14 +24,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.DamConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
+import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
 
 public class ContentBuilderTest {
@@ -103,6 +109,38 @@ public class ContentBuilderTest {
     assertEquals("resource2", resource.getName());
     assertEquals("Test Title", resource.getValueMap().get(NameConstants.PN_TITLE, String.class));
     assertEquals("value1", resource.getValueMap().get("stringProp", String.class));
+  }
+
+  @Test
+  public void testAssetFromClasspath() throws Exception {
+    Asset asset = context.create().asset("/content/dam/sample1.gif", "/sample-image.gif", "image/gif");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.gif", asset.getName());
+    assertEquals("image/gif", asset.getOriginal().getMimeType());
+    assertEquals("2", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("2", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    try (InputStream is = asset.getOriginal().adaptTo(InputStream.class)) {
+      Layer layer = new Layer(is);
+      assertEquals(2, layer.getWidth());
+      assertEquals(2, layer.getHeight());
+    }
+  }
+
+  @Test
+  public void testAssetFromByteArray() throws Exception {
+    try (InputStream is = new ByteArrayInputStream(new byte[] {
+        0x01, 0x02, 0x03
+    })) {
+      Asset asset = context.create().asset("/content/dam/sample1.bin", is, "application/octet-stream");
+      assertNotNull(asset);
+
+      assertEquals(1, asset.getRenditions().size());
+      assertEquals("sample1.bin", asset.getName());
+      assertEquals("application/octet-stream", asset.getOriginal().getMimeType());
+    }
   }
 
 }

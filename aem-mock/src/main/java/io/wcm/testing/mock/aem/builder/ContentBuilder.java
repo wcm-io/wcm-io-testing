@@ -19,19 +19,29 @@
  */
 package io.wcm.testing.mock.aem.builder;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.osgi.annotation.versioning.ProviderType;
 
+import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.DamConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
+import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -109,6 +119,105 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     catch (WCMException | PersistenceException ex) {
       throw new RuntimeException("Unable to create page at " + path, ex);
     }
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param mimeType Mime type
+   * @return Asset
+   */
+  public Asset asset(String path, String classpathResource, String mimeType) {
+    return asset(path, classpathResource, mimeType, null);
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param mimeType Mime type
+   * @param metadata Asset metadata
+   * @return Asset
+   */
+  public Asset asset(String path, String classpathResource, String mimeType, Map<String, Object> metadata) {
+    try (InputStream is = ContentLoader.class.getResourceAsStream(classpathResource)) {
+      if (is == null) {
+        throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
+      }
+      return asset(path, is, mimeType, metadata);
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param inputStream Binary data for original rendition
+   * @param mimeType Mime type
+   * @return Asset
+   */
+  public Asset asset(String path, InputStream inputStream, String mimeType) {
+    return asset(path, inputStream, mimeType, null);
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param inputStream Binary data for original rendition
+   * @param mimeType Mime type
+   * @param metadata Asset metadata
+   * @return Asset
+   */
+  public Asset asset(String path, InputStream inputStream, String mimeType, Map<String, Object> metadata) {
+    try {
+      // create asset
+      resource(path, ImmutableMap.<String, Object>builder()
+          .put(JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSET)
+          .build());
+      resource(path + "/" + JcrConstants.JCR_CONTENT, ImmutableMap.<String, Object>builder()
+          .put(JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSETCONTENT)
+          .build());
+      String renditionsPath = path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER;
+      resource(renditionsPath, ImmutableMap.<String, Object>builder()
+          .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_FOLDER)
+          .build());
+
+      // store asset metadata
+      Map<String, Object> metadataProps = new HashMap<>();
+      if (metadata != null) {
+        metadataProps.putAll(metadata);
+      }
+
+      // try to detect image with/height if input stream contains image data
+      byte[] data = IOUtils.toByteArray(inputStream);
+      try (InputStream is = new ByteArrayInputStream(data)) {
+        try {
+          Layer layer = new Layer(is);
+          metadataProps.put(DamConstants.TIFF_IMAGEWIDTH, layer.getWidth());
+          metadataProps.put(DamConstants.TIFF_IMAGELENGTH, layer.getHeight());
+        }
+        catch (Throwable ex) {
+          // ignore
+        }
+      }
+
+      resource(path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER, metadataProps);
+
+      // store original rendition
+      try (InputStream is = new ByteArrayInputStream(data)) {
+        new ContentLoader(resourceResolver).binaryFile(is, renditionsPath + "/" + DamConstants.ORIGINAL_FILE, mimeType);
+      }
+
+      resourceResolver.commit();
+    }
+    catch (IOException ex) {
+      throw new RuntimeException("Unable to create asset at " + path, ex);
+    }
+
+    return resourceResolver.getResource(path).adaptTo(Asset.class);
   }
 
 }

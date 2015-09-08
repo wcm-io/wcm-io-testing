@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         DAM Asset Mock: Support adding and removing of renditions.
       </action>
+      <action type="add" dev="sseifert">
+        Content Builder: Add methods for creating DAM assets.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi mock, JCR mock, Sling Mock and ResourceResolver Mock.
       </action>
