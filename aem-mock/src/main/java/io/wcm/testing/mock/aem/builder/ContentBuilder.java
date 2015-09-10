@@ -39,6 +39,7 @@ import org.osgi.annotation.versioning.ProviderType;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.Rendition;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -155,7 +156,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create DAM asset with an generated dummy image. The image is empty.
+   * Create DAM asset with a generated dummy image. The image is empty.
    * @param path Asset path
    * @param width Dummy image width
    * @param height Dummy image height
@@ -167,7 +168,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create DAM asset.
+   * Create DAM asset with a generated dummy image. The image is empty.
    * @param path Asset path
    * @param width Dummy image width
    * @param height Dummy image height
@@ -271,6 +272,56 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
       throw new RuntimeException(ex);
     }
     return new ByteArrayInputStream(data);
+  }
+
+  /**
+   * Adds an rendition to DAM asset.
+   * @param asset DAM asset
+   * @param name Rendition name
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param mimeType Mime type
+   * @return Asset
+   */
+  public Rendition assetRendition(Asset asset, String name, String classpathResource, String mimeType) {
+    try (InputStream is = ContentLoader.class.getResourceAsStream(classpathResource)) {
+      if (is == null) {
+        throw new IllegalArgumentException("Classpath resource not found: " + classpathResource);
+      }
+      return assetRendition(asset, name, is, mimeType);
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  /**
+   * Adds an rendition with a generated dummy image to DAM asset. The image is empty.
+   * @param asset DAM asset
+   * @param name Rendition name
+   * @param width Dummy image width
+   * @param height Dummy image height
+   * @param mimeType Mime type
+   * @return Asset
+   */
+  public Rendition assetRendition(Asset asset, String name, int width, int height, String mimeType) {
+    try (InputStream is = createDummyImage(width, height, mimeType)) {
+      return assetRendition(asset, name, is, mimeType);
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  /**
+   * Adds an rendition to DAM asset.
+   * @param asset DAM asset
+   * @param name Rendition name
+   * @param inputStream Binary data for original rendition
+   * @param mimeType Mime type
+   * @return Asset
+   */
+  public Rendition assetRendition(Asset asset, String name, InputStream inputStream, String mimeType) {
+    return asset.addRendition(name, inputStream, mimeType);
   }
 
 }

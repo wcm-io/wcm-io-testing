@@ -31,7 +31,7 @@
         MockAsset: Support adding and removing of renditions.
       </action>
       <action type="add" dev="sseifert">
-        ContentBuilder: Add methods for creating DAM assets.
+        ContentBuilder: Add methods for creating DAM assets and renditions.
       </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi mock, JCR mock, Sling Mock and ResourceResolver Mock.
