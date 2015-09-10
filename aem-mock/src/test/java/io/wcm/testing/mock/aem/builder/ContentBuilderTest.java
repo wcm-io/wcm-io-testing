@@ -143,4 +143,28 @@ public class ContentBuilderTest {
     }
   }
 
+  @Test
+  public void testAssetFromWidthHeight_Jpeg() throws Exception {
+    Asset asset = context.create().asset("/content/dam/sample1.jpg", 100, 50, "image/jpeg");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.jpg", asset.getName());
+    assertEquals("image/jpeg", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+  }
+
+  @Test
+  public void testAssetFromWidthHeight_Gif() throws Exception {
+    Asset asset = context.create().asset("/content/dam/sample1.gif", 100, 50, "image/gif");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.gif", asset.getName());
+    assertEquals("image/gif", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+  }
+
 }

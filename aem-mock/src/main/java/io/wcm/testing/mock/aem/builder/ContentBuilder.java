@@ -20,12 +20,14 @@
 package io.wcm.testing.mock.aem.builder;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -153,6 +155,36 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
+   * Create DAM asset with an generated dummy image. The image is empty.
+   * @param path Asset path
+   * @param width Dummy image width
+   * @param height Dummy image height
+   * @param mimeType Mime type
+   * @return Asset
+   */
+  public Asset asset(String path, int width, int height, String mimeType) {
+    return asset(path, width, height, mimeType, null);
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param width Dummy image width
+   * @param height Dummy image height
+   * @param mimeType Mime type
+   * @param metadata Asset metadata
+   * @return Asset
+   */
+  public Asset asset(String path, int width, int height, String mimeType, Map<String, Object> metadata) {
+    try (InputStream is = createDummyImage(width, height, mimeType)) {
+      return asset(path, is, mimeType, metadata);
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  /**
    * Create DAM asset.
    * @param path Asset path
    * @param inputStream Binary data for original rendition
@@ -218,6 +250,27 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     }
 
     return resourceResolver.getResource(path).adaptTo(Asset.class);
+  }
+
+  /**
+   * Create dummy image
+   * @param width Width
+   * @param height height
+   * @param mimeType Mime type
+   * @return Input stream
+   */
+  public static InputStream createDummyImage(int width, int height, String mimeType) {
+    Layer layer = new Layer(width, height, null);
+    byte[] data;
+    try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+      double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
+      layer.write(mimeType, quality, bos);
+      data = bos.toByteArray();
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+    return new ByteArrayInputStream(data);
   }
 
 }
