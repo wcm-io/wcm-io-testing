@@ -25,8 +25,8 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.parent_toplevel</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
-    <relativePath>../parent_toplevel/pom.xml</relativePath>
+    <version>1.0.8</version>
+    <relativePath/>
   </parent>
 
   <groupId>io.wcm</groupId>

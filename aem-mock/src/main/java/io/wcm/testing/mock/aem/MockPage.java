@@ -355,6 +355,11 @@ class MockPage extends SlingAdaptable implements Page {
     return resourceResolver.adaptTo(TagManager.class).getTags(contentResource);
   }
 
+  @Override
+  public String toString() {
+    return "MockPage [path=" + resource.getPath() + ", props=" + properties + "]";
+  }
+
 
   // --- unsupported operations ---
 

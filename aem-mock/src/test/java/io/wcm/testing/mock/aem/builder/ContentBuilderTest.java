@@ -24,14 +24,21 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.Rendition;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
+import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
 
 public class ContentBuilderTest {
@@ -103,6 +110,88 @@ public class ContentBuilderTest {
     assertEquals("resource2", resource.getName());
     assertEquals("Test Title", resource.getValueMap().get(NameConstants.PN_TITLE, String.class));
     assertEquals("value1", resource.getValueMap().get("stringProp", String.class));
+  }
+
+  @Test
+  public void testAssetFromClasspath() throws Exception {
+    Asset asset = context.create().asset("/content/dam/sample1.gif", "/sample-image.gif", "image/gif");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.gif", asset.getName());
+    assertEquals("image/gif", asset.getOriginal().getMimeType());
+    assertEquals("2", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("2", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    try (InputStream is = asset.getOriginal().adaptTo(InputStream.class)) {
+      Layer layer = new Layer(is);
+      assertEquals(2, layer.getWidth());
+      assertEquals(2, layer.getHeight());
+    }
+
+    Rendition rendition = context.create().assetRendition(asset, "sample2.gif", "/sample-image.gif", "image/gif");
+    assertEquals("sample2.gif", rendition.getName());
+    assertEquals("image/gif", rendition.getMimeType());
+    assertEquals(2, asset.getRenditions().size());
+  }
+
+  @Test
+  public void testAssetFromByteArray() throws Exception {
+    Asset asset;
+    try (InputStream is = new ByteArrayInputStream(new byte[] {
+        0x01, 0x02, 0x03
+    })) {
+      asset = context.create().asset("/content/dam/sample1.bin", is, "application/octet-stream");
+      assertNotNull(asset);
+
+      assertEquals(1, asset.getRenditions().size());
+      assertEquals("sample1.bin", asset.getName());
+      assertEquals("application/octet-stream", asset.getOriginal().getMimeType());
+    }
+
+    try (InputStream is = new ByteArrayInputStream(new byte[] {
+        0x04, 0x05, 0x06
+    })) {
+      Rendition rendition = context.create().assetRendition(asset, "sample2.bin", is, "application/octet-stream");
+      assertEquals("sample2.bin", rendition.getName());
+      assertEquals("application/octet-stream", rendition.getMimeType());
+      assertEquals(2, asset.getRenditions().size());
+    }
+  }
+
+  @Test
+  public void testAssetFromWidthHeight_Jpeg() throws Exception {
+    Asset asset = context.create().asset("/content/dam/sample1.jpg", 100, 50, "image/jpeg");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.jpg", asset.getName());
+    assertEquals("image/jpeg", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    Rendition rendition = context.create().assetRendition(asset, "sample2.jpg", 20, 20, "image/jpeg");
+    assertEquals("sample2.jpg", rendition.getName());
+    assertEquals("image/jpeg", rendition.getMimeType());
+    assertEquals(2, asset.getRenditions().size());
+  }
+
+  @Test
+  public void testAssetFromWidthHeight_Gif() throws Exception {
+    Asset asset = context.create().asset("/content/dam/sample1.gif", 100, 50, "image/gif");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.gif", asset.getName());
+    assertEquals("image/gif", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+
+    Rendition rendition = context.create().assetRendition(asset, "sample2.gif", 20, 20, "image/gif");
+    assertEquals("sample2.gif", rendition.getName());
+    assertEquals("image/gif", rendition.getMimeType());
+    assertEquals(2, asset.getRenditions().size());
   }
 
 }
