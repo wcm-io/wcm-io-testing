@@ -27,8 +27,12 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import javax.jcr.Session;
+
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.apache.sling.testing.mock.sling.context.NodeTypeDefinitionScanner;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -39,6 +43,7 @@ import com.day.cq.dam.api.Rendition;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.image.Layer;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 public class ContentBuilderTest {
@@ -48,11 +53,25 @@ public class ContentBuilderTest {
   @Rule
   public AemContext context = new AemContext(
       ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.RESOURCERESOLVER_MOCK
-      /*,  TODO: does not work yet
-      ResourceResolverType.JCR_JACKRABBIT
-      ResourceResolverType.JCR_OAK*/
+      ResourceResolverType.RESOURCERESOLVER_MOCK,
+      /* TODO: test with JCR_JACKRABBIT as well
+      ResourceResolverType.JCR_JACKRABBIT,
+       */
+      ResourceResolverType.JCR_OAK
       );
+
+  @Before
+  public void setUp() throws Exception {
+    if (context.resourceResolverType() == ResourceResolverType.JCR_JACKRABBIT
+        || context.resourceResolverType() == ResourceResolverType.JCR_OAK) {
+      // register manually because in project unit tests itself MANIFEST.MF ist not yet available
+      NodeTypeDefinitionScanner.get().register(context.resourceResolver().adaptTo(Session.class),
+          ImmutableList.of("SLING-INF/nodetypes/aem-core-replication.cnd",
+              "SLING-INF/nodetypes/aem-tagging.cnd",
+              "SLING-INF/nodetypes/aem-commons.cnd",
+              "SLING-INF/nodetypes/aem-dam.cnd"));
+    }
+  }
 
   @Test
   public void testPage() {
