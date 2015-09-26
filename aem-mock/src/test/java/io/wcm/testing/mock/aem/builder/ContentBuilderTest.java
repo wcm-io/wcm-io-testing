@@ -49,6 +49,9 @@ public class ContentBuilderTest {
   public AemContext context = new AemContext(
       ResourceResolverType.JCR_MOCK,
       ResourceResolverType.RESOURCERESOLVER_MOCK
+      /*,  TODO: does not work yet
+      ResourceResolverType.JCR_JACKRABBIT
+      ResourceResolverType.JCR_OAK*/
       );
 
   @Test

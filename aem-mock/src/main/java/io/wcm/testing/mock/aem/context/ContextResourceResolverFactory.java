@@ -65,7 +65,7 @@ final class ContextResourceResolverFactory {
       return factory;
     }
     catch (Throwable ex) {
-      throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory.", ex);
+      throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory: " + ex.getMessage(), ex);
     }
   }
 
@@ -79,8 +79,9 @@ final class ContextResourceResolverFactory {
     }
   }
 
+  @SuppressWarnings("deprecation")
   private static void initializeJcrJackrabbit(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    ResourceResolver resolver = factory.getResourceResolver(null);
+    ResourceResolver resolver = factory.getAdministrativeResourceResolver(null);
     try {
       registerDefaultAemNamespaces(resolver);
     }
@@ -89,8 +90,9 @@ final class ContextResourceResolverFactory {
     }
   }
 
+  @SuppressWarnings("deprecation")
   private static void initializeJcrOak(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    ResourceResolver resolver = factory.getResourceResolver(null);
+    ResourceResolver resolver = factory.getAdministrativeResourceResolver(null);
     try {
       registerDefaultAemNamespaces(resolver);
     }
