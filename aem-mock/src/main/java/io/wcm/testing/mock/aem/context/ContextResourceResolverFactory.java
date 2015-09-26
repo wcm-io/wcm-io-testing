@@ -49,8 +49,14 @@ final class ContextResourceResolverFactory {
         case JCR_JACKRABBIT:
           initializeJcrJackrabbit(factory);
           break;
+        case JCR_OAK:
+          initializeJcrOak(factory);
+          break;
         case RESOURCERESOLVER_MOCK:
           initializeResourceResolverMock(factory);
+          break;
+        case NONE:
+          initializeResourceResolverNone(factory);
           break;
         default:
           throw new IllegalArgumentException("Invalid resource resolver type: " + resourceResolverType);
@@ -64,21 +70,52 @@ final class ContextResourceResolverFactory {
   }
 
   private static void initializeJcrMock(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    // register default namespaces
     ResourceResolver resolver = factory.getResourceResolver(null);
-    Session session = resolver.adaptTo(Session.class);
-    NamespaceRegistry namespaceRegistry = session.getWorkspace().getNamespaceRegistry();
-    namespaceRegistry.registerNamespace("sling", "http://sling.apache.org/jcr/sling/1.0");
-    namespaceRegistry.registerNamespace("cq", "http://www.day.com/jcr/cq/1.0 ");
-    namespaceRegistry.registerNamespace("dam", "http://www.day.com/dam/1.0 ");
+    try {
+      registerDefaultAemNamespaces(resolver);
+    }
+    finally {
+      resolver.close();
+    }
   }
 
-  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) {
-    // register sling node types?
+  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) throws RepositoryException, LoginException {
+    ResourceResolver resolver = factory.getResourceResolver(null);
+    try {
+      registerDefaultAemNamespaces(resolver);
+    }
+    finally {
+      resolver.close();
+    }
+  }
+
+  private static void initializeJcrOak(ResourceResolverFactory factory) throws RepositoryException, LoginException {
+    ResourceResolver resolver = factory.getResourceResolver(null);
+    try {
+      registerDefaultAemNamespaces(resolver);
+    }
+    finally {
+      resolver.close();
+    }
   }
 
   private static void initializeResourceResolverMock(ResourceResolverFactory factory) {
     // nothing to do
+  }
+
+  private static void initializeResourceResolverNone(ResourceResolverFactory factory) {
+    // nothing to do
+  }
+
+  /**
+   * Registers default AEM JCR namespaces.
+   * @param resolver Resource resolver
+   */
+  private static void registerDefaultAemNamespaces(ResourceResolver resolver) throws RepositoryException {
+    Session session = resolver.adaptTo(Session.class);
+    NamespaceRegistry namespaceRegistry = session.getWorkspace().getNamespaceRegistry();
+    namespaceRegistry.registerNamespace("cq", "http://www.day.com/jcr/cq/1.0");
+    namespaceRegistry.registerNamespace("dam", "http://www.day.com/dam/1.0 ");
   }
 
 }
