@@ -178,7 +178,7 @@
   - cq:emptyText (string)
   + cq:dropTargets (nt:base) = nt:unstructured
   + cq:listeners (nt:base) = cq:EditListenersConfig
-  /*+ cq:disableTargeting (boolean)*/
+  + cq:disableTargeting (boolean)
 
 /**
  * Configures one drop target of a component. The name of the this node will
