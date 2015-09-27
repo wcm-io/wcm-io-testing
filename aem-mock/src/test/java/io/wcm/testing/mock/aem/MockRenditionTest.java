@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
@@ -36,7 +37,7 @@ import com.day.cq.dam.api.Rendition;
 public class MockRenditionTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
 
   private Rendition rendition;
 

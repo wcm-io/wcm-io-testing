@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -43,15 +44,8 @@ import com.day.cq.tagging.TagManager;
 
 public class MockTagTest {
 
-  private static class NothingFilter implements Filter<Tag> {
-    @Override
-    public boolean includes(Tag tag) {
-      return false;
-    }
-  }
-
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
 
   private ResourceResolver resolver;
 
@@ -250,6 +244,14 @@ public class MockTagTest {
     resources = nondescript2.find();
     assertNotNull(resources);
     assertFalse(resources.hasNext());
+  }
+
+  private static class NothingFilter implements Filter<Tag> {
+
+    @Override
+    public boolean includes(Tag tag) {
+      return false;
+    }
   }
 
 }

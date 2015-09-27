@@ -79,26 +79,12 @@ final class ContextResourceResolverFactory {
     }
   }
 
-  @SuppressWarnings("deprecation")
-  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    ResourceResolver resolver = factory.getAdministrativeResourceResolver(null);
-    try {
-      registerDefaultAemNamespaces(resolver);
-    }
-    finally {
-      resolver.close();
-    }
+  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) {
+    // nothing to do - namespaces are registered automatically together with node types
   }
 
-  @SuppressWarnings("deprecation")
-  private static void initializeJcrOak(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    ResourceResolver resolver = factory.getAdministrativeResourceResolver(null);
-    try {
-      registerDefaultAemNamespaces(resolver);
-    }
-    finally {
-      resolver.close();
-    }
+  private static void initializeJcrOak(ResourceResolverFactory factory) {
+    // nothing to do - namespaces are registered automatically together with node types
   }
 
   private static void initializeResourceResolverMock(ResourceResolverFactory factory) {

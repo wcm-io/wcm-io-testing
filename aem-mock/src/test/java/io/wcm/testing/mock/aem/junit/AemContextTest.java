@@ -38,6 +38,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AemContextTest {
 
+  /**
+   * All resource resolver types the unit tests of aem-mock should run with
+   */
+  public static final ResourceResolverType[] ALL_TYPES = new ResourceResolverType[] {
+    ResourceResolverType.JCR_MOCK,
+    ResourceResolverType.RESOURCERESOLVER_MOCK
+    /*,  TODO: enable all types when all tests pass
+      ResourceResolverType.JCR_JACKRABBIT,
+      ResourceResolverType.JCR_OAK*/
+  };
+
   private final AemContextCallback contextSetup = mock(AemContextCallback.class);
   private final AemContextCallback contextTeardown = mock(AemContextCallback.class);
 
@@ -46,8 +57,7 @@ public class AemContextTest {
   public AemContext context = new AemContext(
       contextSetup,
       contextTeardown,
-      ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.RESOURCERESOLVER_MOCK
+      AemContextTest.ALL_TYPES
       );
 
   @Before

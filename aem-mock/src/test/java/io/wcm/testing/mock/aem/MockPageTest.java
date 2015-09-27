@@ -24,10 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import java.util.Calendar;
 import java.util.List;
@@ -54,7 +52,7 @@ import com.google.common.collect.ImmutableList;
 public class MockPageTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
   @Mock
   private Resource mockResource;
 
@@ -235,15 +233,11 @@ public class MockPageTest {
   }
 
   @Test
-  public void testAdaptToPipeline() {
+  public void testAdaptTo() {
     Page underTest = new MockPage(mockResource);
 
     Resource resource = underTest.adaptTo(Resource.class);
     assertEquals(mockResource, resource);
-    verify(mockResource, never()).adaptTo(Long.class);
-
-    underTest.adaptTo(Long.class);
-    verify(mockResource, times(1)).adaptTo(Long.class);
   }
 
   @Test

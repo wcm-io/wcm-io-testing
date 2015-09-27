@@ -91,7 +91,6 @@
         "jcr:primaryType": "nt:file",
         "jcr:mixinTypes": ["mix:title"],
         "jcr:createdBy": "admin",
-        "jcr:title": "Small links",
         "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
         "jcr:content": {
           "jcr:primaryType": "nt:resource",
@@ -320,51 +319,7 @@
           "jcr:mimeType": "image/png",
           "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
           ":jcr:data": 29109,
-          "jcr:uuid": "05716dc9-5d76-49f4-8ce3-463b83d972f5",
-          "dam:thumbnails": {
-            "jcr:primaryType": "nt:folder",
-            "jcr:createdBy": "admin",
-            "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
-            "dam:thumbnail_140.png": {
-              "jcr:primaryType": "nt:file",
-              "jcr:createdBy": "admin",
-              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
-              "jcr:content": {
-                "jcr:primaryType": "nt:resource",
-                "jcr:lastModifiedBy": "admin",
-                "jcr:mimeType": "image/png",
-                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
-                ":jcr:data": 22938,
-                "jcr:uuid": "053d4890-8627-4051-9c10-8f744c2ba1a5"
-              }
-            },
-            "dam:thumbnail_319.png": {
-              "jcr:primaryType": "nt:file",
-              "jcr:createdBy": "admin",
-              "jcr:created": "Thu Aug 14 2014 14:51:54 GMT+0200",
-              "jcr:content": {
-                "jcr:primaryType": "nt:resource",
-                "jcr:lastModifiedBy": "admin",
-                "jcr:mimeType": "image/png",
-                "jcr:lastModified": "Thu Aug 14 2014 14:51:54 GMT+0200",
-                ":jcr:data": 83756,
-                "jcr:uuid": "69a16a83-e01f-4ab9-a9ab-76027be0ce2b"
-              }
-            },
-            "dam:thumbnail_48.png": {
-              "jcr:primaryType": "nt:file",
-              "jcr:createdBy": "admin",
-              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
-              "jcr:content": {
-                "jcr:primaryType": "nt:resource",
-                "jcr:lastModifiedBy": "admin",
-                "jcr:mimeType": "image/png",
-                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
-                ":jcr:data": 4189,
-                "jcr:uuid": "1a75fcc3-46b4-4a83-bb8a-f1b9b4be43dc"
-              }
-            }
-          }
+          "jcr:uuid": "05716dc9-5d76-49f4-8ce3-463b83d972f5"
         }
       },
       "jcr:content": {
@@ -393,51 +348,7 @@
           "jcr:mimeType": "image/png",
           "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
           ":jcr:data": 24268,
-          "jcr:uuid": "0c760976-1b09-4fcc-a0e1-999a8b566b63",
-          "dam:thumbnails": {
-            "jcr:primaryType": "nt:folder",
-            "jcr:createdBy": "admin",
-            "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
-            "dam:thumbnail_140.png": {
-              "jcr:primaryType": "nt:file",
-              "jcr:createdBy": "admin",
-              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
-              "jcr:content": {
-                "jcr:primaryType": "nt:resource",
-                "jcr:lastModifiedBy": "admin",
-                "jcr:mimeType": "image/png",
-                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
-                ":jcr:data": 15275,
-                "jcr:uuid": "659af11d-e4a7-40ee-915e-5ce5b8421f8b"
-              }
-            },
-            "dam:thumbnail_319.png": {
-              "jcr:primaryType": "nt:file",
-              "jcr:createdBy": "admin",
-              "jcr:created": "Thu Aug 14 2014 14:51:57 GMT+0200",
-              "jcr:content": {
-                "jcr:primaryType": "nt:resource",
-                "jcr:lastModifiedBy": "admin",
-                "jcr:mimeType": "image/png",
-                "jcr:lastModified": "Thu Aug 14 2014 14:51:57 GMT+0200",
-                ":jcr:data": 65029,
-                "jcr:uuid": "97614e5e-fd33-4cb1-bdea-53e4a4e5f8ab"
-              }
-            },
-            "dam:thumbnail_48.png": {
-              "jcr:primaryType": "nt:file",
-              "jcr:createdBy": "admin",
-              "jcr:created": "Thu Aug 07 2014 16:32:56 GMT+0200",
-              "jcr:content": {
-                "jcr:primaryType": "nt:resource",
-                "jcr:lastModifiedBy": "admin",
-                "jcr:mimeType": "image/png",
-                "jcr:lastModified": "Thu Aug 07 2014 16:32:56 GMT+0200",
-                ":jcr:data": 3067,
-                "jcr:uuid": "57ac5529-ff24-403c-b65e-e8971bc15da2"
-              }
-            }
-          }
+          "jcr:uuid": "0c760976-1b09-4fcc-a0e1-999a8b566b63"
         }
       },
       "jcr:content": {
