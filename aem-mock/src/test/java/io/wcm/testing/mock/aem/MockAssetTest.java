@@ -23,13 +23,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,7 +48,7 @@ public class MockAssetTest {
   };
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContext();
 
   private Asset asset;
 
@@ -80,9 +81,18 @@ public class MockAssetTest {
   public void testRenditions() {
     List<Rendition> renditions = asset.getRenditions();
     assertEquals(4, renditions.size());
-    assertEquals("cq5dam.thumbnail.48.48.png", asset.listRenditions().next().getName());
+    assertTrue(hasRendition(renditions, "cq5dam.thumbnail.48.48.png"));
     assertEquals("original", asset.getOriginal().getName());
     assertEquals("original", asset.getRendition(new WCMRenditionPicker()).getName());
+  }
+
+  private boolean hasRendition(List<Rendition> renditions, String renditionName) {
+    for (Rendition rendition : renditions) {
+      if (StringUtils.equals(rendition.getName(), renditionName)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Test

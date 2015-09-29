@@ -22,18 +22,13 @@ package io.wcm.testing.mock.aem.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.UUID;
-
-import javax.jcr.Session;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.mock.sling.NodeTypeDefinitionScanner;
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +40,6 @@ import com.day.cq.dam.api.Rendition;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.image.Layer;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 public class ContentBuilderTest {
@@ -56,36 +50,12 @@ public class ContentBuilderTest {
   private String damRoot;
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
 
   @Before
-  public void setUp() throws Exception {
-    if (context.resourceResolverType() == ResourceResolverType.JCR_JACKRABBIT
-        || context.resourceResolverType() == ResourceResolverType.JCR_OAK) {
-      // register manually because in project unit tests itself MANIFEST.MF ist not yet available
-      NodeTypeDefinitionScanner.get().register(context.resourceResolver().adaptTo(Session.class),
-          ImmutableList.of("SLING-INF/nodetypes/aem-core-replication.cnd",
-              "SLING-INF/nodetypes/aem-tagging.cnd",
-              "SLING-INF/nodetypes/aem-commons.cnd",
-              "SLING-INF/nodetypes/aem-dam.cnd"),
-          context.resourceResolverType().getNodeTypeMode());
-    }
-
-    String randomPathPart = UUID.randomUUID().toString();
-    contentRoot = "/content/" + randomPathPart;
-    damRoot = "/content/dam/" + randomPathPart;
-  }
-
-  @Before
-  public void tearDown() throws Exception {
-    Resource resource = context.resourceResolver().getResource(contentRoot);
-    if (resource != null) {
-      context.resourceResolver().delete(resource);
-    }
-    resource = context.resourceResolver().getResource(damRoot);
-    if (resource != null) {
-      context.resourceResolver().delete(resource);
-    }
+  public void setUp() {
+    contentRoot = context.uniqueRoot().content();
+    damRoot = context.uniqueRoot().dam();
   }
 
   @Test

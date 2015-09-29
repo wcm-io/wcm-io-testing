@@ -24,8 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -45,7 +45,7 @@ import com.day.cq.tagging.TagManager;
 public class MockTagTest {
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContext();
 
   private ResourceResolver resolver;
 

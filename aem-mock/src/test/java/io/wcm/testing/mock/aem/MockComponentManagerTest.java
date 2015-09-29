@@ -23,8 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -40,7 +40,7 @@ import com.google.common.collect.ImmutableMap;
 public class MockComponentManagerTest {
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContext();
 
   private ComponentManager underTest;
 

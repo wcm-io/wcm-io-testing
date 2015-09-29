@@ -22,13 +22,8 @@ package io.wcm.testing.mock.aem.context;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.junit.rules.parameterized.Generator;
-import io.wcm.testing.junit.rules.parameterized.GeneratorFactory;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
-import java.util.UUID;
-
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.junit.After;
 import org.junit.Before;
@@ -40,25 +35,18 @@ import com.day.cq.wcm.api.Page;
 public class AemContextImplTest {
 
   @Rule
-  public Generator<ResourceResolverType> resourceResolverType = GeneratorFactory.list(AemContextTest.ALL_TYPES);
-
-  private AemContextImpl context;
+  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
 
   private String contentRoot;
-  private String appRoot;
+  private String appsRoot;
 
   @Before
   public void setUp() throws Exception {
-    this.context = new AemContextImpl();
-    this.context.setResourceResolverType(resourceResolverType.value());
-    this.context.setUp();
-
-    String randomPathPart = UUID.randomUUID().toString();
-    contentRoot = "/content/" + randomPathPart + "/sample/en";
-    appRoot = "/apps/" + randomPathPart + "/sample";
+    contentRoot = context.uniqueRoot().content() + "/sample";
+    appsRoot = context.uniqueRoot().apps() + "/sample";
 
     ContentLoader contentLoader = this.context.load();
-    contentLoader.json("/json-import-samples/application.json", appRoot);
+    contentLoader.json("/json-import-samples/application.json", appsRoot);
     contentLoader.json("/json-import-samples/content.json", contentRoot);
   }
 

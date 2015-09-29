@@ -26,8 +26,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -50,7 +50,7 @@ import com.google.common.collect.ImmutableMap;
 public class MockPageManagerTest {
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContext();
 
   private PageManager pageManager;
 

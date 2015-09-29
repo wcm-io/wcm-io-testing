@@ -22,7 +22,6 @@ package io.wcm.testing.mock.aem.context;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +29,7 @@ import org.junit.Test;
 public class UniqueRootTest {
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
 
   @Test
   public void testDam() throws Exception {

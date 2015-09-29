@@ -24,8 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import java.util.Calendar;
 import java.util.List;
@@ -52,7 +52,7 @@ import com.google.common.collect.ImmutableList;
 public class MockPageTest {
 
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContext();
   @Mock
   private Resource mockResource;
 
@@ -146,8 +146,8 @@ public class MockPageTest {
     this.context.resourceResolver().commit();
 
     // Validate
-    assertEquals(onTime, this.page.getOnTime());
-    assertEquals(offTime, this.page.getOffTime());
+    assertEquals(onTime.getTime(), this.page.getOnTime().getTime());
+    assertEquals(offTime.getTime(), this.page.getOffTime().getTime());
     assertTrue(this.page.isValid());
     assertEquals(0L, this.page.timeUntilValid());
   }
@@ -166,8 +166,8 @@ public class MockPageTest {
     this.context.resourceResolver().commit();
 
     // Validate
-    assertEquals(onTime, this.page.getOnTime());
-    assertEquals(offTime, this.page.getOffTime());
+    assertEquals(onTime.getTime(), this.page.getOnTime().getTime());
+    assertEquals(offTime.getTime(), this.page.getOffTime().getTime());
     assertFalse(this.page.isValid());
     assertTrue(this.page.timeUntilValid() > 0L);
   }
@@ -186,8 +186,8 @@ public class MockPageTest {
     this.context.resourceResolver().commit();
 
     // Validate
-    assertEquals(onTime, this.page.getOnTime());
-    assertEquals(offTime, this.page.getOffTime());
+    assertEquals(onTime.getTime(), this.page.getOnTime().getTime());
+    assertEquals(offTime.getTime(), this.page.getOffTime().getTime());
     assertFalse(this.page.isValid());
     assertTrue(this.page.timeUntilValid() < 0L);
   }

@@ -21,8 +21,8 @@ package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextTest;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
@@ -38,7 +38,7 @@ public class MockAemAdapterFactoryTest {
 
   // Run all unit tests for each resource resolver types listed here
   @Rule
-  public AemContext context = new AemContext(AemContextTest.ALL_TYPES);
+  public AemContext context = TestAemContext.newAemContext();
 
   @Before
   public void setUp() {
