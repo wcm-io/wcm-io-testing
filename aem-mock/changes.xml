@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Add support for JCR_JACKRABBIT, JCR_OAK and NONE resource resolver types.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
     </release>
     
     <release version="1.4.0" date="2015-09-16">
