@@ -32,8 +32,8 @@ import java.util.UUID;
 import javax.jcr.Session;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.NodeTypeDefinitionScanner;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
-import org.apache.sling.testing.mock.sling.context.NodeTypeDefinitionScanner;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,7 +67,8 @@ public class ContentBuilderTest {
           ImmutableList.of("SLING-INF/nodetypes/aem-core-replication.cnd",
               "SLING-INF/nodetypes/aem-tagging.cnd",
               "SLING-INF/nodetypes/aem-commons.cnd",
-              "SLING-INF/nodetypes/aem-dam.cnd"));
+              "SLING-INF/nodetypes/aem-dam.cnd"),
+          context.resourceResolverType().getNodeTypeMode());
     }
 
     String randomPathPart = UUID.randomUUID().toString();
