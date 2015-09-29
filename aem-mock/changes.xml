@@ -25,7 +25,10 @@
 
     <release version="1.5.0" date="not released">
       <action type="update" dev="sseifert">
-        Add support for JCR_JACKRABBIT, JCR_OAK and NONE resource resolver types.
+        Add support for JCR_OAK, JCR_JACKRABBIT and NONE resource resolver types.
+      </action>
+      <action type="update" dev="sseifert">
+        Automatically register AEM node type definitions for JCR_OAK and JCR_JACKRABBIT.
       </action>
       <action type="update" dev="sseifert">
         Update to latest Sling Mock.
