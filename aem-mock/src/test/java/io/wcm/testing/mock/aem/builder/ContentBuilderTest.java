@@ -22,13 +22,14 @@ package io.wcm.testing.mock.aem.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -45,15 +46,21 @@ public class ContentBuilderTest {
 
   private static final String TEMPLATE = "/apps/sample/templates/sample";
 
+  private String contentRoot;
+  private String damRoot;
+
   @Rule
-  public AemContext context = new AemContext(
-      ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.RESOURCERESOLVER_MOCK
-      );
+  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
+
+  @Before
+  public void setUp() {
+    contentRoot = context.uniqueRoot().content();
+    damRoot = context.uniqueRoot().dam();
+  }
 
   @Test
   public void testPage() {
-    Page page = context.create().page("/content/test1/page1");
+    Page page = context.create().page(contentRoot + "/test1/page1");
     assertNotNull(page);
     assertEquals("page1", page.getName());
     assertEquals(ContentBuilder.DUMMY_TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
@@ -62,7 +69,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testPageWithTemplate() {
-    Page page = context.create().page("/content/test1/page1", TEMPLATE);
+    Page page = context.create().page(contentRoot + "/test1/page1", TEMPLATE);
     assertNotNull(page);
     assertEquals("page1", page.getName());
     assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
@@ -71,7 +78,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testPageWithTitle() {
-    Page page = context.create().page("/content/test1/page1/subpage1", TEMPLATE, "Test Title");
+    Page page = context.create().page(contentRoot + "/test1/page1/subpage1", TEMPLATE, "Test Title");
     assertNotNull(page);
     assertEquals("subpage1", page.getName());
     assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
@@ -80,7 +87,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testPageWithProperties() {
-    Page page = context.create().page("/content/test1/page2", TEMPLATE, ImmutableMap.<String, Object>builder()
+    Page page = context.create().page(contentRoot + "/test1/page2", TEMPLATE, ImmutableMap.<String, Object>builder()
         .put(NameConstants.PN_TITLE, "Test Title")
         .put("stringProp", "value1")
         .build());
@@ -93,7 +100,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testResource() {
-    Resource resource = context.create().resource("/content/test1/resource1");
+    Resource resource = context.create().resource(contentRoot + "/test1/resource1");
     assertNotNull(resource);
     assertEquals("resource1", resource.getName());
     assertTrue(resource.getValueMap().isEmpty()
@@ -102,7 +109,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testResourceWithProperties() {
-    Resource resource = context.create().resource("/content/test1/resource2", ImmutableMap.<String, Object>builder()
+    Resource resource = context.create().resource(contentRoot + "/test1/resource2", ImmutableMap.<String, Object>builder()
         .put(NameConstants.PN_TITLE, "Test Title")
         .put("stringProp", "value1")
         .build());
@@ -114,7 +121,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testAssetFromClasspath() throws Exception {
-    Asset asset = context.create().asset("/content/dam/sample1.gif", "/sample-image.gif", "image/gif");
+    Asset asset = context.create().asset(damRoot + "/sample1.gif", "/sample-image.gif", "image/gif");
     assertNotNull(asset);
 
     assertEquals(1, asset.getRenditions().size());
@@ -141,7 +148,7 @@ public class ContentBuilderTest {
     try (InputStream is = new ByteArrayInputStream(new byte[] {
         0x01, 0x02, 0x03
     })) {
-      asset = context.create().asset("/content/dam/sample1.bin", is, "application/octet-stream");
+      asset = context.create().asset(damRoot + "/sample1.bin", is, "application/octet-stream");
       assertNotNull(asset);
 
       assertEquals(1, asset.getRenditions().size());
@@ -161,7 +168,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testAssetFromWidthHeight_Jpeg() throws Exception {
-    Asset asset = context.create().asset("/content/dam/sample1.jpg", 100, 50, "image/jpeg");
+    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg");
     assertNotNull(asset);
 
     assertEquals(1, asset.getRenditions().size());
@@ -178,7 +185,7 @@ public class ContentBuilderTest {
 
   @Test
   public void testAssetFromWidthHeight_Gif() throws Exception {
-    Asset asset = context.create().asset("/content/dam/sample1.gif", 100, 50, "image/gif");
+    Asset asset = context.create().asset(damRoot + "/sample1.gif", 100, 50, "image/gif");
     assertNotNull(asset);
 
     assertEquals(1, asset.getRenditions().size());

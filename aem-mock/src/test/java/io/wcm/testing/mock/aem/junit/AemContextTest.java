@@ -23,11 +23,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 
 import java.io.IOException;
 
 import org.apache.sling.api.resource.PersistenceException;
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -46,8 +46,7 @@ public class AemContextTest {
   public AemContext context = new AemContext(
       contextSetup,
       contextTeardown,
-      ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.RESOURCERESOLVER_MOCK
+      TestAemContext.ALL_TYPES
       );
 
   @Before

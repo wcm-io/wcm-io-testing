@@ -65,7 +65,7 @@ final class ContextResourceResolverFactory {
       return factory;
     }
     catch (Throwable ex) {
-      throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory.", ex);
+      throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory: " + ex.getMessage(), ex);
     }
   }
 
@@ -79,24 +79,12 @@ final class ContextResourceResolverFactory {
     }
   }
 
-  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    ResourceResolver resolver = factory.getResourceResolver(null);
-    try {
-      registerDefaultAemNamespaces(resolver);
-    }
-    finally {
-      resolver.close();
-    }
+  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) {
+    // nothing to do - namespaces are registered automatically together with node types
   }
 
-  private static void initializeJcrOak(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    ResourceResolver resolver = factory.getResourceResolver(null);
-    try {
-      registerDefaultAemNamespaces(resolver);
-    }
-    finally {
-      resolver.close();
-    }
+  private static void initializeJcrOak(ResourceResolverFactory factory) {
+    // nothing to do - namespaces are registered automatically together with node types
   }
 
   private static void initializeResourceResolverMock(ResourceResolverFactory factory) {

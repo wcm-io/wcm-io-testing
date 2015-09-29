@@ -137,4 +137,16 @@ public class AemContextImpl extends SlingContextImpl {
     }
   }
 
+  /**
+   * Create unique root paths for unit tests (and clean them up after the test run automatically).
+   * @return Unique root path helper
+   */
+  @Override
+  public UniqueRoot uniqueRoot() {
+    if (uniqueRoot == null) {
+      uniqueRoot = new UniqueRoot(this);
+    }
+    return (UniqueRoot)uniqueRoot;
+  }
+
 }

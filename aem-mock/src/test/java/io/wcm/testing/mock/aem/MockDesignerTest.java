@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.junit.Before;
@@ -33,7 +34,7 @@ import com.day.cq.wcm.api.designer.Designer;
 public class MockDesignerTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = TestAemContext.newAemContext();
 
   private Designer underTest;
   private Page page;

@@ -22,10 +22,8 @@ package io.wcm.testing.mock.aem.context;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.junit.rules.parameterized.Generator;
-import io.wcm.testing.junit.rules.parameterized.GeneratorFactory;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
-import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.junit.After;
 import org.junit.Before;
@@ -37,22 +35,19 @@ import com.day.cq.wcm.api.Page;
 public class AemContextImplTest {
 
   @Rule
-  public Generator<ResourceResolverType> resourceResolverType = GeneratorFactory.list(
-      ResourceResolverType.JCR_MOCK,
-      ResourceResolverType.RESOURCERESOLVER_MOCK
-      );
+  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
 
-  private AemContextImpl context;
+  private String contentRoot;
+  private String appsRoot;
 
   @Before
   public void setUp() throws Exception {
-    this.context = new AemContextImpl();
-    this.context.setResourceResolverType(resourceResolverType.value());
-    this.context.setUp();
+    contentRoot = context.uniqueRoot().content() + "/sample";
+    appsRoot = context.uniqueRoot().apps() + "/sample";
 
     ContentLoader contentLoader = this.context.load();
-    contentLoader.json("/json-import-samples/application.json", "/apps/sample");
-    contentLoader.json("/json-import-samples/content.json", "/content/sample/en");
+    contentLoader.json("/json-import-samples/application.json", appsRoot);
+    contentLoader.json("/json-import-samples/content.json", contentRoot);
   }
 
   @After
@@ -67,13 +62,13 @@ public class AemContextImplTest {
 
   @Test
   public void testSetCurrentPage() {
-    context.currentPage("/content/sample/en/toolbar/profiles");
-    assertEquals("/content/sample/en/toolbar/profiles", context.currentPage().getPath());
-    assertEquals("/content/sample/en/toolbar/profiles/jcr:content", context.currentResource().getPath());
+    context.currentPage(contentRoot + "/toolbar/profiles");
+    assertEquals(contentRoot + "/toolbar/profiles", context.currentPage().getPath());
+    assertEquals(contentRoot + "/toolbar/profiles/jcr:content", context.currentResource().getPath());
 
-    context.currentPage(context.pageManager().getPage("/content/sample/en/toolbar"));
-    assertEquals("/content/sample/en/toolbar", context.currentPage().getPath());
-    assertEquals("/content/sample/en/toolbar/jcr:content", context.currentResource().getPath());
+    context.currentPage(context.pageManager().getPage(contentRoot + "/toolbar"));
+    assertEquals(contentRoot + "/toolbar", context.currentPage().getPath());
+    assertEquals(contentRoot + "/toolbar/jcr:content", context.currentResource().getPath());
 
     context.currentPage((Page)null);
     assertNull(context.currentPage());

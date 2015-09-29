@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2014 wcm.io
+ * Copyright (C) 2015 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,25 @@
  * limitations under the License.
  * #L%
  */
-/**
- * AEM context implementation for unit tests.
- */
-@org.osgi.annotation.versioning.Version("1.3.0")
 package io.wcm.testing.mock.aem.context;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.junit.AemContext;
+
+import org.junit.Rule;
+import org.junit.Test;
+
+public class UniqueRootTest {
+
+  @Rule
+  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
+
+  @Test
+  public void testDam() throws Exception {
+    String path = context.uniqueRoot().dam();
+    assertNotNull(context.resourceResolver().getResource(path));
+    assertTrue(path.matches("^/content/dam/[^/]+"));
+  }
+
+}

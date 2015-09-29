@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Iterator;
@@ -35,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,7 +51,7 @@ import com.day.cq.wcm.api.Page;
 public class MockTagManagerTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = TestAemContext.newAemContext();
 
   private ResourceResolver resolver;
 
@@ -129,8 +131,12 @@ public class MockTagManagerTest {
     assertEquals("/etc/tags/default/wcmio", newTag.getPath());
     assertEquals("WCM Tag", newTag.getTitle());
     assertEquals("This exists in the default namespace", newTag.getDescription());
-    // verify that it wasn't auto saved
-    assertTrue(resolver.hasChanges());
+
+    if (context.resourceResolverType() != ResourceResolverType.JCR_MOCK) {
+      // verify that it wasn't auto saved
+      assertTrue(resolver.hasChanges());
+    }
+
     context.resourceResolver().commit();
 
     newTag = tagManager.createTag("wcmio:new", null, null);
@@ -138,8 +144,11 @@ public class MockTagManagerTest {
     assertEquals("/etc/tags/wcmio/new", newTag.getPath());
     assertEquals(newTag.getName(), newTag.getTitle());
     assertNull(newTag.getDescription());
-    // verify the auto-save
-    assertFalse(resolver.hasChanges());
+
+    if (context.resourceResolverType() != ResourceResolverType.JCR_MOCK) {
+      // verify the auto-save
+      assertFalse(resolver.hasChanges());
+    }
   }
 
   @Test
@@ -154,8 +163,11 @@ public class MockTagManagerTest {
     assertEquals(0, currentTags.length);
     // prove that it wasn't empty to begin with
     assertNotEquals(startTags.length, currentTags.length);
-    // prove that there are pending changed
-    assertTrue(resolver.hasChanges());
+
+    if (context.resourceResolverType() != ResourceResolverType.JCR_MOCK) {
+      // prove that there are pending changed
+      assertTrue(resolver.hasChanges());
+    }
 
     try {
       resolver.commit();
@@ -167,7 +179,10 @@ public class MockTagManagerTest {
     currentTags = page.getTags();
     assertNotNull(currentTags);
     assertArrayEquals(startTags, currentTags);
-    assertFalse(resolver.hasChanges());
+
+    if (context.resourceResolverType() != ResourceResolverType.JCR_MOCK) {
+      assertFalse(resolver.hasChanges());
+    }
   }
 
   @Test
