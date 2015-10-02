@@ -60,8 +60,6 @@ import com.day.cq.wcm.api.NameConstants;
  */
 class MockTagManager implements TagManager {
 
-  // https://docs.adobe.com/docs/en/aem/6-0/develop/ref/javadoc/com/day/cq/tagging/TagManager.html
-
   /** resource type for created tags */
   private static final String TAG_RESOURCE_TYPE = "cq/tagging/components/tag";
 

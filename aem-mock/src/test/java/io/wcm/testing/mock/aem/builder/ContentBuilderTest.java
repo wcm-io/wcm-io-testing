@@ -37,6 +37,7 @@ import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
+import com.day.cq.tagging.Tag;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.image.Layer;
@@ -199,6 +200,18 @@ public class ContentBuilderTest {
     assertEquals("sample2.gif", rendition.getName());
     assertEquals("image/gif", rendition.getMimeType());
     assertEquals(2, asset.getRenditions().size());
+  }
+
+  @Test
+  public void testTag() {
+    Tag tag1 = context.create().tag("test:tag1");
+    Tag tag2 = context.create().tag("test:tag1/tag2");
+
+    assertEquals("test:tag1", tag1.getTagID());
+    assertEquals("test:tag1/tag2", tag2.getTagID());
+
+    assertEquals("tag1", tag1.getName());
+    assertEquals("tag2", tag2.getName());
   }
 
 }

@@ -246,8 +246,28 @@ public class MockTagTest {
     assertFalse(resources.hasNext());
   }
 
-  private static class NothingFilter implements Filter<Tag> {
+  @Test
+  public void testGetXPathSearchExpression() throws Exception {
+    Tag tag = tagManager.createTag("test:tag1", "Tag 1", null);
+    assertEquals("(@p='test:tag1' or @p='/etc/tags/test/tag1' or jcr:like(@p, 'test:tag1/%') or jcr:like(@p, '/etc/tags/test/tag1/%'))",
+        tag.getXPathSearchExpression("p"));
+  }
 
+  @Test
+  public void testGetXPathSearchExpression_2Level() throws Exception {
+    Tag tag = tagManager.createTag("test:tag1/tag2", "Tag 2", null);
+    assertEquals("(@p='test:tag1/tag2' or @p='/etc/tags/test/tag1/tag2' or jcr:like(@p, 'test:tag1/tag2/%') or jcr:like(@p, '/etc/tags/test/tag1/tag2/%'))",
+        tag.getXPathSearchExpression("p"));
+  }
+
+  @Test
+  public void testGetXPathSearchExpression_DefaultNamespace() throws Exception {
+    Tag tag = tagManager.createTag("tag3", "Tag 3", null);
+    assertEquals("(@p='tag3' or @p='/etc/tags/default/tag3' or jcr:like(@p, 'tag3/%') or jcr:like(@p, '/etc/tags/default/tag3/%'))",
+        tag.getXPathSearchExpression("p"));
+  }
+
+  private static class NothingFilter implements Filter<Tag> {
     @Override
     public boolean includes(Tag tag) {
       return false;

@@ -30,6 +30,12 @@
       <action type="add" dev="sseifert">
         Automatically register AEM node type definitions for JCR_OAK and JCR_JACKRABBIT.
       </action>
+      <action type="add" dev="sseifert">
+        ContentBuilder: add tag() method.
+      </action>
+      <action type="update" dev="sseifert">
+        MockTag: Add implementation for getXPathSearchExpression method.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>
