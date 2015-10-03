@@ -37,7 +37,7 @@
         MockTag: Add implementation for getXPathSearchExpression method.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest Sling Mock.
+        Update to latest OSGi Mock and Sling Mock.
       </action>
     </release>
     

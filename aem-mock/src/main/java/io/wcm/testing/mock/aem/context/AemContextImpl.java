@@ -61,7 +61,7 @@ public class AemContextImpl extends SlingContextImpl {
 
   @Override
   protected ResourceResolverFactory newResourceResolverFactory() {
-    return ContextResourceResolverFactory.get(this.resourceResolverType);
+    return ContextResourceResolverFactory.get(this.resourceResolverType, bundleContext());
   }
 
   @Override

@@ -28,6 +28,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.osgi.framework.BundleContext;
 
 /**
  * Create resolve resolver instance and initialize it depending on it's type.
@@ -38,9 +39,10 @@ final class ContextResourceResolverFactory {
     // static methods only
   }
 
-  public static ResourceResolverFactory get(final ResourceResolverType resourceResolverType) {
+  public static ResourceResolverFactory get(final ResourceResolverType resourceResolverType,
+      final BundleContext bundleContext) {
     try {
-      ResourceResolverFactory factory = MockSling.newResourceResolverFactory(resourceResolverType);
+      ResourceResolverFactory factory = MockSling.newResourceResolverFactory(resourceResolverType, bundleContext);
 
       switch (resourceResolverType) {
         case JCR_MOCK:
