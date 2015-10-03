@@ -24,6 +24,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.junit.After;
 import org.junit.Before;
@@ -80,6 +82,14 @@ public class AemContextImplTest {
   @Test(expected = IllegalArgumentException.class)
   public void testSetCurrentPageNonExisting() {
     context.currentPage("/non/existing");
+  }
+
+  @Test
+  public void testServiceLogin() throws Exception {
+    ResourceResolverFactory resourceResolverFactory = context.getService(ResourceResolverFactory.class);
+    ResourceResolver resolver = resourceResolverFactory.getServiceResourceResolver(null);
+    assertNotNull(resolver);
+    resolver.close();
   }
 
 }
