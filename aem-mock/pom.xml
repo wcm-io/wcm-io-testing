@@ -112,7 +112,7 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.junit-commons</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.4</version>
       <scope>compile</scope>
     </dependency>
 
