@@ -8,7 +8,7 @@ Common extensions of JUnit for supporting the wcm.io JUnit tests.
 <dependency>
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.junit-commons</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 ### Documentation
