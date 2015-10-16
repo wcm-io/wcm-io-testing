@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Iterator;
@@ -43,15 +44,8 @@ import com.day.cq.tagging.TagManager;
 
 public class MockTagTest {
 
-  private static class NothingFilter implements Filter<Tag> {
-    @Override
-    public boolean includes(Tag tag) {
-      return false;
-    }
-  }
-
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = TestAemContext.newAemContext();
 
   private ResourceResolver resolver;
 
@@ -250,6 +244,34 @@ public class MockTagTest {
     resources = nondescript2.find();
     assertNotNull(resources);
     assertFalse(resources.hasNext());
+  }
+
+  @Test
+  public void testGetXPathSearchExpression() throws Exception {
+    Tag tag = tagManager.createTag("test:tag1", "Tag 1", null);
+    assertEquals("(@p='test:tag1' or @p='/etc/tags/test/tag1' or jcr:like(@p, 'test:tag1/%') or jcr:like(@p, '/etc/tags/test/tag1/%'))",
+        tag.getXPathSearchExpression("p"));
+  }
+
+  @Test
+  public void testGetXPathSearchExpression_2Level() throws Exception {
+    Tag tag = tagManager.createTag("test:tag1/tag2", "Tag 2", null);
+    assertEquals("(@p='test:tag1/tag2' or @p='/etc/tags/test/tag1/tag2' or jcr:like(@p, 'test:tag1/tag2/%') or jcr:like(@p, '/etc/tags/test/tag1/tag2/%'))",
+        tag.getXPathSearchExpression("p"));
+  }
+
+  @Test
+  public void testGetXPathSearchExpression_DefaultNamespace() throws Exception {
+    Tag tag = tagManager.createTag("tag3", "Tag 3", null);
+    assertEquals("(@p='tag3' or @p='/etc/tags/default/tag3' or jcr:like(@p, 'tag3/%') or jcr:like(@p, '/etc/tags/default/tag3/%'))",
+        tag.getXPathSearchExpression("p"));
+  }
+
+  private static class NothingFilter implements Filter<Tag> {
+    @Override
+    public boolean includes(Tag tag) {
+      return false;
+    }
   }
 
 }

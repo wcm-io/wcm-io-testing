@@ -56,8 +56,8 @@ class RepeatedStatement<T> extends Statement {
         }
         this.test.evaluate();
       }
-      catch (Throwable t) {
-        this.errorCollector.addError(new AssertionError("For value: " + v, t));
+      catch (Throwable ex) {
+        this.errorCollector.addError(new AssertionError(buildAssertionMessage("For value " + v, ex), ex));
       }
       finally {
         try {
@@ -65,11 +65,25 @@ class RepeatedStatement<T> extends Statement {
             this.tearDownCallback.execute(v);
           }
         }
-        catch (Throwable t) {
-          this.errorCollector.addError(new AssertionError("For value (teardown): " + v, t));
+        catch (Throwable ex) {
+          this.errorCollector.addError(new AssertionError(buildAssertionMessage("For value " + v + " (teardown)", ex), ex));
         }
       }
     }
     this.errorCollector.verify();
   }
+
+  private static String buildAssertionMessage(String msg, Throwable ex) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(msg);
+    sb.append(": ");
+    if (ex.getMessage() != null) {
+      sb.append(ex.getMessage());
+    }
+    else {
+      sb.append(ex.getClass().getName());
+    }
+    return sb.toString();
+  }
+
 }

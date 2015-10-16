@@ -28,6 +28,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.osgi.framework.BundleContext;
 
 /**
  * Create resolve resolver instance and initialize it depending on it's type.
@@ -38,9 +39,10 @@ final class ContextResourceResolverFactory {
     // static methods only
   }
 
-  public static ResourceResolverFactory get(final ResourceResolverType resourceResolverType) {
+  public static ResourceResolverFactory get(final ResourceResolverType resourceResolverType,
+      final BundleContext bundleContext) {
     try {
-      ResourceResolverFactory factory = MockSling.newResourceResolverFactory(resourceResolverType);
+      ResourceResolverFactory factory = MockSling.newResourceResolverFactory(resourceResolverType, bundleContext);
 
       switch (resourceResolverType) {
         case JCR_MOCK:
@@ -49,8 +51,14 @@ final class ContextResourceResolverFactory {
         case JCR_JACKRABBIT:
           initializeJcrJackrabbit(factory);
           break;
+        case JCR_OAK:
+          initializeJcrOak(factory);
+          break;
         case RESOURCERESOLVER_MOCK:
           initializeResourceResolverMock(factory);
+          break;
+        case NONE:
+          initializeResourceResolverNone(factory);
           break;
         default:
           throw new IllegalArgumentException("Invalid resource resolver type: " + resourceResolverType);
@@ -59,26 +67,45 @@ final class ContextResourceResolverFactory {
       return factory;
     }
     catch (Throwable ex) {
-      throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory.", ex);
+      throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory: " + ex.getMessage(), ex);
     }
   }
 
   private static void initializeJcrMock(ResourceResolverFactory factory) throws RepositoryException, LoginException {
-    // register default namespaces
     ResourceResolver resolver = factory.getResourceResolver(null);
-    Session session = resolver.adaptTo(Session.class);
-    NamespaceRegistry namespaceRegistry = session.getWorkspace().getNamespaceRegistry();
-    namespaceRegistry.registerNamespace("sling", "http://sling.apache.org/jcr/sling/1.0");
-    namespaceRegistry.registerNamespace("cq", "http://www.day.com/jcr/cq/1.0 ");
-    namespaceRegistry.registerNamespace("dam", "http://www.day.com/dam/1.0 ");
+    try {
+      registerDefaultAemNamespaces(resolver);
+    }
+    finally {
+      resolver.close();
+    }
   }
 
   private static void initializeJcrJackrabbit(ResourceResolverFactory factory) {
-    // register sling node types?
+    // nothing to do - namespaces are registered automatically together with node types
+  }
+
+  private static void initializeJcrOak(ResourceResolverFactory factory) {
+    // nothing to do - namespaces are registered automatically together with node types
   }
 
   private static void initializeResourceResolverMock(ResourceResolverFactory factory) {
     // nothing to do
+  }
+
+  private static void initializeResourceResolverNone(ResourceResolverFactory factory) {
+    // nothing to do
+  }
+
+  /**
+   * Registers default AEM JCR namespaces.
+   * @param resolver Resource resolver
+   */
+  private static void registerDefaultAemNamespaces(ResourceResolver resolver) throws RepositoryException {
+    Session session = resolver.adaptTo(Session.class);
+    NamespaceRegistry namespaceRegistry = session.getWorkspace().getNamespaceRegistry();
+    namespaceRegistry.registerNamespace("cq", "http://www.day.com/jcr/cq/1.0");
+    namespaceRegistry.registerNamespace("dam", "http://www.day.com/dam/1.0 ");
   }
 
 }

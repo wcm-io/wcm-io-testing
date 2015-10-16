@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.AccessControlException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,9 @@ import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
+import com.day.cq.tagging.InvalidTagFormatException;
+import com.day.cq.tagging.Tag;
+import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -322,6 +326,22 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    */
   public Rendition assetRendition(Asset asset, String name, InputStream inputStream, String mimeType) {
     return asset.addRendition(name, inputStream, mimeType);
+  }
+
+  /**
+   * Adds a tag definition.
+   * @param tagId Tag ID. May include namespace (separated by ":"). May include nested levels (separated by "/").
+   * @return Tag
+   */
+  public Tag tag(String tagId) {
+    TagManager tagManager = resourceResolver.adaptTo(TagManager.class);
+    String tagTitle = ResourceUtil.getName(StringUtils.substringAfter(tagId, ":"));
+    try {
+      return tagManager.createTag(tagId, tagTitle, null, true);
+    }
+    catch (AccessControlException | InvalidTagFormatException ex) {
+      throw new RuntimeException("Unable to create tag: " + tagId, ex);
+    }
   }
 
 }

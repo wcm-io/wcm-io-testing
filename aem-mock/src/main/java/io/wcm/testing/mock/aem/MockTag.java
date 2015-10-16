@@ -19,6 +19,8 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static io.wcm.testing.mock.aem.MockTagManager.TAGS_ROOT;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -46,8 +49,6 @@ import com.day.cq.wcm.api.NameConstants;
  */
 class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
 
-  // https://docs.adobe.com/docs/en/aem/6-0/develop/ref/javadoc/com/day/cq/tagging/Tag.html
-
   /** resource being represented as a Tag */
   private final Resource resource;
 
@@ -55,8 +56,8 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     if (resource == null) {
       throw new NullPointerException("resource is null");
     }
-    if (!resource.getPath().startsWith(MockTagManager.TAGS_ROOT + "/")) {
-      throw new IllegalArgumentException("Tags should exist under " + MockTagManager.TAGS_ROOT);
+    if (!resource.getPath().startsWith(TAGS_ROOT + "/")) {
+      throw new IllegalArgumentException("Tags should exist under " + TAGS_ROOT);
     }
     this.resource = resource;
   }
@@ -129,11 +130,6 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   }
 
   @Override
-  public String getGQLSearchExpression(String arg0) {
-    throw new UnsupportedOperationException("Unsupported operation");
-  }
-
-  @Override
   public long getLastModified() {
     Calendar lastMod = resource.getValueMap().get(NameConstants.PN_LAST_MOD, Calendar.class);
     if (lastMod == null) {
@@ -173,11 +169,6 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     }
 
     return title;
-  }
-
-  @Override
-  public Map<Locale, String> getLocalizedTitlePaths() {
-    throw new UnsupportedOperationException("Unsupported operation");
   }
 
   @Override
@@ -262,23 +253,8 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   }
 
   @Override
-  public String getTitlePath() {
-    throw new UnsupportedOperationException("Unsupported operation");
-  }
-
-  @Override
-  public String getTitlePath(Locale arg0) {
-    throw new UnsupportedOperationException("Unsupported operation");
-  }
-
-  @Override
-  public String getXPathSearchExpression(String arg0) {
-    throw new UnsupportedOperationException("Unsupported operation");
-  }
-
-  @Override
   public boolean isNamespace() {
-    return MockTagManager.TAGS_ROOT.equals(resource.getParent().getPath());
+    return TAGS_ROOT.equals(resource.getParent().getPath());
   }
 
   @Override
@@ -320,4 +296,46 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   public Iterator<Tag> listChildren(Filter<Tag> filter) {
     return listChildren(filter, false);
   }
+
+  @Override
+  public String getXPathSearchExpression(String property) {
+    String ns = getNamespace().getName();
+    String relPath = StringUtils.substringAfter(getPath(), TAGS_ROOT + "/" + ns + "/");
+    boolean isDefaultNamespace = StringUtils.equals(ns, TagConstants.DEFAULT_NAMESPACE);
+    if (isDefaultNamespace) {
+      return "(@" + property + "='" + relPath + "' "
+          + "or @" + property + "='" + TAGS_ROOT + "/" + ns + "/" + relPath + "' "
+          + "or jcr:like(@" + property + ", '" + relPath + "/%') or "
+          + "jcr:like(@" + property + ", '" + TAGS_ROOT + "/" + ns + "/" + relPath + "/%'))";
+    }
+    else {
+      return "(@" + property + "='" + ns + ":" + relPath + "' "
+          + "or @" + property + "='" + TAGS_ROOT + "/" + ns + "/" + relPath + "' "
+          + "or jcr:like(@" + property + ", '" + ns + ":" + relPath + "/%') or "
+          + "jcr:like(@" + property + ", '" + TAGS_ROOT + "/" + ns + "/" + relPath + "/%'))";
+    }
+  }
+
+  // --- unsupported operations ---
+
+  @Override
+  public String getGQLSearchExpression(String arg0) {
+    throw new UnsupportedOperationException("Unsupported operation");
+  }
+
+  @Override
+  public Map<Locale, String> getLocalizedTitlePaths() {
+    throw new UnsupportedOperationException("Unsupported operation");
+  }
+
+  @Override
+  public String getTitlePath() {
+    throw new UnsupportedOperationException("Unsupported operation");
+  }
+
+  @Override
+  public String getTitlePath(Locale arg0) {
+    throw new UnsupportedOperationException("Unsupported operation");
+  }
+
 }

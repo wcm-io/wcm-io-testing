@@ -24,9 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.util.Calendar;
@@ -54,7 +52,7 @@ import com.google.common.collect.ImmutableList;
 public class MockPageTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = TestAemContext.newAemContext();
   @Mock
   private Resource mockResource;
 
@@ -148,8 +146,8 @@ public class MockPageTest {
     this.context.resourceResolver().commit();
 
     // Validate
-    assertEquals(onTime, this.page.getOnTime());
-    assertEquals(offTime, this.page.getOffTime());
+    assertEquals(onTime.getTime(), this.page.getOnTime().getTime());
+    assertEquals(offTime.getTime(), this.page.getOffTime().getTime());
     assertTrue(this.page.isValid());
     assertEquals(0L, this.page.timeUntilValid());
   }
@@ -168,8 +166,8 @@ public class MockPageTest {
     this.context.resourceResolver().commit();
 
     // Validate
-    assertEquals(onTime, this.page.getOnTime());
-    assertEquals(offTime, this.page.getOffTime());
+    assertEquals(onTime.getTime(), this.page.getOnTime().getTime());
+    assertEquals(offTime.getTime(), this.page.getOffTime().getTime());
     assertFalse(this.page.isValid());
     assertTrue(this.page.timeUntilValid() > 0L);
   }
@@ -188,8 +186,8 @@ public class MockPageTest {
     this.context.resourceResolver().commit();
 
     // Validate
-    assertEquals(onTime, this.page.getOnTime());
-    assertEquals(offTime, this.page.getOffTime());
+    assertEquals(onTime.getTime(), this.page.getOnTime().getTime());
+    assertEquals(offTime.getTime(), this.page.getOffTime().getTime());
     assertFalse(this.page.isValid());
     assertTrue(this.page.timeUntilValid() < 0L);
   }
@@ -235,15 +233,11 @@ public class MockPageTest {
   }
 
   @Test
-  public void testAdaptToPipeline() {
+  public void testAdaptTo() {
     Page underTest = new MockPage(mockResource);
 
     Resource resource = underTest.adaptTo(Resource.class);
     assertEquals(mockResource, resource);
-    verify(mockResource, never()).adaptTo(Long.class);
-
-    underTest.adaptTo(Long.class);
-    verify(mockResource, times(1)).adaptTo(Long.class);
   }
 
   @Test

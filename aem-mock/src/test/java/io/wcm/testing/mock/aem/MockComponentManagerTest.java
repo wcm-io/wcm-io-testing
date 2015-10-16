@@ -23,8 +23,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,7 +40,7 @@ import com.google.common.collect.ImmutableMap;
 public class MockComponentManagerTest {
 
   @Rule
-  public AemContext context = new AemContext();
+  public AemContext context = TestAemContext.newAemContext();
 
   private ComponentManager underTest;
 
@@ -72,7 +74,8 @@ public class MockComponentManagerTest {
     assertEquals("myTitle", component.getTitle());
     assertEquals("myDescription", component.getDescription());
     assertEquals("myTitle", component.getProperties().get(JcrConstants.JCR_TITLE, String.class));
-    assertNull(component.getResourceType());
+    assertTrue(StringUtils.isEmpty(component.getResourceType())
+        || StringUtils.equals(JcrConstants.NT_UNSTRUCTURED, component.getResourceType()));
     assertTrue(component.isAccessible());
     assertNotNull(component.adaptTo(Resource.class));
   }

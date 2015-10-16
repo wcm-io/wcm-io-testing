@@ -61,7 +61,7 @@ public class AemContextImpl extends SlingContextImpl {
 
   @Override
   protected ResourceResolverFactory newResourceResolverFactory() {
-    return ContextResourceResolverFactory.get(this.resourceResolverType);
+    return ContextResourceResolverFactory.get(this.resourceResolverType, bundleContext());
   }
 
   @Override
@@ -135,6 +135,18 @@ public class AemContextImpl extends SlingContextImpl {
       currentResource((Resource)null);
       return null;
     }
+  }
+
+  /**
+   * Create unique root paths for unit tests (and clean them up after the test run automatically).
+   * @return Unique root path helper
+   */
+  @Override
+  public UniqueRoot uniqueRoot() {
+    if (uniqueRoot == null) {
+      uniqueRoot = new UniqueRoot(this);
+    }
+    return (UniqueRoot)uniqueRoot;
   }
 
 }
