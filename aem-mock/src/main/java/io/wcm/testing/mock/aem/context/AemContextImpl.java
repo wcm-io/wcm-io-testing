@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem.context;
 
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
+import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
@@ -33,6 +34,8 @@ import org.osgi.annotation.versioning.ConsumerType;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
+import com.day.cq.wcm.api.components.ComponentContext;
+import com.day.cq.wcm.commons.WCMUtils;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -93,9 +96,14 @@ public class AemContextImpl extends SlingContextImpl {
   }
 
   /**
-   * @return Current page
+   * @return Current page from {@link ComponentContext}. If none is set the page containing the current resource.
+   *         Null if no containing page exists.
    */
   public Page currentPage() {
+    ComponentContext context = WCMUtils.getComponentContext(request());
+    if (context != null) {
+      return context.getPage();
+    }
     if (currentResource() != null) {
       return pageManager().getContainingPage(currentResource());
     }
@@ -103,7 +111,9 @@ public class AemContextImpl extends SlingContextImpl {
   }
 
   /**
-   * Set current Page in request (set to content resource of page).
+   * Set current Page in request (via {@link ComponentContext}).
+   * This also sets the current resource to the content resource of the page.
+   * You can set it to a different resources afterwards if required.
    * @param pagePath Page path
    * @return currentPage
    */
@@ -122,16 +132,21 @@ public class AemContextImpl extends SlingContextImpl {
   }
 
   /**
-   * Set current Page in request (set to content resource of page).
+   * Set current Page in request (via {@link ComponentContext}).
+   * This also sets the current resource to the content resource of the page.
+   * You can set it to a different resources afterwards if required.
    * @param page Page
    * @return currentPage
    */
   public Page currentPage(Page page) {
     if (page != null) {
+      ComponentContext wcmComponentContext = new MockComponentContext(page, request());
+      request.setAttribute(ComponentContext.CONTEXT_ATTR_NAME, wcmComponentContext);
       currentResource(page.getContentResource());
       return page;
     }
     else {
+      request.setAttribute(ComponentContext.CONTEXT_ATTR_NAME, null);
       currentResource((Resource)null);
       return null;
     }
