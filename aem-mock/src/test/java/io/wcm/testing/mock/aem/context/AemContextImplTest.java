@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
@@ -67,6 +68,27 @@ public class AemContextImplTest {
     context.currentPage(contentRoot + "/toolbar/profiles");
     assertEquals(contentRoot + "/toolbar/profiles", context.currentPage().getPath());
     assertEquals(contentRoot + "/toolbar/profiles/jcr:content", context.currentResource().getPath());
+
+    context.currentPage(context.pageManager().getPage(contentRoot + "/toolbar"));
+    assertEquals(contentRoot + "/toolbar", context.currentPage().getPath());
+    assertEquals(contentRoot + "/toolbar/jcr:content", context.currentResource().getPath());
+
+    context.currentPage((Page)null);
+    assertNull(context.currentPage());
+
+    context.currentPage((String)null);
+    assertNull(context.currentPage());
+  }
+
+  @Test
+  public void testSetCurrentPageWithResourceFromOtherPage() {
+    Resource otherResource = context.resourceResolver().getResource(contentRoot + "/jcr:content/par");
+
+    context.currentPage(contentRoot + "/toolbar/profiles");
+    context.currentResource(otherResource);
+
+    assertEquals(contentRoot + "/toolbar/profiles", context.currentPage().getPath());
+    assertEquals(otherResource.getPath(), context.currentResource().getPath());
 
     context.currentPage(context.pageManager().getPage(contentRoot + "/toolbar"));
     assertEquals(contentRoot + "/toolbar", context.currentPage().getPath());
