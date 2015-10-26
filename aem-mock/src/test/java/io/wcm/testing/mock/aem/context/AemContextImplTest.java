@@ -92,4 +92,11 @@ public class AemContextImplTest {
     resolver.close();
   }
 
+  @Test
+  public void testResourceResolverFactoryActivatorConfig() {
+    String mappedPath = context.resourceResolver().map(contentRoot + "/toolbar/profiles");
+    // unlike sling AEM does not define a default mapping from /content to /
+    assertEquals(contentRoot + "/toolbar/profiles", mappedPath);
+  }
+
 }

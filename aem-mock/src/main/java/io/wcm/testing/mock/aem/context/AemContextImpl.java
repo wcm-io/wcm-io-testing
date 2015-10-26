@@ -54,6 +54,26 @@ public class AemContextImpl extends SlingContextImpl {
 
   @Override
   protected void registerDefaultServices() {
+    // register default services from osgi-mock and sling-mock
+    super.registerDefaultServices();
+
+    // adapter factories
+    registerInjectActivateService(new MockAemAdapterFactory());
+    registerInjectActivateService(new MockLayerAdapterFactory());
+  }
+
+  @Override
+  protected void setResourceResolverType(ResourceResolverType resourceResolverType) {
+    super.setResourceResolverType(resourceResolverType);
+  }
+
+  @Override
+  protected ResourceResolverFactory newResourceResolverFactory() {
+    return ContextResourceResolverFactory.get(this.resourceResolverType, bundleContext());
+  }
+
+  @Override
+  protected void setUp() {
 
     // prepare customized configuration for ResourceResolverFactoryActivator with the default values from AEM
     // AEM uses different default properties than the ResourceResolverFactoryActivator used by default
@@ -69,8 +89,12 @@ public class AemContextImpl extends SlingContextImpl {
       });
       defaultProps.put("resource.resolver.manglenamespaces", true);
       defaultProps.put("resource.resolver.allowDirect", true);
-      defaultProps.put("resource.resolver.virtual", "/:/");
-      defaultProps.put("resource.resolver.mapping", "/-/");
+      defaultProps.put("resource.resolver.virtual", new String[] {
+        "/:/"
+      });
+      defaultProps.put("resource.resolver.mapping", new String[] {
+        "/-/"
+      });
       defaultProps.put("resource.resolver.map.location", "/etc/map");
       defaultProps.put("resource.resolver.default.vanity.redirect.status", "");
       defaultProps.put("resource.resolver.virtual", "302");
@@ -94,26 +118,7 @@ public class AemContextImpl extends SlingContextImpl {
       throw new RuntimeException(ex);
     }
 
-    // register default services from osgi-mock and sling-mock
-    super.registerDefaultServices();
-
-    // adapter factories
-    registerInjectActivateService(new MockAemAdapterFactory());
-    registerInjectActivateService(new MockLayerAdapterFactory());
-  }
-
-  @Override
-  protected void setResourceResolverType(ResourceResolverType resourceResolverType) {
-    super.setResourceResolverType(resourceResolverType);
-  }
-
-  @Override
-  protected ResourceResolverFactory newResourceResolverFactory() {
-    return ContextResourceResolverFactory.get(this.resourceResolverType, bundleContext());
-  }
-
-  @Override
-  protected void setUp() {
+    // setup osgi-mock and sling-mock
     super.setUp();
   }
 
