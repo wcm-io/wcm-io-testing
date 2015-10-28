@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.6.0" date="2015-10-28">
+      <action type="add" dev="sseifert">
+        Add support for AEM ComponentContext, EditContext and EditConfig.
+      </action>
+      <action type="fix" dev="sseifert">
+        AemContext: Set current page via ComponentContext and allow setting current resource not related to current page.
+      </action>
+    </release>
+    
     <release version="1.5.0" date="2015-10-16">
       <action type="add" dev="sseifert">
         Add support for JCR_OAK, JCR_JACKRABBIT and NONE resource resolver types.
