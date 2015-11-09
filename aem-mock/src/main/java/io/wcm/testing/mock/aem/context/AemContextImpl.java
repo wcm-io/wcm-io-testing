@@ -36,6 +36,8 @@ import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 import org.osgi.annotation.versioning.ConsumerType;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -54,6 +56,8 @@ public class AemContextImpl extends SlingContextImpl {
   static final Set<String> DEFAULT_RUN_MODES = ImmutableSet.<String>builder().add("publish").build();
 
   private static final String RESOURCERESOLVERFACTORYACTIVATOR_PID = "org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl";
+
+  private static final Logger log = LoggerFactory.getLogger(AemContextImpl.class);
 
   @Override
   protected void registerDefaultServices() {
@@ -78,47 +82,52 @@ public class AemContextImpl extends SlingContextImpl {
   @Override
   protected void setUp() {
 
-    // prepare customized configuration for ResourceResolverFactoryActivator with the default values from AEM
-    // AEM uses different default properties than the ResourceResolverFactoryActivator used by default
     ConfigurationAdmin configAdmin = getService(ConfigurationAdmin.class);
-    try {
-      Configuration resourceResolverFactoryActivatorConfig = configAdmin.getConfiguration(RESOURCERESOLVERFACTORYACTIVATOR_PID);
-      Dictionary<String, Object> defaultProps = new Hashtable<>();
-      defaultProps.put("resource.resolver.searchpath", new String[] {
-          "/apps",
-          "/libs",
-          "/apps/foundation/components/primary",
-          "/libs/foundation/components/primary",
-      });
-      defaultProps.put("resource.resolver.manglenamespaces", true);
-      defaultProps.put("resource.resolver.allowDirect", true);
-      defaultProps.put("resource.resolver.virtual", new String[] {
-        "/:/"
-      });
-      defaultProps.put("resource.resolver.mapping", new String[] {
-        "/-/"
-      });
-      defaultProps.put("resource.resolver.map.location", "/etc/map");
-      defaultProps.put("resource.resolver.default.vanity.redirect.status", "");
-      defaultProps.put("resource.resolver.virtual", "302");
-      defaultProps.put("resource.resolver.enable.vanitypath", true);
-      defaultProps.put("resource.resolver.vanitypath.maxEntries", -1);
-      defaultProps.put("resource.resolver.vanitypath.bloomfilter.maxBytes", 1024000);
-      defaultProps.put("resource.resolver.optimize.alias.resolution", true);
-      defaultProps.put("resource.resolver.vanitypath.whitelist", new String[] {
-          "/apps/",
-          "/libs/",
-          "/content/"
-      });
-      defaultProps.put("resource.resolver.vanitypath.blacklist", new String[] {
-          "/content/usergenerated"
-      });
-      defaultProps.put("resource.resolver.vanity.precedence", false);
-      defaultProps.put("resource.resolver.providerhandling.paranoid", false);
-      resourceResolverFactoryActivatorConfig.update(defaultProps);
+    if (configAdmin == null) {
+      log.warn("ConfigAdmin not found in osgi-mock context - please make sure osgi-mock 1.7.0 or higher is used.");
     }
-    catch (IOException ex) {
-      throw new RuntimeException(ex);
+    else {
+      // prepare customized configuration for ResourceResolverFactoryActivator with the default values from AEM
+      // AEM uses different default properties than the ResourceResolverFactoryActivator used by default
+      try {
+        Configuration resourceResolverFactoryActivatorConfig = configAdmin.getConfiguration(RESOURCERESOLVERFACTORYACTIVATOR_PID);
+        Dictionary<String, Object> defaultProps = new Hashtable<>();
+        defaultProps.put("resource.resolver.searchpath", new String[] {
+            "/apps",
+            "/libs",
+            "/apps/foundation/components/primary",
+            "/libs/foundation/components/primary",
+        });
+        defaultProps.put("resource.resolver.manglenamespaces", true);
+        defaultProps.put("resource.resolver.allowDirect", true);
+        defaultProps.put("resource.resolver.virtual", new String[] {
+            "/:/"
+        });
+        defaultProps.put("resource.resolver.mapping", new String[] {
+            "/-/"
+        });
+        defaultProps.put("resource.resolver.map.location", "/etc/map");
+        defaultProps.put("resource.resolver.default.vanity.redirect.status", "");
+        defaultProps.put("resource.resolver.virtual", "302");
+        defaultProps.put("resource.resolver.enable.vanitypath", true);
+        defaultProps.put("resource.resolver.vanitypath.maxEntries", -1);
+        defaultProps.put("resource.resolver.vanitypath.bloomfilter.maxBytes", 1024000);
+        defaultProps.put("resource.resolver.optimize.alias.resolution", true);
+        defaultProps.put("resource.resolver.vanitypath.whitelist", new String[] {
+            "/apps/",
+            "/libs/",
+            "/content/"
+        });
+        defaultProps.put("resource.resolver.vanitypath.blacklist", new String[] {
+            "/content/usergenerated"
+        });
+        defaultProps.put("resource.resolver.vanity.precedence", false);
+        defaultProps.put("resource.resolver.providerhandling.paranoid", false);
+        resourceResolverFactoryActivatorConfig.update(defaultProps);
+      }
+      catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
     }
 
     // setup osgi-mock and sling-mock
