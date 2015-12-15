@@ -41,7 +41,7 @@ class MockComponent extends SlingAdaptable implements Component {
   private final ValueMap props;
 
   @SuppressWarnings("deprecation")
-  public MockComponent(Resource resource) {
+  MockComponent(Resource resource) {
     this.resource = resource;
     this.props = ResourceUtil.getValueMap(resource);
   }

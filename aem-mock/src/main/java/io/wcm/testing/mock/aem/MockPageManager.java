@@ -51,7 +51,7 @@ class MockPageManager extends SlingAdaptable implements PageManager {
 
   private final ResourceResolver resourceResolver;
 
-  public MockPageManager(final ResourceResolver resourceResolver) {
+  MockPageManager(final ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
   }
 

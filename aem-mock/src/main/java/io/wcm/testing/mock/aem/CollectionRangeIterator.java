@@ -34,7 +34,7 @@ class CollectionRangeIterator<E> implements RangeIterator<E> {
   private long index;
   private Iterator<E> iterator;
 
-  public CollectionRangeIterator(Collection<E> collection) {
+  CollectionRangeIterator(Collection<E> collection) {
     this.collection = collection;
     index = 0;
     iterator = collection.iterator();

@@ -52,7 +52,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   /** resource being represented as a Tag */
   private final Resource resource;
 
-  public MockTag(Resource resource) {
+  MockTag(Resource resource) {
     if (resource == null) {
       throw new NullPointerException("resource is null");
     }

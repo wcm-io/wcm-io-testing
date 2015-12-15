@@ -35,7 +35,7 @@ class RepeatedStatement<T> extends Statement {
   private final Callback<T> setUpCallback;
   private final Callback<T> tearDownCallback;
 
-  public RepeatedStatement(final Statement test, final Iterable<T> values,
+  RepeatedStatement(final Statement test, final Iterable<T> values,
       final AccessibleErrorCollector errorCollector,
       final Callback<T> setUpCallback, final Callback<T> tearDownCallback) {
     this.test = test;
