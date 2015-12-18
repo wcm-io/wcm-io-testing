@@ -360,6 +360,16 @@ class MockPage extends SlingAdaptable implements Page {
     return "MockPage [path=" + resource.getPath() + ", props=" + properties + "]";
   }
 
+  @Override
+  public Calendar getDeleted() {
+    return null;
+  }
+
+  @Override
+  public String getDeletedBy() {
+    return null;
+  }
+
 
   // --- unsupported operations ---
 

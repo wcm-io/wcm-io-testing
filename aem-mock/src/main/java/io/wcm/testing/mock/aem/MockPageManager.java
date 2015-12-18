@@ -331,4 +331,21 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public Page move(Page page, String destination, String beforeName, boolean shallow,
+      boolean resolveConflict, String[] adjustRefs, String[] publishRefs) throws WCMException {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Resource move(Resource resource, String destination, String beforeName, boolean shallow,
+      boolean resolveConflict, String[] adjustRefs, String[] publishRefs) throws WCMException {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Resource copy(CopyOptions options) throws WCMException {
+    throw new UnsupportedOperationException();
+  }
+
 }

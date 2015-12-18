@@ -54,7 +54,6 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ValueMap metadataProps;
   private final Resource renditionsResource;
 
-  @SuppressWarnings("deprecation")
   MockAsset(Resource resource) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
