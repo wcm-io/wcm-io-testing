@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.6.4" date="not released">
+      <action type="update" dev="sseifert">
+        Add getDeleted/getDeletedBy methods to MockPage to support page filtering with AEM 6.1 API.
+      </action>
+      <action type="update" dev="sseifert">
+        Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use (other versions use other artifact ids).
+      </action>
+    </release>
+
     <release version="1.6.2" date="2015-11-12">
       <action type="update" dev="sseifert">
         Apply customized configuration for ResourceResolverFactoryActivator with the default values from AEM.
