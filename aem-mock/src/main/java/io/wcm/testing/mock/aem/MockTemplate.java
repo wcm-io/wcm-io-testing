@@ -38,7 +38,7 @@ class MockTemplate extends ResourceWrapper implements Template {
   private final Resource resource;
   private final ValueMap properties;
 
-  public MockTemplate(Resource resource) {
+  MockTemplate(Resource resource) {
     super(resource);
     this.resource = resource;
     this.properties = resource.getValueMap();

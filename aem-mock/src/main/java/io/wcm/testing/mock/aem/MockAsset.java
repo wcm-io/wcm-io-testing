@@ -55,7 +55,7 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final Resource renditionsResource;
 
   @SuppressWarnings("deprecation")
-  public MockAsset(Resource resource) {
+  MockAsset(Resource resource) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
     this.resource = resource;

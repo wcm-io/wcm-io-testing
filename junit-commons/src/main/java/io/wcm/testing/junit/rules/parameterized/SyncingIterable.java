@@ -31,7 +31,7 @@ class SyncingIterable<T> implements Iterable<T> {
   private final Iterable<T> values;
   private final ValueContainer<T> valueContainer;
 
-  public SyncingIterable(final Iterable<T> values,
+  SyncingIterable(final Iterable<T> values,
       final ValueContainer<T> valueContainer) {
     this.values = values;
     this.valueContainer = valueContainer;

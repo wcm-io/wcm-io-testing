@@ -69,7 +69,7 @@ class MockTagManager implements TagManager {
   private final ResourceResolver resourceResolver;
   private final Logger log;
 
-  public MockTagManager(ResourceResolver resourceResolver) {
+  MockTagManager(ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
     log = LoggerFactory.getLogger(TagManager.class);
 
@@ -210,7 +210,7 @@ class MockTagManager implements TagManager {
   @Override
   public RangeIterator<Resource> find(String tagID) {
     return find("/", new String[] {
-      tagID
+        tagID
     }, false);
   }
 

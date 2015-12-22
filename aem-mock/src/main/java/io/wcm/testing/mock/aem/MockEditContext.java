@@ -43,7 +43,7 @@ final class MockEditContext implements EditContext {
   /**
    * @param componentContext Component context
    */
-  public MockEditContext(ComponentContext componentContext) {
+  MockEditContext(ComponentContext componentContext) {
     this.componentContext = componentContext;
   }
 

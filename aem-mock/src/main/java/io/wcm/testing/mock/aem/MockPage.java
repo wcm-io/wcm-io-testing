@@ -58,7 +58,7 @@ class MockPage extends SlingAdaptable implements Page {
   private final ResourceResolver resourceResolver;
   private final ValueMap properties;
 
-  public MockPage(final Resource resource) {
+  MockPage(final Resource resource) {
     this.resource = resource;
     this.contentResource = this.resource.getChild(JcrConstants.JCR_CONTENT);
     this.resourceResolver = resource.getResourceResolver();
@@ -358,6 +358,16 @@ class MockPage extends SlingAdaptable implements Page {
   @Override
   public String toString() {
     return "MockPage [path=" + resource.getPath() + ", props=" + properties + "]";
+  }
+
+  // Required for AEM 6.1 API
+  public Calendar getDeleted() {
+    return null;
+  }
+
+  // Required for AEM 6.1 API
+  public String getDeletedBy() {
+    return null;
   }
 
 

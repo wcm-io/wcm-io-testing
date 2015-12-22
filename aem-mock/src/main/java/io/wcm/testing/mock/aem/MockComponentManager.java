@@ -35,7 +35,7 @@ class MockComponentManager implements ComponentManager {
 
   private final ResourceResolver resourceResolver;
 
-  public MockComponentManager(ResourceResolver resourceResolver) {
+  MockComponentManager(ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
   }
 

@@ -44,7 +44,7 @@ class MockRendition extends ResourceWrapper implements Rendition {
   private final ValueMap contentProps;
 
   @SuppressWarnings("deprecation")
-  public MockRendition(Resource resource) {
+  MockRendition(Resource resource) {
     super(resource);
     this.resource = resource;
     this.contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
