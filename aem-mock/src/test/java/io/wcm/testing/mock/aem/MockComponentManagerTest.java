@@ -23,8 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.wcm.testing.mock.aem.context.TestAemContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -33,9 +31,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentManager;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class MockComponentManagerTest {
 
@@ -50,6 +52,12 @@ public class MockComponentManagerTest {
     context.create().resource("/apps/app1/components/c1", ImmutableMap.<String, Object>builder()
         .put(JcrConstants.JCR_TITLE, "myTitle")
         .put(JcrConstants.JCR_DESCRIPTION, "myDescription")
+        .put(NameConstants.PN_COMPONENT_GROUP, "myGroup")
+        .put(NameConstants.PN_NO_DECORATION, true)
+        .build());
+    context.create().resource("/apps/app1/components/c1/" + NameConstants.NN_HTML_TAG, ImmutableMap.<String, Object>builder()
+        .put(NameConstants.PN_TAG_NAME, "myTag")
+        .put("prop2", "myValue2")
         .build());
 
     context.create().resource("/libs/app1/components/c2");
@@ -78,6 +86,10 @@ public class MockComponentManagerTest {
         || StringUtils.equals(JcrConstants.NT_UNSTRUCTURED, component.getResourceType()));
     assertTrue(component.isAccessible());
     assertNotNull(component.adaptTo(Resource.class));
+    assertEquals("myGroup", component.getComponentGroup());
+    assertTrue(component.noDecoration());
+    assertEquals("myTag", component.getHtmlTagAttributes().get(NameConstants.PN_TAG_NAME));
+    assertEquals("myValue2", component.getHtmlTagAttributes().get("prop2"));
   }
 
   @Test

@@ -20,7 +20,9 @@
 package io.wcm.testing.mock.aem;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
@@ -28,9 +30,11 @@ import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentEditConfig;
 import com.day.cq.wcm.api.components.VirtualComponent;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Mock implementation of {@link Component}.
@@ -90,6 +94,33 @@ class MockComponent extends SlingAdaptable implements Component {
     return super.adaptTo(type);
   }
 
+  @Override
+  public String getComponentGroup() {
+    return props.get(NameConstants.PN_COMPONENT_GROUP, String.class);
+  }
+
+  @Override
+  public boolean noDecoration() {
+    return props.get(NameConstants.PN_NO_DECORATION, false);
+  }
+
+  @Override
+  public Map<String, String> getHtmlTagAttributes() {
+    Map<String,String> attrs = new HashMap<>();
+    Resource htmlTagChild = resource.getChild(NameConstants.NN_HTML_TAG);
+    if (htmlTagChild != null) {
+      ValueMap htmlTagProps = htmlTagChild.getValueMap();
+      Set<String> keySet = htmlTagProps.keySet();
+      for (String key : keySet) {
+        String value = htmlTagProps.get(key, String.class);
+        if (value != null) {
+          attrs.put(key, value);
+        }
+      }
+    }
+    return ImmutableMap.copyOf(attrs);
+  }
+
 
   // --- unsupported operations ---
 
@@ -119,11 +150,6 @@ class MockComponent extends SlingAdaptable implements Component {
   }
 
   @Override
-  public boolean noDecoration() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public String getDialogPath() {
     throw new UnsupportedOperationException();
   }
@@ -140,11 +166,6 @@ class MockComponent extends SlingAdaptable implements Component {
 
   @Override
   public String getThumbnailPath() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getComponentGroup() {
     throw new UnsupportedOperationException();
   }
 
@@ -170,11 +191,6 @@ class MockComponent extends SlingAdaptable implements Component {
 
   @Override
   public ComponentEditConfig getDesignEditConfig(String cellName) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Map<String, String> getHtmlTagAttributes() {
     throw new UnsupportedOperationException();
   }
 

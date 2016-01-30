@@ -23,7 +23,10 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="1.6.6" date="not released">
+    <release version="1.7.0" date="not released">
+      <action type="update" dev="sseifert">
+        MockComponent: Add support for getComponentGroup, noDecoration, getHtmlTagAttributes.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock.
       </action>
