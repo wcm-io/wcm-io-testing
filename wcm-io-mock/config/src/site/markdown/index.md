@@ -2,15 +2,9 @@
 
 Helps setting up mock environment for wcm.io Configuration.
 
-### Maven Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.config/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.config)
 
-```xml
-<dependency>
-  <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.wcm-io-mock.config</artifactId>
-  <version>0.5.0</version>
-</dependency>
-```
+
 ### Documentation
 
 * [API documentation](apidocs/)

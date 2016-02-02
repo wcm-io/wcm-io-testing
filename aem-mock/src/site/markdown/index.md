@@ -2,15 +2,8 @@
 
 Mock implementation of selected AEM APIs.
 
-### Maven Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.aem-mock/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.aem-mock)
 
-```xml
-<dependency>
-  <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>1.6.4</version>
-</dependency>
-```
 
 ### Documentation
 

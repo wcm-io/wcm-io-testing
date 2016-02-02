@@ -4,15 +4,9 @@ Helps setting up mock environment for wcm.io Handler.
 
 This automatically sets up [Sling Extensions Mock Helper](../sling/) and [Configuration Mock Helper](../config/) as well.
 
-### Maven Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.handler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.handler)
 
-```xml
-<dependency>
-  <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>0.5.2</version>
-</dependency>
-```
+
 ### Documentation
 
 * [API documentation](apidocs/)
