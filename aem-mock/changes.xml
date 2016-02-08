@@ -28,7 +28,7 @@
         MockComponent: Add support for getComponentGroup, noDecoration, getHtmlTagAttributes.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest OSGi Mock.
+        Update to latest OSGi, Sling, JCR and Resource Resolver Mock.
       </action>
     </release>
 
