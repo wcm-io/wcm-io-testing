@@ -239,7 +239,7 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
-            <!-- Travis build workaround -->
+            <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
             <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
           </configuration>
         </plugin>
