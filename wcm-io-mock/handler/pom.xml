@@ -72,19 +72,19 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.media</artifactId>
-      <version>0.6.0</version>
+      <version>0.10.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.link</artifactId>
-      <version>0.5.0</version>
+      <version>0.8.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.richtext</artifactId>
-      <version>0.5.0</version>
+      <version>0.6.0</version>
       <scope>compile</scope>
     </dependency>
 
