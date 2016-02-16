@@ -52,6 +52,13 @@
 
     <dependency>
       <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock</artifactId>
+      <version>1.7.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.wcm-io-mock.sling</artifactId>
       <version>0.5.0</version>
       <scope>compile</scope>
