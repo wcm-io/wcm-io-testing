@@ -2,15 +2,9 @@
 
 Common extensions of JUnit for supporting the wcm.io JUnit tests.
 
-### Maven Dependency
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.junit-commons/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.junit-commons)
 
-```xml
-<dependency>
-  <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.junit-commons</artifactId>
-  <version>1.0.4</version>
-</dependency>
-```
+
 ### Documentation
 
 * [Usage](usage.html)
