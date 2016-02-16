@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>0.5.3-SNAPSHOT</version>
+  <version>0.5.4</version>
   <packaging>bundle</packaging>
 
   <name>Handler Mock Helper</name>
@@ -49,6 +49,13 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock</artifactId>
+      <version>1.7.0</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>io.wcm</groupId>
@@ -72,19 +79,19 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.media</artifactId>
-      <version>0.6.0</version>
+      <version>0.10.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.link</artifactId>
-      <version>0.5.0</version>
+      <version>0.8.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.richtext</artifactId>
-      <version>0.5.0</version>
+      <version>0.6.0</version>
       <scope>compile</scope>
     </dependency>
 

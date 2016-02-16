@@ -53,21 +53,21 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.aem-mock</artifactId>
-      <version>1.4.0</version>
+      <version>1.7.0</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.config.api</artifactId>
-      <version>0.5.2</version>
+      <version>0.5.4</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.config.core</artifactId>
-      <version>0.5.2</version>
+      <version>0.6.2</version>
       <scope>compile</scope>
     </dependency>
 
