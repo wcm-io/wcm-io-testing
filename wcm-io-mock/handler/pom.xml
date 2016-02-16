@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>0.5.5-SNAPSHOT</version>
+  <version>0.5.4</version>
   <packaging>bundle</packaging>
 
   <name>Handler Mock Helper</name>
