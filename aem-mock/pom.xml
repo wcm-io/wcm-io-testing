@@ -207,7 +207,7 @@
       <dependency>
         <groupId>io.wcm.maven</groupId>
         <artifactId>io.wcm.maven.aem-dependencies</artifactId>
-        <version>6.1.0.0000</version>
+        <version>6.2.0.0000-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
