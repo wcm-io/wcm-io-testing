@@ -258,4 +258,19 @@ class MockAsset extends ResourceWrapper implements Asset {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public String getID() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Rendition getImagePreviewRendition() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getMetadataValueFromJcr(String arg0) {
+    throw new UnsupportedOperationException();
+  }
+
 }

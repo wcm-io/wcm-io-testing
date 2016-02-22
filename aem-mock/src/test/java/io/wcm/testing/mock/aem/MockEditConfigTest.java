@@ -26,8 +26,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import io.wcm.testing.mock.aem.context.TestAemContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import javax.jcr.Node;
 
@@ -48,6 +46,9 @@ import com.day.cq.wcm.api.components.EditLayout;
 import com.day.cq.wcm.api.components.InplaceEditingConfig;
 import com.day.cq.wcm.commons.WCMUtils;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class MockEditConfigTest {
 
@@ -99,7 +100,7 @@ public class MockEditConfigTest {
   }
 
   @Test
-  public void testGetInplaceEditingConfig() {
+  public void testGetInplaceEditingConfig() throws Exception {
     assertNull(underTest.getInplaceEditingConfig());
 
     Node node = mock(Node.class);
