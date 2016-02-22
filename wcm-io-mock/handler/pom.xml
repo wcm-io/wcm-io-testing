@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>0.5.3-SNAPSHOT</version>
+  <version>0.5.5-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
   <name>Handler Mock Helper</name>
@@ -52,6 +52,13 @@
 
     <dependency>
       <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock</artifactId>
+      <version>1.7.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.wcm-io-mock.sling</artifactId>
       <version>0.5.0</version>
       <scope>compile</scope>
@@ -66,25 +73,25 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.url</artifactId>
-      <version>0.5.0</version>
+      <version>0.7.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.media</artifactId>
-      <version>0.6.0</version>
+      <version>0.10.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.link</artifactId>
-      <version>0.5.0</version>
+      <version>0.8.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.handler.richtext</artifactId>
-      <version>0.5.0</version>
+      <version>0.6.0</version>
       <scope>compile</scope>
     </dependency>
 
@@ -92,6 +99,24 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>compile</scope>
+    </dependency>
+
+    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
+    <!-- (other versions of this APIs use other artifact ids) -->
+    <dependency>
+      <groupId>com.adobe.aem</groupId>
+      <artifactId>aem-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+      <scope>provided</scope>
     </dependency>
 
   </dependencies>
