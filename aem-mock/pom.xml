@@ -48,32 +48,51 @@
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
     <jcr-mock.version>1.1.12</jcr-mock.version>
-    <osgi-mock.version>2.0.2</osgi-mock.version>
-    <sling-mock.version>1.6.2</sling-mock.version>
-    <sling-mock.oak.version>1.0.0</sling-mock.oak.version>
-    <sling-mock.jackrabbit.version>1.0.0</sling-mock.jackrabbit.version>
+    <osgi-mock.version>2.0.3-SNAPSHOT</osgi-mock.version>
+    <sling-mock.version>2.0.0-SNAPSHOT</sling-mock.version>
+    <sling-mock.oak.version>2.0.0-SNAPSHOT</sling-mock.oak.version>
     <resourceresolver-mock.version>1.1.12</resourceresolver-mock.version>
     <logging-mock.version>1.0.0</logging-mock.version>
     
-    <oak.version>1.2.2</oak.version>
-    <jackrabbit.version>2.10.1</jackrabbit.version>
+    <oak.version>1.3.15</oak.version>
+    <jackrabbit.version>2.11.3</jackrabbit.version>
 
   </properties>
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.jcr.api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.jcr.resource</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.models.impl</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.resourceresolver</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.settings</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
-         are loaded before AEM 6.0 API deps -->
+         are loaded before AEM API deps -->
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
       <version>${sling-mock.oak.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.sling-mock-jackrabbit</artifactId>
-      <version>${sling-mock.jackrabbit.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -117,10 +136,33 @@
           <groupId>org.mortbay.jetty</groupId>
           <artifactId>servlet-api</artifactId>
         </exclusion>
-        <!-- Make sure Sling API from aem-api is used -->
         <exclusion>
           <groupId>org.apache.sling</groupId>
           <artifactId>org.apache.sling.api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.models.api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.jcr.api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.jcr.resource</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.models.impl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.resourceresolver</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.settings</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -151,6 +193,11 @@
     <dependency>
       <groupId>com.day.commons</groupId>
       <artifactId>day-commons-gfx</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-imaging</artifactId>
       <scope>compile</scope>
     </dependency>
 

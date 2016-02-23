@@ -22,8 +22,6 @@ package io.wcm.testing.mock.aem.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import io.wcm.testing.mock.aem.context.TestAemContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -43,6 +41,9 @@ import com.day.cq.wcm.api.Page;
 import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
 
+import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
+
 public class ContentBuilderTest {
 
   private static final String TEMPLATE = "/apps/sample/templates/sample";
@@ -51,7 +52,7 @@ public class ContentBuilderTest {
   private String damRoot;
 
   @Rule
-  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
+  public AemContext context = TestAemContext.newAemContext();
 
   @Before
   public void setUp() {
