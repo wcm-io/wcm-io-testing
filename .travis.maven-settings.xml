@@ -56,9 +56,9 @@
         </repository>
 
         <repository>
-          <id>adobe-unobfuscated</id>
-          <name>adobe-unobfuscated</name>
-          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
+          <id>wcm-io-apache-intermediate-release</id>
+          <url>http://wcm.io/maven/repositories/apache-intermediate-release</url>
+          <layout>default</layout>
           <releases>
             <enabled>true</enabled>
             <updatePolicy>never</updatePolicy>
@@ -69,9 +69,9 @@
         </repository>
 
         <repository>
-          <id>wcm-io-apache-intermediate-release</id>
-          <url>http://wcm.io/maven/repositories/apache-intermediate-release</url>
-          <layout>default</layout>
+          <id>adobe-unobfuscated</id>
+          <name>adobe-unobfuscated</name>
+          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
           <releases>
             <enabled>true</enabled>
             <updatePolicy>never</updatePolicy>
@@ -189,7 +189,7 @@
   <servers>
     <server>
       <id>adobe-unobfuscated</id>
-      <username>>${env.ADOBE_UNOBFUSCATED_USER}</username>
+      <username>${env.ADOBE_UNOBFUSCATED_USER}</username>
       <password>${env.ADOBE_UNOBFUSCATED_PASSWORD}</password>
     </server>
   </servers>
