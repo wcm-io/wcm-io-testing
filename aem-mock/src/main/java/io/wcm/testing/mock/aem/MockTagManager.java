@@ -426,6 +426,11 @@ class MockTagManager implements TagManager {
     }
   }
 
+  @Override
+  public ResourceResolver getResourceResolver() {
+    return resourceResolver;
+  }
+
 
   // --- unsupported operations ---
 
