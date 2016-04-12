@@ -56,6 +56,19 @@
         </repository>
 
         <repository>
+          <id>adobe-unobfuscated</id>
+          <name>adobe-unobfuscated</name>
+          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
           <id>wcm-io-apache-intermediate-release</id>
           <url>http://wcm.io/maven/repositories/apache-intermediate-release</url>
           <layout>default</layout>
@@ -164,13 +177,21 @@
         </pluginRepository>
 
       </pluginRepositories>
-
+      
     </profile>
 
   </profiles>
-
+  
   <activeProfiles>
     <activeProfile>default</activeProfile>
   </activeProfiles>
-
+  
+  <servers>
+    <server>
+      <id>adobe-unobfuscated</id>
+      <username>>${env.adobe-unobfuscated-user}</username>
+      <password>${env.adobe-unobfuscated-password}</password>
+    </server>
+  </servers>
+  
 </settings>
