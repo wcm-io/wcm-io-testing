@@ -69,6 +69,19 @@
         </repository>
 
         <repository>
+          <id>adobe-unobfuscated</id>
+          <name>adobe-unobfuscated</name>
+          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
           <id>oss-snapshots</id>
           <url>https://oss.sonatype.org/content/repositories/snapshots</url>
           <layout>default</layout>
@@ -164,13 +177,21 @@
         </pluginRepository>
 
       </pluginRepositories>
-
+      
     </profile>
 
   </profiles>
-
+  
   <activeProfiles>
     <activeProfile>default</activeProfile>
   </activeProfiles>
-
+  
+  <servers>
+    <server>
+      <id>adobe-unobfuscated</id>
+      <username>${env.ADOBE_UNOBFUSCATED_USER}</username>
+      <password>${env.ADOBE_UNOBFUSCATED_PASSWORD}</password>
+    </server>
+  </servers>
+  
 </settings>

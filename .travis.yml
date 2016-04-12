@@ -32,6 +32,7 @@ script:
 - "mvn -s ./.travis.maven-settings.xml -Pcontinuous-integration -U -Dmaven.javadoc.skip=true install"
 # Remove wcm.io artefacts from repository before cache
 - rm -rf $HOME/.m2/repository/io/wcm
+- rm -rf $HOME/.m2/repository/com/adobe/aem/uber-jar
 
 # exlude release tags like xyz-1.0.0 or xyz-1
 branches:
