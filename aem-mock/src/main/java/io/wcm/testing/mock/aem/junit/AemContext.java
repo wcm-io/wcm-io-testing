@@ -38,6 +38,8 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * JUnit rule for setting up and tearing down AEM context objects for unit tests.
+ * You can use {@link AemContextBuilder} alternatively to the constructors on this class - it offers
+ * more options and fine-grained control about setting up the test context.
  */
 @ProviderType
 public final class AemContext extends AemContextImpl implements TestRule {
