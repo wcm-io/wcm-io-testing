@@ -19,15 +19,17 @@
  */
 package io.wcm.testing.mock.aem.junit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import io.wcm.testing.mock.aem.context.TestAemContext;
 
 import java.io.IOException;
 
 import org.apache.sling.api.resource.PersistenceException;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,23 +37,36 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.collect.ImmutableMap;
+
+import io.wcm.testing.mock.aem.context.TestAemContext;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AemContextTest {
 
-  private final AemContextCallback contextSetup = mock(AemContextCallback.class);
-  private final AemContextCallback contextTeardown = mock(AemContextCallback.class);
+  private final AemContextCallback contextBeforeSetup = mock(AemContextCallback.class);
+  private final AemContextCallback contextAfterSetup = mock(AemContextCallback.class);
+  private final AemContextCallback contextBeforeTeardown = mock(AemContextCallback.class);
+  private final AemContextCallback contextAfterTeardown = mock(AemContextCallback.class);
 
   // Run all unit tests for each resource resolver types listed here
   @Rule
-  public AemContext context = new AemContext(
-      contextSetup,
-      contextTeardown,
-      TestAemContext.ALL_TYPES
-      );
+  public AemContext context = new AemContextBuilder(TestAemContext.ALL_TYPES)
+  .beforeSetUp(contextBeforeSetup)
+  .afterSetUp(contextAfterSetup)
+  .beforeTearDown(contextBeforeTeardown)
+  .afterTearDown(contextAfterTeardown)
+  .resourceResolverFactoryActivatorProps(ImmutableMap.<String, Object>of("resource.resolver.searchpath", new String[] {
+      "/apps",
+      "/libs",
+      "/testpath",
+  }))
+  .build();
 
   @Before
   public void setUp() throws IOException, PersistenceException {
-    verify(contextSetup).execute(context);
+    verify(contextBeforeSetup).execute(context);
+    verify(contextAfterSetup).execute(context);
   }
 
   @Test
@@ -59,11 +74,35 @@ public class AemContextTest {
     assertNotNull(context.request());
   }
 
+  @Test
+  public void testResourceResolverFactoryActivatorProps() {
+
+    // skip this test for resource resolver mock, because it does not respect the custom config
+    if (context.resourceResolverType() == ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      return;
+    }
+
+    context.create().resource("/apps/node1");
+
+    context.create().resource("/libs/node1");
+    context.create().resource("/libs/node2");
+
+    context.create().resource("/testpath/node1");
+    context.create().resource("/testpath/node2");
+    context.create().resource("/testpath/node3");
+
+    assertEquals("/apps/node1", context.resourceResolver().getResource("node1").getPath());
+    assertEquals("/libs/node2", context.resourceResolver().getResource("node2").getPath());
+    assertEquals("/testpath/node3", context.resourceResolver().getResource("node3").getPath());
+    assertNull(context.resourceResolver().getResource("node4"));
+  }
+
   @After
   public void tearDown() {
     // reset required because mockito gets puzzled with the parameterized JUnit rule
     // TODO: better solution?
-    reset(contextSetup);
+    reset(contextBeforeSetup);
+    reset(contextAfterSetup);
   }
 
 }
