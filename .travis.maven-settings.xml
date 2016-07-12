@@ -43,6 +43,19 @@
         </repository>
 
         <repository>
+          <id>adobe-unobfuscated</id>
+          <name>adobe-unobfuscated</name>
+          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
           <id>adobe-public-releases</id>
           <name>Adobe Public Repository</name>
           <url>https://repo.adobe.com/nexus/content/groups/public/</url>
@@ -59,19 +72,6 @@
           <id>wcm-io-apache-intermediate-release</id>
           <url>http://wcm.io/maven/repositories/apache-intermediate-release</url>
           <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
-
-        <repository>
-          <id>adobe-unobfuscated</id>
-          <name>adobe-unobfuscated</name>
-          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
           <releases>
             <enabled>true</enabled>
             <updatePolicy>never</updatePolicy>
