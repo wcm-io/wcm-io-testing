@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>1.7.1-SNAPSHOT</version>
+  <version>1.8.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
   <name>AEM Mocks</name>
