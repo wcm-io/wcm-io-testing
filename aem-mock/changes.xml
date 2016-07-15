@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.8.0" date="2016-07-15">
+      <action type="add" dev="sseifert" issue="WTES-18">
+        Add AemContextBuilder with possiblity to specify custom Resource Resolver Factory Activator configuration and setup/teardown callbacks.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling, JCR and Resource Resolver Mock.
+      </action>
+    </release>
+
     <release version="1.7.0" date="2016-02-16">
       <action type="update" dev="sseifert">
         MockComponent: Add support for getComponentGroup, noDecoration, getHtmlTagAttributes.
