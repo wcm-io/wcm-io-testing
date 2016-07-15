@@ -26,8 +26,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import io.wcm.testing.mock.aem.context.TestAemContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -45,6 +43,9 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MockPageManagerTest {
@@ -200,6 +201,7 @@ public class MockPageManagerTest {
     assertNull(containingPage);
   }
 
+  @SuppressWarnings("deprecation")
   @Test
   public void testGetTemplate() {
     this.context.load().json("/json-import-samples/application.json", "/apps/sample");

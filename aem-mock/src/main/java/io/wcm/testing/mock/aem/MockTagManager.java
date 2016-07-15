@@ -426,6 +426,11 @@ class MockTagManager implements TagManager {
     }
   }
 
+  @Override
+  public ResourceResolver getResourceResolver() {
+    return resourceResolver;
+  }
+
 
   // --- unsupported operations ---
 
@@ -461,22 +466,27 @@ class MockTagManager implements TagManager {
 
   @Override
   public void mergeTag(Tag tag, Tag destination) throws AccessControlException, TagException {
-    throw new UnsupportedOperationException("Unsupported operation");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Tag moveTag(Tag tag, String destination) throws AccessControlException, InvalidTagFormatException, TagException {
-    throw new UnsupportedOperationException("Unsupported operation");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Tag resolveByTitle(String tagTitlePath) {
-    throw new UnsupportedOperationException("Unsupported operation");
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Tag resolveByTitle(String tagTitlePath, Locale locale) {
-    throw new UnsupportedOperationException("Unsupported operation");
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Tag[] findTagsByTitle(String keyword, Locale locale) {
+    throw new UnsupportedOperationException();
   }
 
 }

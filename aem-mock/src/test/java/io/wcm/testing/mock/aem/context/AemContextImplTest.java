@@ -22,7 +22,6 @@ package io.wcm.testing.mock.aem.context;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -35,10 +34,12 @@ import org.junit.Test;
 
 import com.day.cq.wcm.api.Page;
 
+import io.wcm.testing.mock.aem.junit.AemContext;
+
 public class AemContextImplTest {
 
   @Rule
-  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
+  public AemContext context = TestAemContext.newAemContext();
 
   private String contentRoot;
   private String appsRoot;

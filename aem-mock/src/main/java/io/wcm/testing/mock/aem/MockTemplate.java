@@ -117,4 +117,29 @@ class MockTemplate extends ResourceWrapper implements Template {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public String getInitialContentPath() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getPageTypePath() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ValueMap getProperties() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean hasStructureSupport() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isAllowed(Resource arg0) {
+    throw new UnsupportedOperationException();
+  }
+
 }

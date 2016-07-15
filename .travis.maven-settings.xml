@@ -43,6 +43,19 @@
         </repository>
 
         <repository>
+          <id>adobe-unobfuscated</id>
+          <name>adobe-unobfuscated</name>
+          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
           <id>adobe-public-releases</id>
           <name>Adobe Public Repository</name>
           <url>https://repo.adobe.com/nexus/content/groups/public/</url>
@@ -164,13 +177,21 @@
         </pluginRepository>
 
       </pluginRepositories>
-
+      
     </profile>
 
   </profiles>
-
+  
   <activeProfiles>
     <activeProfile>default</activeProfile>
   </activeProfiles>
-
+  
+  <servers>
+    <server>
+      <id>adobe-unobfuscated</id>
+      <username>${env.ADOBE_UNOBFUSCATED_USER}</username>
+      <password>${env.ADOBE_UNOBFUSCATED_PASSWORD}</password>
+    </server>
+  </servers>
+  
 </settings>

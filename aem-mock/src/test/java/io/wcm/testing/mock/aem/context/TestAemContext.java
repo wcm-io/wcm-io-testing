@@ -1,9 +1,6 @@
 /* Copyright (c) pro!vision GmbH. All rights reserved. */
 package io.wcm.testing.mock.aem.context;
 
-import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextCallback;
-
 import java.io.IOException;
 
 import javax.jcr.RepositoryException;
@@ -14,6 +11,9 @@ import org.apache.sling.testing.mock.sling.NodeTypeDefinitionScanner;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 
 import com.google.common.collect.ImmutableList;
+
+import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit.AemContextCallback;
 
 public final class TestAemContext {
 
@@ -27,18 +27,6 @@ public final class TestAemContext {
     ResourceResolverType.JCR_OAK
   };
 
-  /**
-   * All resource resolver types the unit tests of aem-mock should run with.
-   * Including jackrabbit with requires special "unique root" handling.
-   */
-  public static final ResourceResolverType[] ALL_TYPES_INCLUDING_JACKRABBIT = new ResourceResolverType[] {
-    ResourceResolverType.JCR_MOCK,
-    ResourceResolverType.RESOURCERESOLVER_MOCK,
-    ResourceResolverType.JCR_JACKRABBIT,
-    ResourceResolverType.JCR_OAK
-  };
-
-
   private TestAemContext() {
     // static methods only
   }
@@ -46,11 +34,6 @@ public final class TestAemContext {
   public static AemContext newAemContext() {
     return new AemContext(new SetUpCallback(), ALL_TYPES);
   }
-
-  public static AemContext newAemContextIncludingJackrabbit() {
-    return new AemContext(new SetUpCallback(), ALL_TYPES_INCLUDING_JACKRABBIT);
-  }
-
 
   /**
    * Custom set up rules required in all unit tests.

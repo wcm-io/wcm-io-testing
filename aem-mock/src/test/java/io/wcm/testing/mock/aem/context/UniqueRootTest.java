@@ -21,15 +21,16 @@ package io.wcm.testing.mock.aem.context;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.junit.Rule;
 import org.junit.Test;
 
+import io.wcm.testing.mock.aem.junit.AemContext;
+
 public class UniqueRootTest {
 
   @Rule
-  public AemContext context = TestAemContext.newAemContextIncludingJackrabbit();
+  public AemContext context = TestAemContext.newAemContext();
 
   @Test
   public void testDam() throws Exception {
