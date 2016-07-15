@@ -54,7 +54,6 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ValueMap metadataProps;
   private final Resource renditionsResource;
 
-  @SuppressWarnings("deprecation")
   MockAsset(Resource resource) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
@@ -256,6 +255,21 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public boolean isBatchMode() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getID() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Rendition getImagePreviewRendition() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getMetadataValueFromJcr(String arg0) {
     throw new UnsupportedOperationException();
   }
 

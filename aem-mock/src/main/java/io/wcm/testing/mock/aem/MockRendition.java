@@ -43,7 +43,6 @@ class MockRendition extends ResourceWrapper implements Rendition {
   private final Resource contentResource;
   private final ValueMap contentProps;
 
-  @SuppressWarnings("deprecation")
   MockRendition(Resource resource) {
     super(resource);
     this.resource = resource;

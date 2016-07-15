@@ -48,9 +48,6 @@ final class ContextResourceResolverFactory {
         case JCR_MOCK:
           initializeJcrMock(factory);
           break;
-        case JCR_JACKRABBIT:
-          initializeJcrJackrabbit(factory);
-          break;
         case JCR_OAK:
           initializeJcrOak(factory);
           break;
@@ -79,10 +76,6 @@ final class ContextResourceResolverFactory {
     finally {
       resolver.close();
     }
-  }
-
-  private static void initializeJcrJackrabbit(ResourceResolverFactory factory) {
-    // nothing to do - namespaces are registered automatically together with node types
   }
 
   private static void initializeJcrOak(ResourceResolverFactory factory) {
