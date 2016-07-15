@@ -13,6 +13,14 @@ Mock implementation of selected AEM APIs.
 * [Changelog](changes-report.html)
 
 
+### AEM Support
+
+You should pick the major version of AEM Mock depending on your AEM version:
+
+* AEM 6.0 or 6.1: use AEM Mock 1.x
+* AEM 6.2 or above: use AEM Mock 2.x
+
+
 ### Implemented mock features
 
 The mock implementation supports:
