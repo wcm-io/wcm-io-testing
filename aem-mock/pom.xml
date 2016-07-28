@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -48,7 +48,7 @@
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
     <jcr-mock.version>1.1.14</jcr-mock.version>
-    <osgi-mock.version>2.0.4</osgi-mock.version>
+    <osgi-mock.version>2.0.5-SNAPSHOT</osgi-mock.version>
     <sling-mock.version>2.0.0</sling-mock.version>
     <sling-mock.oak.version>2.0.0</sling-mock.oak.version>
     <resourceresolver-mock.version>1.1.14</resourceresolver-mock.version>
@@ -61,6 +61,27 @@
 
   <dependencies>
 
+    <!-- Make sure the following dependencies use the version from the imported AEM dependencies -->
+    <dependency>
+      <groupId>org.apache.jackrabbit</groupId>
+      <artifactId>jackrabbit-jcr-commons</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.commons.osgi</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.resourceresolver</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.serviceusermapper</artifactId>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.jcr.api</artifactId>
@@ -73,12 +94,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.models.impl</artifactId>
+      <artifactId>org.apache.sling.commons.mime</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.resourceresolver</artifactId>
+      <artifactId>org.apache.sling.commons.json</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.commons.classloader</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -86,7 +112,19 @@
       <artifactId>org.apache.sling.settings</artifactId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.i18n</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.models.impl</artifactId>
+      <version>1.2.2</version>
+      <scope>compile</scope>
+    </dependency>
 
+      
     <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
          are loaded before AEM API deps -->
     <dependency>
@@ -94,6 +132,12 @@
       <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
       <version>${sling-mock.oak.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -257,6 +301,18 @@
         <version>6.2.0.0000</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.day.commons</groupId>
+        <artifactId>day-commons-gfx</artifactId>
+        <version>2.1.28</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.6</version>
       </dependency>
 
     </dependencies>
