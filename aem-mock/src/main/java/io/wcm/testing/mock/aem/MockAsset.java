@@ -42,6 +42,7 @@ import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.api.Revision;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * Mock implementation of {@link Asset}.
@@ -120,7 +121,7 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public List<Rendition> getRenditions() {
-    return ImmutableList.copyOf(listRenditions());
+    return Lists.newArrayList(listRenditions());
   }
 
   @Override
