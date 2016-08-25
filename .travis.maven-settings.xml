@@ -42,6 +42,8 @@
           </snapshots>
         </repository>
 
+        <!-- no longer required - AEM uber-jar is available on public adobe repo since 6.2.0 -->
+        <!--
         <repository>
           <id>adobe-unobfuscated</id>
           <name>adobe-unobfuscated</name>
@@ -54,6 +56,7 @@
             <enabled>false</enabled>
           </snapshots>
         </repository>
+        -->
 
         <repository>
           <id>adobe-public-releases</id>
@@ -186,6 +189,8 @@
     <activeProfile>default</activeProfile>
   </activeProfiles>
   
+  <!-- no longer required - AEM uber-jar is available on public adobe repo since 6.2.0 -->
+  <!--
   <servers>
     <server>
       <id>adobe-unobfuscated</id>
@@ -193,5 +198,6 @@
       <password>${env.ADOBE_UNOBFUSCATED_PASSWORD}</password>
     </server>
   </servers>
+  -->
   
 </settings>
