@@ -32,9 +32,11 @@ import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.commons.jcr.JcrUtil;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -69,12 +71,30 @@ class MockPageManager extends SlingAdaptable implements PageManager {
       throw new WCMException(String.format("Parent path '%s' does not exist.", parentPath));
     }
 
+    if (StringUtils.isEmpty(pageName) && StringUtils.isEmpty(title)) {
+      throw new IllegalArgumentException("Either page name or title must be specified.");
+    }
+
+    // derive page name from title if none given
+    String childResourceName = pageName;
+    if (StringUtils.isEmpty(childResourceName)) {
+      childResourceName = JcrUtil.createValidName(title, JcrUtil.HYPHEN_LABEL_CHAR_MAPPING, "_");
+    }
+
+    // use a unique variant of page name if a node with the given name already exists
+    try {
+      childResourceName = ResourceUtil.createUniqueChildName(parentResource, childResourceName);
+    }
+    catch (PersistenceException ex) {
+      throw new WCMException("Unable to get unique child name.", ex);
+    }
+
     Resource pageResource;
     try {
       // page node
       Map<String, Object> props = new HashMap<String, Object>();
       props.put(JcrConstants.JCR_PRIMARYTYPE, NameConstants.NT_PAGE);
-      pageResource = this.resourceResolver.create(parentResource, pageName, props);
+      pageResource = this.resourceResolver.create(parentResource, childResourceName, props);
 
       // page content node
       props = new HashMap<String, Object>();
@@ -94,7 +114,7 @@ class MockPageManager extends SlingAdaptable implements PageManager {
       }
     }
     catch (PersistenceException ex) {
-      throw new WCMException("Creating page failed at :" + parentPath + "/" + pageName + " failed.", ex);
+      throw new WCMException("Creating page failed at :" + parentPath + "/" + childResourceName + " failed.", ex);
     }
 
     return pageResource.adaptTo(Page.class);

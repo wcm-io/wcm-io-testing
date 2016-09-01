@@ -27,6 +27,9 @@
       <action type="fix" dev="sseifert" issue="WTES-20">
         MockAsset.getRenditions() should return modifiable list.
       </action>
+      <action type="fix" dev="sseifert" issue="WTES-21">
+        MockPageManager.create should support creating pages without name but with title.
+      </action>
     </release>
 
     <release version="1.8.0" date="2016-07-15">
