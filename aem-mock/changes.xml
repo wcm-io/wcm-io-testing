@@ -30,6 +30,9 @@
       <action type="fix" dev="sseifert" issue="WTES-21">
         MockPageManager.create should support creating pages without name but with title.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling and OSGi Mock.
+      </action>
     </release>
 
     <release version="1.8.0" date="2016-07-15">
