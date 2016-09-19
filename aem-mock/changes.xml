@@ -31,7 +31,7 @@
         MockPageManager.create should support creating pages without name but with title.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest Sling and OSGi Mock.
+        Update to latest JCR, Sling and OSGi Mock.
       </action>
     </release>
 
