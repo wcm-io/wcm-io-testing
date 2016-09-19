@@ -23,8 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.wcm.testing.mock.aem.context.TestAemContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -39,12 +37,16 @@ import org.junit.Test;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
+import com.day.cq.dam.commons.util.UIHelper;
 import com.day.cq.wcm.foundation.WCMRenditionPicker;
+
+import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class MockAssetTest {
 
   private static final byte[] BINARY_DATA = new byte[] {
-    0x01, 0x02, 0x03, 0x04, 0x05
+      0x01, 0x02, 0x03, 0x04, 0x05
   };
 
   @Rule
@@ -118,6 +120,12 @@ public class MockAssetTest {
     assertNull(asset.getRendition("test.bin"));
     resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/test.bin");
     assertNull(resource);
+  }
+
+  @Test
+  public void testRenditionListMutable() throws Exception {
+    // make sure rendition list is modifiable by calling getBestfitRendition which does a sort on it
+    UIHelper.getBestfitRendition(asset, 100);
   }
 
 }

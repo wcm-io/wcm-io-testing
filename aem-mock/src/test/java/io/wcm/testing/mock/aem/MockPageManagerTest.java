@@ -20,13 +20,16 @@
 package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -207,6 +210,21 @@ public class MockPageManagerTest {
     this.context.load().json("/json-import-samples/application.json", "/apps/sample");
     assertNotNull(this.pageManager.getTemplate("/apps/sample/templates/homepage"));
     assertNull(this.pageManager.getTemplate("/apps/sample/templates/nonExisting"));
+  }
+
+  @Test
+  public void testCreatePageWithoutName() throws Exception {
+    Page page = this.pageManager.create("/content/sample/en", null, "/apps/sample/templates/homepage", "Title 1");
+    assertEquals("title-1", page.getName());
+  }
+
+  @Test
+  public void testCreatePageWithDuplicateName() throws Exception {
+    Page page1 = this.pageManager.create("/content/sample/en", null, "/apps/sample/templates/homepage", "Title 1");
+    Page page2 = this.pageManager.create("/content/sample/en", null, "/apps/sample/templates/homepage", "Title 1");
+    assertEquals("title-1", page1.getName());
+    assertTrue(StringUtils.startsWith(page2.getName(), "title-1"));
+    assertNotEquals(page1.getPath(), page2.getPath());
   }
 
 }
