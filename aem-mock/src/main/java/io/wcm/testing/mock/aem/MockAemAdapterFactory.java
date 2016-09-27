@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import com.day.cq.dam.api.AssetManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
@@ -71,6 +72,7 @@ public class MockAemAdapterFactory implements AdapterFactory {
     TagManager.class.getName(),
     Tag.class.getName(),
     Designer.class.getName(),
+    AssetManager.class.getName()
   };
 
   @Override
@@ -117,6 +119,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
     }
     if (type == Designer.class) {
       return (AdapterType)new MockDesigner();
+    }
+    if (type == AssetManager.class) {
+      return (AdapterType)new MockAssetManager(resolver);
     }
     return null;
   }

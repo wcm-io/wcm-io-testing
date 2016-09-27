@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem.context;
 
 import java.util.Set;
 
+import com.day.cq.dam.api.AssetManager;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
@@ -84,6 +85,11 @@ public class AemContextImpl extends SlingContextImpl {
   public PageManager pageManager() {
     return resourceResolver().adaptTo(PageManager.class);
   }
+
+  /**
+   * @return Asset manager
+   */
+  public AssetManager assetManager() { return resourceResolver().adaptTo(AssetManager.class); }
 
   /**
    * @return Content builder for building test content
