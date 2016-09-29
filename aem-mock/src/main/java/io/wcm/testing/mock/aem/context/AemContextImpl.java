@@ -21,13 +21,13 @@ package io.wcm.testing.mock.aem.context;
 
 import java.util.Set;
 
-import com.day.cq.dam.api.AssetManager;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 import org.osgi.annotation.versioning.ConsumerType;
 
+import com.day.cq.dam.api.AssetManager;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.ComponentContext;
@@ -89,7 +89,9 @@ public class AemContextImpl extends SlingContextImpl {
   /**
    * @return Asset manager
    */
-  public AssetManager assetManager() { return resourceResolver().adaptTo(AssetManager.class); }
+  public AssetManager assetManager() {
+    return resourceResolver().adaptTo(AssetManager.class);
+  }
 
   /**
    * @return Content builder for building test content
