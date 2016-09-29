@@ -24,22 +24,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.osgi.annotation.versioning.ProviderType;
 
-import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.AssetManager;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.tagging.InvalidTagFormatException;
 import com.day.cq.tagging.Tag;
@@ -209,52 +207,19 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @return Asset
    */
   public Asset asset(String path, InputStream inputStream, String mimeType, Map<String, Object> metadata) {
-    try {
-      // create asset
-      resource(path, ImmutableMap.<String, Object>builder()
-          .put(JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSET)
-          .build());
-      resource(path + "/" + JcrConstants.JCR_CONTENT, ImmutableMap.<String, Object>builder()
-          .put(JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSETCONTENT)
-          .build());
-      String renditionsPath = path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER;
-      resource(renditionsPath, ImmutableMap.<String, Object>builder()
-          .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_FOLDER)
-          .build());
+    AssetManager assetManager = resourceResolver.adaptTo(AssetManager.class);
+    Asset asset = assetManager.createAsset(path, inputStream, mimeType, true);
+    if (metadata != null && !metadata.isEmpty()) {
+      Resource metadataResource = resourceResolver.getResource(asset.getPath());
+      ModifiableValueMap metadataProperties = metadataResource.adaptTo(ModifiableValueMap.class);
 
-      // store asset metadata
-      Map<String, Object> metadataProps = new HashMap<>();
-      if (metadata != null) {
-        metadataProps.putAll(metadata);
+      for (final Map.Entry<String, Object> entry : metadata.entrySet()) {
+        metadataProperties.remove(entry.getKey());
+        metadataProperties.put(entry.getKey(), entry.getValue());
       }
-
-      // try to detect image with/height if input stream contains image data
-      byte[] data = IOUtils.toByteArray(inputStream);
-      try (InputStream is = new ByteArrayInputStream(data)) {
-        try {
-          Layer layer = new Layer(is);
-          metadataProps.put(DamConstants.TIFF_IMAGEWIDTH, layer.getWidth());
-          metadataProps.put(DamConstants.TIFF_IMAGELENGTH, layer.getHeight());
-        }
-        catch (Throwable ex) {
-          // ignore
-        }
-      }
-
-      resource(path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER, metadataProps);
-
-      // store original rendition
-      try (InputStream is = new ByteArrayInputStream(data)) {
-        new ContentLoader(resourceResolver).binaryFile(is, renditionsPath + "/" + DamConstants.ORIGINAL_FILE, mimeType);
-      }
-
-      resourceResolver.commit();
-    }
-    catch (IOException ex) {
-      throw new RuntimeException("Unable to create asset at " + path, ex);
     }
 
-    return resourceResolver.getResource(path).adaptTo(Asset.class);
+    return asset;
   }
 
   /**
