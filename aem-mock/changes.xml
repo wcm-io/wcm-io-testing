@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.1.0" date="not released">
+      <action type="add" dev="drudolph" issue="WTES-22">
+        Add AssetManager mock implementation.
+      </action>
+    </release>
+
     <release version="2.0.2" date="2016-09-19">
       <action type="update" dev="sseifert" issue="WTES-19">
         Cleanup all dependencies to make sure the correct ones from AEM 6.2 are used.

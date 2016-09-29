@@ -49,37 +49,14 @@ import io.wcm.testing.mock.aem.builder.ContentBuilder;
  */
 class MockAssetManager implements AssetManager {
 
-  private final ContentBuilder contentBuilder;
   private final ResourceResolver resourceResolver;
+  private final ContentBuilder contentBuilder;
+  private final ContentLoader contentLoader;
 
   MockAssetManager(final ResourceResolver resourceResolver) {
-    this.contentBuilder = new ContentBuilder(resourceResolver);
     this.resourceResolver = resourceResolver;
-  }
-
-  @Override
-  public Asset restore(String s) throws Exception {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Collection<Revision> getRevisions(String s, Calendar calendar) throws Exception {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Asset createAssetForBinary(String s, boolean b) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Asset getAssetForBinary(String s) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean removeAssetForBinary(String s) {
-    throw new UnsupportedOperationException();
+    this.contentBuilder = new ContentBuilder(resourceResolver);
+    this.contentLoader = new ContentLoader(resourceResolver);
   }
 
   @Override
@@ -117,7 +94,7 @@ class MockAssetManager implements AssetManager {
 
       // store original rendition
       try (InputStream is = new ByteArrayInputStream(data)) {
-        new ContentLoader(this.resourceResolver).binaryFile(is, renditionsPath + "/" + DamConstants.ORIGINAL_FILE, mimeType);
+        contentLoader.binaryFile(is, renditionsPath + "/" + DamConstants.ORIGINAL_FILE, mimeType);
       }
 
       if (autoSave) {
@@ -131,11 +108,40 @@ class MockAssetManager implements AssetManager {
     return resourceResolver.getResource(path).adaptTo(Asset.class);
   }
 
-  @Override public Revision createRevision(Asset asset, String s, String s1) throws Exception {
+  // --- unsupported operations ---
+
+  @Override
+  public Asset restore(String s) throws Exception {
     throw new UnsupportedOperationException();
   }
 
-  @Override public String assignAssetID(Asset asset) throws PathNotFoundException, RepositoryException {
+  @Override
+  public Collection<Revision> getRevisions(String s, Calendar calendar) throws Exception {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Asset createAssetForBinary(String s, boolean b) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Asset getAssetForBinary(String s) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean removeAssetForBinary(String s) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Revision createRevision(Asset asset, String s, String s1) throws Exception {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String assignAssetID(Asset asset) throws PathNotFoundException, RepositoryException {
     throw new UnsupportedOperationException();
   }
 
