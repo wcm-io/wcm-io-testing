@@ -27,6 +27,9 @@
       <action type="add" dev="drudolph" issue="WTES-22">
         Add AssetManager mock implementation.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
     </release>
 
     <release version="2.0.2" date="2016-09-19">
