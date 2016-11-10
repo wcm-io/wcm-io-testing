@@ -132,6 +132,12 @@ public class MockPageManagerTest {
   }
 
   @Test
+  public void testCreatePageWithDefaultContent_WTES23() throws Exception {
+    context.load().json("/WTEST-23/sample_templates.json", "/content/templates");
+    context.pageManager().create("/content", "", "/content/templates/sample-template", "Some title", true);
+  }
+
+  @Test
   public void testDeletePage() throws WCMException, PersistenceException {
     this.pageManager.delete(this.pageManager.getPage("/content/sample/en"), false);
     verify(this.resourceResolver, never()).commit();

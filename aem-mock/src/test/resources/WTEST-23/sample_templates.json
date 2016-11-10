@@ -1,0 +1,91 @@
+{
+  "jcr:primaryType": "cq:Page",
+  "jcr:createdBy": "admin",
+  "sample-template": {
+    "jcr:primaryType": "cq:Template",
+    "jcr:createdBy": "admin",
+    "initial": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:createdBy": "admin",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Web",
+        "showInEditor": true,
+        "cq:template": "/templates/experience-fragment-template",
+        "cq:tags": [
+          "mytags:sampletag"
+        ],
+        "sling:resourceType": "doesnt/really/matter",
+        "root": {
+          "jcr:primaryType": "nt:unstructured",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:lastModified": "Mon Jul 04 2016 15:09:49 GMT+0300",
+          "sling:resourceType": "wcm/foundation/components/responsivegrid"
+        }
+      }
+    },
+    "jcr:content": {
+      "jcr:primaryType": "cq:PageContent",
+      "jcr:createdBy": "admin",
+      "jcr:title": "Sample Template",
+      "alowedPaths": "(/.*)?",
+      "status": "enabled",
+      "cq:lastModified": "Mon Jul 04 2016 15:09:46 GMT+0300",
+      "cq:templateType": "/libs/settings/template-types",
+      "cq:lastModifiedBy": "admin"
+    },
+    "structure": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:createdBy": "admin",
+      "jcr:content": {
+        "jcr:primaryType": "cq:PageContent",
+        "jcr:createdBy": "admin",
+        "cq:template": "/templates/sample-template",
+        "cq:lastModified": "Mon Jul 04 2016 15:09:46 GMT+0300",
+        "cq:deviceGroups": [
+          "/etc/mobile/groups/responsive"
+        ],
+        "sling:resourceType": "doesnt/really/matter",
+        "cq:lastModifiedBy": "admin",
+        "root": {
+          "jcr:primaryType": "nt:unstructured",
+          "jcr:lastModifiedBy": "admin",
+          "jcr:lastModified": "Mon Jul 04 2016 15:09:43 GMT+0300",
+          "sling:resourceType": "wcm/foundation/components/responsivegrid",
+          "editable": true
+        },
+        "cq:responsive": {
+          "jcr:primaryType": "nt:unstructured",
+          "breakpoints": {
+            "jcr:primaryType": "nt:unstructured",
+            "phone": {
+              "jcr:primaryType": "nt:unstructured",
+              "title": "Smaller Screen",
+              "width": 650
+            },
+            "tablet": {
+              "jcr:primaryType": "nt:unstructured",
+              "title": "Tablet",
+              "width": 1200
+            }
+          }
+        }
+      }
+    },
+    "policies": {
+      "jcr:primaryType": "cq:Page",
+      "jcr:createdBy": "admin",
+      "jcr:content": {
+        "jcr:primaryType": "nt:unstructured",
+        "cq:policy": "wcm/foundation/components/page/default",
+        "sling:resourceType": "wcm/core/components/policies/mappings",
+        "root": {
+          "jcr:primaryType": "nt:unstructured",
+          "cq:policy": "wcm/foundation/components/responsivegrid/default",
+          "sling:resourceType": "wcm/core/components/policies/mapping"
+        }
+      }
+    }
+  }
+}

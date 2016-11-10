@@ -27,6 +27,9 @@
       <action type="add" dev="drudolph" issue="WTES-22">
         Add AssetManager mock implementation.
       </action>
+      <action type="fix" dev="sseifert" issue="WTES-23">
+        PageManager: Skip protected JCR properties on page creation with template.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>

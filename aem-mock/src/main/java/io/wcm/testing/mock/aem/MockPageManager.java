@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.adapter.SlingAdaptable;
@@ -123,10 +125,26 @@ class MockPageManager extends SlingAdaptable implements PageManager {
   private void copyContent(Resource source, Resource target, boolean skipPrimaryType) throws PersistenceException {
     ValueMap sourceProps = source.adaptTo(ValueMap.class);
     ModifiableValueMap targetProps = target.adaptTo(ModifiableValueMap.class);
+    Node node = target.adaptTo(Node.class);
+
     for (Map.Entry<String, Object> entry : sourceProps.entrySet()) {
       if (skipPrimaryType && StringUtils.equals(entry.getKey(), JcrConstants.JCR_PRIMARYTYPE)) {
         continue;
       }
+
+      // If JCR repository is used: skip protected properties
+      if (node != null) {
+        try {
+          Property property = node.getProperty(entry.getKey());
+          if (property.getDefinition().isProtected()) {
+            continue;
+          }
+        }
+        catch (RepositoryException ex) {
+          // ignore
+        }
+      }
+
       targetProps.put(entry.getKey(), entry.getValue());
     }
     copyChildren(source, target);
