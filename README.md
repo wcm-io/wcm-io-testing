@@ -1,6 +1,7 @@
 <img src="http://wcm.io/images/favicon-16@2x.png"/> wcm.io Testing
 ======
 [![Build Status](https://travis-ci.org/wcm-io/wcm-io-testing.png?branch=develop)](https://travis-ci.org/wcm-io/wcm-io-testing)
+[![Code Coverage](https://codecov.io/gh/wcm-io/wcm-io-testing/branch/develop/graph/badge.svg)](https://codecov.io/gh/wcm-io/wcm-io-testing)
 
 Helper tools for supporting Unit Tests, Integration test and test automation in AEM-based projects.
 

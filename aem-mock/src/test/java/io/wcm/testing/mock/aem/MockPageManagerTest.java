@@ -45,7 +45,6 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
-import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -91,19 +90,15 @@ public class MockPageManagerTest {
   @Test
   public void testCreatePageWithDefaultContent() throws WCMException {
     // prepare some default content for template
-    context.create().resource("/apps/sample/templates/homepage/jcr:content", ImmutableMap.<String, Object>builder()
-        .put("sling:resourceType", "/apps/sample/components/page/homepage")
-        .build());
-    context.create().resource("/apps/sample/templates/homepage/jcr:content/node1", ImmutableMap.<String, Object>builder()
-        .put("prop1", "abc")
-        .put("prop2", "def")
-        .build());
-    context.create().resource("/apps/sample/templates/homepage/jcr:content/node1/node11", ImmutableMap.<String, Object>builder()
-        .put("prop3", 55)
-        .build());
-    context.create().resource("/apps/sample/templates/homepage/jcr:content/node2", ImmutableMap.<String, Object>builder()
-        .put("prop4", true)
-        .build());
+    context.build().resource("/apps/sample/templates/homepage/jcr:content",
+        "sling:resourceType", "/apps/sample/components/page/homepage");
+    context.create().resource("/apps/sample/templates/homepage/jcr:content/node1",
+        "prop1", "abc",
+        "prop2", "def");
+    context.create().resource("/apps/sample/templates/homepage/jcr:content/node1/node11",
+        "prop3", 55);
+    context.create().resource("/apps/sample/templates/homepage/jcr:content/node2",
+        "prop4", true);
 
     testCreatePageInternal(false);
 
@@ -134,6 +129,12 @@ public class MockPageManagerTest {
     ValueMap props = pageResource.getValueMap();
     assertEquals("title1", props.get(JcrConstants.JCR_TITLE, String.class));
     assertEquals("/apps/sample/templates/homepage", props.get(NameConstants.PN_TEMPLATE, String.class));
+  }
+
+  @Test
+  public void testCreatePageWithDefaultContent_WTES23() throws Exception {
+    context.load().json("/WTEST-23/sample_templates.json", "/content/templates");
+    context.pageManager().create("/content", "", "/content/templates/sample-template", "Some title", true);
   }
 
   @Test

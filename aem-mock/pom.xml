@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>2.0.2</version>
+  <version>2.1.0</version>
   <packaging>bundle</packaging>
 
   <name>AEM Mocks</name>
@@ -49,7 +49,7 @@
 
     <jcr-mock.version>1.1.16</jcr-mock.version>
     <osgi-mock.version>2.1.0</osgi-mock.version>
-    <sling-mock.version>2.1.0</sling-mock.version>
+    <sling-mock.version>2.1.2</sling-mock.version>
     <sling-mock.oak.version>2.0.2</sling-mock.oak.version>
     <resourceresolver-mock.version>1.1.14</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
