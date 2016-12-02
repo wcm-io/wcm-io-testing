@@ -67,7 +67,7 @@
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.wcm-io-mock.config</artifactId>
       <version>0.5.0</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
