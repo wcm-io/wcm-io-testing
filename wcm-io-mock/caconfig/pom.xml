@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  wcm.io
+  %%
+  Copyright (C) 2016 wcm.io
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.wcm</groupId>
+    <artifactId>io.wcm.testing.parent</artifactId>
+    <version>1.0.12</version>
+    <relativePath>../../parent/pom.xml</relativePath>
+  </parent>
+
+  <groupId>io.wcm</groupId>
+  <artifactId>io.wcm.testing.wcm-io-mock.caconfig</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+
+  <name>Context-Aware Configuration Mock Helper</name>
+  <description>Helps setting up mock environment for wcm.io Context-Aware Configuration.</description>
+
+  <scm>
+    <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</developerConnection>
+    <url>https://github.com/wcm-io/wcm-io-testing</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <site.url.module.prefix>testing/wcm-io-mock/caconfig</site.url.module.prefix>
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.commons.osgi</artifactId>
+      <version>2.4.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.osgi-mock</artifactId>
+      <version>2.1.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.logging-mock</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.caconfig.application</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.caconfig.compat</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
+    <!-- (other versions of this APIs use other artifact ids) -->
+    <dependency>
+      <groupId>com.adobe.aem</groupId>
+      <artifactId>aem-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.3.2</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <addVersionToProjectName>false</addVersionToProjectName>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
+    </site>
+  </distributionManagement>
+
+</project>
