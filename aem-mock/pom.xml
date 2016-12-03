@@ -401,6 +401,7 @@
             </group>
           </groups>
           <excludePackageNames>osgimock.*</excludePackageNames>
+          <failOnError>false</failOnError>
         </configuration>
       </plugin>
 
