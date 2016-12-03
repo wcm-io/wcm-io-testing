@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem.junit;
 
 import java.util.Map;
 
+import org.apache.sling.testing.mock.osgi.junit.ContextCallback;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 
 /**
@@ -28,11 +29,8 @@ import org.apache.sling.testing.mock.sling.ResourceResolverType;
  */
 public final class AemContextBuilder {
 
+  private final CallbackParams callbackParams = new CallbackParams();
   private ResourceResolverType[] resourceResolverTypes;
-  private AemContextCallback beforeSetUpCallback;
-  private AemContextCallback afterSetUpCallback;
-  private AemContextCallback beforeTearDownCallback;
-  private AemContextCallback afterTearDownCallback;
   private Map<String, Object> resourceResolverFactoryActivatorProps;
 
   /**
@@ -60,38 +58,60 @@ public final class AemContextBuilder {
   }
 
   /**
-   * @param callback Allows the application to register an own callback function that is called before the built-in setup rules are executed.
+   * @param afterSetUpCallback Allows the application to register an own callback function that is called after the
+   *          built-in setup rules are executed.
    * @return this
    */
-  public AemContextBuilder beforeSetUp(AemContextCallback callback) {
-    this.beforeSetUpCallback = callback;
+  public AemContextBuilder setUp(ContextCallback... afterSetUpCallback) {
+    return afterSetUp(afterSetUpCallback);
+  }
+
+  /**
+   * @param beforeSetUpCallback Allows the application to register an own callback function that is called before the
+   *          built-in setup rules are executed.
+   * @return this
+   */
+  public AemContextBuilder beforeSetUp(ContextCallback... beforeSetUpCallback) {
+    callbackParams.beforeSetUpCallback = beforeSetUpCallback;
     return this;
   }
 
   /**
-   * @param callback Allows the application to register an own callback function that is called after the built-in setup rules are executed.
+   * @param afterSetUpCallback Allows the application to register an own callback function that is called after the
+   *          built-in setup rules are executed.
    * @return this
    */
-  public AemContextBuilder afterSetUp(AemContextCallback callback) {
-    this.afterSetUpCallback = callback;
+  public AemContextBuilder afterSetUp(ContextCallback... afterSetUpCallback) {
+    callbackParams.afterSetUpCallback = afterSetUpCallback;
     return this;
   }
 
   /**
-   * @param callback Allows the application to register an own callback function that is called before the built-in teardown rules are executed.
+   * @param beforeTearDownCallback Allows the application to register an own callback function that is called before the
+   *          built-in teardown rules are executed.
    * @return this
    */
-  public AemContextBuilder beforeTearDown(AemContextCallback callback) {
-    this.beforeTearDownCallback = callback;
+  public AemContextBuilder tearDown(ContextCallback... beforeTearDownCallback) {
+    return beforeTearDown(beforeTearDownCallback);
+  }
+
+  /**
+   * @param beforeTearDownCallback Allows the application to register an own callback function that is called before the
+   *          built-in teardown rules are executed.
+   * @return this
+   */
+  public AemContextBuilder beforeTearDown(ContextCallback... beforeTearDownCallback) {
+    callbackParams.beforeTearDownCallback = beforeTearDownCallback;
     return this;
   }
 
   /**
-   * @param callback Allows the application to register an own callback function that is after before the built-in teardown rules are executed.
+   * @param afterTearDownCallback Allows the application to register an own callback function that is after before the
+   *          built-in teardown rules are executed.
    * @return this
    */
-  public AemContextBuilder afterTearDown(AemContextCallback callback) {
-    this.afterTearDownCallback = callback;
+  public AemContextBuilder afterTearDown(ContextCallback... afterTearDownCallback) {
+    callbackParams.afterTearDownCallback = afterTearDownCallback;
     return this;
   }
 
@@ -109,8 +129,7 @@ public final class AemContextBuilder {
    * @return Build {@link AemContext} instance.
    */
   public AemContext build() {
-    return new AemContext(this.beforeSetUpCallback, this.afterSetUpCallback,
-        this.beforeTearDownCallback, this.afterTearDownCallback,
+    return new AemContext(this.callbackParams,
         this.resourceResolverFactoryActivatorProps,
         this.resourceResolverTypes);
   }
