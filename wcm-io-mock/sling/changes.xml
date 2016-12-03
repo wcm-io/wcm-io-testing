@@ -24,6 +24,9 @@
   <body>
 
     <release version="0.5.2" date="not released">
+      <action type="add" dev="sseifert">
+        Provide Mock Context Plugin.
+      </action>
       <action type="update" dev="sseifert">
         Set AEM API and OSGi dependencies to provided scope.
       </action>

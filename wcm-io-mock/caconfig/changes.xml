@@ -3,7 +3,7 @@
   #%L
   wcm.io
   %%
-  Copyright (C) 2014 wcm.io
+  Copyright (C) 2016 wcm.io
   %%
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -23,16 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="0.5.2" date="not released">
-      <action type="add" dev="sseifert">
-        Provide Mock Context Plugin.
-      </action>
-      <action type="update" dev="sseifert">
-        Set AEM API and OSGi dependencies to provided scope.
-      </action>
-    </release>
-
-    <release version="0.5.0" date="2014-11-05">
+    <release version="1.0.0" date="not released">
       <action type="add" dev="sseifert">
         Initial release.
       </action>

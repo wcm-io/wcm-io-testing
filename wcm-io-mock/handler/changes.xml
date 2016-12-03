@@ -24,6 +24,12 @@
   <body>
 
     <release version="0.5.6" date="not released">
+      <action type="add" dev="sseifert">
+        Provide Mock Context Plugin.
+      </action>
+      <action type="update" dev="sseifert">
+        Remove direct dependencies to other Mock Context Plugins.
+      </action>
       <action type="update" dev="sseifert">
         Make dependencies to wcm.io Config provided.
       </action>

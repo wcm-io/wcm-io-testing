@@ -20,5 +20,5 @@
 /**
  * Helps setting up mock environment for wcm.io Sling Commons and Sling Models Extensions.
  */
-@org.osgi.annotation.versioning.Version("0.5.0")
+@org.osgi.annotation.versioning.Version("0.6.0")
 package io.wcm.testing.mock.wcmio.sling;

@@ -65,9 +65,9 @@ import io.wcm.testing.mock.aem.junit.AemContext;
  * Helps setting up a mock environment for wcm.io Configuration.
  */
 @ProviderType
-public final class MockConfig {
+public final class MockCAConfig {
 
-  private MockConfig() {
+  private MockCAConfig() {
     // static methods only
   }
 
@@ -75,7 +75,7 @@ public final class MockConfig {
    * Set up all mandatory OSGi services for wcm.io Configuration support.
    * @param context Aem context
    */
-  public static void setUp(AemContext context) {
+  public static void setUpCompat(AemContext context) {
 
     // sling caconfig
     registerConfigurationResolver(context);

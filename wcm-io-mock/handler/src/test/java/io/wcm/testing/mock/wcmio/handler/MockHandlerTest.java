@@ -19,28 +19,31 @@
  */
 package io.wcm.testing.mock.wcmio.handler;
 
+import static io.wcm.testing.mock.wcmio.config.ContextPlugins.WCMIO_CONFIG;
+import static io.wcm.testing.mock.wcmio.handler.ContextPlugins.WCMIO_HANDLER;
+import static io.wcm.testing.mock.wcmio.sling.ContextPlugins.WCMIO_SLING;
 import static org.junit.Assert.assertNotNull;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import io.wcm.handler.link.LinkHandler;
 import io.wcm.handler.media.MediaHandler;
 import io.wcm.handler.richtext.RichTextHandler;
 import io.wcm.handler.url.UrlHandler;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextCallback;
-
-import org.junit.Rule;
-import org.junit.Test;
+import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 
 public class MockHandlerTest {
 
   @Rule
-  public AemContext context = new AemContext(new AemContextCallback() {
-    @Override
-    public void execute(AemContext callbackContext) {
-      MockHandler.setUp(callbackContext);
+  public AemContext context = new AemContextBuilder().plugin(WCMIO_SLING, WCMIO_CONFIG, WCMIO_HANDLER).build();
 
-      callbackContext.currentPage(callbackContext.create().page("/content/region/site/en", "/apps/templates/sample"));
-    }
-  });
+  @Before
+  public void setUp() {
+    context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
+  }
 
   @Test
   public void testHandler() {

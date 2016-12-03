@@ -19,8 +19,16 @@
  */
 package io.wcm.testing.mock.wcmio.config;
 
+import static io.wcm.testing.mock.wcmio.config.ContextPlugins.WCMIO_CONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
+
 import io.wcm.config.api.Configuration;
 import io.wcm.config.api.Parameter;
 import io.wcm.config.api.ParameterBuilder;
@@ -29,12 +37,7 @@ import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
 import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextCallback;
-
-import org.junit.Rule;
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableSet;
+import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 
 public class MockConfigTest {
 
@@ -47,28 +50,26 @@ public class MockConfigTest {
       ParameterBuilder.create("param2", String.class, APP_ID_2).defaultValue("def2").build();
 
   @Rule
-  public AemContext context = new AemContext(new AemContextCallback() {
-    @Override
-    public void execute(AemContext callbackContext) {
-      callbackContext.registerService(ConfigurationFinderStrategy.class,
-          MockConfig.configurationFinderStrategyAbsoluteParent(APP_ID_1, 2));
+  public AemContext context = new AemContextBuilder().plugin(WCMIO_CONFIG).build();
 
-      callbackContext.registerService(ApplicationProvider.class,
-          MockConfig.applicationProvider(APP_ID_1, "/content"));
+  @Before
+  public void setUp() {
+    context.registerService(ConfigurationFinderStrategy.class,
+        MockConfig.configurationFinderStrategyAbsoluteParent(APP_ID_1, 2));
 
-      callbackContext.registerService(ParameterProvider.class,
-          MockConfig.parameterProvider(MockConfigTest.class));
-      callbackContext.registerService(ParameterProvider.class,
-          MockConfig.parameterProvider(ImmutableSet.<Parameter<?>>builder().add(PARAM_2).build()));
+    context.registerService(ApplicationProvider.class,
+        MockConfig.applicationProvider(APP_ID_1, "/content"));
 
-      MockConfig.setUp(callbackContext);
+    context.registerService(ParameterProvider.class,
+        MockConfig.parameterProvider(MockConfigTest.class));
+    context.registerService(ParameterProvider.class,
+        MockConfig.parameterProvider(ImmutableSet.<Parameter<?>>builder().add(PARAM_2).build()));
 
-      callbackContext.currentPage(callbackContext.create().page("/content/region/site/en", "/apps/templates/sample"));
+    context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 
-      MockConfig.writeConfiguration(callbackContext, "/content/region/site",
-          ImmutableValueMap.of("param1", "value1"));
-    }
-  });
+    MockConfig.writeConfiguration(context, "/content/region/site",
+        ImmutableValueMap.of("param1", "value1"));
+  }
 
   @Test
   public void testConfig() {
