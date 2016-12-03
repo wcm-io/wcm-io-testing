@@ -281,6 +281,8 @@
               <packages>org.apache.sling.testing.mock.jcr:org.apache.sling.testing.mock.jcr.*</packages>
             </group>
           </groups>
+          <excludePackageNames>osgimock.*</excludePackageNames>
+          <failOnError>false</failOnError>
         </configuration>
       </plugin>
 
