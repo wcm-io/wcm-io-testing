@@ -17,9 +17,9 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.wcmio.config;
+package io.wcm.testing.mock.wcmio.caconfig;
 
-import static io.wcm.testing.mock.wcmio.config.ContextPlugins.WCMIO_CACONFIG;
+import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

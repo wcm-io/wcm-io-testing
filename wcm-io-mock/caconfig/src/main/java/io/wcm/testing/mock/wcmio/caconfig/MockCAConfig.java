@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.wcmio.config;
+package io.wcm.testing.mock.wcmio.caconfig;
 
 import java.util.Map;
 import java.util.Set;
