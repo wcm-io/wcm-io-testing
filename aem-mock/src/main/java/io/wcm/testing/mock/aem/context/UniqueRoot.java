@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem.context;
 import static org.apache.sling.jcr.resource.JcrResourceConstants.NT_SLING_ORDERED_FOLDER;
 
 import org.apache.sling.api.resource.Resource;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Manages unique root paths in JCR repository.
@@ -29,6 +30,7 @@ import org.apache.sling.api.resource.Resource;
  * where the repository is not cleaned for each test run. This class provides
  * unique root paths for each run, and cleans them up when done.
  */
+@ProviderType
 public final class UniqueRoot extends org.apache.sling.testing.mock.sling.context.UniqueRoot {
 
   private Resource damRoot;
