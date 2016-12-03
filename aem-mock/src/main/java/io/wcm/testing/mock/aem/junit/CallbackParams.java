@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2014 wcm.io
+ * Copyright (C) 2016 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,27 @@
 package io.wcm.testing.mock.aem.junit;
 
 import org.apache.sling.testing.mock.osgi.junit.ContextCallback;
-import org.osgi.annotation.versioning.ConsumerType;
 
-/**
- * Callback-interface for application-specific setup and teardown operations to customize
- * the {@link AemContext} JUnit rule.
- */
-@ConsumerType
-public interface AemContextCallback extends ContextCallback<AemContext> {
+final class CallbackParams {
 
-  // specialized version of ContextCallback
+  // CHECKSTYLE:OFF
+  ContextCallback[] beforeSetUpCallback;
+  ContextCallback[] afterSetUpCallback;
+  ContextCallback[] beforeTearDownCallback;
+  ContextCallback[] afterTearDownCallback;
+  // CHECKSTYLE:ON
+
+  CallbackParams() {
+    // no callbacks
+  }
+
+  CallbackParams(ContextCallback afterSetUpCallback) {
+    this.afterSetUpCallback = new ContextCallback[] { afterSetUpCallback };
+  }
+
+  CallbackParams(ContextCallback afterSetUpCallback, ContextCallback beforeTearDownCallback) {
+    this.afterSetUpCallback = new ContextCallback[] { afterSetUpCallback };
+    this.beforeTearDownCallback = new ContextCallback[] { beforeTearDownCallback };
+  }
 
 }
