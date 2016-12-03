@@ -19,11 +19,11 @@
  */
 package io.wcm.testing.mock.aem.junit;
 
-import org.apache.sling.testing.mock.osgi.junit.ContextCallback;
+import org.apache.sling.testing.mock.osgi.context.ContextCallback;
 import org.osgi.annotation.versioning.ConsumerType;
 
 /**
- * Callback-interface for application-specific setup and teardown operations to customize the
+ * Callback interface for application-specific setup and teardown operations to customize the
  * {@link AemContext} JUnit rule.
  */
 @ConsumerType

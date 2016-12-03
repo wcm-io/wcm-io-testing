@@ -28,7 +28,7 @@
         Update to latest OSGi and Sling Mock.
       </action>
       <action type="update" dev="sseifert">
-        Make ContextCallback and ContextBuilder more flexible.
+        Add ContextPlugin support.
       </action>
     </release>
 

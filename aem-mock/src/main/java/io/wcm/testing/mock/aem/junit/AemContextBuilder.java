@@ -21,15 +21,20 @@ package io.wcm.testing.mock.aem.junit;
 
 import java.util.Map;
 
-import org.apache.sling.testing.mock.osgi.junit.ContextCallback;
+import org.apache.sling.testing.mock.osgi.context.ContextCallback;
+import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
+import org.apache.sling.testing.mock.osgi.context.ContextPlugins;
+import org.apache.sling.testing.mock.osgi.context.OsgiContextImpl;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Builder class for creating {@link AemContext} instances with different sets of parameters.
  */
+@ProviderType
 public final class AemContextBuilder {
 
-  private final CallbackParams callbackParams = new CallbackParams();
+  private final ContextPlugins plugins = new ContextPlugins();
   private ResourceResolverType[] resourceResolverTypes;
   private Map<String, Object> resourceResolverFactoryActivatorProps;
 
@@ -58,60 +63,61 @@ public final class AemContextBuilder {
   }
 
   /**
-   * @param afterSetUpCallback Allows the application to register an own callback function that is called after the
-   *          built-in setup rules are executed.
+   * @param <T> context type
+   * @param plugin Context plugin which listens to context lifecycle events.
    * @return this
    */
-  public AemContextBuilder setUp(ContextCallback... afterSetUpCallback) {
-    return afterSetUp(afterSetUpCallback);
+  @SafeVarargs
+  public final <T extends OsgiContextImpl> AemContextBuilder plugin(ContextPlugin<T>... plugin) {
+    plugins.addPlugin(plugin);
+    return this;
   }
 
   /**
+   * @param <T> context type
    * @param beforeSetUpCallback Allows the application to register an own callback function that is called before the
    *          built-in setup rules are executed.
    * @return this
    */
-  public AemContextBuilder beforeSetUp(ContextCallback... beforeSetUpCallback) {
-    callbackParams.beforeSetUpCallback = beforeSetUpCallback;
+  @SafeVarargs
+  public final <T extends OsgiContextImpl> AemContextBuilder beforeSetUp(ContextCallback<T>... beforeSetUpCallback) {
+    plugins.addBeforeSetUpCallback(beforeSetUpCallback);
     return this;
   }
 
   /**
+   * @param <T> context type
    * @param afterSetUpCallback Allows the application to register an own callback function that is called after the
    *          built-in setup rules are executed.
    * @return this
    */
-  public AemContextBuilder afterSetUp(ContextCallback... afterSetUpCallback) {
-    callbackParams.afterSetUpCallback = afterSetUpCallback;
+  @SafeVarargs
+  public final <T extends OsgiContextImpl> AemContextBuilder afterSetUp(ContextCallback<T>... afterSetUpCallback) {
+    plugins.addAfterSetUpCallback(afterSetUpCallback);
     return this;
   }
 
   /**
+   * @param <T> context type
    * @param beforeTearDownCallback Allows the application to register an own callback function that is called before the
    *          built-in teardown rules are executed.
    * @return this
    */
-  public AemContextBuilder tearDown(ContextCallback... beforeTearDownCallback) {
-    return beforeTearDown(beforeTearDownCallback);
-  }
-
-  /**
-   * @param beforeTearDownCallback Allows the application to register an own callback function that is called before the
-   *          built-in teardown rules are executed.
-   * @return this
-   */
-  public AemContextBuilder beforeTearDown(ContextCallback... beforeTearDownCallback) {
-    callbackParams.beforeTearDownCallback = beforeTearDownCallback;
+  @SafeVarargs
+  public final <T extends OsgiContextImpl> AemContextBuilder beforeTearDown(ContextCallback<T>... beforeTearDownCallback) {
+    plugins.addBeforeTearDownCallback(beforeTearDownCallback);
     return this;
   }
 
   /**
+   * @param <T> context type
    * @param afterTearDownCallback Allows the application to register an own callback function that is after before the
    *          built-in teardown rules are executed.
    * @return this
    */
-  public AemContextBuilder afterTearDown(ContextCallback... afterTearDownCallback) {
-    callbackParams.afterTearDownCallback = afterTearDownCallback;
+  @SafeVarargs
+  public final <T extends OsgiContextImpl> AemContextBuilder afterTearDown(ContextCallback<T>... afterTearDownCallback) {
+    plugins.addAfterTearDownCallback(afterTearDownCallback);
     return this;
   }
 
@@ -129,7 +135,7 @@ public final class AemContextBuilder {
    * @return Build {@link AemContext} instance.
    */
   public AemContext build() {
-    return new AemContext(this.callbackParams,
+    return new AemContext(this.plugins,
         this.resourceResolverFactoryActivatorProps,
         this.resourceResolverTypes);
   }
