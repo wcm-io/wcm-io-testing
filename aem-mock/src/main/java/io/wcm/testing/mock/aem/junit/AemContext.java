@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem.junit;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.sling.testing.mock.osgi.junit.ContextCallback;
 import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.rules.ExternalResource;
@@ -44,10 +45,7 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 @ProviderType
 public final class AemContext extends AemContextImpl implements TestRule {
 
-  private final AemContextCallback beforeSetUpCallback;
-  private final AemContextCallback afterSetUpCallback;
-  private final AemContextCallback beforeTearDownCallback;
-  private final AemContextCallback afterTearDownCallback;
+  private final CallbackParams callbackParams;
   private final ResourceResolverType[] resourceResolverTypes;
   private final TestRule delegate;
 
@@ -64,7 +62,7 @@ public final class AemContext extends AemContextImpl implements TestRule {
    * @param resourceResolverTypes Resource resolver type(s).
    */
   public AemContext(final ResourceResolverType... resourceResolverTypes) {
-    this(null, null, resourceResolverTypes);
+    this(new CallbackParams(), null, resourceResolverTypes);
   }
 
   /**
@@ -82,8 +80,8 @@ public final class AemContext extends AemContextImpl implements TestRule {
    *          built-in setup rules are executed.
    * @param resourceResolverTypes Resource resolver type(s).
    */
-  public AemContext(final AemContextCallback afterSetUpCallback, final ResourceResolverType... resourceResolverTypes) {
-    this(afterSetUpCallback, null, resourceResolverTypes);
+  public AemContext(final ContextCallback afterSetUpCallback, final ResourceResolverType... resourceResolverTypes) {
+    this(new CallbackParams(afterSetUpCallback), null, resourceResolverTypes);
   }
 
   /**
@@ -103,10 +101,10 @@ public final class AemContext extends AemContextImpl implements TestRule {
    *          built-in teardown rules are executed.
    * @param resourceResolverTypes Resource resolver type(s).
    */
-  public AemContext(final AemContextCallback afterSetUpCallback,
-      final AemContextCallback beforeTearDownCallback,
+  public AemContext(final ContextCallback afterSetUpCallback,
+      final ContextCallback beforeTearDownCallback,
       final ResourceResolverType... resourceResolverTypes) {
-    this(null, afterSetUpCallback, beforeTearDownCallback, null, null, resourceResolverTypes);
+    this(new CallbackParams(afterSetUpCallback, beforeTearDownCallback), null, resourceResolverTypes);
   }
 
   /**
@@ -120,25 +118,14 @@ public final class AemContext extends AemContextImpl implements TestRule {
    * <li>More than one: all unit test methods are executed for all resource resolver types using {@link ListGenerator}.
    * </li>
    * </ul>
-   * @param beforeSetUpCallback Allows the application to register an own callback function that is called before the
-   *          built-in setup rules are executed.
-   * @param afterSetUpCallback Allows the application to register an own callback function that is called after the
-   *          built-in setup rules are executed.
-   * @param beforeTearDownCallback Allows the application to register an own callback function that is called before the
-   *          built-in teardown rules are executed.
-   * @param afterTearDownCallback Allows the application to register an own callback function that is after before the
-   *          built-in teardown rules are executed.
+   * @param callbackParams Callback parameters
    * @param resourceResolverTypes Resource resolver type(s).
    */
-  AemContext(final AemContextCallback beforeSetUpCallback, final AemContextCallback afterSetUpCallback,
-      final AemContextCallback beforeTearDownCallback, final AemContextCallback afterTearDownCallback,
+  AemContext(final CallbackParams callbackParams,
       final Map<String, Object> resourceResolverFactoryActivatorProps,
       final ResourceResolverType... resourceResolverTypes) {
 
-    this.beforeSetUpCallback = beforeSetUpCallback;
-    this.afterSetUpCallback = afterSetUpCallback;
-    this.beforeTearDownCallback = beforeTearDownCallback;
-    this.afterTearDownCallback = afterTearDownCallback;
+    this.callbackParams = callbackParams;
 
     // set custom ResourceResolverFactoryActivator config, but set AEM default values for all parameter not given here
     Map<String, Object> mergedProps = resourceResolverFactoryActivatorPropsMergeWithAemDefault(resourceResolverFactoryActivatorProps);
@@ -248,10 +235,13 @@ public final class AemContext extends AemContextImpl implements TestRule {
     return this.delegate.apply(base, description);
   }
 
+  @SuppressWarnings("unchecked")
   private void executeBeforeSetUpCallback() {
-    if (this.beforeSetUpCallback != null) {
+    if (callbackParams.beforeSetUpCallback != null) {
       try {
-        this.beforeSetUpCallback.execute(this);
+        for (ContextCallback callback : callbackParams.beforeSetUpCallback) {
+          callback.execute(this);
+        }
       }
       catch (Throwable ex) {
         throw new RuntimeException("Before setup failed: " + ex.getMessage(), ex);
@@ -259,10 +249,13 @@ public final class AemContext extends AemContextImpl implements TestRule {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void executeAfterSetUpCallback() {
-    if (this.afterSetUpCallback != null) {
+    if (callbackParams.afterSetUpCallback != null) {
       try {
-        this.afterSetUpCallback.execute(this);
+        for (ContextCallback callback : callbackParams.afterSetUpCallback) {
+          callback.execute(this);
+        }
       }
       catch (Throwable ex) {
         throw new RuntimeException("After setup failed: " + ex.getMessage(), ex);
@@ -270,10 +263,13 @@ public final class AemContext extends AemContextImpl implements TestRule {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void executeBeforeTearDownCallback() {
-    if (this.beforeTearDownCallback != null) {
+    if (callbackParams.beforeTearDownCallback != null) {
       try {
-        this.beforeTearDownCallback.execute(this);
+        for (ContextCallback callback : callbackParams.beforeTearDownCallback) {
+          callback.execute(this);
+        }
       }
       catch (Throwable ex) {
         throw new RuntimeException("Before teardown failed: " + ex.getMessage(), ex);
@@ -281,10 +277,13 @@ public final class AemContext extends AemContextImpl implements TestRule {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void executeAfterTearDownCallback() {
-    if (this.afterTearDownCallback != null) {
+    if (callbackParams.afterTearDownCallback != null) {
       try {
-        this.afterTearDownCallback.execute(this);
+        for (ContextCallback callback : callbackParams.afterTearDownCallback) {
+          callback.execute(this);
+        }
       }
       catch (Throwable ex) {
         throw new RuntimeException("After teardown failed: " + ex.getMessage(), ex);
