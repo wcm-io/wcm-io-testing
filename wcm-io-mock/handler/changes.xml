@@ -31,6 +31,9 @@
         Remove direct dependencies to other Mock Context Plugins.
       </action>
       <action type="update" dev="sseifert">
+        Do not register sling model packages for handler - is done automatically with latest sling-mock version.
+      </action>
+      <action type="update" dev="sseifert">
         Make dependencies to wcm.io Config provided.
       </action>
     </release>
