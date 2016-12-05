@@ -19,7 +19,8 @@
  */
 package io.wcm.testing.mock.wcmio.caconfig;
 
-import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG;
+import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG_COMPAT;
+import static org.apache.sling.testing.mock.caconfig.ContextPlugins.CACONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -39,7 +40,7 @@ import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 
-public class MockConfigCompatTest {
+public class MockCAConfigCompatTest {
 
   private static final String APP_ID_1 = "/apps/app1";
   private static final String APP_ID_2 = "/apps/app2";
@@ -50,20 +51,23 @@ public class MockConfigCompatTest {
       ParameterBuilder.create("param2", String.class, APP_ID_2).defaultValue("def2").build();
 
   @Rule
-  public AemContext context = new AemContextBuilder().plugin(WCMIO_CACONFIG).build();
+  public AemContext context = new AemContextBuilder()
+      .plugin(CACONFIG)
+      .plugin(WCMIO_CACONFIG_COMPAT)
+      .build();
 
   @Before
   public void setUp() {
     context.registerService(ConfigurationFinderStrategy.class,
-        MockCAConfig.configurationFinderStrategyAbsoluteParent(APP_ID_1, 2));
+        MockCAConfigCompat.configurationFinderStrategyAbsoluteParent(APP_ID_1, 2));
 
     context.registerService(ApplicationProvider.class,
         MockCAConfig.applicationProvider(APP_ID_1, "/content"));
 
     context.registerService(ParameterProvider.class,
-        MockCAConfig.parameterProvider(MockConfigCompatTest.class));
+        MockCAConfigCompat.parameterProvider(MockCAConfigCompatTest.class));
     context.registerService(ParameterProvider.class,
-        MockCAConfig.parameterProvider(ImmutableSet.<Parameter<?>>builder().add(PARAM_2).build()));
+        MockCAConfigCompat.parameterProvider(ImmutableSet.<Parameter<?>>builder().add(PARAM_2).build()));
 
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 

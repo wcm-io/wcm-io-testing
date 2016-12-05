@@ -22,6 +22,15 @@ package io.wcm.testing.mock.wcmio.caconfig;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
+import io.wcm.caconfig.application.impl.ApplicationAdapterFactory;
+import io.wcm.caconfig.application.impl.ApplicationFinderImpl;
+import io.wcm.caconfig.application.impl.ApplicationImplementationPicker;
+import io.wcm.config.core.impl.ConfigurationAdapterFactory;
+import io.wcm.config.core.impl.ConfigurationFinderStrategyBridge;
+import io.wcm.config.core.impl.ParameterOverrideProviderBridge;
+import io.wcm.config.core.impl.ParameterProviderBridge;
+import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
+import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -36,11 +45,37 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Context-Aware Configuration.
    */
-  public static final ContextPlugin<AemContext> WCMIO_CACONFIG = new AbstractContextPlugin<AemContext>() {
+  public static final ContextPlugin<AemContext> WCMIO_CACONFIG_COMPAT = new AbstractContextPlugin<AemContext>() {
     @Override
     public void afterSetUp(AemContext context) throws Exception {
-      MockCAConfig.setUpCompat(context);
+      setUpCompat(context);
     }
   };
+
+  /**
+   * Set up all mandatory OSGi services for wcm.io Configuration support.
+   * @param context Aem context
+   */
+  private static void setUpCompat(AemContext context) {
+
+    // application detection
+    context.registerInjectActivateService(new ApplicationFinderImpl());
+    context.registerInjectActivateService(new ApplicationImplementationPicker());
+    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationImplementationPicker());
+    context.registerInjectActivateService(new ApplicationAdapterFactory());
+
+    // persistence providers
+    context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
+        ImmutableValueMap.of("enabled", true));
+
+    // bridge services
+    context.registerInjectActivateService(new ConfigurationFinderStrategyBridge());
+    context.registerInjectActivateService(new ParameterOverrideProviderBridge());
+    context.registerInjectActivateService(new ParameterProviderBridge());
+
+    // adapter factory
+    context.registerInjectActivateService(new ConfigurationAdapterFactory());
+
+  }
 
 }
