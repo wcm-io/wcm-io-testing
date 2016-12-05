@@ -23,14 +23,12 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.service.component.annotations.Component;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
@@ -50,30 +48,23 @@ import com.day.cq.wcm.api.designer.Designer;
 /**
  * Mock adapter factory for AEM-related adaptions.
  */
-@Component
-@Service(AdapterFactory.class)
+@Component(service = AdapterFactory.class,
+    property = {
+        AdapterFactory.ADAPTABLE_CLASSES + "=org.apache.sling.api.resource.Resource",
+        AdapterFactory.ADAPTABLE_CLASSES + "=org.apache.sling.api.resource.ResourceResolver",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.Page",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.PageManager",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.Template",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.components.ComponentManager",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.Asset",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.AssetManager",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.Rendition",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.tagging.TagManager",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.tagging.Tag",
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.designer.Designer"
+    })
 @ProviderType
 public class MockAemAdapterFactory implements AdapterFactory {
-
-  @Property(name = AdapterFactory.ADAPTABLE_CLASSES)
-  private static final String[] ADAPTABLES = {
-    Resource.class.getName(),
-    ResourceResolver.class.getName()
-  };
-
-  @Property(name = AdapterFactory.ADAPTER_CLASSES)
-  private static final String[] ADAPTERS = {
-    Page.class.getName(),
-    Template.class.getName(),
-    Asset.class.getName(),
-    Rendition.class.getName(),
-    PageManager.class.getName(),
-    ComponentManager.class.getName(),
-    TagManager.class.getName(),
-    Tag.class.getName(),
-    Designer.class.getName(),
-    AssetManager.class.getName()
-  };
 
   @Override
   public <AdapterType> AdapterType getAdapter(final Object adaptable, final Class<AdapterType> type) {

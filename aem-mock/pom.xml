@@ -61,12 +61,6 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
     <!-- Make sure the following dependencies use the version from the imported AEM dependencies -->
     <dependency>
       <groupId>org.apache.jackrabbit</groupId>
