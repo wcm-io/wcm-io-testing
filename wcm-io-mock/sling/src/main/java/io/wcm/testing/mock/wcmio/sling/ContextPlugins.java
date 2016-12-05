@@ -22,6 +22,12 @@ package io.wcm.testing.mock.wcmio.sling;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
+import com.google.common.collect.ImmutableMap;
+
+import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.sling.models.injectors.impl.AemObjectInjector;
+import io.wcm.sling.models.injectors.impl.ModelsImplConfiguration;
+import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -39,8 +45,25 @@ public final class ContextPlugins {
   public static final ContextPlugin<AemContext> WCMIO_SLING = new AbstractContextPlugin<AemContext>() {
     @Override
     public void afterSetUp(AemContext context) throws Exception {
-      MockSlingExtensions.setUp(context);
+      setUp(context);
     }
   };
+
+  /**
+   * Set up request context and Sling Models Extensions.
+   * @param context Aem context
+   */
+  static void setUp(AemContext context) {
+
+    // register request context
+    context.registerService(RequestContext.class, new MockRequestContext());
+
+    // register sling models extensions
+    context.registerInjectActivateService(new ModelsImplConfiguration(),
+        ImmutableMap.<String, Object>of("requestThreadLocal", true));
+
+    context.registerInjectActivateService(new AemObjectInjector());
+    context.registerInjectActivateService(new SlingObjectOverlayInjector());
+  }
 
 }

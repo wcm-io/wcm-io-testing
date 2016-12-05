@@ -21,8 +21,6 @@ package io.wcm.testing.mock.wcmio.handler;
 
 import org.osgi.annotation.versioning.ProviderType;
 
-import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
-import io.wcm.handler.url.impl.UrlHandlerParameterProviderImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -38,15 +36,11 @@ public final class MockHandler {
   /**
    * Set up all mandatory OSGi services for wcm.io Handler support.
    * @param context Aem context
+   * @deprecated Please use {@link ContextPlugins#WCMIO_HANDLER} plugin.
    */
+  @Deprecated
   public static void setUp(AemContext context) {
-
-    // register url handler config parameter
-    context.registerInjectActivateService(new UrlHandlerParameterProviderImpl());
-
-    // media format provider manager
-    context.registerInjectActivateService(new MediaFormatProviderManagerImpl());
-
+    ContextPlugins.setUp(context);
   }
 
 }
