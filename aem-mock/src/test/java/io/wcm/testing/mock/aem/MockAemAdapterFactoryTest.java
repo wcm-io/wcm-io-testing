@@ -21,8 +21,6 @@ package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import io.wcm.testing.mock.aem.context.TestAemContext;
-import io.wcm.testing.mock.aem.junit.AemContext;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
@@ -33,6 +31,9 @@ import org.junit.Test;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.Template;
+
+import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class MockAemAdapterFactoryTest {
 

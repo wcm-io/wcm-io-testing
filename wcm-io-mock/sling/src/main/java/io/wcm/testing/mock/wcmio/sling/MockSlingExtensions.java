@@ -19,16 +19,16 @@
  */
 package io.wcm.testing.mock.wcmio.sling;
 
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.osgi.annotation.versioning.ProviderType;
+
+import com.google.common.collect.ImmutableMap;
+
 import io.wcm.sling.commons.request.RequestContext;
 import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 import io.wcm.sling.models.injectors.impl.ModelsImplConfiguration;
 import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
 import io.wcm.testing.mock.aem.junit.AemContext;
-
-import org.apache.sling.api.SlingHttpServletRequest;
-import org.osgi.annotation.versioning.ProviderType;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Helps setting up a mock environment for wcm.io Sling Extensions.

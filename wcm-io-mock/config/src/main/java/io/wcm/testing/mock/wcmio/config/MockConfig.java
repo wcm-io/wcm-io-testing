@@ -19,6 +19,15 @@
  */
 package io.wcm.testing.mock.wcmio.config;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.jackrabbit.util.Text;
+import org.apache.sling.api.resource.PersistenceException;
+import org.osgi.annotation.versioning.ProviderType;
+
+import com.google.common.collect.ImmutableSortedSet;
+
 import io.wcm.config.api.Parameter;
 import io.wcm.config.core.impl.ApplicationImplementationPicker;
 import io.wcm.config.core.impl.ConfigurationAdapterFactory;
@@ -38,15 +47,6 @@ import io.wcm.config.spi.helpers.AbstractParameterProvider;
 import io.wcm.config.spi.helpers.AbstractPathApplicationProvider;
 import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
-
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.jackrabbit.util.Text;
-import org.apache.sling.api.resource.PersistenceException;
-import org.osgi.annotation.versioning.ProviderType;
-
-import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.

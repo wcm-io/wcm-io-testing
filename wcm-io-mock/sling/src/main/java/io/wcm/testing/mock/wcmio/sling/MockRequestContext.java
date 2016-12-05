@@ -19,9 +19,9 @@
  */
 package io.wcm.testing.mock.wcmio.sling;
 
-import io.wcm.sling.commons.request.RequestContext;
-
 import org.apache.sling.api.SlingHttpServletRequest;
+
+import io.wcm.sling.commons.request.RequestContext;
 
 /**
  * Mock implementation of {@link RequestContext}.

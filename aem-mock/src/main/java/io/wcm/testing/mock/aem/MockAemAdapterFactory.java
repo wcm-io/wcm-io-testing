@@ -22,7 +22,6 @@ package io.wcm.testing.mock.aem;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
-import com.day.cq.dam.api.AssetManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
@@ -35,6 +34,7 @@ import org.osgi.annotation.versioning.ProviderType;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
+import com.day.cq.dam.api.AssetManager;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.tagging.Tag;
