@@ -29,8 +29,8 @@ import io.wcm.config.core.impl.ConfigurationAdapterFactory;
 import io.wcm.config.core.impl.ConfigurationFinderStrategyBridge;
 import io.wcm.config.core.impl.ParameterOverrideProviderBridge;
 import io.wcm.config.core.impl.ParameterProviderBridge;
+import io.wcm.config.core.impl.application.ApplicationFinderBridge;
 import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
-import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -61,12 +61,15 @@ public final class ContextPlugins {
     // application detection
     context.registerInjectActivateService(new ApplicationFinderImpl());
     context.registerInjectActivateService(new ApplicationImplementationPicker());
+    context.registerInjectActivateService(new ApplicationFinderBridge());
     context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationImplementationPicker());
     context.registerInjectActivateService(new ApplicationAdapterFactory());
 
     // persistence providers
     context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
-        ImmutableValueMap.of("enabled", true));
+        "enabled", true,
+        "configPageTemplate", "/apps/dummy/templates/config",
+        "structurePageTemplate", "/apps/dummy/templates/structure");
 
     // bridge services
     context.registerInjectActivateService(new ConfigurationFinderStrategyBridge());
