@@ -62,8 +62,12 @@ public final class ContextPlugins {
     context.registerInjectActivateService(new ApplicationFinderImpl());
     context.registerInjectActivateService(new ApplicationImplementationPicker());
     context.registerInjectActivateService(new ApplicationFinderBridge());
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationImplementationPicker());
     context.registerInjectActivateService(new ApplicationAdapterFactory());
+
+    // application detection (compat mode)
+    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationFinderBridge());
+    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationImplementationPicker());
+    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationProviderBridge());
 
     // persistence providers
     context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
