@@ -25,12 +25,6 @@ import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 import io.wcm.caconfig.application.impl.ApplicationAdapterFactory;
 import io.wcm.caconfig.application.impl.ApplicationFinderImpl;
 import io.wcm.caconfig.application.impl.ApplicationImplementationPicker;
-import io.wcm.config.core.impl.ConfigurationAdapterFactory;
-import io.wcm.config.core.impl.ConfigurationFinderStrategyBridge;
-import io.wcm.config.core.impl.ParameterOverrideProviderBridge;
-import io.wcm.config.core.impl.ParameterProviderBridge;
-import io.wcm.config.core.impl.application.ApplicationFinderBridge;
-import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -45,7 +39,7 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Context-Aware Configuration.
    */
-  public static final ContextPlugin<AemContext> WCMIO_CACONFIG_COMPAT = new AbstractContextPlugin<AemContext>() {
+  public static final ContextPlugin<AemContext> WCMIO_CACONFIG = new AbstractContextPlugin<AemContext>() {
     @Override
     public void afterSetUp(AemContext context) throws Exception {
       setUpCompat(context);
@@ -61,27 +55,7 @@ public final class ContextPlugins {
     // application detection
     context.registerInjectActivateService(new ApplicationFinderImpl());
     context.registerInjectActivateService(new ApplicationImplementationPicker());
-    context.registerInjectActivateService(new ApplicationFinderBridge());
     context.registerInjectActivateService(new ApplicationAdapterFactory());
-
-    // application detection (compat mode)
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationFinderBridge());
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationImplementationPicker());
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationProviderBridge());
-
-    // persistence providers
-    context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
-        "enabled", true,
-        "configPageTemplate", "/apps/dummy/templates/config",
-        "structurePageTemplate", "/apps/dummy/templates/structure");
-
-    // bridge services
-    context.registerInjectActivateService(new ConfigurationFinderStrategyBridge());
-    context.registerInjectActivateService(new ParameterOverrideProviderBridge());
-    context.registerInjectActivateService(new ParameterProviderBridge());
-
-    // adapter factory
-    context.registerInjectActivateService(new ConfigurationAdapterFactory());
 
   }
 

@@ -19,69 +19,54 @@
  */
 package io.wcm.testing.mock.wcmio.caconfig;
 
-import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG_COMPAT;
+import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG;
 import static org.apache.sling.testing.mock.caconfig.ContextPlugins.CACONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.caconfig.ConfigurationBuilder;
+import org.apache.sling.testing.mock.caconfig.MockContextAwareConfig;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableSet;
-
-import io.wcm.caconfig.application.spi.ApplicationProvider;
-import io.wcm.config.api.Configuration;
-import io.wcm.config.api.Parameter;
-import io.wcm.config.api.ParameterBuilder;
-import io.wcm.config.spi.ConfigurationFinderStrategy;
-import io.wcm.config.spi.ParameterProvider;
 import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
+import io.wcm.testing.mock.wcmio.caconfig.example.SimpleConfig;
 
 public class MockCAConfigCompatTest {
 
   private static final String APP_ID_1 = "/apps/app1";
-  private static final String APP_ID_2 = "/apps/app2";
-
-  public static final Parameter<String> PARAM_1  =
-      ParameterBuilder.create("param1", String.class, APP_ID_1).defaultValue("def1").build();
-  private static final Parameter<String> PARAM_2 =
-      ParameterBuilder.create("param2", String.class, APP_ID_2).defaultValue("def2").build();
 
   @Rule
   public AemContext context = new AemContextBuilder()
       .plugin(CACONFIG)
-      .plugin(WCMIO_CACONFIG_COMPAT)
+      .plugin(WCMIO_CACONFIG)
       .build();
 
   @Before
   public void setUp() {
-    context.registerService(ConfigurationFinderStrategy.class,
-        MockCAConfigCompat.configurationFinderStrategyAbsoluteParent(APP_ID_1, 2));
+    MockContextAwareConfig.registerAnnotationClasses(context, SimpleConfig.class);
 
-    context.registerService(ApplicationProvider.class,
-        MockCAConfig.applicationProvider(APP_ID_1, "/content"));
+    MockCAConfig.contextPathStrategyAbsoluteParent(context, APP_ID_1, 2);
 
-    context.registerService(ParameterProvider.class,
-        MockCAConfigCompat.parameterProvider(MockCAConfigCompatTest.class));
-    context.registerService(ParameterProvider.class,
-        MockCAConfigCompat.parameterProvider(ImmutableSet.<Parameter<?>>builder().add(PARAM_2).build()));
+    MockCAConfig.applicationProvider(context, APP_ID_1, "^/content(/.+)?$");
 
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 
     MockCAConfig.writeConfiguration(context, "/content/region/site",
-        ImmutableValueMap.of("param1", "value1"));
+        SimpleConfig.class.getName(), ImmutableValueMap.of("param1", "value1"));
   }
 
   @Test
   public void testConfig() {
-    Configuration config = context.request().adaptTo(Configuration.class);
+    Resource resource = context.request().getResource();
+    SimpleConfig config = resource.adaptTo(ConfigurationBuilder.class).as(SimpleConfig.class);
     assertNotNull(config);
-    assertEquals("/content/region/site", config.getConfigurationId());
-    assertEquals("value1", config.get(PARAM_1));
-    assertEquals("def2", config.get(PARAM_2));
+    assertEquals("value1", config.param1());
+    assertEquals("def2", config.param2());
   }
 
 }

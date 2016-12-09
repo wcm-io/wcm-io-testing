@@ -21,14 +21,16 @@ package io.wcm.testing.mock.wcmio.caconfig;
 
 import java.util.Map;
 
+import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.caconfig.management.ConfigurationManager;
+import org.apache.sling.caconfig.resource.spi.ContextPathStrategy;
 import org.apache.sling.caconfig.spi.ConfigurationPersistData;
 import org.osgi.annotation.versioning.ProviderType;
 
-import io.wcm.caconfig.application.spi.AbstractPathApplicationProvider;
+import io.wcm.caconfig.application.impl.PathApplicationProvider;
 import io.wcm.caconfig.application.spi.ApplicationProvider;
-import io.wcm.config.core.impl.ParameterProviderBridge;
+import io.wcm.caconfig.extensions.contextpath.impl.AbsoluteParentContextPathStrategy;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -42,28 +44,61 @@ public final class MockCAConfig {
   }
 
   /**
-   * {@link ApplicationProvider} that supports detecting an application based on one or multiple fixed paths subtrees.
+   * Register {@link ApplicationProvider} that supports detecting an application based on one or multiple fixed paths
+   * subtrees.
+   * @param context AEM context
    * @param applicationId Application id
-   * @param paths List of paths/subtrees this application belongs to
-   * @return Application provider
+   * @param pathPatterns Path patterns
    */
-  public static ApplicationProvider applicationProvider(final String applicationId, final String... paths) {
-    return new AbstractPathApplicationProvider(applicationId, applicationId, paths) {
-      // nothing to override
-    };
+  public static void applicationProvider(final AemContext context,
+      final String applicationId, final String... pathPatterns) {
+    context.registerInjectActivateService(new PathApplicationProvider(),
+        "applicationId", applicationId,
+        "pathPatterns", pathPatterns);
+  }
+
+  /**
+   * Register {@link ContextPathStrategy} that supports one or multiple fixed levels in content hierarchy where
+   * configurations are supported.
+   * @param context AEM context
+   * @param levels List of absolute levels where configuration is supported.
+   *          Levels are used in the same way as {@link Text#getAbsoluteParent(String, int)}.
+   *          Example:<br>
+   *          <code>Text.getAbsoluteParent("/foo/bar/test", 1) == "/foo/bar"</code>
+   */
+  public static void contextPathStrategyAbsoluteParent(final AemContext context,
+      final int... levels) {
+    contextPathStrategyAbsoluteParent(context, null, levels);
+  }
+
+  /**
+   * Register {@link ContextPathStrategy} that supports one or multiple fixed levels in content hierarchy where
+   * configurations are supported.
+   * @param context AEM context
+   * @param applicationId Application ID
+   * @param levels List of absolute levels where configuration is supported.
+   *          Levels are used in the same way as {@link Text#getAbsoluteParent(String, int)}.
+   *          Example:<br>
+   *          <code>Text.getAbsoluteParent("/foo/bar/test", 1) == "/foo/bar"</code>
+   */
+  public static void contextPathStrategyAbsoluteParent(final AemContext context,
+      final String applicationId, final int... levels) {
+    context.registerInjectActivateService(new AbsoluteParentContextPathStrategy(),
+        "applicationId", applicationId,
+        "levels", levels);
   }
 
   /**
    * Writes configuration parameters using the primary configured persistence provider.
    * @param context AEM context
    * @param contextPath Configuration id
+   * @param configName Config name
    * @param values Configuration values
    */
-  public static void writeConfiguration(AemContext context, String contextPath, Map<String, Object> values) {
+  public static void writeConfiguration(AemContext context, String contextPath, String configName, Map<String, Object> values) {
     ConfigurationManager configManager = context.getService(ConfigurationManager.class);
     Resource contextResource = context.resourceResolver().getResource(contextPath);
-    configManager.persistConfiguration(contextResource, ParameterProviderBridge.DEFAULT_CONFIG_NAME,
-        new ConfigurationPersistData(values));
+    configManager.persistConfiguration(contextResource, configName, new ConfigurationPersistData(values));
   }
 
 }
