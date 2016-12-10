@@ -252,9 +252,10 @@ To use a plugin in your unit test class, use the `AemContextBuilder` class inste
 
 Example: 
 
-    #!java
-    @Rule
-    public AemContext context = new AemContextBuilder().plugin(MY_PLUGIN).build();
+```java
+@Rule
+public AemContext context = new AemContextBuilder().plugin(MY_PLUGIN).build();
+```
 
 More examples:
 
