@@ -242,6 +242,28 @@ public class MyTest {
 ```
 
 
+### Context Plugins
+
+AEM Mocks supports "Context Plugins" that hook into the lifecycle of each test run and can prepare test setup before or after the other setUp actions, and execute test tear down code before or after the other tearDown action.
+
+To define a plugin implement the `org.apache.sling.testing.mock.osgi.context.ContextPlugin<AemContextImpl>` interface. For convenience it is recommended to extend the abstract class `org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin<AemContextImpl>`. In most cases you would just override the `afterSetUp` method. In this method you can register additional OSGi services or do other preparation work. It is recommended to define a constant pointing to a singleton of a plugin instance for using it.
+
+To use a plugin in your unit test class, use the `AemContextBuilder` class instead of directly instantiating the `AemContext`class. This allows you in a fluent style to configure more options, with the `plugin(...)` method you can add one or more plugins.
+
+Example: 
+
+    #!java
+    @Rule
+    public AemContext context = new AemContextBuilder().plugin(MY_PLUGIN).build();
+
+More examples:
+
+* [wcm.io Sling Extensions Mock Helper][wcm-io-mock-sling]
+* [wcm.io Sling Extensions Mock Helper Test][wcm-io-mock-sling-test]
+
+
 [mockito-testrunner]: http://docs.mockito.googlecode.com/hg/latest/org/mockito/runners/MockitoJUnitRunner.html
 [sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
+[wcm-io-mock-sling]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/main/java/io/wcm/testing/mock/wcmio/sling/ContextPlugins.java
+[wcm-io-mock-sling-test]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/test/java/io/wcm/testing/mock/wcmio/sling/MockSlingExtensionsTest.java

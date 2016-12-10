@@ -36,6 +36,7 @@ The mock implementation supports:
 * Full support for Sling Models
 * Setting run modes
 * Layer adapter factory
+* Context Plugins
 
 The following features are *not supported*:
 
