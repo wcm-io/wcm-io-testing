@@ -19,11 +19,6 @@
  */
 package io.wcm.testing.mock.aem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -42,6 +37,8 @@ import com.day.cq.wcm.foundation.WCMRenditionPicker;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
+
+import static org.junit.Assert.*;
 
 public class MockAssetTest {
 
@@ -105,21 +102,25 @@ public class MockAssetTest {
     assertTrue(asset1.equals(asset2));
   }
 
-  @Test
-  public void testAddRemoveRendition() throws Exception {
+  private void doTestAddRemoveRendition(final String renditionName) {
     InputStream is = new ByteArrayInputStream(BINARY_DATA);
-    Rendition rendition = asset.addRendition("test.bin", is, "application/octet-stream");
+    Rendition rendition = asset.addRendition(renditionName, is, "application/octet-stream");
 
     assertNotNull(rendition);
-    assertNotNull(asset.getRendition("test.bin"));
-    Resource resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/test.bin");
+    assertNotNull(asset.getRendition(renditionName));
+    Resource resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/" + renditionName);
     assertNotNull(resource);
 
-    asset.removeRendition("test.bin");
+    asset.removeRendition(renditionName);
 
-    assertNull(asset.getRendition("test.bin"));
-    resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/test.bin");
+    assertNull(asset.getRendition(renditionName));
+    resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/" + renditionName);
     assertNull(resource);
+  }
+
+  @Test
+  public void testAddRemoveRendition() throws Exception {
+    doTestAddRemoveRendition("test.bin");
   }
 
   @Test
@@ -128,4 +129,20 @@ public class MockAssetTest {
     UIHelper.getBestfitRendition(asset, 100);
   }
 
+  @Test
+  public void testBatchMode() throws Exception {
+    // when batch mode is set to true ResourceResolver commit isn't called keeping the changes transient
+    asset.setBatchMode(true);
+    assertTrue(asset.isBatchMode());
+    doTestAddRemoveRendition("testwithbatchmode.bin");
+    assertTrue(context.resourceResolver().hasChanges());
+
+    context.resourceResolver().revert();
+
+    // when batch mode is set to false ResourceResolver commit is called and there are no more pending changes
+    asset.setBatchMode(false);
+    assertFalse(asset.isBatchMode());
+    doTestAddRemoveRendition("testwithoutbatchmode.bin");
+    assertFalse(context.resourceResolver().hasChanges());
+  }
 }
