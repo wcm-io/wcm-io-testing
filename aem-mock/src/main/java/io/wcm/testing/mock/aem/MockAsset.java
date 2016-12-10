@@ -54,6 +54,7 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ValueMap contentProps;
   private final ValueMap metadataProps;
   private final Resource renditionsResource;
+  private boolean batchMode;
 
   @SuppressWarnings("deprecation")
   MockAsset(Resource resource) {
@@ -173,9 +174,11 @@ class MockAsset extends ResourceWrapper implements Asset {
     if (getRendition(name) != null) {
       removeRendition(name);
     }
-    Resource rendition = new ContentLoader(resourceResolver).binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType);
+    Resource rendition = new ContentLoader(resourceResolver).binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType, false);
     try {
-      resourceResolver.commit();
+      if(!isBatchMode()) {
+        resourceResolver.commit();
+      }
     }
     catch (PersistenceException ex) {
       throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
@@ -189,7 +192,9 @@ class MockAsset extends ResourceWrapper implements Asset {
     if (rendition != null) {
       try {
         resourceResolver.delete(rendition);
-        resourceResolver.commit();
+        if(!isBatchMode()) {
+          resourceResolver.commit();
+        }
       }
       catch (PersistenceException ex) {
         throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
@@ -252,12 +257,12 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public void setBatchMode(boolean mode) {
-    throw new UnsupportedOperationException();
+    this.batchMode = mode;
   }
 
   @Override
   public boolean isBatchMode() {
-    throw new UnsupportedOperationException();
+    return this.batchMode;
   }
 
 }
