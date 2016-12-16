@@ -174,9 +174,10 @@ class MockAsset extends ResourceWrapper implements Asset {
     if (getRendition(name) != null) {
       removeRendition(name);
     }
-    Resource rendition = new ContentLoader(resourceResolver).binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType, false);
+    ContentLoader contentLoader = new ContentLoader(resourceResolver, null, false);
+    Resource rendition = contentLoader.binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType);
     try {
-      if(!isBatchMode()) {
+      if (!isBatchMode()) {
         resourceResolver.commit();
       }
     }
@@ -192,7 +193,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     if (rendition != null) {
       try {
         resourceResolver.delete(rendition);
-        if(!isBatchMode()) {
+        if (!isBatchMode()) {
           resourceResolver.commit();
         }
       }
