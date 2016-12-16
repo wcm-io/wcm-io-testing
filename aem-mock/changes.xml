@@ -27,8 +27,11 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi, JCR and Sling Mock.
       </action>
-      <action type="update" dev="sseifert">
+      <action type="add" dev="sseifert">
         Add ContextPlugin support.
+      </action>
+      <action type="add" dev="drudolph" issue="WTES-24">
+        Support Asset.setBatchMode/isBatchMode.
       </action>
     </release>
 
