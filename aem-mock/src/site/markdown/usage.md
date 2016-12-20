@@ -178,6 +178,11 @@ interface RequestAttributeModel {
 }
 ```
 
+*Note:* If your class is not adaptable from SlingHttpServletRequest.class (e.g. only from Resource.class), it might be necessary to set the request manually to allow e.g. [wcm.io AEM Sling Models Extension][wcm-io-aem-sling-models] to adapt some classes correctly. 
+
+```java
+MockSlingExtensions.setRequestContext(context, context.request());
+```
 
 ### Setting run modes
 
@@ -268,3 +273,4 @@ More examples:
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
 [wcm-io-mock-sling]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/main/java/io/wcm/testing/mock/wcmio/sling/ContextPlugins.java
 [wcm-io-mock-sling-test]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/test/java/io/wcm/testing/mock/wcmio/sling/MockSlingExtensionsTest.java
+[wcm-io-aem-sling-models]:http://wcm.io/sling/models/
