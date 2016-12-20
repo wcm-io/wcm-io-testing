@@ -178,6 +178,11 @@ interface RequestAttributeModel {
 }
 ```
 
+*Note:* If your model is not adaptable from SlingHttpServletRequest.class (e.g. only from Resource.class) and you rely on the extra features provided by [wcm.io Sling Commons][wcm-io-sling-commons] and [wcm.io Sling Models][wcm-io-sling-models] which can inject request-derived objects via a ThreadLocal it might be necessary to set the request context manually to ensure injection of request-derived objects works in your unit tests. Example: 
+
+```java
+MockSlingExtensions.setRequestContext(context, context.request());
+```
 
 ### Setting run modes
 
@@ -268,3 +273,5 @@ More examples:
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
 [wcm-io-mock-sling]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/main/java/io/wcm/testing/mock/wcmio/sling/ContextPlugins.java
 [wcm-io-mock-sling-test]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/test/java/io/wcm/testing/mock/wcmio/sling/MockSlingExtensionsTest.java
+[wcm-io-sling-commons]: http://wcm.io/sling/commons/
+[wcm-io-sling-models]: http://wcm.io/sling/models/
