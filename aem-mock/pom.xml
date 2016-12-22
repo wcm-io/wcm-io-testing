@@ -49,7 +49,7 @@
 
     <jcr-mock.version>1.2.0</jcr-mock.version>
     <osgi-mock.version>1.9.2</osgi-mock.version>
-    <sling-mock.version>1.9.3-SNAPSHOT</sling-mock.version>
+    <sling-mock.version>1.9.4</sling-mock.version>
     <sling-mock.oak.version>1.0.0</sling-mock.oak.version>
     <sling-mock.jackrabbit.version>1.0.0</sling-mock.jackrabbit.version>
     <resourceresolver-mock.version>1.1.15-SNAPSHOT</resourceresolver-mock.version>
