@@ -52,7 +52,7 @@
     <sling-mock.version>1.9.4</sling-mock.version>
     <sling-mock.oak.version>1.0.0</sling-mock.oak.version>
     <sling-mock.jackrabbit.version>1.0.0</sling-mock.jackrabbit.version>
-    <resourceresolver-mock.version>1.1.15-SNAPSHOT</resourceresolver-mock.version>
+    <resourceresolver-mock.version>1.1.16</resourceresolver-mock.version>
     <logging-mock.version>1.0.0</logging-mock.version>
     
     <oak.version>1.2.2</oak.version>
