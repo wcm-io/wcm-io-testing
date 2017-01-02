@@ -19,16 +19,11 @@
  */
 package io.wcm.testing.mock.wcmio.sling;
 
-import io.wcm.sling.commons.request.RequestContext;
-import io.wcm.sling.models.injectors.impl.AemObjectInjector;
-import io.wcm.sling.models.injectors.impl.ModelsImplConfiguration;
-import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
-import io.wcm.testing.mock.aem.junit.AemContext;
-
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.osgi.annotation.versioning.ProviderType;
 
-import com.google.common.collect.ImmutableMap;
+import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
  * Helps setting up a mock environment for wcm.io Sling Extensions.
@@ -43,18 +38,11 @@ public final class MockSlingExtensions {
   /**
    * Set up request context and Sling Models Extensions.
    * @param context Aem context
+   * @deprecated Please use {@link ContextPlugins#WCMIO_SLING} plugin.
    */
+  @Deprecated
   public static void setUp(AemContext context) {
-
-    // register request context
-    context.registerService(RequestContext.class, new MockRequestContext());
-
-    // register sling models extensions
-    context.registerInjectActivateService(new ModelsImplConfiguration(),
-        ImmutableMap.<String, Object>of("requestThreadLocal", true));
-
-    context.registerInjectActivateService(new AemObjectInjector());
-    context.registerInjectActivateService(new SlingObjectOverlayInjector());
+    ContextPlugins.setUp(context);
   }
 
   /**

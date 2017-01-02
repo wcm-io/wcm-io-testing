@@ -19,26 +19,6 @@
  */
 package io.wcm.testing.mock.wcmio.config;
 
-import io.wcm.config.api.Parameter;
-import io.wcm.config.core.impl.ApplicationImplementationPicker;
-import io.wcm.config.core.impl.ConfigurationAdapterFactory;
-import io.wcm.config.core.management.ParameterPersistence;
-import io.wcm.config.core.management.ParameterPersistenceData;
-import io.wcm.config.core.management.impl.ApplicationFinderImpl;
-import io.wcm.config.core.management.impl.ConfigurationFinderImpl;
-import io.wcm.config.core.management.impl.ParameterOverrideImpl;
-import io.wcm.config.core.management.impl.ParameterPersistenceImpl;
-import io.wcm.config.core.management.impl.ParameterResolverImpl;
-import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
-import io.wcm.config.spi.ApplicationProvider;
-import io.wcm.config.spi.ConfigurationFinderStrategy;
-import io.wcm.config.spi.ParameterProvider;
-import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;
-import io.wcm.config.spi.helpers.AbstractParameterProvider;
-import io.wcm.config.spi.helpers.AbstractPathApplicationProvider;
-import io.wcm.sling.commons.resource.ImmutableValueMap;
-import io.wcm.testing.mock.aem.junit.AemContext;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -47,6 +27,17 @@ import org.apache.sling.api.resource.PersistenceException;
 import org.osgi.annotation.versioning.ProviderType;
 
 import com.google.common.collect.ImmutableSortedSet;
+
+import io.wcm.config.api.Parameter;
+import io.wcm.config.core.management.ParameterPersistence;
+import io.wcm.config.core.management.ParameterPersistenceData;
+import io.wcm.config.spi.ApplicationProvider;
+import io.wcm.config.spi.ConfigurationFinderStrategy;
+import io.wcm.config.spi.ParameterProvider;
+import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;
+import io.wcm.config.spi.helpers.AbstractParameterProvider;
+import io.wcm.config.spi.helpers.AbstractPathApplicationProvider;
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.
@@ -61,26 +52,11 @@ public final class MockConfig {
   /**
    * Set up all mandatory OSGi services for wcm.io Configuration support.
    * @param context Aem context
+   * @deprecated Use {@link ContextPlugins#WCMIO_CONFIG} plugin.
    */
+  @Deprecated
   public static void setUp(AemContext context) {
-
-    // persistence providers
-    context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
-        ImmutableValueMap.of("enabled", true));
-
-    // management services
-    context.registerInjectActivateService(new ApplicationFinderImpl());
-    context.registerInjectActivateService(new ParameterOverrideImpl());
-    context.registerInjectActivateService(new ParameterPersistenceImpl());
-    context.registerInjectActivateService(new ParameterResolverImpl());
-    context.registerInjectActivateService(new ConfigurationFinderImpl());
-
-    // adapter factory
-    context.registerInjectActivateService(new ConfigurationAdapterFactory());
-
-    // models implementation picker
-    context.registerInjectActivateService(new ApplicationImplementationPicker());
-
+    ContextPlugins.setUp(context);
   }
 
   /**

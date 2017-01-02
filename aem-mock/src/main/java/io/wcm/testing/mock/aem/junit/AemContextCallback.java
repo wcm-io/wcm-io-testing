@@ -19,24 +19,16 @@
  */
 package io.wcm.testing.mock.aem.junit;
 
-import java.io.IOException;
-
-import org.apache.sling.api.resource.PersistenceException;
+import org.apache.sling.testing.mock.osgi.context.ContextCallback;
 import org.osgi.annotation.versioning.ConsumerType;
 
 /**
- * Callback-interface for application-specific setup and teardown operations to customize the {@link AemContext} JUnit
- * rule.
+ * Callback interface for application-specific setup and teardown operations to customize the
+ * {@link AemContext} JUnit rule.
  */
 @ConsumerType
-public interface AemContextCallback {
+public interface AemContextCallback extends ContextCallback<AemContext> {
 
-  /**
-   * Execute callback action
-   * @param context AEM context
-   * @throws IOException I/O exception
-   * @throws PersistenceException Persistence exception
-   */
-  void execute(AemContext context) throws IOException, PersistenceException;
+  // specialized version of ContextCallback
 
 }

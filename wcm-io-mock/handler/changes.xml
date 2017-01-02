@@ -23,6 +23,21 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="0.6.0" date="not released">
+      <action type="add" dev="sseifert">
+        Provide Mock Context Plugin.
+      </action>
+      <action type="update" dev="sseifert">
+        Remove direct dependencies to other Mock Context Plugins.
+      </action>
+      <action type="update" dev="sseifert">
+        Do not register sling model packages for handler - is done automatically with latest sling-mock version.
+      </action>
+      <action type="update" dev="sseifert">
+        Make dependencies to wcm.io Config provided.
+      </action>
+    </release>
+
     <release version="0.5.4" date="2016-02-16">
       <action type="update" dev="sseifert">
         Set AEM API and OSGi dependencies to provided scope.

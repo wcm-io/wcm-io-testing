@@ -26,16 +26,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
-import java.io.IOException;
-
-import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -64,7 +61,7 @@ public class AemContextTest {
   .build();
 
   @Before
-  public void setUp() throws IOException, PersistenceException {
+  public void setUp() throws Exception {
     verify(contextBeforeSetup).execute(context);
     verify(contextAfterSetup).execute(context);
   }

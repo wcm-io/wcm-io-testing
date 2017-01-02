@@ -19,28 +19,25 @@
  */
 package io.wcm.testing.mock.wcmio.sling;
 
+import static io.wcm.testing.mock.wcmio.sling.ContextPlugins.WCMIO_SLING;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import io.wcm.sling.commons.request.RequestContext;
-import io.wcm.sling.models.injectors.impl.AemObjectInjector;
-import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
-import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.junit.AemContextCallback;
 
 import org.apache.sling.models.spi.Injector;
 import org.junit.Rule;
 import org.junit.Test;
 
+import io.wcm.sling.commons.request.RequestContext;
+import io.wcm.sling.models.injectors.impl.AemObjectInjector;
+import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
+import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.junit.AemContextBuilder;
+
 public class MockSlingExtensionsTest {
 
   @Rule
-  public AemContext context = new AemContext(new AemContextCallback() {
-    @Override
-    public void execute(AemContext callbackContext) {
-      MockSlingExtensions.setUp(callbackContext);
-    }
-  });
+  public AemContext context = new AemContextBuilder().plugin(WCMIO_SLING).build();
 
   @Test
   public void testInjectors() {

@@ -19,13 +19,9 @@
  */
 package io.wcm.testing.mock.wcmio.handler;
 
-import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
-import io.wcm.handler.url.impl.UrlHandlerParameterProviderImpl;
-import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.wcmio.config.MockConfig;
-import io.wcm.testing.mock.wcmio.sling.MockSlingExtensions;
-
 import org.osgi.annotation.versioning.ProviderType;
+
+import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
  * Helps setting up a mock environment for wcm.io Handler.
@@ -40,29 +36,11 @@ public final class MockHandler {
   /**
    * Set up all mandatory OSGi services for wcm.io Handler support.
    * @param context Aem context
+   * @deprecated Please use {@link ContextPlugins#WCMIO_HANDLER} plugin.
    */
+  @Deprecated
   public static void setUp(AemContext context) {
-
-    // wcm.io Sling extensions
-    MockSlingExtensions.setUp(context);
-
-    // register url handler config parameter
-    context.registerInjectActivateService(new UrlHandlerParameterProviderImpl());
-
-    // setup configuration support
-    MockConfig.setUp(context);
-
-    // media format provider manager
-    context.registerInjectActivateService(new MediaFormatProviderManagerImpl());
-
-    // sling models registration
-    context.addModelsForPackage("io.wcm.handler.url");
-    context.addModelsForPackage("io.wcm.handler.media");
-    context.addModelsForPackage("io.wcm.handler.mediasource.dam");
-    context.addModelsForPackage("io.wcm.handler.mediasource.inline");
-    context.addModelsForPackage("io.wcm.handler.link");
-    context.addModelsForPackage("io.wcm.handler.richtext");
-
+    ContextPlugins.setUp(context);
   }
 
 }

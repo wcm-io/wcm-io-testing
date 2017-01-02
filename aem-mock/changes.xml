@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.2.0" date="2017-01-02">
+      <action type="update" dev="sseifert">
+        Update to latest OSGi, JCR, Sling and ResourceResolver Mock.
+      </action>
+      <action type="add" dev="sseifert">
+        Add ContextPlugin support.
+      </action>
+      <action type="add" dev="drudolph" issue="WTES-24">
+        Support Asset.setBatchMode/isBatchMode.
+      </action>
+    </release>
+
     <release version="2.1.0" date="2016-11-11">
       <action type="add" dev="drudolph" issue="WTES-22">
         Add AssetManager mock implementation.
