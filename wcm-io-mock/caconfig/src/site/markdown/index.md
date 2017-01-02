@@ -1,6 +1,6 @@
 ## About Context-Aware Configuration Mock Helper
 
-Helps setting up mock environment for wcm.io Context-Aware Configuration.
+Helps setting up mock environment for [wcm.io Context-Aware Configuration][caconfig].
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.caconfig/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.caconfig)
 
@@ -9,3 +9,6 @@ Helps setting up mock environment for wcm.io Context-Aware Configuration.
 
 * [API documentation](apidocs/)
 * [Changelog](changes-report.html)
+
+
+[caconfig]: http://wcm.io/caconfig/
