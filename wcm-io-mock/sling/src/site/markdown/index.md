@@ -1,6 +1,6 @@
 ## About Sling Extensions Mock Helper
 
-Helps setting up mock environment for wcm.io Sling Commons and Sling Models Extensions.
+Helps setting up mock environment for [wcm.io Sling][wcmio-sling] Commons and Sling Models Extensions.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.sling/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm/io.wcm.testing.wcm-io-mock.sling)
 
@@ -9,3 +9,6 @@ Helps setting up mock environment for wcm.io Sling Commons and Sling Models Exte
 
 * [API documentation](apidocs/)
 * [Changelog](changes-report.html)
+
+
+[wcmio-sling]: http://wcm.io/sling/
