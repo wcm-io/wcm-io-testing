@@ -60,7 +60,7 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.wcm-io-mock.sling</artifactId>
-      <version>0.5.1-SNAPSHOT</version>
+      <version>0.6.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
