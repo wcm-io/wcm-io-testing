@@ -381,12 +381,12 @@ class MockPage extends SlingAdaptable implements Page {
     return "MockPage [path=" + resource.getPath() + ", props=" + properties + "]";
   }
 
-  // Required for AEM 6.1 API
+  @Override
   public Calendar getDeleted() {
     return null;
   }
 
-  // Required for AEM 6.1 API
+  @Override
   public String getDeletedBy() {
     return null;
   }
