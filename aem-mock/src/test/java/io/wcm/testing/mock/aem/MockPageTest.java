@@ -45,6 +45,7 @@ import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -114,6 +115,38 @@ public class MockPageTest {
     assertEquals("/content2/sample", testPage.getAbsoluteParent(1).getPath());
     assertEquals("/content2/sample/en", testPage.getAbsoluteParent(2).getPath());
     assertEquals("/content2/sample/en/products", testPage.getAbsoluteParent(3).getPath());
+    assertNull(testPage.getAbsoluteParent(4));
+  }
+
+  @Test
+  public void testGetAbsoluteParent_LaunchOldStructure() {
+    context.create().page("/content/launches/launch1", "/apps/sample/templates/template1",
+        ImmutableMap.<String, Object>of("sling:resourceType", "wcm/launches/components/launch"));
+    context.create().page("/content/launches/launch1/content2");
+    context.create().page("/content/launches/launch1/content2/sample");
+    context.create().page("/content/launches/launch1/content2/sample/en");
+    Page testPage = context.create().page("/content/launches/launch1/content2/sample/en/products");
+
+    assertEquals("/content/launches/launch1/content2", testPage.getAbsoluteParent(0).getPath());
+    assertEquals("/content/launches/launch1/content2/sample", testPage.getAbsoluteParent(1).getPath());
+    assertEquals("/content/launches/launch1/content2/sample/en", testPage.getAbsoluteParent(2).getPath());
+    assertEquals("/content/launches/launch1/content2/sample/en/products", testPage.getAbsoluteParent(3).getPath());
+    assertNull(testPage.getAbsoluteParent(4));
+  }
+
+  @Test
+  public void testGetAbsoluteParent_LaunchNewStructure() {
+    context.create().page("/content/launches/2017/01/05/launch1", "/apps/sample/templates/template1",
+        ImmutableMap.<String, Object>of("sling:resourceType", "wcm/launches/components/launch"));
+    context.create().page("/content/launches/2017/01/05/launch1/content2");
+    context.create().page("/content/launches/2017/01/05/launch1/content2/sample");
+    context.create().page("/content/launches/2017/01/05/launch1/content2/sample/en");
+    Page testPage = context.create().page("/content/launches/2017/01/05/launch1/content2/sample/en/products");
+
+    assertEquals("/content/launches/2017/01/05/launch1/content2", testPage.getAbsoluteParent(0).getPath());
+    assertEquals("/content/launches/2017/01/05/launch1/content2/sample", testPage.getAbsoluteParent(1).getPath());
+    assertEquals("/content/launches/2017/01/05/launch1/content2/sample/en", testPage.getAbsoluteParent(2).getPath());
+    assertEquals("/content/launches/2017/01/05/launch1/content2/sample/en/products", testPage.getAbsoluteParent(3).getPath());
     assertNull(testPage.getAbsoluteParent(4));
   }
 

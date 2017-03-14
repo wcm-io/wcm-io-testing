@@ -24,6 +24,9 @@
   <body>
 
     <release version="2.2.2" date="not released">
+      <action type="fix" dev="sseifert" issue="WTES-26">
+        Page.getAbsoluteParent: Special handling for pages in launches.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi and Sling Mock.
       </action>
