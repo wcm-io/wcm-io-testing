@@ -26,11 +26,13 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.caconfig.management.ConfigurationManager;
 import org.apache.sling.caconfig.resource.spi.ContextPathStrategy;
 import org.apache.sling.caconfig.spi.ConfigurationPersistData;
+import org.apache.sling.testing.mock.osgi.MapUtil;
 import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.caconfig.application.impl.PathApplicationProvider;
 import io.wcm.caconfig.application.spi.ApplicationProvider;
 import io.wcm.caconfig.extensions.contextpath.impl.AbsoluteParentContextPathStrategy;
+import io.wcm.caconfig.extensions.contextpath.impl.RootTemplateContextPathStrategy;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -68,24 +70,20 @@ public final class MockCAConfig {
    */
   public static void contextPathStrategyAbsoluteParent(final AemContext context,
       final int... levels) {
-    contextPathStrategyAbsoluteParent(context, null, levels);
+    context.registerInjectActivateService(new AbsoluteParentContextPathStrategy(),
+        "levels", levels);
   }
 
   /**
-   * Register {@link ContextPathStrategy} that supports one or multiple fixed levels in content hierarchy where
-   * configurations are supported.
+   * Register {@link ContextPathStrategy} that detects context paths by matching parent pages against a list of allowed
+   * templates for context root.
    * @param context AEM context
-   * @param applicationId Application ID
-   * @param levels List of absolute levels where configuration is supported.
-   *          Levels are used in the same way as {@link Text#getAbsoluteParent(String, int)}.
-   *          Example:<br>
-   *          <code>Text.getAbsoluteParent("/foo/bar/test", 1) == "/foo/bar"</code>
+   * @param templatePaths List of template paths allowed for context root pages.
    */
-  public static void contextPathStrategyAbsoluteParent(final AemContext context,
-      final String applicationId, final int... levels) {
-    context.registerInjectActivateService(new AbsoluteParentContextPathStrategy(),
-        "applicationId", applicationId,
-        "levels", levels);
+  public static void contextPathStrategyRootTemplate(final AemContext context,
+      final String... templatePaths) {
+    context.registerInjectActivateService(new RootTemplateContextPathStrategy(),
+        "templatePaths", templatePaths);
   }
 
   /**
@@ -99,6 +97,17 @@ public final class MockCAConfig {
     ConfigurationManager configManager = context.getService(ConfigurationManager.class);
     Resource contextResource = context.resourceResolver().getResource(contextPath);
     configManager.persistConfiguration(contextResource, configName, new ConfigurationPersistData(values));
+  }
+
+  /**
+   * Writes configuration parameters using the primary configured persistence provider.
+   * @param context AEM context
+   * @param contextPath Configuration id
+   * @param configName Config name
+   * @param values Configuration values
+   */
+  public static void writeConfiguration(AemContext context, String contextPath, String configName, Object... values) {
+    writeConfiguration(context, contextPath, configName, MapUtil.toMap(values));
   }
 
 }

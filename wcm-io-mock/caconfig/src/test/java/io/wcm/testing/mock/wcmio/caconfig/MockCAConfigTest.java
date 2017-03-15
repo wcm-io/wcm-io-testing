@@ -36,7 +36,7 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 import io.wcm.testing.mock.wcmio.caconfig.example.SimpleConfig;
 
-public class MockCAConfigCompatTest {
+public class MockCAConfigTest {
 
   private static final String APP_ID_1 = "/apps/app1";
 
@@ -50,7 +50,7 @@ public class MockCAConfigCompatTest {
   public void setUp() {
     MockContextAwareConfig.registerAnnotationClasses(context, SimpleConfig.class);
 
-    MockCAConfig.contextPathStrategyAbsoluteParent(context, APP_ID_1, 2);
+    MockCAConfig.contextPathStrategyAbsoluteParent(context, 2);
 
     MockCAConfig.applicationProvider(context, APP_ID_1, "^/content(/.+)?$");
 
