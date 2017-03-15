@@ -19,12 +19,16 @@
  */
 package io.wcm.testing.mock.wcmio.caconfig;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.caconfig.management.ConfigurationManager;
 import org.apache.sling.caconfig.resource.spi.ContextPathStrategy;
+import org.apache.sling.caconfig.spi.ConfigurationCollectionPersistData;
 import org.apache.sling.caconfig.spi.ConfigurationPersistData;
 import org.apache.sling.testing.mock.osgi.MapUtil;
 import org.osgi.annotation.versioning.ProviderType;
@@ -108,6 +112,24 @@ public final class MockCAConfig {
    */
   public static void writeConfiguration(AemContext context, String contextPath, String configName, Object... values) {
     writeConfiguration(context, contextPath, configName, MapUtil.toMap(values));
+  }
+
+  /**
+   * Writes a collection of configuration parameters using the primary configured persistence provider.
+   * @param context AEM context
+   * @param contextPath Configuration id
+   * @param configName Config name
+   * @param values Configuration values
+   */
+  public static void writeConfigurationCollection(AemContext context, String contextPath, String configName, Collection<Map<String, Object>> values) {
+    ConfigurationManager configManager = context.getService(ConfigurationManager.class);
+    Resource contextResource = context.resourceResolver().getResource(contextPath);
+    List<ConfigurationPersistData> items = new ArrayList<>();
+    int index = 0;
+    for (Map<String, Object> map : values) {
+      items.add(new ConfigurationPersistData(map).collectionItemName("item" + (index++)));
+    }
+    configManager.persistConfigurationCollection(contextResource, configName, new ConfigurationCollectionPersistData(items));
   }
 
 }
