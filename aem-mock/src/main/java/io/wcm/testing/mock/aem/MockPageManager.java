@@ -82,6 +82,9 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     if (StringUtils.isEmpty(childResourceName)) {
       childResourceName = JcrUtil.createValidName(title, JcrUtil.HYPHEN_LABEL_CHAR_MAPPING, "_");
     }
+    else if (!JcrUtil.isValidName(childResourceName)) {
+      throw new IllegalArgumentException("Illegal page name.");
+    }
 
     // use a unique variant of page name if a node with the given name already exists
     try {
