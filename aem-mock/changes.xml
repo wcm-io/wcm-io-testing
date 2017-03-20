@@ -24,6 +24,9 @@
   <body>
 
     <release version="1.9.2" date="not released">
+      <action type="fix" dev="sseifert">
+        PageManager.create: Validate name with JcrUtil.isValidName.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi and Sling Mock.
       </action>

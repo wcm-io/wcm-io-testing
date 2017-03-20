@@ -216,6 +216,11 @@ public class MockPageManagerTest {
     assertEquals("title-1", page.getName());
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testCreatePageWithInvalidName() throws Exception {
+    this.pageManager.create("/content/sample/en", "title.1", "/apps/sample/templates/homepage", "Title 1");
+  }
+
   @Test
   public void testCreatePageWithDuplicateName() throws Exception {
     Page page1 = this.pageManager.create("/content/sample/en", null, "/apps/sample/templates/homepage", "Title 1");
