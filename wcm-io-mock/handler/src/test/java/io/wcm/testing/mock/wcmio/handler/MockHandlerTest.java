@@ -19,9 +19,11 @@
  */
 package io.wcm.testing.mock.wcmio.handler;
 
-import static io.wcm.testing.mock.wcmio.config.ContextPlugins.WCMIO_CONFIG;
+import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG;
+import static io.wcm.testing.mock.wcmio.caconfig.compat.ContextPlugins.WCMIO_CACONFIG_COMPAT;
 import static io.wcm.testing.mock.wcmio.handler.ContextPlugins.WCMIO_HANDLER;
 import static io.wcm.testing.mock.wcmio.sling.ContextPlugins.WCMIO_SLING;
+import static org.apache.sling.testing.mock.caconfig.ContextPlugins.CACONFIG;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
@@ -38,7 +40,10 @@ import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 public class MockHandlerTest {
 
   @Rule
-  public AemContext context = new AemContextBuilder().plugin(WCMIO_SLING, WCMIO_CONFIG, WCMIO_HANDLER).build();
+  public AemContext context = new AemContextBuilder()
+      .plugin(CACONFIG)
+      .plugin(WCMIO_SLING, WCMIO_CACONFIG, WCMIO_CACONFIG_COMPAT, WCMIO_HANDLER)
+      .build();
 
   @Before
   public void setUp() {
