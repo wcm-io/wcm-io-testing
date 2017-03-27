@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.0.0" date="not released">
+      <action type="update" dev="sseifert">
+        Update to Handler 1.x.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch to AEM 6.1 and Java 8 as minimum versions.
+      </action>
+    </release>
+
     <release version="0.6.0" date="2017-02-08">
       <action type="add" dev="sseifert">
         Provide Mock Context Plugin.

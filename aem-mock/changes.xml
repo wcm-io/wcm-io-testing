@@ -33,6 +33,9 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi and Sling Mock.
       </action>
+      <action type="update" dev="sseifert">
+        Switch to Java 8 as minimum versions.
+      </action>
     </release>
 
     <release version="2.2.0" date="2017-01-02">
