@@ -34,6 +34,9 @@
         Update to latest OSGi and Sling Mock.
       </action>
       <action type="update" dev="sseifert">
+        Disable vanity support by default in ResourceResolver.
+      </action>
+      <action type="update" dev="sseifert">
         Switch to Java 8 as minimum versions.
       </action>
     </release>
