@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi and Sling Mock.
       </action>
+      <action type="update" dev="sseifert">
+        Disable vanity support by default in ResourceResolver.
+      </action>
     </release>
 
     <release version="1.9.0" date="2017-01-02">
