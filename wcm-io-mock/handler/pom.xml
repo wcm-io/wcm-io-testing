@@ -156,6 +156,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- TODO: get rid of this application detection support! -->
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.caconfig.application</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

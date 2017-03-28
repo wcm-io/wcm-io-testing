@@ -22,7 +22,14 @@ package io.wcm.testing.mock.wcmio.handler;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
+import io.wcm.handler.commons.spisupport.impl.SpiResolverImpl;
+import io.wcm.handler.link.impl.DefaultLinkHandlerConfig;
+import io.wcm.handler.link.impl.LinkHandlerConfigAdapterFactory;
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
+import io.wcm.handler.media.impl.DefaultMediaHandlerConfig;
+import io.wcm.handler.media.impl.MediaHandlerConfigAdapterFactory;
+import io.wcm.handler.url.impl.DefaultUrlHandlerConfig;
+import io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -50,8 +57,21 @@ public final class ContextPlugins {
    */
   static void setUp(AemContext context) {
 
-    // media format provider manager
+    // commons
+    context.registerInjectActivateService(new SpiResolverImpl());
+
+    // url handler
+    context.registerInjectActivateService(new UrlHandlerConfigAdapterFactory());
+    context.registerInjectActivateService(new DefaultUrlHandlerConfig());
+
+    // media handler
+    context.registerInjectActivateService(new MediaHandlerConfigAdapterFactory());
+    context.registerInjectActivateService(new DefaultMediaHandlerConfig());
     context.registerInjectActivateService(new MediaFormatProviderManagerImpl());
+
+    // link handler
+    context.registerInjectActivateService(new LinkHandlerConfigAdapterFactory());
+    context.registerInjectActivateService(new DefaultLinkHandlerConfig());
 
   }
 

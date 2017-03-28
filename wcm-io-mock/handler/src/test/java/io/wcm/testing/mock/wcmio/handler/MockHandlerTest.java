@@ -29,6 +29,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import io.wcm.caconfig.application.impl.ApplicationAdapterFactory;
+import io.wcm.caconfig.application.impl.ApplicationFinderImpl;
+import io.wcm.caconfig.application.impl.ApplicationImplementationPicker;
 import io.wcm.handler.link.LinkHandler;
 import io.wcm.handler.media.MediaHandler;
 import io.wcm.handler.richtext.RichTextHandler;
@@ -46,6 +49,13 @@ public class MockHandlerTest {
 
   @Before
   public void setUp() {
+
+    // application provider
+    // TODO: get rit of application provider
+    context.registerInjectActivateService(new ApplicationFinderImpl());
+    context.registerInjectActivateService(new ApplicationImplementationPicker());
+    context.registerInjectActivateService(new ApplicationAdapterFactory());
+
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
   }
 
