@@ -22,13 +22,11 @@ package io.wcm.testing.mock.wcmio.caconfig;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
-import io.wcm.caconfig.application.impl.ApplicationAdapterFactory;
-import io.wcm.caconfig.application.impl.ApplicationFinderImpl;
-import io.wcm.caconfig.application.impl.ApplicationImplementationPicker;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
  * Mock context plugins.
+ * TODO: remove this plugin as it has not effect?
  */
 public final class ContextPlugins {
 
@@ -42,20 +40,17 @@ public final class ContextPlugins {
   public static final ContextPlugin<AemContext> WCMIO_CACONFIG = new AbstractContextPlugin<AemContext>() {
     @Override
     public void afterSetUp(AemContext context) throws Exception {
-      setUpCompat(context);
+      setUp(context);
     }
   };
 
   /**
-   * Set up all mandatory OSGi services for wcm.io Configuration support.
-   * @param context Aem context
+   * Set up all mandatory OSGi services for wcm.io Context-Aware Configuration support.
+   * @param context AEM context
    */
-  private static void setUpCompat(AemContext context) {
+  private static void setUp(AemContext context) {
 
-    // application detection
-    context.registerInjectActivateService(new ApplicationFinderImpl());
-    context.registerInjectActivateService(new ApplicationImplementationPicker());
-    context.registerInjectActivateService(new ApplicationAdapterFactory());
+    // nothing to do - yet
 
   }
 

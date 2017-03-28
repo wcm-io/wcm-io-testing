@@ -38,8 +38,6 @@ import io.wcm.testing.mock.wcmio.caconfig.example.SimpleConfig;
 
 public class MockCAConfigTest {
 
-  private static final String APP_ID_1 = "/apps/app1";
-
   @Rule
   public AemContext context = new AemContextBuilder()
       .plugin(CACONFIG)
@@ -51,8 +49,6 @@ public class MockCAConfigTest {
     MockContextAwareConfig.registerAnnotationClasses(context, SimpleConfig.class);
 
     MockCAConfig.contextPathStrategyAbsoluteParent(context, 2);
-
-    MockCAConfig.applicationProvider(context, APP_ID_1, "^/content(/.+)?$");
 
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 

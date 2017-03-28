@@ -33,8 +33,6 @@ import org.apache.sling.caconfig.spi.ConfigurationPersistData;
 import org.apache.sling.testing.mock.osgi.MapUtil;
 import org.osgi.annotation.versioning.ProviderType;
 
-import io.wcm.caconfig.application.impl.PathApplicationProvider;
-import io.wcm.caconfig.application.spi.ApplicationProvider;
 import io.wcm.caconfig.extensions.contextpath.impl.AbsoluteParentContextPathStrategy;
 import io.wcm.caconfig.extensions.contextpath.impl.RootTemplateContextPathStrategy;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -47,20 +45,6 @@ public final class MockCAConfig {
 
   private MockCAConfig() {
     // static methods only
-  }
-
-  /**
-   * Register {@link ApplicationProvider} that supports detecting an application based on one or multiple fixed paths
-   * subtrees.
-   * @param context AEM context
-   * @param applicationId Application id
-   * @param pathPatterns Path patterns
-   */
-  public static void applicationProvider(final AemContext context,
-      final String applicationId, final String... pathPatterns) {
-    context.registerInjectActivateService(new PathApplicationProvider(),
-        "applicationId", applicationId,
-        "pathPatterns", pathPatterns);
   }
 
   /**
