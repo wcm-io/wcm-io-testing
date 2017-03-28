@@ -23,7 +23,6 @@ import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
-import io.wcm.handler.url.impl.UrlHandlerParameterProviderImpl;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -50,9 +49,6 @@ public final class ContextPlugins {
    * @param context Aem context
    */
   static void setUp(AemContext context) {
-
-    // register url handler config parameter
-    context.registerInjectActivateService(new UrlHandlerParameterProviderImpl());
 
     // media format provider manager
     context.registerInjectActivateService(new MediaFormatProviderManagerImpl());
