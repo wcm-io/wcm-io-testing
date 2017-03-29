@@ -22,7 +22,7 @@ package io.wcm.testing.mock.wcmio.handler;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
-import io.wcm.handler.commons.spisupport.impl.SpiResolverImpl;
+import io.wcm.handler.commons.caservice.impl.ContextAwareServiceResolverImpl;
 import io.wcm.handler.link.impl.DefaultLinkHandlerConfig;
 import io.wcm.handler.link.impl.LinkHandlerConfigAdapterFactory;
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
@@ -58,7 +58,7 @@ public final class ContextPlugins {
   static void setUp(AemContext context) {
 
     // commons
-    context.registerInjectActivateService(new SpiResolverImpl());
+    context.registerInjectActivateService(new ContextAwareServiceResolverImpl());
 
     // url handler
     context.registerInjectActivateService(new UrlHandlerConfigAdapterFactory());
