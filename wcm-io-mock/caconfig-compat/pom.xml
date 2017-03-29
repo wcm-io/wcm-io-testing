@@ -51,6 +51,17 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.cmpn</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.aem-mock</artifactId>
       <version>1.9.0</version>
@@ -95,18 +106,6 @@
       <scope>compile</scope>
     </dependency>
 
-    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
-    <!-- (other versions of this APIs use other artifact ids) -->
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>osgi.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>osgi.cmpn</artifactId>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>com.adobe.aem</groupId>
       <artifactId>aem-api</artifactId>
