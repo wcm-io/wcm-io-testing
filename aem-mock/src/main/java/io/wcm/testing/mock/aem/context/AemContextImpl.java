@@ -127,7 +127,7 @@ public class AemContextImpl extends SlingContextImpl {
       return currentPage(page);
     }
     else {
-      currentResource((Resource)null);
+      currentPage((Page)null);
       return null;
     }
   }
