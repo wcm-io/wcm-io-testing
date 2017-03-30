@@ -31,7 +31,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import io.wcm.sling.commons.resource.ImmutableValueMap;
+import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 import io.wcm.testing.mock.wcmio.caconfig.example.SimpleConfig;
@@ -53,7 +54,7 @@ public class MockCAConfigTest {
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 
     MockCAConfig.writeConfiguration(context, "/content/region/site",
-        SimpleConfig.class.getName(), ImmutableValueMap.of("param1", "value1"));
+        SimpleConfig.class.getName(), ImmutableMap.<String, Object>of("param1", "value1"));
   }
 
   @Test

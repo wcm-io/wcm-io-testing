@@ -19,7 +19,6 @@
  */
 package io.wcm.testing.mock.wcmio.caconfig.compat;
 
-import static io.wcm.testing.mock.wcmio.caconfig.ContextPlugins.WCMIO_CACONFIG;
 import static io.wcm.testing.mock.wcmio.caconfig.compat.ContextPlugins.WCMIO_CACONFIG_COMPAT;
 import static org.apache.sling.testing.mock.caconfig.ContextPlugins.CACONFIG;
 import static org.junit.Assert.assertEquals;
@@ -29,6 +28,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import io.wcm.caconfig.application.spi.ApplicationProvider;
@@ -37,7 +37,6 @@ import io.wcm.config.api.Parameter;
 import io.wcm.config.api.ParameterBuilder;
 import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
-import io.wcm.sling.commons.resource.ImmutableValueMap;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 
@@ -54,7 +53,6 @@ public class MockCAConfigTest {
   @Rule
   public AemContext context = new AemContextBuilder()
       .plugin(CACONFIG)
-      .plugin(WCMIO_CACONFIG)
       .plugin(WCMIO_CACONFIG_COMPAT)
       .build();
 
@@ -74,7 +72,7 @@ public class MockCAConfigTest {
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 
     MockCAConfig.writeConfiguration(context, "/content/region/site",
-        ImmutableValueMap.of("param1", "value1"));
+        ImmutableMap.<String, Object>of("param1", "value1"));
   }
 
   @Test
