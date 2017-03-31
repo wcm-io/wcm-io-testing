@@ -25,10 +25,10 @@
 
     <release version="1.0.0" date="not released">
       <action type="update" dev="sseifert">
-        Update to Handler 1.x.
+        Switch to AEM 6.1 and Java 8 as minimum versions.
       </action>
       <action type="update" dev="sseifert">
-        Switch to AEM 6.1 and Java 8 as minimum versions.
+        Update to Handler 1.x.
       </action>
     </release>
 
