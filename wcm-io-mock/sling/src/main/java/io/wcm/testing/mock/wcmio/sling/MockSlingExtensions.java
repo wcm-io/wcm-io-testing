@@ -36,16 +36,6 @@ public final class MockSlingExtensions {
   }
 
   /**
-   * Set up request context and Sling Models Extensions.
-   * @param context Aem context
-   * @deprecated Please use {@link ContextPlugins#WCMIO_SLING} plugin.
-   */
-  @Deprecated
-  public static void setUp(AemContext context) {
-    ContextPlugins.setUp(context);
-  }
-
-  /**
    * Simulate setting current request in request context.
    * @param context AEM Context
    * @param request Request

@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         Add support for Context-Aware services.
       </action>
+      <action type="update" dev="sseifert">
+        Remove deprecated method MockSlingExtensions.setUp.
+      </action>
     </release>
 
     <release version="0.6.0" date="2017-02-08">

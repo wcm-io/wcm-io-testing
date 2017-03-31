@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         Update to Handler 1.x.
       </action>
+      <action type="update" dev="sseifert">
+        Remove deprecated method MockHandler class.
+      </action>
     </release>
 
     <release version="0.6.0" date="2017-02-08">
