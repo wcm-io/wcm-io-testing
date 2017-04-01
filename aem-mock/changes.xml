@@ -34,7 +34,7 @@
         AemContext.currentPage: Ensure ComponentContext is cleared as well when current page is set to null.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest OSGi and Sling Mock.
+        Update to latest OSGi, Sling Mock and ResourceResolver Mock.
       </action>
       <action type="update" dev="sseifert">
         Disable vanity support by default in ResourceResolver.
