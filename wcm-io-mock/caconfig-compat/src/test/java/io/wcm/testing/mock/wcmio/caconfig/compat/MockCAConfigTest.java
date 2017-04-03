@@ -31,10 +31,10 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import io.wcm.caconfig.application.spi.ApplicationProvider;
 import io.wcm.config.api.Configuration;
 import io.wcm.config.api.Parameter;
 import io.wcm.config.api.ParameterBuilder;
+import io.wcm.config.spi.ApplicationProvider;
 import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
 import io.wcm.testing.mock.aem.junit.AemContext;
