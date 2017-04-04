@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.sling</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>bundle</packaging>
 
   <name>Sling Extensions Mock Helper</name>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.aem-mock</artifactId>
-      <version>1.9.1-SNAPSHOT</version>
+      <version>1.9.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -83,14 +83,14 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.sling.commons</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.sling.models</artifactId>
-      <version>1.4.0-SNAPSHOT</version>
+      <version>1.4.0</version>
       <scope>compile</scope>
     </dependency>
 
