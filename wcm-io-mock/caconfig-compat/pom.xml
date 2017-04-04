@@ -34,7 +34,7 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
-  <name>Configuration Compatibility Mock Helper</name>
+  <name>Context-Aware Configuration Compatibility Layer Mock Helper</name>
   <description>Helps setting up mock environment for Context-aware configuration compatibility Layer for wcm.io Configuration.</description>
 
   <scm>
