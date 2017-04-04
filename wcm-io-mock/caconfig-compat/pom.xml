@@ -31,10 +31,10 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.caconfig-compat</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>bundle</packaging>
 
-  <name>Configuration Compatibility Mock Helper</name>
+  <name>Context-Aware Configuration Compatibility Layer Mock Helper</name>
   <description>Helps setting up mock environment for Context-aware configuration compatibility Layer for wcm.io Configuration.</description>
 
   <scm>
