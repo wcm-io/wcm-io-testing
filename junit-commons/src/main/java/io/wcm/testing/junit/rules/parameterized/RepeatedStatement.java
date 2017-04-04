@@ -56,7 +56,7 @@ class RepeatedStatement<T> extends Statement {
         }
         this.test.evaluate();
       }
-      catch (Throwable ex) {
+      /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
         this.errorCollector.addError(new AssertionError(buildAssertionMessage("For value " + v, ex), ex));
       }
       finally {
@@ -65,7 +65,7 @@ class RepeatedStatement<T> extends Statement {
             this.tearDownCallback.execute(v);
           }
         }
-        catch (Throwable ex) {
+        /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
           this.errorCollector.addError(new AssertionError(buildAssertionMessage("For value " + v + " (teardown)", ex), ex));
         }
       }

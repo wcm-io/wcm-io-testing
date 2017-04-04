@@ -31,6 +31,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
+import com.adobe.cq.wcm.launches.utils.LaunchUtils;
 import com.day.cq.commons.Filter;
 import com.day.cq.commons.LanguageUtil;
 import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
@@ -52,6 +53,8 @@ import com.google.common.collect.Iterators;
  * Mock implementation of {@link Page}.
  */
 class MockPage extends SlingAdaptable implements Page {
+
+  private static final String RT_LAUNCH = "wcm/launches/components/launch";
 
   private final Resource resource;
   private final Resource contentResource;
@@ -157,8 +160,26 @@ class MockPage extends SlingAdaptable implements Page {
 
   @Override
   public Page getAbsoluteParent(final int level) {
-    String parentPath = Text.getAbsoluteParent(this.resource.getPath(), level);
+    int hierachyLevel = level;
+    if (LaunchUtils.isLaunchBasedPath(resource.getPath())) {
+      Resource launchResource = getLaunchResourceInternal(resource);
+      if (launchResource != null) {
+        hierachyLevel += StringUtils.countMatches(launchResource.getPath(), "/");
+      }
+    }
+    String parentPath = Text.getAbsoluteParent(this.resource.getPath(), hierachyLevel);
     return getPage(parentPath);
+  }
+
+  private static Resource getLaunchResourceInternal(Resource resource) {
+    if (resource == null) {
+      return null;
+    }
+    Resource content = resource.getChild(JcrConstants.JCR_CONTENT);
+    if (content != null && content.isResourceType(RT_LAUNCH)) {
+      return resource;
+    }
+    return getLaunchResourceInternal(resource.getParent());
   }
 
   @Override
@@ -360,12 +381,12 @@ class MockPage extends SlingAdaptable implements Page {
     return "MockPage [path=" + resource.getPath() + ", props=" + properties + "]";
   }
 
-  // Required for AEM 6.1 API
+  @Override
   public Calendar getDeleted() {
     return null;
   }
 
-  // Required for AEM 6.1 API
+  @Override
   public String getDeletedBy() {
     return null;
   }

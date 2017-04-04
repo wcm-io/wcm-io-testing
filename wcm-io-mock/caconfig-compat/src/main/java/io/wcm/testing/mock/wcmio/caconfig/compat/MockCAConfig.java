@@ -29,9 +29,9 @@ import org.apache.sling.caconfig.management.ConfigurationManager;
 import org.apache.sling.caconfig.spi.ConfigurationPersistData;
 import org.osgi.annotation.versioning.ProviderType;
 
-import io.wcm.caconfig.application.spi.ApplicationProvider;
 import io.wcm.config.api.Parameter;
 import io.wcm.config.core.impl.ParameterProviderBridge;
+import io.wcm.config.spi.ApplicationProvider;
 import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
 import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;

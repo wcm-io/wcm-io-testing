@@ -31,14 +31,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import io.wcm.sling.commons.resource.ImmutableValueMap;
+import com.google.common.collect.ImmutableMap;
+
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 import io.wcm.testing.mock.wcmio.caconfig.example.SimpleConfig;
 
-public class MockCAConfigCompatTest {
-
-  private static final String APP_ID_1 = "/apps/app1";
+public class MockCAConfigTest {
 
   @Rule
   public AemContext context = new AemContextBuilder()
@@ -50,14 +49,12 @@ public class MockCAConfigCompatTest {
   public void setUp() {
     MockContextAwareConfig.registerAnnotationClasses(context, SimpleConfig.class);
 
-    MockCAConfig.contextPathStrategyAbsoluteParent(context, APP_ID_1, 2);
-
-    MockCAConfig.applicationProvider(context, APP_ID_1, "^/content(/.+)?$");
+    MockCAConfig.contextPathStrategyAbsoluteParent(context, 2);
 
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 
     MockCAConfig.writeConfiguration(context, "/content/region/site",
-        SimpleConfig.class.getName(), ImmutableValueMap.of("param1", "value1"));
+        SimpleConfig.class.getName(), ImmutableMap.<String, Object>of("param1", "value1"));
   }
 
   @Test

@@ -85,7 +85,7 @@ class MockAssetManager implements AssetManager {
           metadataProps.put(DamConstants.TIFF_IMAGEWIDTH, layer.getWidth());
           metadataProps.put(DamConstants.TIFF_IMAGELENGTH, layer.getHeight());
         }
-        catch (Throwable ex) {
+        /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
           // ignore
         }
       }

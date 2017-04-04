@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.0.14</version>
+    <version>1.1.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -48,10 +48,10 @@
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
     <jcr-mock.version>1.2.0</jcr-mock.version>
-    <osgi-mock.version>2.2.2</osgi-mock.version>
-    <sling-mock.version>2.2.4</sling-mock.version>
+    <osgi-mock.version>2.2.4</osgi-mock.version>
+    <sling-mock.version>2.2.6</sling-mock.version>
     <sling-mock.oak.version>2.0.2</sling-mock.oak.version>
-    <resourceresolver-mock.version>1.1.16</resourceresolver-mock.version>
+    <resourceresolver-mock.version>1.1.18</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
     
     <oak.version>1.4.1</oak.version>
@@ -120,7 +120,6 @@
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.models.impl</artifactId>
-      <version>1.2.2</version>
       <scope>compile</scope>
     </dependency>
 

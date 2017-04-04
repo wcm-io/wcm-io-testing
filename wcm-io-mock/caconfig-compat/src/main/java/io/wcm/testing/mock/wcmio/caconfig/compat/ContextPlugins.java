@@ -22,6 +22,9 @@ package io.wcm.testing.mock.wcmio.caconfig.compat;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 
+import io.wcm.config.core.impl.ApplicationAdapterFactory;
+import io.wcm.config.core.impl.ApplicationFinderImpl;
+import io.wcm.config.core.impl.ApplicationImplementationPicker;
 import io.wcm.config.core.impl.ConfigurationAdapterFactory;
 import io.wcm.config.core.impl.ConfigurationFinderStrategyBridge;
 import io.wcm.config.core.impl.ParameterOverrideProviderBridge;
@@ -54,10 +57,10 @@ public final class ContextPlugins {
    */
   private static void setUpCompat(AemContext context) {
 
-    // application detection (compat mode)
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationFinderBridge());
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationImplementationPicker());
-    context.registerInjectActivateService(new io.wcm.config.core.impl.application.ApplicationProviderBridge());
+    // application detection
+    context.registerInjectActivateService(new ApplicationFinderImpl());
+    context.registerInjectActivateService(new ApplicationImplementationPicker());
+    context.registerInjectActivateService(new ApplicationAdapterFactory());
 
     // persistence providers
     context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),
