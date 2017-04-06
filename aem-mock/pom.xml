@@ -241,6 +241,13 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-imaging</artifactId>
+      <!--
+        AEM 6.2 includes 1.0-R1725432, but this is not available on maven central or in the adobe public repo,
+        so we switch back to 1.0-R1534292 avaiable on repo.adobe.com.
+        If you encounter problems with this version update to 1.0-R1725432 available on
+        http://wcm.io/maven/repositories/apache-intermediate-release/
+      -->
+      <version>1.0-R1534292</version>
       <scope>compile</scope>
     </dependency>
 
