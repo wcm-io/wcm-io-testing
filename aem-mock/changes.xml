@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Switch back to commons-imaging 1.0-R1534292 because only this version is available on repo.adobe.com.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi, Sling Mock and JCR Mock.
+      </action>
     </release>
 
     <release version="2.2.2" date="2017-04-04">
