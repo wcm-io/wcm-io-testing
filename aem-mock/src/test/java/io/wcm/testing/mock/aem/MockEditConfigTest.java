@@ -60,6 +60,7 @@ public class MockEditConfigTest {
 
   private Page page;
   private Resource resource;
+  private Resource inplaceEditingConfig;
   private ComponentContext componentContext;
   private EditConfig underTest;
 
@@ -75,6 +76,11 @@ public class MockEditConfigTest {
     resource = context.create().resource(page.getContentResource().getPath() + "/comp1", ImmutableMap.<String, Object>builder()
         .put("sling:resourceType", COMPONENT_RESOURCE_TYPE)
         .build());
+
+    inplaceEditingConfig = context.create().resource(COMPONENT_RESOURCE_TYPE + "/cq:inplaceEditing",
+        "jcr:primaryType", "cq:InplaceEditingConfig",
+        "active", true,
+        "editorType", "text");
 
     context.currentPage(page);
     context.currentResource(resource);
@@ -103,7 +109,11 @@ public class MockEditConfigTest {
   public void testGetInplaceEditingConfig() throws Exception {
     assertNull(underTest.getInplaceEditingConfig());
 
-    Node node = mock(Node.class);
+    Node node = inplaceEditingConfig.adaptTo(Node.class);
+    if (node == null) {
+      // skip further testing if no JCR in place
+      return;
+    }
     InplaceEditingConfig config = new InplaceEditingConfig(node);
 
     underTest.setInplaceEditingConfig(config);

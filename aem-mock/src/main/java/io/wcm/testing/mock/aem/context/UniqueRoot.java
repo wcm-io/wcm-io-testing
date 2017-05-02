@@ -19,8 +19,6 @@
  */
 package io.wcm.testing.mock.aem.context;
 
-import static org.apache.sling.jcr.resource.JcrResourceConstants.NT_SLING_ORDERED_FOLDER;
-
 import org.apache.sling.api.resource.Resource;
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -46,7 +44,7 @@ public final class UniqueRoot extends org.apache.sling.testing.mock.sling.contex
    */
   public String dam() {
     if (damRoot == null) {
-      damRoot = getOrCreateResource("/content/dam/" + uniquePathPart, NT_SLING_ORDERED_FOLDER);
+      damRoot = getOrCreateResource("/content/dam/" + uniquePathPart, "sling:OrderedFolder");
     }
     return damRoot.getPath();
   }

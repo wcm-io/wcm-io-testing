@@ -280,4 +280,9 @@ class MockAsset extends ResourceWrapper implements Asset {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public void initAssetState() {
+    throw new UnsupportedOperationException();
+  }
+
 }

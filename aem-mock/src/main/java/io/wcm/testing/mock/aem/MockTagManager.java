@@ -42,7 +42,6 @@ import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
-import org.apache.sling.jcr.resource.JcrResourceConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,10 +83,10 @@ class MockTagManager implements TagManager {
       return;
     }
     Map<String, Object> etcProperties = new HashMap<String, Object>();
-    etcProperties.put(JcrConstants.JCR_PRIMARYTYPE, JcrResourceConstants.NT_SLING_FOLDER);
+    etcProperties.put(JcrConstants.JCR_PRIMARYTYPE, "sling:Folder");
 
     Map<String, Object> tagsProperties = new HashMap<String, Object>();
-    tagsProperties.put(JcrConstants.JCR_PRIMARYTYPE, JcrResourceConstants.NT_SLING_FOLDER);
+    tagsProperties.put(JcrConstants.JCR_PRIMARYTYPE, "sling:Folder");
     tagsProperties.put(JcrConstants.JCR_TITLE, "Tags");
     // locale strings that are recognized languages in child tags
     tagsProperties.put("languages", new String[]{"en", "de", "es", "fr", "it", "pt_br", "zh_cn", "ch_tw", "ja", "ko_kr"});
