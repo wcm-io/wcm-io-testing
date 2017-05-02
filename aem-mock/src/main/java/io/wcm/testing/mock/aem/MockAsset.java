@@ -280,7 +280,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     throw new UnsupportedOperationException();
   }
 
-  @Override
+  // AEM 6.3
   public void initAssetState() {
     throw new UnsupportedOperationException();
   }

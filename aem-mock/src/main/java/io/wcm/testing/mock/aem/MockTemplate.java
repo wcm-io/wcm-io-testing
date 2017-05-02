@@ -94,7 +94,6 @@ class MockTemplate extends ResourceWrapper implements Template {
   }
 
   // AEM 6.3
-  @Override
   public Calendar getLastModified() {
     return properties.get(JcrConstants.JCR_LASTMODIFIED, Calendar.class);
   }
