@@ -122,7 +122,11 @@
       <artifactId>org.apache.sling.models.impl</artifactId>
       <scope>compile</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.apache.jackrabbit</groupId>
+      <artifactId>oak-jcr</artifactId>
+      <scope>compile</scope>
+    </dependency>
       
     <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
          are loaded before AEM API deps -->
@@ -292,21 +296,9 @@
       <dependency>
         <groupId>io.wcm.maven</groupId>
         <artifactId>io.wcm.maven.aem-dependencies</artifactId>
-        <version>6.2.0.0000</version>
+        <version>6.2.0.0001-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-imaging</artifactId>
-        <!--
-          AEM 6.2 includes 1.0-R1725432, but this is not available on maven central or in the adobe public repo,
-          so we switch back to 1.0-R1534292 avaiable on repo.adobe.com.
-          If you encounter problems with this version update to 1.0-R1725432 available on
-          http://wcm.io/maven/repositories/apache-intermediate-release/
-        -->
-        <version>1.0-R1534292</version>
       </dependency>
 
       <dependency>
