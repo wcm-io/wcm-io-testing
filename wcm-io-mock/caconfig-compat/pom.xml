@@ -83,7 +83,7 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.caconfig.compat</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.4</version>
       <scope>compile</scope>
     </dependency>
     
