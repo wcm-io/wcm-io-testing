@@ -19,18 +19,12 @@
  */
 package io.wcm.testing.mock.wcmio.caconfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.jackrabbit.util.Text;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.caconfig.management.ConfigurationManager;
 import org.apache.sling.caconfig.resource.spi.ContextPathStrategy;
-import org.apache.sling.caconfig.spi.ConfigurationCollectionPersistData;
-import org.apache.sling.caconfig.spi.ConfigurationPersistData;
-import org.apache.sling.testing.mock.osgi.MapUtil;
+import org.apache.sling.testing.mock.caconfig.MockContextAwareConfig;
 import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.caconfig.extensions.contextpath.impl.AbsoluteParentContextPathStrategy;
@@ -80,11 +74,12 @@ public final class MockCAConfig {
    * @param contextPath Configuration id
    * @param configName Config name
    * @param values Configuration values
+   * @deprecated Please use
+   *             {@link MockContextAwareConfig#writeConfiguration(org.apache.sling.testing.mock.sling.context.SlingContextImpl, String, String, Map)}
    */
+  @Deprecated
   public static void writeConfiguration(AemContext context, String contextPath, String configName, Map<String, Object> values) {
-    ConfigurationManager configManager = context.getService(ConfigurationManager.class);
-    Resource contextResource = context.resourceResolver().getResource(contextPath);
-    configManager.persistConfiguration(contextResource, configName, new ConfigurationPersistData(values));
+    MockContextAwareConfig.writeConfiguration(context, contextPath, configName, values);
   }
 
   /**
@@ -93,9 +88,12 @@ public final class MockCAConfig {
    * @param contextPath Configuration id
    * @param configName Config name
    * @param values Configuration values
+   * @deprecated Please use
+   *             {@link MockContextAwareConfig#writeConfiguration(org.apache.sling.testing.mock.sling.context.SlingContextImpl, String, String, Object[])}
    */
+  @Deprecated
   public static void writeConfiguration(AemContext context, String contextPath, String configName, Object... values) {
-    writeConfiguration(context, contextPath, configName, MapUtil.toMap(values));
+    MockContextAwareConfig.writeConfiguration(context, contextPath, configName, values);
   }
 
   /**
@@ -104,16 +102,12 @@ public final class MockCAConfig {
    * @param contextPath Configuration id
    * @param configName Config name
    * @param values Configuration values
+   * @deprecated Please use
+   *             {@link MockContextAwareConfig#writeConfigurationCollection(org.apache.sling.testing.mock.sling.context.SlingContextImpl, String, String, Collection)}
    */
+  @Deprecated
   public static void writeConfigurationCollection(AemContext context, String contextPath, String configName, Collection<Map<String, Object>> values) {
-    ConfigurationManager configManager = context.getService(ConfigurationManager.class);
-    Resource contextResource = context.resourceResolver().getResource(contextPath);
-    List<ConfigurationPersistData> items = new ArrayList<>();
-    int index = 0;
-    for (Map<String, Object> map : values) {
-      items.add(new ConfigurationPersistData(map).collectionItemName("item" + (index++)));
-    }
-    configManager.persistConfigurationCollection(contextResource, configName, new ConfigurationCollectionPersistData(items));
+    MockContextAwareConfig.writeConfigurationCollection(context, contextPath, configName, values);
   }
 
 }

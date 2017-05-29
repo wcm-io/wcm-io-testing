@@ -53,7 +53,7 @@ public class MockCAConfigTest {
 
     context.currentPage(context.create().page("/content/region/site/en", "/apps/templates/sample"));
 
-    MockCAConfig.writeConfiguration(context, "/content/region/site",
+    MockContextAwareConfig.writeConfiguration(context, "/content/region/site",
         SimpleConfig.class.getName(), ImmutableMap.<String, Object>of("param1", "value1"));
   }
 

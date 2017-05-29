@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.2.4" date="2017-05-29">
+      <action type="update" dev="sseifert">
+        Switch back to commons-imaging 1.0-R1534292 because only this version is available on repo.adobe.com.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi, Sling Mock and JCR Mock.
+      </action>
+      <action type="update" dev="sseifert">
+        Make compatible with AEM 6.3 API.
+      </action>
+    </release>
+
     <release version="2.2.2" date="2017-04-04">
       <action type="fix" dev="sseifert" issue="WTES-26">
         Page.getAbsoluteParent: Special handling for pages in launches.

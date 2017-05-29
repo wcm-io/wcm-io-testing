@@ -19,6 +19,8 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Calendar;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceWrapper;
@@ -89,6 +91,11 @@ class MockTemplate extends ResourceWrapper implements Template {
   @Override
   public int hashCode() {
     return getPath().hashCode();
+  }
+
+  // AEM 6.3
+  public Calendar getLastModified() {
+    return properties.get(JcrConstants.JCR_LASTMODIFIED, Calendar.class);
   }
 
   @Override
