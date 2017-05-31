@@ -27,6 +27,7 @@ import io.wcm.handler.link.impl.LinkHandlerConfigAdapterFactory;
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.handler.media.impl.DefaultMediaHandlerConfig;
 import io.wcm.handler.media.impl.MediaHandlerConfigAdapterFactory;
+import io.wcm.handler.richtext.impl.DefaultRichTextHandlerConfig;
 import io.wcm.handler.url.impl.DefaultUrlHandlerConfig;
 import io.wcm.handler.url.impl.SiteRootDetectorImpl;
 import io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory;
@@ -70,6 +71,9 @@ public final class ContextPlugins {
     // link handler
     context.registerInjectActivateService(new LinkHandlerConfigAdapterFactory());
     context.registerInjectActivateService(new DefaultLinkHandlerConfig());
+
+    // rich text handler
+    context.registerInjectActivateService(new DefaultRichTextHandlerConfig());
 
   }
 
