@@ -178,5 +178,45 @@
       <url>${site.deploy.url}${site.url.module.prefix}</url>
     </site>
   </distributionManagement>
+  
+  <profiles>
+    <profile>
+      <id>handler-1.0</id>
+      <dependencies>
+
+        <dependency>
+          <groupId>io.wcm</groupId>
+          <artifactId>io.wcm.handler.commons</artifactId>
+          <version>1.0.0</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>io.wcm</groupId>
+          <artifactId>io.wcm.handler.url</artifactId>
+          <version>1.0.0</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>io.wcm</groupId>
+          <artifactId>io.wcm.handler.media</artifactId>
+          <version>1.0.0</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>io.wcm</groupId>
+          <artifactId>io.wcm.handler.link</artifactId>
+          <version>1.0.0</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>io.wcm</groupId>
+          <artifactId>io.wcm.handler.richtext</artifactId>
+          <version>1.0.0</version>
+          <scope>compile</scope>
+        </dependency>
+
+      </dependencies>
+    </profile>
+  </profiles>
 
 </project>

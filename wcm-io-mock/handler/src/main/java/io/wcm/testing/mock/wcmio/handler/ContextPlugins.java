@@ -27,9 +27,7 @@ import io.wcm.handler.link.impl.LinkHandlerConfigAdapterFactory;
 import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.handler.media.impl.DefaultMediaHandlerConfig;
 import io.wcm.handler.media.impl.MediaHandlerConfigAdapterFactory;
-import io.wcm.handler.richtext.impl.DefaultRichTextHandlerConfig;
 import io.wcm.handler.url.impl.DefaultUrlHandlerConfig;
-import io.wcm.handler.url.impl.SiteRootDetectorImpl;
 import io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
@@ -59,7 +57,7 @@ public final class ContextPlugins {
   static void setUp(AemContext context) {
 
     // url handler
-    context.registerInjectActivateService(new SiteRootDetectorImpl());
+    registerOptional(context, "io.wcm.handler.url.impl.SiteRootDetectorImpl"); // since URL Handler 1.1.0
     context.registerInjectActivateService(new UrlHandlerConfigAdapterFactory());
     context.registerInjectActivateService(new DefaultUrlHandlerConfig());
 
@@ -73,8 +71,25 @@ public final class ContextPlugins {
     context.registerInjectActivateService(new DefaultLinkHandlerConfig());
 
     // rich text handler
-    context.registerInjectActivateService(new DefaultRichTextHandlerConfig());
+    registerOptional(context, "io.wcm.handler.richtext.impl.DefaultRichTextHandlerConfig"); // since Rich Text Handler 1.1.0
 
+  }
+
+  /**
+   * Registers an OSGi service if the class exists. Ignores the call if not.
+   * @param className Class name
+   */
+  private static void registerOptional(AemContext context, String className) {
+    try {
+      Class clazz = Class.forName(className);
+      context.registerInjectActivateService(clazz.newInstance());
+    }
+    catch (ClassNotFoundException ex) {
+      // ignore
+    }
+    catch (InstantiationException | IllegalAccessException ex) {
+      throw new RuntimeException("Unable to instantiate " + className, ex);
+    }
   }
 
 }
