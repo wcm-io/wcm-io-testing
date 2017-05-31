@@ -28,7 +28,6 @@ import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.handler.media.impl.DefaultMediaHandlerConfig;
 import io.wcm.handler.media.impl.MediaHandlerConfigAdapterFactory;
 import io.wcm.handler.url.impl.DefaultUrlHandlerConfig;
-import io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 /**
@@ -58,7 +57,8 @@ public final class ContextPlugins {
 
     // url handler
     registerOptional(context, "io.wcm.handler.url.impl.SiteRootDetectorImpl"); // since URL Handler 1.1.0
-    context.registerInjectActivateService(new UrlHandlerConfigAdapterFactory());
+    registerOptional(context, "io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory"); // URL Handler 1.0.0
+    registerOptional(context, "io.wcm.handler.url.impl.UrlHandlerAdapterFactory"); // since URL Handler 1.1.0
     context.registerInjectActivateService(new DefaultUrlHandlerConfig());
 
     // media handler
