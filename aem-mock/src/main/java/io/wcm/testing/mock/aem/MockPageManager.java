@@ -255,15 +255,19 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     }
     try {
       Resource pageContent = resourceResolver.getResource(page.getPath() + '/' + JcrConstants.JCR_CONTENT);
-      ModifiableValueMap properties = pageContent.adaptTo(ModifiableValueMap.class);
-      if (now != null) {
-        properties.put(NameConstants.PN_PAGE_LAST_MOD, now);
-        properties.put(NameConstants.PN_PAGE_LAST_MOD_BY, resourceResolver.getUserID());
-      }
-      if (clearRepl) {
-        properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED);
-        properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED_BY);
-        properties.remove(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION);
+      if (pageContent != null) {
+        ModifiableValueMap properties = pageContent.adaptTo(ModifiableValueMap.class);
+        if (now != null) {
+          properties.put(NameConstants.PN_PAGE_LAST_MOD, now);
+          properties.put(NameConstants.PN_PAGE_LAST_MOD_BY, resourceResolver.getUserID());
+        }
+        if (clearRepl) {
+          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED);
+          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED_BY);
+          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION);
+          properties.remove(NameConstants.PN_PAGE_LAST_PUBLISHED);
+          properties.remove(NameConstants.PN_PAGE_LAST_PUBLISHED_BY);
+        }
       }
     }
     catch (RepositoryException ex) {
