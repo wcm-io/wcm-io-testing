@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.2.6" date="not released">
+      <action type="update" dev="cnagel" issue="WTES-27">
+        Implement PageManager.touch (only shallow mode).
+      </action>
+    </release>
+
     <release version="2.2.4" date="2017-05-29">
       <action type="update" dev="sseifert">
         Switch back to commons-imaging 1.0-R1534292 because only this version is available on repo.adobe.com.

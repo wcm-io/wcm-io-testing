@@ -29,11 +29,17 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Calendar;
+
+import javax.jcr.Node;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -231,6 +237,34 @@ public class MockPageManagerTest {
     assertEquals("title-1", page1.getName());
     assertTrue(StringUtils.startsWith(page2.getName(), "title-1"));
     assertNotEquals(page1.getPath(), page2.getPath());
+  }
+
+  @Test
+  public void testTouch() throws WCMException, PersistenceException {
+    // RESOURCERESOLVER_MOCK doesn't support JCR API - skip test
+    if (ResourceResolverType.RESOURCERESOLVER_MOCK.equals(context.resourceResolverType())) {
+      return;
+    }
+    // set custom page properties
+    Resource resource = resourceResolver.getResource("/content/sample/en");
+    ValueMap props = resource.getChild(JcrConstants.JCR_CONTENT).adaptTo(ModifiableValueMap.class);
+    props.put(NameConstants.PN_PAGE_LAST_MOD_BY, "user-with-other-name");
+    props.put(NameConstants.PN_PAGE_LAST_REPLICATED, Calendar.getInstance());
+    props.put(NameConstants.PN_PAGE_LAST_REPLICATED_BY, "user-with-other-name");
+    props.put(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION, "Activate");
+    resourceResolver.commit();
+    Calendar calendar = Calendar.getInstance();
+
+    pageManager.touch(resource.adaptTo(Node.class), true, calendar, true);
+
+    verify(resourceResolver, times(1)).commit();
+    Page page = pageManager.getPage("/content/sample/en");
+    assertEquals(calendar.getTimeInMillis(), page.getLastModified().getTimeInMillis());
+    assertEquals("admin", page.getLastModifiedBy());
+    props = page.adaptTo(Resource.class).getChild(JcrConstants.JCR_CONTENT).getValueMap();
+    assertNull(props.get(NameConstants.PN_PAGE_LAST_REPLICATED));
+    assertNull(props.get(NameConstants.PN_PAGE_LAST_REPLICATED_BY));
+    assertNull(props.get(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION));
   }
 
 }
