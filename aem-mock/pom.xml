@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>1.9.6</version>
+  <version>1.9.7-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
   <name>AEM Mocks</name>
@@ -41,7 +41,7 @@
     <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>
     <developerConnection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</developerConnection>
     <url>https://github.com/wcm-io/wcm-io-testing</url>
-    <tag>io.wcm.testing.aem-mock-1.9.6</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
