@@ -248,6 +248,33 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     return super.adaptTo(type);
   }
 
+  @Override
+  public void touch(final Node page, final boolean shallow, final Calendar now, final boolean clearRepl) throws WCMException {
+    if (!shallow) {
+      throw new UnsupportedOperationException("Only shallow touch supported");
+    }
+    try {
+      Resource pageContent = resourceResolver.getResource(page.getPath() + '/' + JcrConstants.JCR_CONTENT);
+      if (pageContent != null) {
+        ModifiableValueMap properties = pageContent.adaptTo(ModifiableValueMap.class);
+        if (now != null) {
+          properties.put(NameConstants.PN_PAGE_LAST_MOD, now);
+          properties.put(NameConstants.PN_PAGE_LAST_MOD_BY, resourceResolver.getUserID());
+        }
+        if (clearRepl) {
+          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED);
+          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED_BY);
+          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION);
+          properties.remove(NameConstants.PN_PAGE_LAST_PUBLISHED);
+          properties.remove(NameConstants.PN_PAGE_LAST_PUBLISHED_BY);
+        }
+      }
+    }
+    catch (RepositoryException ex) {
+      throw new WCMException(ex);
+    }
+  }
+
 
   // --- unsupported operations ---
 
@@ -364,11 +391,6 @@ class MockPageManager extends SlingAdaptable implements PageManager {
 
   @Override
   public Page restoreTree(final String path, final Calendar date, final boolean preserveNV) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void touch(final Node page, final boolean shallow, final Calendar now, final boolean clearRepl) {
     throw new UnsupportedOperationException();
   }
 
