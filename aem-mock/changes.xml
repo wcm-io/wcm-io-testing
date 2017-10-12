@@ -25,7 +25,7 @@
 
     <release version="2.2.8" date="not released">
       <action type="update" dev="sseifert">
-        Update to latest Sling Mock and ResourceResolver Mock.
+        Update to latest OSGi Mock, JCR Mock, Sling Mock and ResourceResolver Mock.
       </action>
     </release>
 
