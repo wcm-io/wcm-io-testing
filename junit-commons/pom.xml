@@ -36,6 +36,7 @@
 
   <name>JUnit Commons</name>
   <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>
+  <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
     <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>

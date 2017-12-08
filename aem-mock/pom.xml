@@ -36,6 +36,7 @@
 
   <name>AEM Mocks</name>
   <description>Mock implementation of selected AEM APIs.</description>
+  <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
     <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>

@@ -36,6 +36,7 @@
 
   <name>Sling Extensions Mock Helper</name>
   <description>Helps setting up mock environment for wcm.io Sling Commons and Sling Models Extensions.</description>
+  <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
     <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>
