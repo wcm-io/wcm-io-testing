@@ -125,7 +125,7 @@
       <artifactId>oak-jcr</artifactId>
       <scope>compile</scope>
     </dependency>
-      
+
     <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
          are loaded before AEM API deps -->
     <dependency>
@@ -271,10 +271,17 @@
       <artifactId>slf4j-simple</artifactId>
       <scope>compile</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.0.2</version>
       <scope>compile</scope>
     </dependency>
 
@@ -284,9 +291,9 @@
       <version>${logging-mock.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
-  
+
   <dependencyManagement>
     <dependencies>
 
@@ -338,7 +345,7 @@
     </plugins>
     <pluginManagement>
       <plugins>
-      
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -346,6 +353,20 @@
             <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
             <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
           </configuration>
+
+
+          <dependencies>
+            <dependency>
+              <groupId>org.junit.platform</groupId>
+              <artifactId>junit-platform-surefire-provider</artifactId>
+              <version>1.0.1</version>
+            </dependency>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>5.0.1</version>
+            </dependency>
+          </dependencies>
         </plugin>
 
       </plugins>
