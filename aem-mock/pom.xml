@@ -55,6 +55,10 @@
     <resourceresolver-mock.version>1.1.20</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
 
+		<junit.jupiter.version>5.0.2</junit.jupiter.version>
+		<junit.vintage.version>4.12.2</junit.vintage.version>
+		<junit.platform.version>1.0.2</junit.platform.version>
+
   </properties>
 
   <dependencies>
@@ -279,18 +283,40 @@
     </dependency>
 
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.0.2</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.testing.logging-mock</artifactId>
       <version>${logging-mock.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+		<!-- Only required to run tests in an IDE that bundles an older version -->
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<version>${junit.platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Only required to run tests in an IDE that bundles an older version -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Only required to run tests in an IDE that bundles an older version -->
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>${junit.vintage.version}</version>
+			<scope>test</scope>
+		</dependency>
 
   </dependencies>
 
@@ -349,24 +375,27 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
+          <!-- we'll have to switch back to 2.19.1 because JUnit 5 provider is not yet compatbile with surefire 2.20/2.20.1 - see https://github.com/junit-team/junit5-samples/pull/27 -->
+          <version>2.19.1</version>
           <configuration>
             <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
             <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
           </configuration>
 
-
+          <!-- TODO: move this to global-parent once the surefire-junit5 integration is stable? -->
           <dependencies>
             <dependency>
               <groupId>org.junit.platform</groupId>
               <artifactId>junit-platform-surefire-provider</artifactId>
-              <version>1.0.1</version>
+              <version>${junit.platform.version}</version>
             </dependency>
             <dependency>
               <groupId>org.junit.jupiter</groupId>
               <artifactId>junit-jupiter-engine</artifactId>
-              <version>5.0.1</version>
+              <version>${junit.jupiter.version}</version>
             </dependency>
           </dependencies>
+
         </plugin>
 
       </plugins>
