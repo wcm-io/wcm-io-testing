@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem.junit5;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -32,6 +33,7 @@ class AemContextTest {
   }
 
   @Test
+  @Disabled // disable this test because otherwise it would fail because mixing different resource resolver types is not allowed
   void test(JcrMockAemContext context) {
     // TODO
   }
