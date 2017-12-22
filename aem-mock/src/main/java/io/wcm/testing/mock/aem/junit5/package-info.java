@@ -17,23 +17,8 @@
  * limitations under the License.
  * #L%
  */
+/**
+ * JUnit 5 extensions for AEM context.
+ */
+@org.osgi.annotation.versioning.Version("1.0.0")
 package io.wcm.testing.mock.aem.junit5;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-@ExtendWith(AemContextExtension.class)
-class AemContextTest {
-
-  @BeforeEach
-  void setUp(ResourceResolverMockAemContext context) {
-    // TODO
-  }
-
-  @Test
-  void test(JcrMockAemContext context) {
-    // TODO
-  }
-
-}
