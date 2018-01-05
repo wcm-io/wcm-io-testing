@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         ContentBuilder: Cache generated dummy images if the same images are used in multiple tests.
       </action>
+      <action type="update" dev="mrozati">
+        Update slf4j-simple dependency to version 1.7.25.
+      </action>
     </release>
 
     <release version="2.2.8" date="2017-10-17">
