@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2017 wcm.io
+ * Copyright (C) 2018 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,11 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
+import java.util.Map;
+
+import org.apache.sling.testing.mock.osgi.context.ContextPlugins;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+
 import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
@@ -28,10 +33,47 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
  */
 public abstract class AemContext extends AemContextImpl {
 
+  // TODO: add support for plugins
+  @SuppressWarnings("unused")
+  private final ContextPlugins plugins;
+
+  /**
+   * Initialize AEM context.
+   * @param resourceResolverType Resource resolver type.
+   */
+  protected AemContext(final ResourceResolverType resourceResolverType) {
+    this(new ContextPlugins(), null, resourceResolverType);
+  }
+
+  /**
+   * Initialize AEM context.
+   * @param contextPlugins Context plugins
+   * @param resourceResolverFactoryActivatorProps Resource resolver factory activator properties
+   * @param resourceResolverType Resource resolver type.
+   */
+  AemContext(final ContextPlugins contextPlugins,
+      final Map<String, Object> resourceResolverFactoryActivatorProps,
+      final ResourceResolverType resourceResolverType) {
+
+    this.plugins = contextPlugins;
+
+    // set custom ResourceResolverFactoryActivator config, but set AEM default values for all parameter not given here
+    Map<String, Object> mergedProps = resourceResolverFactoryActivatorPropsMergeWithAemDefault(resourceResolverFactoryActivatorProps);
+    setResourceResolverFactoryActivatorProps(mergedProps);
+
+    setResourceResolverType(resourceResolverType);
+  }
+
+  /**
+   * This is called by {@link AemContextExtension} to set up context.
+   */
   protected void setUpContext() {
     super.setUp();
   }
 
+  /**
+   * This is called by {@link AemContextExtension} to tear down context.
+   */
   protected void tearDownContext() {
     super.tearDown();
   }

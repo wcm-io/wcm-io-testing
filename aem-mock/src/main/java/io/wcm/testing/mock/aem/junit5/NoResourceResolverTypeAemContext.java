@@ -17,8 +17,20 @@
  * limitations under the License.
  * #L%
  */
-/**
- * JUnit 5 extensions for AEM context.
- */
-@org.osgi.annotation.versioning.Version("1.0.0")
 package io.wcm.testing.mock.aem.junit5;
+
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+
+/**
+ * AEM Mock parameter object with resource resolver type set to {@link ResourceResolverType#NONE}.
+ */
+public class NoResourceResolverTypeAemContext extends AemContext {
+
+  /**
+   * Constructor
+   */
+  public NoResourceResolverTypeAemContext() {
+    super(ResourceResolverType.NONE);
+  }
+
+}

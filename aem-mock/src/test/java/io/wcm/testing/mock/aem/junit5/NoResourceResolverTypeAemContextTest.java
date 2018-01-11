@@ -19,36 +19,35 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.jcr.Session;
+
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.resourceresolver.MockResourceResolver;
+import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
+ * Test with {@link JcrMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
 @Tag("junit5")
-class AemContextTest {
+class NoResourceResolverTypeAemContextTest {
 
   @BeforeEach
-  void setUp(AemContext context) {
-    assertTrue(context instanceof ResourceResolverMockAemContext);
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
-
-    context.create().resource("/content/test",
-        "prop1", "value1");
+  void setUp(NoResourceResolverTypeAemContext context) {
+    assertTrue(context.resourceResolver() instanceof ResourceResolverImpl);
+    assertNull(context.resourceResolver().adaptTo(Session.class));
   }
 
   @Test
   void testResource(AemContext context) {
     Resource resource = context.resourceResolver().getResource("/content/test");
-    assertEquals("value1", resource.getValueMap().get("prop1"));
+    assertNull(resource);
   }
 
 }

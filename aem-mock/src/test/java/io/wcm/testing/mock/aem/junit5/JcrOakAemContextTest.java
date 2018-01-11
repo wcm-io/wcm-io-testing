@@ -22,24 +22,27 @@ package io.wcm.testing.mock.aem.junit5;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.jcr.Session;
+
+import org.apache.jackrabbit.api.JackrabbitSession;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.resourceresolver.MockResourceResolver;
+import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
+ * Test with {@link JcrMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
 @Tag("junit5")
-class AemContextTest {
+class JcrOakAemContextTest {
 
   @BeforeEach
-  void setUp(AemContext context) {
-    assertTrue(context instanceof ResourceResolverMockAemContext);
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
+  void setUp(JcrOakAemContext context) {
+    assertTrue(context.resourceResolver() instanceof ResourceResolverImpl);
+    assertTrue(context.resourceResolver().adaptTo(Session.class) instanceof JackrabbitSession);
 
     context.create().resource("/content/test",
         "prop1", "value1");
