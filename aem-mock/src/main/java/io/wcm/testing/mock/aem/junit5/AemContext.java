@@ -21,6 +21,11 @@ package io.wcm.testing.mock.aem.junit5;
 
 import io.wcm.testing.mock.aem.context.AemContextImpl;
 
+/**
+ * Abstract parameter object for AemContext in Junit 5.
+ * If this is used as parameter the default resource resolver type instance is inserted,
+ * {@link ResourceResolverMockAemContext}.
+ */
 public abstract class AemContext extends AemContextImpl {
 
   protected void setUpContext() {

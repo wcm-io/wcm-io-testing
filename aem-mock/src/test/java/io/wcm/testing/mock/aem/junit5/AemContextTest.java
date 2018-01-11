@@ -19,6 +19,8 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,12 @@ class AemContextTest {
   @Disabled // disable this test because otherwise it would fail because mixing different resource resolver types is not allowed
   void test(JcrMockAemContext context) {
     // TODO
+  }
+
+  @Test
+  void test2(ResourceResolverMockAemContext context) {
+    // TODO
+    assertNotNull(context);
   }
 
 }

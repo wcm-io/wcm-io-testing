@@ -34,6 +34,10 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
+/**
+ * JUnit 5 extension that allows to inject {@link AemContext} (or subclasses of it) parameters in test methods,
+ * and ensures that the context is set up and teared down properly for each test method.
+ */
 public class AemContextExtension implements ParameterResolver, AfterEachCallback {
 
   private static final Namespace AEM_CONTEXT_NAMESPACE = Namespace.create(AemContextExtension.class);
@@ -80,8 +84,10 @@ public class AemContextExtension implements ParameterResolver, AfterEachCallback
       storeAemContext(extensionContext, aemContext);
       return aemContext;
     }
-    catch (Exception e) {
-      throw new IllegalStateException("Could not create AemContext instance", e);
+    // CHECKSTYLE:OFF
+    catch (Exception ex) {
+      // CHECKSTYLE:ON
+      throw new IllegalStateException("Could not create " + aemContextType.getTypeName() + " instance.", ex);
     }
   }
 
