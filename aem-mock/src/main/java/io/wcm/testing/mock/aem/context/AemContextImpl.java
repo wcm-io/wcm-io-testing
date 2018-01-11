@@ -19,6 +19,8 @@
  */
 package io.wcm.testing.mock.aem.context;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.sling.api.resource.Resource;
@@ -77,6 +79,54 @@ public class AemContextImpl extends SlingContextImpl {
   @Override
   protected void tearDown() {
     super.tearDown();
+  }
+
+  /**
+   * Merges the given custom Resource Resolver Factory Activator OSGi configuration with the default configuration
+   * applied in AEM 6. The custom configuration has higher precedence.
+   * @param customProps Custom config
+   * @return Merged config
+   */
+  protected final Map<String, Object> resourceResolverFactoryActivatorPropsMergeWithAemDefault(Map<String, Object> customProps) {
+    Map<String, Object> props = new HashMap<>();
+
+    props.put("resource.resolver.searchpath", new String[] {
+        "/apps",
+        "/libs",
+        "/apps/foundation/components/primary",
+        "/libs/foundation/components/primary",
+    });
+    props.put("resource.resolver.manglenamespaces", true);
+    props.put("resource.resolver.allowDirect", true);
+    props.put("resource.resolver.virtual", new String[] {
+        "/:/"
+    });
+    props.put("resource.resolver.mapping", new String[] {
+        "/-/"
+    });
+    props.put("resource.resolver.map.location", "/etc/map");
+    props.put("resource.resolver.default.vanity.redirect.status", "");
+    props.put("resource.resolver.virtual", "302");
+    props.put("resource.resolver.enable.vanitypath", false);
+    props.put("resource.resolver.vanitypath.maxEntries", -1);
+    props.put("resource.resolver.vanitypath.bloomfilter.maxBytes", 1024000);
+    props.put("resource.resolver.optimize.alias.resolution", true);
+    props.put("resource.resolver.vanitypath.whitelist", new String[] {
+        "/apps/",
+        "/libs/",
+        "/content/"
+    });
+    props.put("resource.resolver.vanitypath.blacklist", new String[] {
+        "/content/usergenerated"
+    });
+    props.put("resource.resolver.vanity.precedence", false);
+    props.put("resource.resolver.providerhandling.paranoid", false);
+
+    if (customProps != null) {
+      props.putAll(customProps);
+    }
+
+    return props;
   }
 
   /**
