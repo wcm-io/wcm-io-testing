@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Test with {@link JcrMockAemContext}.
+ * Test with {@link JcrOakAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
 @Tag("junit5")

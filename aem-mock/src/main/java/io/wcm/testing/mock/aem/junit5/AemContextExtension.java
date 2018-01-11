@@ -38,7 +38,7 @@ import org.junit.jupiter.api.extension.ParameterResolver;
  * JUnit 5 extension that allows to inject {@link AemContext} (or subclasses of it) parameters in test methods,
  * and ensures that the context is set up and teared down properly for each test method.
  */
-public class AemContextExtension implements ParameterResolver, AfterEachCallback {
+public final class AemContextExtension implements ParameterResolver, AfterEachCallback {
 
   private static final Namespace AEM_CONTEXT_NAMESPACE = Namespace.create(AemContextExtension.class);
   private static final Class<ResourceResolverMockAemContext> DEFAULT_AEM_CONTEXT_TYPE = ResourceResolverMockAemContext.class;
