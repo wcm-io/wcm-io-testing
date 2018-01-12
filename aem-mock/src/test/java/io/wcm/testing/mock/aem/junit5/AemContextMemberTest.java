@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.resourceresolver.MockResourceResolver;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -35,10 +34,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 @ExtendWith(AemContextExtension.class)
 @Tag("junit5")
-class AemContextTest {
+class AemContextMemberTest {
+
+  AemContext context;
 
   @BeforeEach
-  void setUp(AemContext context) {
+  void setUp() {
     assertTrue(context instanceof ResourceResolverMockAemContext);
     assertTrue(context.resourceResolver() instanceof MockResourceResolver);
 
@@ -47,17 +48,9 @@ class AemContextTest {
   }
 
   @Test
-  void testResource(AemContext context) {
+  void testResource() {
     Resource resource = context.resourceResolver().getResource("/content/test");
     assertEquals("value1", resource.getValueMap().get("prop1"));
-  }
-
-  @AfterEach
-  void tearDown(AemContext context) throws Exception {
-    Resource resource = context.resourceResolver().getResource("/content/test");
-    assertEquals("value1", resource.getValueMap().get("prop1"));
-
-    context.resourceResolver().delete(resource);
   }
 
 }

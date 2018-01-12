@@ -20,44 +20,38 @@
 package io.wcm.testing.mock.aem.junit5;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.resourceresolver.MockResourceResolver;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
+ * Test invalid mix of resource resolver-type context classes between setup method and test method.
  */
 @ExtendWith(AemContextExtension.class)
 @Tag("junit5")
-class AemContextTest {
+@Disabled // test is disabled because it fails - enable it only to test the failure
+class AemContextInvalidMixTest {
 
   @BeforeEach
-  void setUp(AemContext context) {
-    assertTrue(context instanceof ResourceResolverMockAemContext);
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
-
+  void setUp(JcrMockAemContext context) {
     context.create().resource("/content/test",
         "prop1", "value1");
   }
 
   @Test
-  void testResource(AemContext context) {
+  void testResource(JcrMockAemContext context) {
     Resource resource = context.resourceResolver().getResource("/content/test");
     assertEquals("value1", resource.getValueMap().get("prop1"));
   }
 
-  @AfterEach
-  void tearDown(AemContext context) throws Exception {
+  @Test
+  void testResource(ResourceResolverMockAemContext context) {
     Resource resource = context.resourceResolver().getResource("/content/test");
     assertEquals("value1", resource.getValueMap().get("prop1"));
-
-    context.resourceResolver().delete(resource);
   }
 
 }

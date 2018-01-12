@@ -19,42 +19,60 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
-import static java.util.Collections.emptyList;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 
 /**
  * JUnit 5 extension that allows to inject {@link AemContext} (or subclasses of it) parameters in test methods,
  * and ensures that the context is set up and teared down properly for each test method.
  */
-public final class AemContextExtension implements ParameterResolver, AfterEachCallback {
+public final class AemContextExtension implements ParameterResolver, TestInstancePostProcessor, AfterEachCallback {
 
-  private static final Namespace AEM_CONTEXT_NAMESPACE = Namespace.create(AemContextExtension.class);
-  private static final Class<ResourceResolverMockAemContext> DEFAULT_AEM_CONTEXT_TYPE = ResourceResolverMockAemContext.class;
+  /**
+   * Checks if test class has a {@link AemContext} or derived field.
+   * If it has and is not instantiated, create an new {@link AemContext} and store it in the field.
+   * If it is already instantiated reuse this instance and use it for all test methods.
+   */
+  @Override
+  public void postProcessTestInstance(Object testInstance, ExtensionContext extensionContext) throws Exception {
+    Field aemContextField = getAemContextFieldFromTestInstance(testInstance);
+    if (aemContextField != null) {
+      AemContext context = (AemContext)aemContextField.get(testInstance);
+      if (context != null) {
+        AemContextStore.storeAemContext(extensionContext, testInstance, context);
+      }
+      else {
+        context = AemContextStore.getOrCreateAemContext(extensionContext, testInstance,
+            Optional.of(aemContextField.getType()));
+        aemContextField.set(testInstance, context);
+      }
+    }
+  }
 
+  /**
+   * Support parameter injection for test methods of parameter type is derived from {@link AemContext}.
+   */
   @Override
   public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
     return AemContext.class.isAssignableFrom(parameterContext.getParameter().getType());
   }
 
+  /**
+   * Resolve (or create) {@link AemContext} instance for test method parameter.
+   */
   @Override
   public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-    AemContext aemContext = getAemContext(extensionContext);
-    if (aemContext == null) {
-      aemContext = createAndStoreAemContext(parameterContext, extensionContext);
-    }
-    else if (paramIsNotInstanceOfExistingContext(parameterContext, aemContext)) {
+    AemContext aemContext = AemContextStore.getOrCreateAemContext(extensionContext, extensionContext.getRequiredTestInstance(),
+        getAemContextType(parameterContext, extensionContext));
+    if (paramIsNotInstanceOfExistingContext(parameterContext, aemContext)) {
       throw new ParameterResolutionException(
           "Found AemContext instance of type: " + aemContext.getClass().getName() + "\n"
               + "Required is: " + parameterContext.getParameter().getType().getName() + "\n"
@@ -64,39 +82,25 @@ public final class AemContextExtension implements ParameterResolver, AfterEachCa
     return aemContext;
   }
 
-  private AemContext getAemContext(ExtensionContext extensionContext) {
-    return getStore(extensionContext).get(extensionContext.getRequiredTestMethod(), AemContext.class);
-  }
-
-  private Store getStore(ExtensionContext context) {
-    return context.getStore(AEM_CONTEXT_NAMESPACE);
-  }
-
-  private AemContext createAndStoreAemContext(ParameterContext parameterContext, ExtensionContext extensionContext) {
-    Type aemContextType = getAemContextType(parameterContext, extensionContext);
-    if (aemContextType == AemContext.class) {
-      aemContextType = DEFAULT_AEM_CONTEXT_TYPE;
-    }
-    try {
-      Constructor constructor = ((Class<?>)aemContextType).getConstructor();
-      AemContext aemContext = (AemContext)constructor.newInstance();
-      aemContext.setUpContext();
-      storeAemContext(extensionContext, aemContext);
-      return aemContext;
-    }
-    // CHECKSTYLE:OFF
-    catch (Exception ex) {
-      // CHECKSTYLE:ON
-      throw new IllegalStateException("Could not create " + aemContextType.getTypeName() + " instance.", ex);
+  /**
+   * Tear down {@link AemContext} after test is complete.
+   */
+  @Override
+  public void afterEach(ExtensionContext extensionContext) {
+    AemContext aemContext = AemContextStore.getAemContext(extensionContext, extensionContext.getRequiredTestInstance());
+    if (aemContext != null) {
+      aemContext.tearDownContext();
+      AemContextStore.removeAemContext(extensionContext, extensionContext.getRequiredTestInstance());
     }
   }
 
-  private Type getAemContextType(ParameterContext parameterContext, ExtensionContext extensionContext) {
+  private Optional<Class<?>> getAemContextType(ParameterContext parameterContext, ExtensionContext extensionContext) {
+    // If a @BeforeEach or @AfterEach method has only a generic AemContext parameter check if test method has a more specific parameter and use this
     if (isAbstractAemContext(parameterContext)) {
       return getAemContextTypeFromTestMethod(extensionContext);
     }
     else {
-      return parameterContext.getParameter().getType();
+      return Optional.of(parameterContext.getParameter().getType());
     }
   }
 
@@ -104,36 +108,21 @@ public final class AemContextExtension implements ParameterResolver, AfterEachCa
     return parameterContext.getParameter().getType().equals(AemContext.class);
   }
 
-  private void storeAemContext(ExtensionContext extensionContext, AemContext aemContext) {
-    getStore(extensionContext).put(extensionContext.getRequiredTestMethod(), aemContext);
-  }
-
-  private void removeAemContext(ExtensionContext extensionContext, AemContext aemContext) {
-    aemContext.tearDownContext();
-    getStore(extensionContext).remove(extensionContext.getRequiredTestMethod());
-  }
-
   private boolean paramIsNotInstanceOfExistingContext(ParameterContext parameterContext, AemContext aemContext) {
     return !parameterContext.getParameter().getType().isInstance(aemContext);
   }
 
-  private Class<?> getAemContextTypeFromTestMethod(ExtensionContext extensionContext) {
-    return extensionContext.getTestMethod()
-        .map(Method::getParameterTypes)
-        .map(Arrays::asList)
-        .orElse(emptyList())
-        .stream()
-        .filter(type -> type.isInstance(AemContext.class))
-        .findFirst()
-        .orElse(DEFAULT_AEM_CONTEXT_TYPE);
+  private Optional<Class<?>> getAemContextTypeFromTestMethod(ExtensionContext extensionContext) {
+    return Arrays.stream(extensionContext.getRequiredTestMethod().getParameterTypes())
+        .filter(clazz -> AemContext.class.isAssignableFrom(clazz))
+        .findFirst();
   }
 
-  @Override
-  public void afterEach(ExtensionContext extensionContext) {
-    AemContext aemContext = getAemContext(extensionContext);
-    if (aemContext != null) {
-      removeAemContext(extensionContext, aemContext);
-    }
+  private Field getAemContextFieldFromTestInstance(Object testInstance) {
+    return Arrays.stream(testInstance.getClass().getDeclaredFields())
+        .filter(field -> AemContext.class.isAssignableFrom(field.getType()))
+        .findFirst()
+        .orElse(null);
   }
 
 }

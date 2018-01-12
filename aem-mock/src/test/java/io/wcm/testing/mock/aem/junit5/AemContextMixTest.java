@@ -23,38 +23,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
 import org.apache.sling.testing.resourceresolver.MockResourceResolver;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
+ * Test with mixed resource resolver types in different test methods and generic aem context in setup method.
  */
 @ExtendWith(AemContextExtension.class)
 @Tag("junit5")
-@Disabled // TODO: this does not work - constructor injection has no relation to test method - also lifecyle=PER_METHOD - why?
-class AemContextMemberVariableTest {
-
-  final AemContext context;
-
-  AemContextMemberVariableTest(AemContext context) {
-    this.context = context;
-  }
+class AemContextMixTest {
 
   @BeforeEach
-  void setUp() {
-    assertTrue(context instanceof ResourceResolverMockAemContext);
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
-
+  void setUp(AemContext context) {
     context.create().resource("/content/test",
         "prop1", "value1");
   }
 
   @Test
-  void testResource() {
+  void testResource(JcrMockAemContext context) {
+    assertTrue(context.resourceResolver() instanceof ResourceResolverImpl);
+
+    Resource resource = context.resourceResolver().getResource("/content/test");
+    assertEquals("value1", resource.getValueMap().get("prop1"));
+  }
+
+  @Test
+  void testResource(ResourceResolverMockAemContext context) {
+    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
+
+
     Resource resource = context.resourceResolver().getResource("/content/test");
     assertEquals("value1", resource.getValueMap().get("prop1"));
   }
