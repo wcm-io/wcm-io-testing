@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +57,9 @@ import com.google.common.collect.ImmutableMap;
 public final class ContentBuilder extends org.apache.sling.testing.mock.sling.builder.ContentBuilder {
 
   static final String DUMMY_TEMPLATE = "/apps/sample/templates/template1";
+
+  // cache generated dummy images in cache because often the a dummy image with the same parameter is reused.
+  private static final Map<String, byte[]> DUMMY_IMAGE_CACHE = new HashMap<>();
 
   /**
    * @param resourceResolver Resource resolver
@@ -230,15 +234,19 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @return Input stream
    */
   public static InputStream createDummyImage(int width, int height, String mimeType) {
-    Layer layer = new Layer(width, height, null);
-    byte[] data;
-    try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-      double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
-      layer.write(mimeType, quality, bos);
-      data = bos.toByteArray();
-    }
-    catch (IOException ex) {
-      throw new RuntimeException(ex);
+    String key = width + "x" + height + ":" + mimeType;
+    byte[] data = DUMMY_IMAGE_CACHE.get(key);
+    if (data == null) {
+      Layer layer = new Layer(width, height, null);
+      try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+        double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
+        layer.write(mimeType, quality, bos);
+        data = bos.toByteArray();
+        DUMMY_IMAGE_CACHE.put(key, data);
+      }
+      catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
     }
     return new ByteArrayInputStream(data);
   }

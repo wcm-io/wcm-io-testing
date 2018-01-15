@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.2.10" date="2018-01-15">
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock.
+      </action>
+      <action type="update" dev="sseifert">
+        ContentBuilder: Cache generated dummy images if the same images are used in multiple tests.
+      </action>
+      <action type="update" dev="mrozati">
+        Update slf4j-simple dependency to version 1.7.25.
+      </action>
+    </release>
+
     <release version="2.2.8" date="2017-10-17">
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, JCR Mock, Sling Mock and ResourceResolver Mock.
