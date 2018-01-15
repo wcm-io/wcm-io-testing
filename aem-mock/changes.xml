@@ -29,7 +29,7 @@
       </action>
     </release>
 
-    <release version="2.2.10" date="not released">
+    <release version="2.2.10" date="2018-01-15">
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock.
       </action>
