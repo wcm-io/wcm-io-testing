@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Add methods newly defined in AEM 6.4 API.
       </action>
+      <action type="update" dev="sseifert">
+        Add Sling API as direct dependency because in latest Ueber JAR the Sling API is missing some implementation classes required in unit tests.
+      </action>
     </release>
 
     <release version="2.2.10" date="2018-01-15">
