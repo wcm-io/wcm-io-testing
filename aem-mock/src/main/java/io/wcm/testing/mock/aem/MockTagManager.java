@@ -488,4 +488,14 @@ class MockTagManager implements TagManager {
     throw new UnsupportedOperationException();
   }
 
+  // AEM 6.4
+  public Iterable<Tag> findTagsByKeyword(String arg0, Locale arg1, String arg2) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.4
+  public List<String> getSupportedLanguageCodes() {
+    throw new UnsupportedOperationException();
+  }
+
 }

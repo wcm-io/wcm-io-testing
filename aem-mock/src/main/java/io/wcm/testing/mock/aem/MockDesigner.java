@@ -62,4 +62,9 @@ class MockDesigner implements Designer {
     return null;
   }
 
+  // AEM 6.4
+  public Design getDefaultDesign() {
+    return null;
+  }
+
 }
