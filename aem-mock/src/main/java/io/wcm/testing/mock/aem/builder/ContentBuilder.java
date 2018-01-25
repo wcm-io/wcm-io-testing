@@ -37,8 +37,10 @@ import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.osgi.annotation.versioning.ProviderType;
 
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
+import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.tagging.InvalidTagFormatException;
 import com.day.cq.tagging.Tag;
@@ -213,14 +215,15 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   public Asset asset(String path, InputStream inputStream, String mimeType, Map<String, Object> metadata) {
     AssetManager assetManager = resourceResolver.adaptTo(AssetManager.class);
     Asset asset = assetManager.createAsset(path, inputStream, mimeType, true);
-    if (metadata != null && !metadata.isEmpty()) {
-      Resource metadataResource = resourceResolver.getResource(asset.getPath());
-      ModifiableValueMap metadataProperties = metadataResource.adaptTo(ModifiableValueMap.class);
 
-      for (final Map.Entry<String, Object> entry : metadata.entrySet()) {
-        metadataProperties.remove(entry.getKey());
-        metadataProperties.put(entry.getKey(), entry.getValue());
+    if (metadata != null && !metadata.isEmpty()) {
+      String metadataPath = asset.getPath() + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER;
+      Resource metadataResource = resourceResolver.getResource(metadataPath);
+      if (metadataResource == null) {
+        metadataResource = resource(metadataPath);
       }
+      ModifiableValueMap metadataProperties = metadataResource.adaptTo(ModifiableValueMap.class);
+      metadataProperties.putAll(metadata);
     }
 
     return asset;
