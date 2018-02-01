@@ -36,6 +36,9 @@
       <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>
+      <action type="update" dev="sseifert" issue="WTES-30">
+        MockTagManager: Detect root path dynamically based on AEM API dependencies: /content/etc:tags (AEM 6.4) or /etc/tags (AEM 6.3 and below).
+      </action>
     </release>
 
     <release version="2.2.10" date="2018-01-15">

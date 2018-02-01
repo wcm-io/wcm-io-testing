@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.lang.reflect.Field;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +43,7 @@ import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
+import org.osgi.annotation.versioning.ProviderType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,13 +59,15 @@ import com.day.cq.wcm.api.NameConstants;
 /**
  * Mock implementation of {@link TagManager}.
  */
-class MockTagManager implements TagManager {
+@ProviderType
+public final class MockTagManager implements TagManager {
 
   /** resource type for created tags */
   private static final String TAG_RESOURCE_TYPE = "cq/tagging/components/tag";
 
   /** Root location in the JCR where tags lie */
-  static final String TAGS_ROOT = "/etc/tags";
+  private static final String TAG_ROOT_PATH = detectTagRootPath();
+  private static final String LEGACY_TAG_ROOT_PATH = "/etc/tags";
 
   private final ResourceResolver resourceResolver;
   private final Logger log;
@@ -76,8 +80,33 @@ class MockTagManager implements TagManager {
     initTagsStructure();
   }
 
+  /**
+   * @return Tag root path.
+   */
+  public static String getTagRootPath() {
+    return TAG_ROOT_PATH;
+  }
+
+  /**
+   * Get tag root path. If AEM 6.4+ dependency is present it returns the root path from TagConstants class
+   * (/content/cq:tags).
+   * Otherwise the legacy root paths used by 6.4 and below (/etc/tags).
+   * @return Tag root path
+   */
+  private static String detectTagRootPath() {
+    try {
+      Class tagConstantsClass = MockTagManager.class.getClassLoader().loadClass("com.day.cq.tagging.TagConstants");
+      Field field = tagConstantsClass.getField("TAG_ROOT_PATH");
+      return (String)field.get(null);
+    }
+    catch (ClassNotFoundException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+      // ignore - fallback to legacy path
+      return LEGACY_TAG_ROOT_PATH;
+    }
+  }
+
   private void initTagsStructure() {
-    Resource defaultNamespace = resourceResolver.getResource(TAGS_ROOT + "/" + TagConstants.DEFAULT_NAMESPACE);
+    Resource defaultNamespace = resourceResolver.getResource(getTagRootPath() + "/" + TagConstants.DEFAULT_NAMESPACE);
     // if it's already existing, then don't proceed any further
     if (defaultNamespace != null) {
       return;
@@ -93,7 +122,7 @@ class MockTagManager implements TagManager {
 
     try {
       ResourceUtil.getOrCreateResource(resourceResolver, "/etc", etcProperties, null, true);
-      ResourceUtil.getOrCreateResource(resourceResolver, TAGS_ROOT, tagsProperties, null, true);
+      ResourceUtil.getOrCreateResource(resourceResolver, getTagRootPath(), tagsProperties, null, true);
       createTag(TagConstants.DEFAULT_NAMESPACE_ID, "Standard Tags", null);
     }
     catch (PersistenceException | InvalidTagFormatException e) {
@@ -115,19 +144,19 @@ class MockTagManager implements TagManager {
       if (tagPath.endsWith("/")) {
         tagPath = tagPath.substring(0, tagPath.length() - 1);
       }
-      return TAGS_ROOT + "/" + tagPath;
+      return getTagRootPath() + "/" + tagPath;
     }
     else if (tagID.startsWith("/")) {
       // absolute path mode
-      if (!tagID.startsWith(TAGS_ROOT)) {
+      if (!tagID.startsWith(getTagRootPath())) {
         // TODO: seems reasonable, but is it worth enforcing?
-        throw new InvalidTagFormatException("Tags are only allowed to be under " + TAGS_ROOT);
+        throw new InvalidTagFormatException("Tags are only allowed to be under " + getTagRootPath());
       }
       return tagID;
     }
     else {
       // default namespace mode
-      return TAGS_ROOT + "/" + TagConstants.DEFAULT_NAMESPACE + "/" + tagID;
+      return getTagRootPath() + "/" + TagConstants.DEFAULT_NAMESPACE + "/" + tagID;
     }
   }
 
@@ -154,7 +183,7 @@ class MockTagManager implements TagManager {
 
     // ensure the parent exists first
     String parentTagPath = tagPath.substring(0, tagPath.lastIndexOf("/"));
-    if (!TAGS_ROOT.equals(parentTagPath)) {
+    if (!getTagRootPath().equals(parentTagPath)) {
       createTag(parentTagPath, null, null, false);
     }
 
@@ -313,7 +342,7 @@ class MockTagManager implements TagManager {
   }
 
   private List<Tag> getNamespacesList() {
-    Resource tagRoot = resourceResolver.getResource(TAGS_ROOT);
+    Resource tagRoot = resourceResolver.getResource(getTagRootPath());
     List<Tag> namespaces = new ArrayList<Tag>();
     for (Iterator<Resource> resources = tagRoot.listChildren(); resources.hasNext();) {
       Resource resource = resources.next();
@@ -432,6 +461,7 @@ class MockTagManager implements TagManager {
 
 
   // --- unsupported operations ---
+  //CHECKSTYLE:OFF
 
   @Override
   public boolean canCreateTagByTitle(String tagTitlePath) throws InvalidTagFormatException {
