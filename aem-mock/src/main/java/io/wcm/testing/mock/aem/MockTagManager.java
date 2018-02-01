@@ -38,6 +38,7 @@ import java.util.Set;
 import javax.jcr.Session;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -134,7 +135,15 @@ public final class MockTagManager implements TagManager {
     if (tagID == null) {
       throw new InvalidTagFormatException("tagID is null");
     }
-    if (tagID.contains(TagConstants.NAMESPACE_DELIMITER)) {
+    if (StringUtils.startsWith(tagID, getTagRootPath())) {
+      // absolute path mode
+      if (!tagID.startsWith(getTagRootPath())) {
+        // TODO: seems reasonable, but is it worth enforcing?
+        throw new InvalidTagFormatException("Tags are only allowed to be under " + getTagRootPath());
+      }
+      return tagID;
+    }
+    else if (tagID.contains(TagConstants.NAMESPACE_DELIMITER)) {
       // namespace mode
       String tagPath = tagID.replaceFirst(TagConstants.NAMESPACE_DELIMITER, "/");
       if (tagPath.contains(TagConstants.NAMESPACE_DELIMITER)) {
@@ -145,14 +154,6 @@ public final class MockTagManager implements TagManager {
         tagPath = tagPath.substring(0, tagPath.length() - 1);
       }
       return getTagRootPath() + "/" + tagPath;
-    }
-    else if (tagID.startsWith("/")) {
-      // absolute path mode
-      if (!tagID.startsWith(getTagRootPath())) {
-        // TODO: seems reasonable, but is it worth enforcing?
-        throw new InvalidTagFormatException("Tags are only allowed to be under " + getTagRootPath());
-      }
-      return tagID;
     }
     else {
       // default namespace mode
@@ -176,6 +177,10 @@ public final class MockTagManager implements TagManager {
   public Tag createTag(String tagID, String title, String description, boolean autoSave)
       throws AccessControlException, InvalidTagFormatException {
     String tagPath = getPathFromID(tagID);
+    if (!StringUtils.startsWith(tagPath, TAG_ROOT_PATH)) {
+      throw new InvalidTagFormatException("Tag path '" + tagPath + "' does not start with: " + TAG_ROOT_PATH);
+    }
+
     Resource tagResource = resourceResolver.getResource(tagPath);
     if (tagResource != null) {
       return tagResource.adaptTo(Tag.class);
