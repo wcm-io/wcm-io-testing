@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
@@ -196,11 +197,31 @@ public class ContentBuilderTest {
     assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
     assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
 
-
     Rendition rendition = context.create().assetRendition(asset, "sample2.gif", 20, 20, "image/gif");
     assertEquals("sample2.gif", rendition.getName());
     assertEquals("image/gif", rendition.getMimeType());
     assertEquals(2, asset.getRenditions().size());
+  }
+
+  @Test
+  public void testAssetWithMetadata() throws Exception {
+    Map<String, Object> metadata = ImmutableMap.of("prop1", "value1", "prop2", 1);
+    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg", metadata);
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.jpg", asset.getName());
+    assertEquals("image/jpeg", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    Rendition rendition = context.create().assetRendition(asset, "sample2.jpg", 20, 20, "image/jpeg");
+    assertEquals("sample2.jpg", rendition.getName());
+    assertEquals("image/jpeg", rendition.getMimeType());
+    assertEquals(2, asset.getRenditions().size());
+
+    assertEquals("value1", asset.getMetadata("prop1"));
+    assertEquals("1", asset.getMetadataValue("prop2"));
   }
 
   @Test
