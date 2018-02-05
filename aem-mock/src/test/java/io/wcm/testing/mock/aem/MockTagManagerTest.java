@@ -54,16 +54,17 @@ public class MockTagManagerTest {
   @Rule
   public AemContext context = TestAemContext.newAemContext();
 
+  private String tagRoot;
   private ResourceResolver resolver;
-
   private TagManager tagManager;
 
   private Page rootPage;
 
   @Before
   public void setUp() throws Exception {
+    tagRoot = MockTagManager.getTagRootPath();
     resolver = context.resourceResolver();
-    context.load().json("/json-import-samples/tags.json", "/etc/tags");
+    context.load().json("/json-import-samples/tags.json", tagRoot);
     context.load().json("/json-import-samples/content.json", "/content/sample/en");
     // commit now to be able to utilize hasChanges() accurately in test cases
     resolver.commit();
@@ -78,15 +79,15 @@ public class MockTagManagerTest {
     Tag[] pageTags = page.getTags();
     assertNotNull(pageTags);
     assertEquals(2, pageTags.length);
-    assertTrue(containsPath(pageTags, "/etc/tags/default/tagA"));
-    assertTrue(containsPath(pageTags, "/etc/tags/wcmio/aem/api"));
+    assertTrue(containsPath(pageTags, tagRoot + "/default/tagA"));
+    assertTrue(containsPath(pageTags, tagRoot + "/wcmio/aem/api"));
 
     page = page.listChildren().next();
     pageTags = page.getTags();
     assertNotNull(pageTags);
     assertEquals(2, pageTags.length);
-    assertTrue(containsPath(pageTags, "/etc/tags/default/tagB"));
-    assertTrue(containsPath(pageTags, "/etc/tags/wcmio/nondescript"));
+    assertTrue(containsPath(pageTags, tagRoot + "/default/tagB"));
+    assertTrue(containsPath(pageTags, tagRoot + "/wcmio/nondescript"));
 
     page = page.listChildren().next();
     pageTags = page.getTags();
@@ -99,15 +100,15 @@ public class MockTagManagerTest {
     Tag[] namespaces = tagManager.getNamespaces();
     assertNotNull(namespaces);
     assertEquals(2, namespaces.length);
-    assertTrue(containsPath(namespaces, "/etc/tags/default"));
-    assertTrue(containsPath(namespaces, "/etc/tags/wcmio"));
+    assertTrue(containsPath(namespaces, tagRoot + "/default"));
+    assertTrue(containsPath(namespaces, tagRoot + "/wcmio"));
 
     Iterator<Tag> namespacesIter = tagManager.getNamespacesIter();
     assertNotNull(namespacesIter);
     assertTrue(namespacesIter.hasNext());
-    assertEquals("/etc/tags/default", namespacesIter.next().getPath());
+    assertEquals(tagRoot + "/default", namespacesIter.next().getPath());
     assertTrue(namespacesIter.hasNext());
-    assertEquals("/etc/tags/wcmio", namespacesIter.next().getPath());
+    assertEquals(tagRoot + "/wcmio", namespacesIter.next().getPath());
     assertFalse(namespacesIter.hasNext());
   }
 
@@ -122,14 +123,14 @@ public class MockTagManagerTest {
   public void testCreateTag() throws InvalidTagFormatException, PersistenceException {
     Tag existing = tagManager.createTag("wcmio:", "foo", "bar");
     assertNotNull(existing);
-    assertEquals("/etc/tags/wcmio", existing.getPath());
+    assertEquals(tagRoot + "/wcmio", existing.getPath());
     // verify that it didn't get overwritten
     assertEquals("WCM IO Tag Namespace", existing.getTitle());
     assertEquals("The WCM IO namespace for testing tag functionality", existing.getDescription());
 
     Tag newTag = tagManager.createTag("wcmio", "WCM Tag", "This exists in the default namespace", false);
     assertNotNull(newTag);
-    assertEquals("/etc/tags/default/wcmio", newTag.getPath());
+    assertEquals(tagRoot + "/default/wcmio", newTag.getPath());
     assertEquals("WCM Tag", newTag.getTitle());
     assertEquals("This exists in the default namespace", newTag.getDescription());
 
@@ -142,7 +143,7 @@ public class MockTagManagerTest {
 
     newTag = tagManager.createTag("wcmio:new", null, null);
     assertNotNull(newTag);
-    assertEquals("/etc/tags/wcmio/new", newTag.getPath());
+    assertEquals(tagRoot + "/wcmio/new", newTag.getPath());
     assertEquals(newTag.getName(), newTag.getTitle());
     assertNull(newTag.getDescription());
 
@@ -209,7 +210,7 @@ public class MockTagManagerTest {
     assertFalse(resources.hasNext());
     assertEquals(1, resources.getPosition());
 
-    resources = tagManager.find("/content", new String[]{"wcmio:nondescript", "/etc/tags/default"}, false);
+    resources = tagManager.find("/content", new String[] { "wcmio:nondescript", tagRoot + "/default" }, false);
     assertNotNull(resources);
     assertEquals(0, resources.getPosition());
     assertTrue(resources.hasNext());
@@ -218,7 +219,7 @@ public class MockTagManagerTest {
     assertFalse(resources.hasNext());
     assertEquals(1, resources.getPosition());
 
-    resources = tagManager.find("/content", new String[]{"wcmio:nondescript", "/etc/tags/default"}, true);
+    resources = tagManager.find("/content", new String[] { "wcmio:nondescript", tagRoot + "/default" }, true);
     assertNotNull(resources);
     assertEquals(0, resources.getPosition());
     assertTrue(resources.hasNext());
@@ -228,7 +229,7 @@ public class MockTagManagerTest {
     assertFalse(resources.hasNext());
     assertEquals(2, resources.getPosition());
 
-    resources = tagManager.find("/content", new String[]{"wcmio:nondescrip", "/etc/tags/default"}, true);
+    resources = tagManager.find("/content", new String[] { "wcmio:nondescrip", tagRoot + "/default" }, true);
     assertNull(resources);
   }
 

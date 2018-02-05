@@ -48,8 +48,8 @@ public class MockTagTest {
   @Rule
   public AemContext context = TestAemContext.newAemContext();
 
+  private String tagRoot;
   private ResourceResolver resolver;
-
   private TagManager tagManager;
 
   private Tag wcmio;
@@ -60,8 +60,9 @@ public class MockTagTest {
 
   @Before
   public void setUp() throws Exception {
+    tagRoot = MockTagManager.getTagRootPath();
     resolver = context.resourceResolver();
-    context.load().json("/json-import-samples/tags.json", "/etc/tags");
+    context.load().json("/json-import-samples/tags.json", tagRoot);
     context.load().json("/json-import-samples/content.json", "/content/sample/en");
     resolver.commit();
 
@@ -83,7 +84,7 @@ public class MockTagTest {
       assertEquals("", namespace.getLocalTagID());
       assertEquals(namespace.getName() + TagConstants.NAMESPACE_DELIMITER, namespace.getTagID());
       assertEquals(namespace, namespace.getNamespace());
-      assertEquals("/etc/tags/" + namespace.getName(), namespace.getPath());
+      assertEquals(tagRoot + "/" + namespace.getName(), namespace.getPath());
     }
   }
 
@@ -250,21 +251,22 @@ public class MockTagTest {
   @Test
   public void testGetXPathSearchExpression() throws Exception {
     Tag tag = tagManager.createTag("test:tag1", "Tag 1", null);
-    assertEquals("(@p='test:tag1' or @p='/etc/tags/test/tag1' or jcr:like(@p, 'test:tag1/%') or jcr:like(@p, '/etc/tags/test/tag1/%'))",
+    assertEquals("(@p='test:tag1' or @p='" + tagRoot + "/test/tag1' or jcr:like(@p, 'test:tag1/%') or jcr:like(@p, '" + tagRoot + "/test/tag1/%'))",
         tag.getXPathSearchExpression("p"));
   }
 
   @Test
   public void testGetXPathSearchExpression_2Level() throws Exception {
     Tag tag = tagManager.createTag("test:tag1/tag2", "Tag 2", null);
-    assertEquals("(@p='test:tag1/tag2' or @p='/etc/tags/test/tag1/tag2' or jcr:like(@p, 'test:tag1/tag2/%') or jcr:like(@p, '/etc/tags/test/tag1/tag2/%'))",
+    assertEquals(
+        "(@p='test:tag1/tag2' or @p='" + tagRoot + "/test/tag1/tag2' or jcr:like(@p, 'test:tag1/tag2/%') or jcr:like(@p, '" + tagRoot + "/test/tag1/tag2/%'))",
         tag.getXPathSearchExpression("p"));
   }
 
   @Test
   public void testGetXPathSearchExpression_DefaultNamespace() throws Exception {
     Tag tag = tagManager.createTag("tag3", "Tag 3", null);
-    assertEquals("(@p='tag3' or @p='/etc/tags/default/tag3' or jcr:like(@p, 'tag3/%') or jcr:like(@p, '/etc/tags/default/tag3/%'))",
+    assertEquals("(@p='tag3' or @p='" + tagRoot + "/default/tag3' or jcr:like(@p, 'tag3/%') or jcr:like(@p, '" + tagRoot + "/default/tag3/%'))",
         tag.getXPathSearchExpression("p"));
   }
 

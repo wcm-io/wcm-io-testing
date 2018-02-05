@@ -19,8 +19,6 @@
  */
 package io.wcm.testing.mock.aem;
 
-import static io.wcm.testing.mock.aem.MockTagManager.TAGS_ROOT;
-
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,8 +54,8 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     if (resource == null) {
       throw new NullPointerException("resource is null");
     }
-    if (!resource.getPath().startsWith(TAGS_ROOT + "/")) {
-      throw new IllegalArgumentException("Tags should exist under " + TAGS_ROOT);
+    if (!resource.getPath().startsWith(MockTagManager.getTagRootPath() + "/")) {
+      throw new IllegalArgumentException("Tags should exist under " + MockTagManager.getTagRootPath());
     }
     this.resource = resource;
   }
@@ -254,7 +252,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
 
   @Override
   public boolean isNamespace() {
-    return TAGS_ROOT.equals(resource.getParent().getPath());
+    return MockTagManager.getTagRootPath().equals(resource.getParent().getPath());
   }
 
   @Override
@@ -299,20 +297,21 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
 
   @Override
   public String getXPathSearchExpression(String property) {
+    String tagRoot = MockTagManager.getTagRootPath();
     String ns = getNamespace().getName();
-    String relPath = StringUtils.substringAfter(getPath(), TAGS_ROOT + "/" + ns + "/");
+    String relPath = StringUtils.substringAfter(getPath(), tagRoot + "/" + ns + "/");
     boolean isDefaultNamespace = StringUtils.equals(ns, TagConstants.DEFAULT_NAMESPACE);
     if (isDefaultNamespace) {
       return "(@" + property + "='" + relPath + "' "
-          + "or @" + property + "='" + TAGS_ROOT + "/" + ns + "/" + relPath + "' "
+          + "or @" + property + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
           + "or jcr:like(@" + property + ", '" + relPath + "/%') or "
-          + "jcr:like(@" + property + ", '" + TAGS_ROOT + "/" + ns + "/" + relPath + "/%'))";
+          + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
     }
     else {
       return "(@" + property + "='" + ns + ":" + relPath + "' "
-          + "or @" + property + "='" + TAGS_ROOT + "/" + ns + "/" + relPath + "' "
+          + "or @" + property + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
           + "or jcr:like(@" + property + ", '" + ns + ":" + relPath + "/%') or "
-          + "jcr:like(@" + property + ", '" + TAGS_ROOT + "/" + ns + "/" + relPath + "/%'))";
+          + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
     }
   }
 
