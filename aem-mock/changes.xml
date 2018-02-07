@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.2.12" date="2018-02-15">
+    <release version="2.2.12" date="2018-02-05">
       <action type="update" dev="sseifert">
         Add methods newly defined in AEM 6.4 API.
       </action>
