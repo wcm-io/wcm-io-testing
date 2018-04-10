@@ -179,7 +179,7 @@
       <url>${site.deploy.url}${site.url.module.prefix}</url>
     </site>
   </distributionManagement>
-  
+
   <profiles>
     <profile>
       <id>handler-1.0</id>

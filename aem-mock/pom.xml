@@ -130,7 +130,7 @@
       <artifactId>oak-jcr</artifactId>
       <scope>compile</scope>
     </dependency>
-      
+
     <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
          are loaded before AEM API deps -->
     <dependency>
@@ -276,7 +276,7 @@
       <artifactId>slf4j-simple</artifactId>
       <scope>compile</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -289,9 +289,9 @@
       <version>${logging-mock.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
-  
+
   <dependencyManagement>
     <dependencies>
 
@@ -343,7 +343,7 @@
     </plugins>
     <pluginManagement>
       <plugins>
-      
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>

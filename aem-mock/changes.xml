@@ -193,7 +193,7 @@
         AemContext: Set current page via ComponentContext and allow setting current resource not related to current page.
       </action>
     </release>
-    
+
     <release version="1.5.0" date="2015-10-16">
       <action type="add" dev="sseifert">
         Add support for JCR_OAK, JCR_JACKRABBIT and NONE resource resolver types.
@@ -211,7 +211,7 @@
         Update to latest OSGi Mock and Sling Mock.
       </action>
     </release>
-    
+
     <release version="1.4.0" date="2015-09-16">
       <action type="add" dev="sseifert">
         MockPageManager: Support default content from the template's jcr:content node when creating pages.
