@@ -19,12 +19,19 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,8 +44,6 @@ import com.day.cq.wcm.foundation.WCMRenditionPicker;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-
-import static org.junit.Assert.*;
 
 public class MockAssetTest {
 
@@ -131,6 +136,11 @@ public class MockAssetTest {
 
   @Test
   public void testBatchMode() throws Exception {
+    if (context.resourceResolverType() == ResourceResolverType.JCR_MOCK) {
+      // resource resolver revert not support for JCR_MOCK - skip test
+      return;
+    }
+
     // when batch mode is set to true ResourceResolver commit isn't called keeping the changes transient
     asset.setBatchMode(true);
     assertTrue(asset.isBatchMode());
@@ -145,4 +155,5 @@ public class MockAssetTest {
     doTestAddRemoveRendition("testwithoutbatchmode.bin");
     assertFalse(context.resourceResolver().hasChanges());
   }
+
 }
