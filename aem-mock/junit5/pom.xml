@@ -40,6 +40,7 @@
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <properties>
+    <site.url.module.prefix>testing/aem-mock/junit5</site.url.module.prefix>
 
     <!-- Set to 'enabled' to activate org.eclipse.jdt.core.compiler.annotation.nullanalysis feature in eclipse settings -->
     <eclipse.settings.nullanalysis>disabled</eclipse.settings.nullanalysis>

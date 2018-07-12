@@ -37,8 +37,10 @@
 
   <name>AEM Mocks JUnit 4</name>
   <description>Mock implementation of selected AEM APIs.</description>
+  <url>${site.url}/${site.url.module.prefix}/</url>
 
   <properties>
+    <site.url.module.prefix>testing/aem-mock/junit4</site.url.module.prefix>
 
     <!-- Set to 'enabled' to activate org.eclipse.jdt.core.compiler.annotation.nullanalysis feature in eclipse settings -->
     <eclipse.settings.nullanalysis>disabled</eclipse.settings.nullanalysis>
