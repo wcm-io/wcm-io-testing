@@ -26,7 +26,34 @@
     <release version="2.3.0" date="not released">
       <action type="add" dev="sseifert">
         Add JUnit 5 extensions.
+     </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock, JCR Mock.
       </action>
+    </release>
+
+    <release version="2.2.14" date="2018-03-23">
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock.
+      </action>
+    </release>
+
+    <release version="2.2.12" date="2018-02-05">
+      <action type="update" dev="sseifert">
+        Add methods newly defined in AEM 6.4 API.
+      </action>
+      <action type="update" dev="sseifert">
+        Add Sling API as direct dependency because in latest Ueber JAR the Sling API is missing some implementation classes required in unit tests.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
+      <action type="update" dev="sseifert" issue="WTES-30">
+        MockTagManager: Detect root path dynamically based on AEM API dependencies: /content/etc:tags (AEM 6.4) or /etc/tags (AEM 6.3 and below).
+      </action>
+      <action type="fix" dev="sseifert">
+        ContentBuilder.asset stores optional asset metadata in wrong path.
+     </action>
     </release>
 
     <release version="2.2.10" date="2018-01-15">
@@ -175,7 +202,7 @@
         AemContext: Set current page via ComponentContext and allow setting current resource not related to current page.
       </action>
     </release>
-    
+
     <release version="1.5.0" date="2015-10-16">
       <action type="add" dev="sseifert">
         Add support for JCR_OAK, JCR_JACKRABBIT and NONE resource resolver types.
@@ -193,7 +220,7 @@
         Update to latest OSGi Mock and Sling Mock.
       </action>
     </release>
-    
+
     <release version="1.4.0" date="2015-09-16">
       <action type="add" dev="sseifert">
         MockPageManager: Support default content from the template's jcr:content node when creating pages.

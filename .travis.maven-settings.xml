@@ -180,15 +180,15 @@
         </pluginRepository>
 
       </pluginRepositories>
-      
+
     </profile>
 
   </profiles>
-  
+
   <activeProfiles>
     <activeProfile>default</activeProfile>
   </activeProfiles>
-  
+
   <!-- no longer required - AEM uber-jar is available on public adobe repo since 6.2.0 -->
   <!--
   <servers>
@@ -199,5 +199,5 @@
     </server>
   </servers>
   -->
-  
+
 </settings>

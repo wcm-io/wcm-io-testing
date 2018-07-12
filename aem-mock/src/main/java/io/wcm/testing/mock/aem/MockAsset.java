@@ -52,7 +52,6 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ResourceResolver resourceResolver;
   private final Resource resource;
   private final ValueMap contentProps;
-  private final ValueMap metadataProps;
   private final Resource renditionsResource;
   private boolean batchMode;
 
@@ -62,8 +61,6 @@ class MockAsset extends ResourceWrapper implements Asset {
     this.resource = resource;
     Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
     this.contentProps = ResourceUtil.getValueMap(contentResource);
-    Resource metadataResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER);
-    this.metadataProps = ResourceUtil.getValueMap(metadataResource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
   }
 
@@ -78,17 +75,24 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public Map<String, Object> getMetadata() {
-    return this.metadataProps;
+    Resource metadataResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER);
+    return ResourceUtil.getValueMap(metadataResource);
   }
 
   @Override
   public Object getMetadata(String name) {
-    return this.metadataProps.get(name);
+    return getMetadata().get(name);
   }
 
   @Override
   public String getMetadataValue(String name) {
-    return this.metadataProps.get(name, "");
+    Object value = getMetadata(name);
+    if (value == null) {
+      return "";
+    }
+    else {
+      return value.toString();
+    }
   }
 
   @Override

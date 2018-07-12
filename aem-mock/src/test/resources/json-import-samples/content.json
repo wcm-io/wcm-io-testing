@@ -7,7 +7,7 @@
     "jcr:createdBy": "admin",
     "jcr:title": "English",
     "cq:template": "/apps/sample/templates/homepage",
-    "cq:tags": ["/etc/tags/default/tagA", "/etc/tags/wcmio/aem/api"],
+    "cq:tags": ["/etc/tags/default/tagA", "/etc/tags/wcmio/aem/api","/content/cq:tags/default/tagA", "/content/cq:tags/wcmio/aem/api"],
     "jcr:created": "Thu Aug 07 2014 16:32:59 GMT+0200",
     "cq:lastModified": "Tue Apr 22 2014 11:11:24 GMT+0200",
     "pageTitle": "Sample Homepage",

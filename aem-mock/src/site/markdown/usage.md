@@ -178,7 +178,7 @@ interface RequestAttributeModel {
 }
 ```
 
-*Note:* If your model is not adaptable from SlingHttpServletRequest.class (e.g. only from Resource.class) and you rely on the extra features provided by [wcm.io Sling Commons][wcm-io-sling-commons] and [wcm.io Sling Models][wcm-io-sling-models] which can inject request-derived objects via a ThreadLocal it might be necessary to set the request context manually to ensure injection of request-derived objects works in your unit tests. Example: 
+*Note:* If your model is not adaptable from SlingHttpServletRequest.class (e.g. only from Resource.class) and you rely on the extra features provided by [wcm.io Sling Commons][wcm-io-sling-commons] and [wcm.io Sling Models][wcm-io-sling-models] which can inject request-derived objects via a ThreadLocal it might be necessary to set the request context manually to ensure injection of request-derived objects works in your unit tests. Example:
 
 ```java
 MockSlingExtensions.setRequestContext(context, context.request());
@@ -255,7 +255,7 @@ To define a plugin implement the `org.apache.sling.testing.mock.osgi.context.Con
 
 To use a plugin in your unit test class, use the `AemContextBuilder` class instead of directly instantiating the `AemContext`class. This allows you in a fluent style to configure more options, with the `plugin(...)` method you can add one or more plugins.
 
-Example: 
+Example:
 
 ```java
 @Rule

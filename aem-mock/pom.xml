@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -48,10 +48,9 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
 
-    <!-- Sling Mock dependencies -->
-    <jcr-mock.version>1.3.2</jcr-mock.version>
-    <osgi-mock.version>2.3.6</osgi-mock.version>
-    <sling-mock.version>2.2.14</sling-mock.version>
+    <jcr-mock.version>1.3.3-SNAPSHOT</jcr-mock.version>
+    <osgi-mock.version>2.3.9-SNAPSHOT</osgi-mock.version>
+    <sling-mock.version>2.2.19-SNAPSHOT</sling-mock.version>
     <sling-mock.oak.version>2.0.2</sling-mock.oak.version>
     <resourceresolver-mock.version>1.1.20</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
@@ -69,6 +68,11 @@
   <dependencies>
 
     <!-- Make sure the following dependencies use the version from the imported AEM dependencies -->
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.api</artifactId>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.jackrabbit</groupId>
       <artifactId>jackrabbit-jcr-commons</artifactId>
@@ -281,7 +285,6 @@
       <scope>compile</scope>
     </dependency>
 
-    <!-- For JUnit 4 Rule integration -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -418,6 +421,8 @@
             <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
             <include>org.apache.sling:org.apache.sling.testing.osgi-mock</include>
             <include>org.apache.sling:org.apache.sling.testing.sling-mock</include>
+            <include>org.apache.sling:org.apache.sling.servlet-helpers</include>
+            <include>org.apache.sling:org.apache.sling.resourcebuilder</include>
           </dependencySourceIncludes>
           <includeDependencySources>true</includeDependencySources>
           <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
@@ -439,7 +444,7 @@
               <packages>org.apache.sling.testing.mock.jcr:org.apache.sling.testing.mock.jcr.*</packages>
             </group>
           </groups>
-          <excludePackageNames>osgimock.*</excludePackageNames>
+          <excludePackageNames>osgimock.*,*.impl.*</excludePackageNames>
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
