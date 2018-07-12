@@ -43,7 +43,7 @@ import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
 /**
  * Defines AEM context objects with lazy initialization.
- * Should not be used directly but via the {@link io.wcm.testing.mock.aem.junit.AemContext} JUnit rule.
+ * Should not be used directly but via the JUnit 4 rule or JUnit 5 extension.
  */
 @ConsumerType
 public class AemContextImpl extends SlingContextImpl {

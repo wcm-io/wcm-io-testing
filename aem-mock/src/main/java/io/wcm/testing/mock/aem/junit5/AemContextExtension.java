@@ -49,7 +49,7 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
    */
   @Override
   public void postProcessTestInstance(Object testInstance, ExtensionContext extensionContext) throws Exception {
-    Field aemContextField = getAemContextFieldFromTestInstance(testInstance);
+    Field aemContextField = getFieldFromTestInstance(testInstance, AemContext.class);
     if (aemContextField != null) {
       AemContext context = (AemContext)aemContextField.get(testInstance);
       if (context != null) {
@@ -132,9 +132,10 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
   }
 
   private Optional<Class<?>> getAemContextType(ParameterContext parameterContext, ExtensionContext extensionContext) {
-    // If a @BeforeEach or @AfterEach method has only a generic AemContext parameter check if test method has a more specific parameter and use this
+    // If a @BeforeEach or @AfterEach method has only a generic AemContext parameter check if
+    // test method has a more specific parameter and use this
     if (isAbstractAemContext(parameterContext)) {
-      return getAemContextTypeFromTestMethod(extensionContext);
+      return getParameterFromTestMethod(extensionContext, AemContext.class);
     }
     else {
       return Optional.of(parameterContext.getParameter().getType());
@@ -149,15 +150,15 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
     return !parameterContext.getParameter().getType().isInstance(aemContext);
   }
 
-  private Optional<Class<?>> getAemContextTypeFromTestMethod(ExtensionContext extensionContext) {
+  private Optional<Class<?>> getParameterFromTestMethod(ExtensionContext extensionContext, Class<?> type) {
     return Arrays.stream(extensionContext.getRequiredTestMethod().getParameterTypes())
-        .filter(clazz -> AemContext.class.isAssignableFrom(clazz))
+        .filter(clazz -> type.isAssignableFrom(clazz))
         .findFirst();
   }
 
-  private Field getAemContextFieldFromTestInstance(Object testInstance) {
+  private Field getFieldFromTestInstance(Object testInstance, Class<?> type) {
     Field contextField = Arrays.stream(testInstance.getClass().getDeclaredFields())
-        .filter(field -> AemContext.class.isAssignableFrom(field.getType()))
+        .filter(field -> type.isAssignableFrom(field.getType()))
         .findFirst()
         .orElse(null);
     if (contextField != null) {
