@@ -35,7 +35,7 @@ import org.osgi.annotation.versioning.ProviderType;
 public final class AemContextBuilder {
 
   private final ContextPlugins plugins = new ContextPlugins();
-  private ResourceResolverType[] resourceResolverTypes;
+  private ResourceResolverType resourceResolverType;
   private Map<String, Object> resourceResolverFactoryActivatorProps;
 
   /**
@@ -47,18 +47,18 @@ public final class AemContextBuilder {
 
   /**
    * Create builder with given resource resolver type.
-   * @param resourceResolverTypes Resource resolver type(s).
+   * @param resourceResolverType Resource resolver type.
    */
-  public AemContextBuilder(ResourceResolverType... resourceResolverTypes) {
-    this.resourceResolverType(resourceResolverTypes);
+  public AemContextBuilder(ResourceResolverType resourceResolverType) {
+    this.resourceResolverType(resourceResolverType);
   }
 
   /**
-   * @param types Resource resolver type(s).
+   * @param type Resource resolver type.
    * @return this
    */
-  public AemContextBuilder resourceResolverType(ResourceResolverType... types) {
-    this.resourceResolverTypes = types;
+  public AemContextBuilder resourceResolverType(ResourceResolverType type) {
+    this.resourceResolverType = type;
     return this;
   }
 
@@ -137,7 +137,7 @@ public final class AemContextBuilder {
   public AemContext build() {
     return new AemContext(this.plugins,
         this.resourceResolverFactoryActivatorProps,
-        this.resourceResolverTypes);
+        this.resourceResolverType);
   }
 
 }

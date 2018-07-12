@@ -47,25 +47,24 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 public class AemContext extends AemContextImpl {
 
   private final ContextPlugins plugins;
-  private final ResourceResolverType[] resourceResolverTypes;
 
   /**
    * Initialize AEM context.
-   * @param resourceResolverTypes Resource resolver types.
+   * @param resourceResolverType Resource resolver type.
    */
-  protected AemContext(final ResourceResolverType... resourceResolverTypes) {
-    this(new ContextPlugins(), null, resourceResolverTypes);
+  protected AemContext(final ResourceResolverType resourceResolverType) {
+    this(new ContextPlugins(), null, resourceResolverType);
   }
 
   /**
    * Initialize AEM context.
    * @param contextPlugins Context plugins
    * @param resourceResolverFactoryActivatorProps Resource resolver factory activator properties
-   * @param resourceResolverTypes Resource resolver types.
+   * @param resourceResolverType Resource resolver type.
    */
   AemContext(final ContextPlugins contextPlugins,
       final Map<String, Object> resourceResolverFactoryActivatorProps,
-      final ResourceResolverType... resourceResolverTypes) {
+      final ResourceResolverType resourceResolverType) {
 
     this.plugins = contextPlugins;
 
@@ -73,16 +72,8 @@ public class AemContext extends AemContextImpl {
     Map<String, Object> mergedProps = resourceResolverFactoryActivatorPropsMergeWithAemDefault(resourceResolverFactoryActivatorProps);
     setResourceResolverFactoryActivatorProps(mergedProps);
 
-    if (resourceResolverTypes == null || resourceResolverTypes.length == 0) {
-      this.resourceResolverTypes = new ResourceResolverType[] {
-          MockSling.DEFAULT_RESOURCERESOLVER_TYPE
-      };
-    }
-    else {
-      this.resourceResolverTypes = resourceResolverTypes;
-    }
-    // TODO: junit5: support multiple resource resolver types
-    setResourceResolverType(this.resourceResolverTypes[0]);
+    // set resource resolver type
+    setResourceResolverType(resourceResolverType == null ? MockSling.DEFAULT_RESOURCERESOLVER_TYPE : resourceResolverType);
   }
 
   /**
