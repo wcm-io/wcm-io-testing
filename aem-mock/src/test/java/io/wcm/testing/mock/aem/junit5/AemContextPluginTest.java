@@ -20,15 +20,19 @@
 package io.wcm.testing.mock.aem.junit5;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.resourceresolver.MockResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Test with {@link AemContext} with context plugins.
@@ -37,29 +41,61 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @Tag("junit5")
 class AemContextPluginTest {
 
-  // TODO: junit5: define custom context with plugins and test cases for it
+  private final AemContextCallback contextBeforeSetup = mock(AemContextCallback.class);
+  private final AemContextCallback contextAfterSetup = mock(AemContextCallback.class);
+  private final AemContextCallback contextBeforeTeardown = mock(AemContextCallback.class);
+  private final AemContextCallback contextAfterTeardown = mock(AemContextCallback.class);
+
+  private final AemContext context = new AemContextBuilder()
+      .beforeSetUp(contextBeforeSetup)
+      .afterSetUp(contextAfterSetup)
+      .beforeTearDown(contextBeforeTeardown)
+      .afterTearDown(contextAfterTeardown)
+      .resourceResolverFactoryActivatorProps(ImmutableMap.<String, Object>of("resource.resolver.searchpath", new String[] {
+          "/apps",
+          "/libs",
+          "/testpath",
+      }))
+      .build();
 
   @BeforeEach
-  void setUp(AemContext context) {
-    assertTrue(context instanceof ResourceResolverMockAemContext);
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
-
-    context.create().resource("/content/test",
-        "prop1", "value1");
+  public void setUp() throws Exception {
+    verify(contextBeforeSetup).execute(context);
   }
 
   @Test
-  void testResource(AemContext context) {
-    Resource resource = context.resourceResolver().getResource("/content/test");
-    assertEquals("value1", resource.getValueMap().get("prop1"));
+  public void testRequest() throws Exception {
+    verify(contextAfterSetup).execute(context);
+    assertNotNull(context.request());
+  }
+
+  @Test
+  public void testResourceResolverFactoryActivatorProps() throws Exception {
+    verify(contextAfterSetup).execute(context);
+
+    // skip this test for resource resolver mock, because it does not respect the custom config
+    if (context.resourceResolverType() == ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      return;
+    }
+
+    context.create().resource("/apps/node1");
+
+    context.create().resource("/libs/node1");
+    context.create().resource("/libs/node2");
+
+    context.create().resource("/testpath/node1");
+    context.create().resource("/testpath/node2");
+    context.create().resource("/testpath/node3");
+
+    assertEquals("/apps/node1", context.resourceResolver().getResource("node1").getPath());
+    assertEquals("/libs/node2", context.resourceResolver().getResource("node2").getPath());
+    assertEquals("/testpath/node3", context.resourceResolver().getResource("node3").getPath());
+    assertNull(context.resourceResolver().getResource("node4"));
   }
 
   @AfterEach
-  void tearDown(AemContext context) throws Exception {
-    Resource resource = context.resourceResolver().getResource("/content/test");
-    assertEquals("value1", resource.getValueMap().get("prop1"));
-
-    context.resourceResolver().delete(resource);
+  public void tearDown() throws Exception {
+    verify(contextBeforeTeardown).execute(context);
   }
 
 }

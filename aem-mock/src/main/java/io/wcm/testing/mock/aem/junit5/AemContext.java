@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem.junit5;
 import java.util.Map;
 
 import org.apache.sling.testing.mock.osgi.context.ContextPlugins;
+import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.osgi.annotation.versioning.ConsumerType;
 
@@ -46,35 +47,25 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 public class AemContext extends AemContextImpl {
 
   private final ContextPlugins plugins;
+  private final ResourceResolverType[] resourceResolverTypes;
 
   /**
    * Initialize AEM context.
-   * @param resourceResolverType Resource resolver type.
+   * @param resourceResolverTypes Resource resolver types.
    */
-  protected AemContext(final ResourceResolverType resourceResolverType) {
-    this(new ContextPlugins(), null, resourceResolverType);
-  }
-
-  /**
-   * Initialize AEM context.
-   * @param builder AEM context builder
-   */
-  protected AemContext(final AemContextBuilder builder) {
-    this(builder.getPlugins(),
-        builder.getResourceResolverFactoryActivatorProps(),
-        // TODO: junit5: add support for multiple resource resolver types
-        builder.getResourceResolverTypes()[0]);
+  protected AemContext(final ResourceResolverType... resourceResolverTypes) {
+    this(new ContextPlugins(), null, resourceResolverTypes);
   }
 
   /**
    * Initialize AEM context.
    * @param contextPlugins Context plugins
    * @param resourceResolverFactoryActivatorProps Resource resolver factory activator properties
-   * @param resourceResolverType Resource resolver type.
+   * @param resourceResolverTypes Resource resolver types.
    */
   AemContext(final ContextPlugins contextPlugins,
       final Map<String, Object> resourceResolverFactoryActivatorProps,
-      final ResourceResolverType resourceResolverType) {
+      final ResourceResolverType... resourceResolverTypes) {
 
     this.plugins = contextPlugins;
 
@@ -82,7 +73,16 @@ public class AemContext extends AemContextImpl {
     Map<String, Object> mergedProps = resourceResolverFactoryActivatorPropsMergeWithAemDefault(resourceResolverFactoryActivatorProps);
     setResourceResolverFactoryActivatorProps(mergedProps);
 
-    setResourceResolverType(resourceResolverType);
+    if (resourceResolverTypes == null || resourceResolverTypes.length == 0) {
+      this.resourceResolverTypes = new ResourceResolverType[] {
+          MockSling.DEFAULT_RESOURCERESOLVER_TYPE
+      };
+    }
+    else {
+      this.resourceResolverTypes = resourceResolverTypes;
+    }
+    // TODO: junit5: support multiple resource resolver types
+    setResourceResolverType(this.resourceResolverTypes[0]);
   }
 
   /**

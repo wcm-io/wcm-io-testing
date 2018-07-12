@@ -156,10 +156,14 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
   }
 
   private Field getAemContextFieldFromTestInstance(Object testInstance) {
-    return Arrays.stream(testInstance.getClass().getDeclaredFields())
+    Field contextField = Arrays.stream(testInstance.getClass().getDeclaredFields())
         .filter(field -> AemContext.class.isAssignableFrom(field.getType()))
         .findFirst()
         .orElse(null);
+    if (contextField != null) {
+      contextField.setAccessible(true);
+    }
+    return contextField;
   }
 
 }

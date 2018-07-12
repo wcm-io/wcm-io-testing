@@ -131,16 +131,13 @@ public final class AemContextBuilder {
     return this;
   }
 
-  ResourceResolverType[] getResourceResolverTypes() {
-    return this.resourceResolverTypes;
-  }
-
-  Map<String, Object> getResourceResolverFactoryActivatorProps() {
-    return this.resourceResolverFactoryActivatorProps;
-  }
-
-  ContextPlugins getPlugins() {
-    return this.plugins;
+  /**
+   * @return Build {@link AemContext} instance.
+   */
+  public AemContext build() {
+    return new AemContext(this.plugins,
+        this.resourceResolverFactoryActivatorProps,
+        this.resourceResolverTypes);
   }
 
 }
