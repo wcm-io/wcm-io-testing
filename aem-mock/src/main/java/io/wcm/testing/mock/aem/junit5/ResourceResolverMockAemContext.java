@@ -20,11 +20,14 @@
 package io.wcm.testing.mock.aem.junit5;
 
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * AEM Mock parameter object with resource resolver type set to {@link ResourceResolverType#RESOURCERESOLVER_MOCK}.
+ * This is the same as {@link AemContext}, but makes it more explicit which resource resolver type is used.
  */
-public class ResourceResolverMockAemContext extends AemContext {
+@ProviderType
+public final class ResourceResolverMockAemContext extends AemContext {
 
   /**
    * Constructor

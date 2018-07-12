@@ -22,8 +22,12 @@ package io.wcm.testing.mock.aem.junit5;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -34,7 +38,9 @@ import org.junit.jupiter.api.extension.TestInstancePostProcessor;
  * JUnit 5 extension that allows to inject {@link AemContext} (or subclasses of it) parameters in test methods,
  * and ensures that the context is set up and teared down properly for each test method.
  */
-public final class AemContextExtension implements ParameterResolver, TestInstancePostProcessor, AfterEachCallback {
+public final class AemContextExtension implements ParameterResolver, TestInstancePostProcessor,
+    BeforeEachCallback, AfterEachCallback,
+    BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
   /**
    * Checks if test class has a {@link AemContext} or derived field.
@@ -82,15 +88,46 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
     return aemContext;
   }
 
-  /**
-   * Tear down {@link AemContext} after test is complete.
-   */
+  @Override
+  public void beforeEach(ExtensionContext extensionContext) throws Exception {
+    applyAemContext(extensionContext, aemContext -> {
+      // call context plugins setup before any @BeforeEach method is called
+      aemContext.getContextPlugins().executeBeforeSetUpCallback(aemContext);
+    });
+  }
+
+  @Override
+  public void beforeTestExecution(ExtensionContext extensionContext) throws Exception {
+    applyAemContext(extensionContext, aemContext -> {
+      // call context plugins setup after all @BeforeEach methods were called
+      aemContext.getContextPlugins().executeAfterSetUpCallback(aemContext);
+    });
+  }
+
+  @Override
+  public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
+    applyAemContext(extensionContext, aemContext -> {
+      // call context plugins setup before any @AfterEach method is called
+      aemContext.getContextPlugins().executeBeforeTearDownCallback(aemContext);
+    });
+  }
+
   @Override
   public void afterEach(ExtensionContext extensionContext) {
-    AemContext aemContext = AemContextStore.getAemContext(extensionContext, extensionContext.getRequiredTestInstance());
-    if (aemContext != null) {
+    applyAemContext(extensionContext, aemContext -> {
+      // call context plugins setup after all @AfterEach methods were called
+      aemContext.getContextPlugins().executeAfterTearDownCallback(aemContext);
+
+      // Tear down {@link AemContext} after test is complete.
       aemContext.tearDownContext();
       AemContextStore.removeAemContext(extensionContext, extensionContext.getRequiredTestInstance());
+    });
+  }
+
+  private void applyAemContext(ExtensionContext extensionContext, Consumer<AemContext> consumer) {
+    AemContext aemContext = AemContextStore.getAemContext(extensionContext, extensionContext.getRequiredTestInstance());
+    if (aemContext != null) {
+      consumer.accept(aemContext);
     }
   }
 

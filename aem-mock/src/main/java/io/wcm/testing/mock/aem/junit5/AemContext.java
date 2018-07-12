@@ -23,18 +23,28 @@ import java.util.Map;
 
 import org.apache.sling.testing.mock.osgi.context.ContextPlugins;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.osgi.annotation.versioning.ConsumerType;
 
 import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
- * Abstract parameter object for AemContext in Junit 5.
- * If this is used as parameter the default resource resolver type instance is inserted,
- * {@link ResourceResolverMockAemContext}.
+ * AEM Mock parameter object with resource resolver type
+ * defaulting to {@link ResourceResolverType#RESOURCERESOLVER_MOCK}.
+ * <p>
+ * Additionally you can subclass this class and provide further parameters
+ * via {@link AemContextBuilder}.
+ * </p>
+ * <p>
+ * For convenience a set of subclasses already exist to use different resource resolver types.
+ * </p>
+ * @see ResourceResolverMockAemContext
+ * @see JcrMockAemContext
+ * @see JcrOakAemContext
+ * @see NoResourceResolverTypeAemContext
  */
-public abstract class AemContext extends AemContextImpl {
+@ConsumerType
+public class AemContext extends AemContextImpl {
 
-  // TODO: add support for plugins
-  @SuppressWarnings("unused")
   private final ContextPlugins plugins;
 
   /**
@@ -43,6 +53,17 @@ public abstract class AemContext extends AemContextImpl {
    */
   protected AemContext(final ResourceResolverType resourceResolverType) {
     this(new ContextPlugins(), null, resourceResolverType);
+  }
+
+  /**
+   * Initialize AEM context.
+   * @param builder AEM context builder
+   */
+  protected AemContext(final AemContextBuilder builder) {
+    this(builder.getPlugins(),
+        builder.getResourceResolverFactoryActivatorProps(),
+        // TODO: junit5: add support for multiple resource resolver types
+        builder.getResourceResolverTypes()[0]);
   }
 
   /**
@@ -76,6 +97,10 @@ public abstract class AemContext extends AemContextImpl {
    */
   protected void tearDownContext() {
     super.tearDown();
+  }
+
+  ContextPlugins getContextPlugins() {
+    return plugins;
   }
 
 }
