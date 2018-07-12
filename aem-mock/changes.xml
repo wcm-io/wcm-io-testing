@@ -53,7 +53,7 @@
       </action>
       <action type="fix" dev="sseifert">
         ContentBuilder.asset stores optional asset metadata in wrong path.
-     </action>
+      </action>
     </release>
 
     <release version="2.2.10" date="2018-01-15">
