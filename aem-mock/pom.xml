@@ -19,7 +19,8 @@
   #L%
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -55,13 +56,8 @@
     <resourceresolver-mock.version>1.1.20</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
 
-    <!-- JUnit 5 -->
-		<org.junit.jupiter.version>5.0.2</org.junit.jupiter.version>
-		<org.junit.vintage.version>4.12.2</org.junit.vintage.version>
-		<org.junit.platform.version>1.0.2</org.junit.platform.version>
-
-    <!-- we'll have to switch back to 2.19.1 because JUnit 5 provider is not yet compatbile with surefire 2.20/2.20.1 - see https://github.com/junit-team/junit5-samples/pull/27 -->
-    <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+    <!-- Set to 'enabled' to activate org.eclipse.jdt.core.compiler.annotation.nullanalysis feature in eclipse settings -->
+    <eclipse.settings.nullanalysis>disabled</eclipse.settings.nullanalysis>
 
   </properties>
 
@@ -285,39 +281,32 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- JUnit 4 -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>provided</scope>
     </dependency>
-    
-    <!-- For JUnit 5 extension -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${org.junit.jupiter.version}</version>
-      <scope>provided</scope>
-    </dependency>
 
-		<!-- Only required to run tests in an IDE that bundles an older version -->
+    <!-- JUnit 5 -->
 		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<version>${org.junit.platform.version}</version>
-			<scope>test</scope>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
-		<!-- Only required to run tests in an IDE that bundles an older version -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${org.junit.jupiter.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
-		<!-- Only required to run tests in an IDE that bundles an older version -->
 		<dependency>
 			<groupId>org.junit.vintage</groupId>
 			<artifactId>junit-vintage-engine</artifactId>
-			<version>${org.junit.vintage.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -338,6 +327,15 @@
         <groupId>io.wcm.maven</groupId>
         <artifactId>io.wcm.maven.aem-dependencies</artifactId>
         <version>6.2.0.0002</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Import all JUnit 5 dependencies -->
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.2.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -389,20 +387,6 @@
             <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
             <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
           </configuration>
-
-          <!-- TODO: move this to global-parent once the surefire-junit5 integration is stable? -->
-          <dependencies>
-            <dependency>
-              <groupId>org.junit.platform</groupId>
-              <artifactId>junit-platform-surefire-provider</artifactId>
-              <version>${org.junit.platform.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.junit.jupiter</groupId>
-              <artifactId>junit-jupiter-engine</artifactId>
-              <version>${org.junit.jupiter.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
 
       </plugins>
