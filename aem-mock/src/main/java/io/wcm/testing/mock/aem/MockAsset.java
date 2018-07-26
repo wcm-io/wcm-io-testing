@@ -26,6 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -52,6 +55,7 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ResourceResolver resourceResolver;
   private final Resource resource;
   private final ValueMap contentProps;
+  private final ValueMap resourceProps;
   private final Resource renditionsResource;
   private boolean batchMode;
 
@@ -61,6 +65,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     this.resource = resource;
     Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
     this.contentProps = ResourceUtil.getValueMap(contentResource);
+    this.resourceProps = ResourceUtil.getValueMap(resource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
   }
 
@@ -271,7 +276,18 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public String getID() {
-    throw new UnsupportedOperationException();
+    Node node;
+    node = resource.adaptTo(Node.class);
+    try {
+      if(node != null) {
+        // JCR-based resource resolver
+        return node.getIdentifier();
+      }
+    }
+    catch(RepositoryException e){
+      //ignore
+    }
+    return "";
   }
 
   @Override

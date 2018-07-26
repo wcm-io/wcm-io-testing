@@ -71,6 +71,7 @@ public class MockAssetTest {
     assertEquals(1368001317000L, asset.getLastModified());
     assertEquals("admin", asset.getModifier());
     assertEquals("image/jpeg", asset.getMimeType());
+    assertNotNull(asset.getID());
     assertNotNull(asset.hashCode());
   }
 
