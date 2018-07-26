@@ -55,7 +55,6 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ResourceResolver resourceResolver;
   private final Resource resource;
   private final ValueMap contentProps;
-  private final ValueMap resourceProps;
   private final Resource renditionsResource;
   private boolean batchMode;
 
@@ -65,7 +64,6 @@ class MockAsset extends ResourceWrapper implements Asset {
     this.resource = resource;
     Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
     this.contentProps = ResourceUtil.getValueMap(contentResource);
-    this.resourceProps = ResourceUtil.getValueMap(resource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
   }
 
