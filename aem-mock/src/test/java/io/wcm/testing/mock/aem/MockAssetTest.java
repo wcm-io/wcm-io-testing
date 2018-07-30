@@ -156,4 +156,9 @@ public class MockAssetTest {
     assertFalse(context.resourceResolver().hasChanges());
   }
 
+  @Test
+  public void testGetID() {
+    assertNotNull(asset.getID());
+  }
+
 }

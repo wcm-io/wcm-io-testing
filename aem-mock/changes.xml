@@ -24,6 +24,9 @@
   <body>
 
     <release version="2.2.16" date="not released">
+      <action type="update" dev="sjain" issue="WTES-32">
+        Add implementation of MockAsset.getID method.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock, JCR Mock.
       </action>
