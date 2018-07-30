@@ -71,7 +71,6 @@ public class MockAssetTest {
     assertEquals(1368001317000L, asset.getLastModified());
     assertEquals("admin", asset.getModifier());
     assertEquals("image/jpeg", asset.getMimeType());
-    assertNotNull(asset.getID());
     assertNotNull(asset.hashCode());
   }
 
@@ -155,6 +154,11 @@ public class MockAssetTest {
     assertFalse(asset.isBatchMode());
     doTestAddRemoveRendition("testwithoutbatchmode.bin");
     assertFalse(context.resourceResolver().hasChanges());
+  }
+
+  @Test
+  public void testGetID() {
+    assertNotNull(asset.getID());
   }
 
 }

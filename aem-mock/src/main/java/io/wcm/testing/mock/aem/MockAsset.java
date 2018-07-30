@@ -26,9 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -214,6 +211,11 @@ class MockAsset extends ResourceWrapper implements Asset {
     return addRendition(name, is, mimeType);
   }
 
+  @Override
+  public String getID() {
+    return resource.getValueMap().get(JcrConstants.JCR_UUID, "");
+  }
+
 
   // --- unsupported operations ---
 
@@ -270,22 +272,6 @@ class MockAsset extends ResourceWrapper implements Asset {
   @Override
   public boolean isBatchMode() {
     return this.batchMode;
-  }
-
-  @Override
-  public String getID() {
-    Node node;
-    node = resource.adaptTo(Node.class);
-    try {
-      if(node != null) {
-        // JCR-based resource resolver
-        return node.getIdentifier();
-      }
-    }
-    catch(RepositoryException e){
-      //ignore
-    }
-    return "";
   }
 
   @Override
