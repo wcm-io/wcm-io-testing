@@ -28,6 +28,9 @@
         Add implementation of MockAsset.getID method.
       </action>
       <action type="update" dev="sseifert">
+        Add AemContextBuilder.registerSlingModelsFromClassPath method to allow to switch off automatica registration of Sling Models from the classpath.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock, JCR Mock.
       </action>
     </release>

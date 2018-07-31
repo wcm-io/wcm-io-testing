@@ -37,6 +37,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AemContextTest {
@@ -92,6 +93,13 @@ public class AemContextTest {
     assertEquals("/libs/node2", context.resourceResolver().getResource("node2").getPath());
     assertEquals("/testpath/node3", context.resourceResolver().getResource("node3").getPath());
     assertNull(context.resourceResolver().getResource("node4"));
+  }
+
+  @Test
+  public void testSlnigModelClasspathRegistered() {
+    context.request().setAttribute("prop1", "myValue");
+    ClasspathRegisteredModel model = context.request().adaptTo(ClasspathRegisteredModel.class);
+    assertEquals("myValue", model.getProp1());
   }
 
   @After
