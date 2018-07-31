@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 import org.osgi.annotation.versioning.ConsumerType;
 
@@ -56,6 +57,11 @@ public class AemContextImpl extends SlingContextImpl {
     // adapter factories
     registerInjectActivateService(new MockAemAdapterFactory());
     registerInjectActivateService(new MockLayerAdapterFactory());
+  }
+
+  @Override
+  protected void setResourceResolverType(ResourceResolverType resourceResolverType) {
+    super.setResourceResolverType(resourceResolverType);
   }
 
   @Override
