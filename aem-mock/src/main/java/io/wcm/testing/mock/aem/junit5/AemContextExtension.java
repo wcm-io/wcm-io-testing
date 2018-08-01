@@ -53,6 +53,9 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
     if (aemContextField != null) {
       AemContext context = (AemContext)aemContextField.get(testInstance);
       if (context != null) {
+        if (!context.isSetUp()) {
+          context.setUpContext();
+        }
         AemContextStore.storeAemContext(extensionContext, testInstance, context);
       }
       else {

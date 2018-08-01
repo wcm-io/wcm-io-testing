@@ -30,6 +30,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
+
 /**
  * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
  */
@@ -50,6 +52,13 @@ class AemContextTest {
   void testResource(AemContext context) {
     Resource resource = context.resourceResolver().getResource("/content/test");
     assertEquals("value1", resource.getValueMap().get("prop1"));
+  }
+
+  @Test
+  public void testSlingModelClasspathRegistered(AemContext context) {
+    context.request().setAttribute("prop1", "myValue");
+    ClasspathRegisteredModel model = context.request().adaptTo(ClasspathRegisteredModel.class);
+    assertEquals("myValue", model.getProp1());
   }
 
   @AfterEach

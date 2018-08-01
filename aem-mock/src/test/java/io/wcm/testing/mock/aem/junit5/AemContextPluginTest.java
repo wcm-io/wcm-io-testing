@@ -34,6 +34,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.google.common.collect.ImmutableMap;
 
+import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
+
 /**
  * Test with {@link AemContext} with context plugins.
  */
@@ -91,6 +93,13 @@ class AemContextPluginTest {
     assertEquals("/libs/node2", context.resourceResolver().getResource("node2").getPath());
     assertEquals("/testpath/node3", context.resourceResolver().getResource("node3").getPath());
     assertNull(context.resourceResolver().getResource("node4"));
+  }
+
+  @Test
+  public void testSlingModelClasspathRegistered() {
+    context.request().setAttribute("prop1", "myValue");
+    ClasspathRegisteredModel model = context.request().adaptTo(ClasspathRegisteredModel.class);
+    assertEquals("myValue", model.getProp1());
   }
 
   @AfterEach
