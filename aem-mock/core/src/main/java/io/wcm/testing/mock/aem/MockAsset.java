@@ -211,6 +211,11 @@ class MockAsset extends ResourceWrapper implements Asset {
     return addRendition(name, is, mimeType);
   }
 
+  @Override
+  public String getID() {
+    return resource.getValueMap().get(JcrConstants.JCR_UUID, "");
+  }
+
 
   // --- unsupported operations ---
 
@@ -267,11 +272,6 @@ class MockAsset extends ResourceWrapper implements Asset {
   @Override
   public boolean isBatchMode() {
     return this.batchMode;
-  }
-
-  @Override
-  public String getID() {
-    throw new UnsupportedOperationException();
   }
 
   @Override

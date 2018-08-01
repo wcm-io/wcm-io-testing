@@ -129,12 +129,37 @@ public final class AemContext extends AemContextImpl implements TestRule {
   AemContext(final ContextPlugins contextPlugins,
       final Map<String, Object> resourceResolverFactoryActivatorProps,
       final ResourceResolverType... resourceResolverTypes) {
+    this(contextPlugins, resourceResolverFactoryActivatorProps, true, resourceResolverTypes);
+  }
+
+  /**
+   * Initialize AEM context.
+   * <p>
+   * If context is initialized with:
+   * </p>
+   * <ul>
+   * <li>No resource resolver type - default is used {@link MockSling#DEFAULT_RESOURCERESOLVER_TYPE}.</li>
+   * <li>One resource resolver type - exactly this is used.</li>
+   * <li>More than one: all unit test methods are executed for all resource resolver types using {@link ListGenerator}.
+   * </li>
+   * </ul>
+   * @param contextPlugins Context plugins
+   * @param resourceResolverFactoryActivatorProps Resource resolver factory activator properties
+   * @param registerSlingModelsFromClassPath Automatic registering of all Sling Models found in the classpath on
+   *          startup.
+   * @param resourceResolverTypes Resource resolver type(s).
+   */
+  AemContext(final ContextPlugins contextPlugins,
+      final Map<String, Object> resourceResolverFactoryActivatorProps,
+      final boolean registerSlingModelsFromClassPath,
+      final ResourceResolverType... resourceResolverTypes) {
 
     this.plugins = contextPlugins;
 
     // set custom ResourceResolverFactoryActivator config, but set AEM default values for all parameter not given here
     Map<String, Object> mergedProps = resourceResolverFactoryActivatorPropsMergeWithAemDefault(resourceResolverFactoryActivatorProps);
     setResourceResolverFactoryActivatorProps(mergedProps);
+    setRegisterSlingModelsFromClassPath(registerSlingModelsFromClassPath);
 
     if (resourceResolverTypes == null || resourceResolverTypes.length == 0) {
       this.resourceResolverTypes = new ResourceResolverType[] {

@@ -47,23 +47,27 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 public class AemContext extends AemContextImpl {
 
   private final ContextPlugins plugins;
+  private boolean isSetUp;
 
   /**
    * Initialize AEM context.
    * @param resourceResolverType Resource resolver type.
    */
   protected AemContext(final ResourceResolverType resourceResolverType) {
-    this(new ContextPlugins(), null, resourceResolverType);
+    this(new ContextPlugins(), null, true, resourceResolverType);
   }
 
   /**
    * Initialize AEM context.
    * @param contextPlugins Context plugins
    * @param resourceResolverFactoryActivatorProps Resource resolver factory activator properties
+   * @param registerSlingModelsFromClassPath Automatic registering of all Sling Models found in the classpath on
+   *          startup.
    * @param resourceResolverType Resource resolver type.
    */
   AemContext(final ContextPlugins contextPlugins,
       final Map<String, Object> resourceResolverFactoryActivatorProps,
+      final boolean registerSlingModelsFromClassPath,
       final ResourceResolverType resourceResolverType) {
 
     this.plugins = contextPlugins;
@@ -71,6 +75,7 @@ public class AemContext extends AemContextImpl {
     // set custom ResourceResolverFactoryActivator config, but set AEM default values for all parameter not given here
     Map<String, Object> mergedProps = resourceResolverFactoryActivatorPropsMergeWithAemDefault(resourceResolverFactoryActivatorProps);
     setResourceResolverFactoryActivatorProps(mergedProps);
+    setRegisterSlingModelsFromClassPath(registerSlingModelsFromClassPath);
 
     // set resource resolver type
     setResourceResolverType(resourceResolverType == null ? MockSling.DEFAULT_RESOURCERESOLVER_TYPE : resourceResolverType);
@@ -80,6 +85,7 @@ public class AemContext extends AemContextImpl {
    * This is called by {@link AemContextExtension} to set up context.
    */
   protected void setUpContext() {
+    isSetUp = true;
     super.setUp();
   }
 
@@ -92,6 +98,10 @@ public class AemContext extends AemContextImpl {
 
   ContextPlugins getContextPlugins() {
     return plugins;
+  }
+
+  boolean isSetUp() {
+    return this.isSetUp;
   }
 
 }

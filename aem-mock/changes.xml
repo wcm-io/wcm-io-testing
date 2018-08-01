@@ -26,7 +26,16 @@
     <release version="2.3.0" date="not released">
       <action type="add" dev="sseifert">
         Add JUnit 5 extensions.
-     </action>
+      </action>
+    </release>
+
+    <release version="2.2.16" date="not released">
+      <action type="update" dev="sjain" issue="WTES-32">
+        Add implementation of MockAsset.getID method.
+      </action>
+      <action type="update" dev="sseifert">
+        Add AemContextBuilder.registerSlingModelsFromClassPath method to allow to switch off automatica registration of Sling Models from the classpath.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock, JCR Mock.
       </action>
