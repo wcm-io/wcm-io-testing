@@ -96,7 +96,7 @@ public class AemContextTest {
   }
 
   @Test
-  public void testSlnigModelClasspathRegistered() {
+  public void testSlingModelClasspathRegistered() {
     context.request().setAttribute("prop1", "myValue");
     ClasspathRegisteredModel model = context.request().adaptTo(ClasspathRegisteredModel.class);
     assertEquals("myValue", model.getProp1());
