@@ -37,6 +37,7 @@ public final class AemContextBuilder {
   private final ContextPlugins plugins = new ContextPlugins();
   private ResourceResolverType[] resourceResolverTypes;
   private Map<String, Object> resourceResolverFactoryActivatorProps;
+  private boolean registerSlingModelsFromClassPath = true;
 
   /**
    * Create builder with default resource resolver type.
@@ -132,11 +133,22 @@ public final class AemContextBuilder {
   }
 
   /**
+   * Automatic registering of all Sling Models found in the classpath on startup (active by default).
+   * @param value If set to false Sling Models are not registered automatically from the classpath on startup.
+   * @return this
+   */
+  public AemContextBuilder registerSlingModelsFromClassPath(boolean value) {
+    this.registerSlingModelsFromClassPath = value;
+    return this;
+  }
+
+  /**
    * @return Build {@link AemContext} instance.
    */
   public AemContext build() {
     return new AemContext(this.plugins,
         this.resourceResolverFactoryActivatorProps,
+        this.registerSlingModelsFromClassPath,
         this.resourceResolverTypes);
   }
 
