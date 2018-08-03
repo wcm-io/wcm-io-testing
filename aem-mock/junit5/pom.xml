@@ -42,6 +42,7 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock/junit5</site.url.module.prefix>
 
+    <sling-mock.oak.version>2.0.2</sling-mock.oak.version>
     <logging-mock.version>2.0.0</logging-mock.version>
 
     <!-- Set to 'enabled' to activate org.eclipse.jdt.core.compiler.annotation.nullanalysis feature in eclipse settings -->
@@ -50,6 +51,21 @@
   </properties>
 
   <dependencies>
+
+    <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
+         are loaded before AEM API deps -->
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
+      <version>${sling-mock.oak.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
       <groupId>io.wcm</groupId>
