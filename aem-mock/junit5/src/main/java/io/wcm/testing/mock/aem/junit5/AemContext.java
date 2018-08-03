@@ -86,6 +86,7 @@ public class AemContext extends AemContextImpl {
    */
   protected void setUpContext() {
     isSetUp = true;
+    plugins.executeBeforeSetUpCallback(this);
     super.setUp();
   }
 

@@ -27,7 +27,6 @@ import java.util.function.Consumer;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -39,8 +38,7 @@ import org.junit.jupiter.api.extension.TestInstancePostProcessor;
  * and ensures that the context is set up and teared down properly for each test method.
  */
 public final class AemContextExtension implements ParameterResolver, TestInstancePostProcessor,
-    BeforeEachCallback, AfterEachCallback,
-    BeforeTestExecutionCallback, AfterTestExecutionCallback {
+    BeforeEachCallback, AfterEachCallback, AfterTestExecutionCallback {
 
   /**
    * Checks if test class has a {@link AemContext} or derived field.
@@ -93,14 +91,6 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) throws Exception {
-    applyAemContext(extensionContext, aemContext -> {
-      // call context plugins setup before any @BeforeEach method is called
-      aemContext.getContextPlugins().executeBeforeSetUpCallback(aemContext);
-    });
-  }
-
-  @Override
-  public void beforeTestExecution(ExtensionContext extensionContext) throws Exception {
     applyAemContext(extensionContext, aemContext -> {
       // call context plugins setup after all @BeforeEach methods were called
       aemContext.getContextPlugins().executeAfterSetUpCallback(aemContext);
