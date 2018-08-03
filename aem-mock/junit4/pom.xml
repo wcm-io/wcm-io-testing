@@ -42,12 +42,90 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock/junit4</site.url.module.prefix>
 
+    <sling-mock.oak.version>2.0.2</sling-mock.oak.version>
+    <logging-mock.version>2.0.0</logging-mock.version>
+
     <!-- Set to 'enabled' to activate org.eclipse.jdt.core.compiler.annotation.nullanalysis feature in eclipse settings -->
     <eclipse.settings.nullanalysis>disabled</eclipse.settings.nullanalysis>
 
   </properties>
 
   <dependencies>
+  
+    <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
+         are loaded before AEM API deps -->
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
+      <version>${sling-mock.oak.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.testing.sling-mock</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock.core</artifactId>
+      <version>2.3.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock.core</artifactId>
+      <version>2.3.0-SNAPSHOT</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
+    <!-- (other versions of this APIs use other artifact ids) -->
+    <dependency>
+      <groupId>com.adobe.aem</groupId>
+      <artifactId>uber-jar</artifactId>
+      <classifier>apis</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.cmpn</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- JUnit 4 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.junit-commons</artifactId>
+      <version>1.0.4</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.logging-mock</artifactId>
+      <version>${logging-mock.version}</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
