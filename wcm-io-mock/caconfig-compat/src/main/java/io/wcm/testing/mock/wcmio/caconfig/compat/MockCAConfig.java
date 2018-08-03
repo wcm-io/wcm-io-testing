@@ -36,7 +36,7 @@ import io.wcm.config.spi.ConfigurationFinderStrategy;
 import io.wcm.config.spi.ParameterProvider;
 import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;
 import io.wcm.config.spi.helpers.AbstractParameterProvider;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.
@@ -96,7 +96,7 @@ public final class MockCAConfig {
    * @param contextPath Configuration id
    * @param values Configuration values
    */
-  public static void writeConfiguration(AemContext context, String contextPath, Map<String, Object> values) {
+  public static void writeConfiguration(AemContextImpl context, String contextPath, Map<String, Object> values) {
     ConfigurationManager configManager = context.getService(ConfigurationManager.class);
     Resource contextResource = context.resourceResolver().getResource(contextPath);
     configManager.persistConfiguration(contextResource, ParameterProviderBridge.DEFAULT_CONFIG_NAME,

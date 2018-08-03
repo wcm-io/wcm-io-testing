@@ -27,7 +27,7 @@ import io.wcm.sling.commons.request.RequestContext;
 import io.wcm.sling.models.injectors.impl.AemObjectInjector;
 import io.wcm.sling.models.injectors.impl.ModelsImplConfiguration;
 import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Mock context plugins.
@@ -41,9 +41,9 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Sling Extensions.
    */
-  public static final ContextPlugin<AemContext> WCMIO_SLING = new AbstractContextPlugin<AemContext>() {
+  public static final ContextPlugin<AemContextImpl> WCMIO_SLING = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContext context) throws Exception {
+    public void afterSetUp(AemContextImpl context) throws Exception {
       setUp(context);
     }
   };
@@ -52,7 +52,7 @@ public final class ContextPlugins {
    * Set up request context and Sling Models Extensions.
    * @param context Aem context
    */
-  static void setUp(AemContext context) {
+  static void setUp(AemContextImpl context) {
 
     // context-aware services
     context.registerInjectActivateService(new ContextAwareServiceResolverImpl());

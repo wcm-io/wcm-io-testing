@@ -30,7 +30,7 @@ import io.wcm.config.core.impl.ConfigurationFinderStrategyBridge;
 import io.wcm.config.core.impl.ParameterOverrideProviderBridge;
 import io.wcm.config.core.impl.ParameterProviderBridge;
 import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Mock context plugins.
@@ -44,9 +44,9 @@ public final class ContextPlugins {
   /**
    * Context plugin for Context-aware configuration compatibility Layer for wcm.io Configuration
    */
-  public static final ContextPlugin<AemContext> WCMIO_CACONFIG_COMPAT = new AbstractContextPlugin<AemContext>() {
+  public static final ContextPlugin<AemContextImpl> WCMIO_CACONFIG_COMPAT = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContext context) throws Exception {
+    public void afterSetUp(AemContextImpl context) throws Exception {
       setUpCompat(context);
     }
   };
@@ -55,7 +55,7 @@ public final class ContextPlugins {
    * Set up all mandatory OSGi services for wcm.io Configuration support.
    * @param context Aem context
    */
-  private static void setUpCompat(AemContext context) {
+  private static void setUpCompat(AemContextImpl context) {
 
     // application detection
     context.registerInjectActivateService(new ApplicationFinderImpl());
