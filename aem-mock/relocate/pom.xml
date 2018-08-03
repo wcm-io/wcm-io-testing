@@ -3,7 +3,7 @@
   #%L
   wcm.io
   %%
-  Copyright (C) 2014 wcm.io
+  Copyright (C) 2018 wcm.io
   %%
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -27,35 +27,16 @@
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
     <version>1.1.3-SNAPSHOT</version>
-    <relativePath>../parent/pom.xml</relativePath>
+    <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.aem-mock.root</artifactId>
+  <artifactId>io.wcm.testing.aem-mock</artifactId>
   <version>2.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>AEM Mocks</name>
-  <description>Mock implementation of selected AEM APIs.</description>
-  <url>${site.url}/${site.url.module.prefix}/</url>
-
-  <scm>
-    <connection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</connection>
-    <developerConnection>scm:git:https://github.com/wcm-io/wcm-io-testing.git</developerConnection>
-    <url>https://github.com/wcm-io/wcm-io-testing</url>
-    <tag>HEAD</tag>
-  </scm>
-
-  <properties>
-    <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
-  </properties>
-  
-  <modules>
-    <module>core</module>
-    <module>junit4</module>
-    <module>junit5</module>
-    <module>relocate</module>
-  </modules>
+  <name>AEM Mocks Relocation</name>
+  <description>Please use artifact 'io.wcm.testing.aem-mock.junit4' instead.</description>
 
   <build>
 
@@ -80,14 +61,22 @@
         </configuration>
       </plugin>
 
+      <!-- do not generate site for this project -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <skipDeploy>true</skipDeploy>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
   <distributionManagement>
-    <site>
-      <id>${site.deploy.id}</id>
-      <url>${site.deploy.url}${site.url.module.prefix}</url>
-    </site>
+    <relocation>
+      <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
+    </relocation>
   </distributionManagement>
 
 </project>
