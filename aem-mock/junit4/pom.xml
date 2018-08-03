@@ -51,7 +51,7 @@
   </properties>
 
   <dependencies>
-  
+
     <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
          are loaded before AEM API deps -->
     <dependency>

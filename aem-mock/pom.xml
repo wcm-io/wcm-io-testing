@@ -49,7 +49,7 @@
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
   </properties>
-  
+
   <modules>
     <module>core</module>
     <module>junit4</module>
