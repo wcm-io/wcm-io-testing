@@ -26,7 +26,6 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
 import org.apache.sling.testing.resourceresolver.MockResourceResolver;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -34,7 +33,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with mixed resource resolver types in different test methods and generic aem context in setup method.
  */
 @ExtendWith(AemContextExtension.class)
-@Tag("junit5")
 class AemContextMixTest {
 
   @BeforeEach

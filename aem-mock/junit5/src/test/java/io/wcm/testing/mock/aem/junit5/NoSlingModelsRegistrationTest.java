@@ -21,7 +21,6 @@ package io.wcm.testing.mock.aem.junit5;
 
 import static org.junit.Assert.assertNull;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -31,7 +30,6 @@ import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
  * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
-@Tag("junit5")
 class NoSlingModelsRegistrationTest {
 
   private final AemContext context = new AemContextBuilder()

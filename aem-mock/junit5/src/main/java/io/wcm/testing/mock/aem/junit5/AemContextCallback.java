@@ -24,7 +24,7 @@ import org.osgi.annotation.versioning.ConsumerType;
 
 /**
  * Callback interface for application-specific setup and teardown operations to customize the
- * {@link AemContext} JUnit rule.
+ * {@link AemContext} JUnit parameter context.
  */
 @ConsumerType
 public interface AemContextCallback extends ContextCallback<AemContext> {

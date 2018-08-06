@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.apache.sling.api.resource.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -32,7 +31,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test invalid mix of resource resolver-type context classes between setup method and test method.
  */
 @ExtendWith(AemContextExtension.class)
-@Tag("junit5")
 @Disabled // test is disabled because it fails - enable it only to test the failure
 class AemContextInvalidMixTest {
 

@@ -25,18 +25,16 @@
 
   <parent>
     <groupId>io.wcm</groupId>
-    <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.4</version>
-    <relativePath>../parent/pom.xml</relativePath>
+    <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
+    <version>2.3.0-SNAPSHOT</version>
+    <relativePath>parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.root</artifactId>
-  <version>2.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>AEM Mocks</name>
-  <description>Mock implementation of selected AEM APIs.</description>
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
@@ -51,6 +49,7 @@
   </properties>
 
   <modules>
+    <module>parent</module>
     <module>core</module>
     <module>junit4</module>
     <module>junit5</module>
@@ -71,12 +70,12 @@
         </configuration>
       </plugin>
 
-      <!-- Do not deploy sources to repository -->
+      <!-- Generate site for this project -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
+        <artifactId>maven-site-plugin</artifactId>
         <configuration>
-          <attach>false</attach>
+          <skipDeploy>false</skipDeploy>
         </configuration>
       </plugin>
 

@@ -51,9 +51,16 @@ public class AemContext extends AemContextImpl {
 
   /**
    * Initialize AEM context.
+   */
+  public AemContext() {
+    this(new ContextPlugins(), null, true, MockSling.DEFAULT_RESOURCERESOLVER_TYPE);
+  }
+
+  /**
+   * Initialize AEM context.
    * @param resourceResolverType Resource resolver type.
    */
-  protected AemContext(final ResourceResolverType resourceResolverType) {
+  public AemContext(final ResourceResolverType resourceResolverType) {
     this(new ContextPlugins(), null, true, resourceResolverType);
   }
 
@@ -78,7 +85,7 @@ public class AemContext extends AemContextImpl {
     setRegisterSlingModelsFromClassPath(registerSlingModelsFromClassPath);
 
     // set resource resolver type
-    setResourceResolverType(resourceResolverType == null ? MockSling.DEFAULT_RESOURCERESOLVER_TYPE : resourceResolverType);
+    setResourceResolverType(resourceResolverType);
   }
 
   /**

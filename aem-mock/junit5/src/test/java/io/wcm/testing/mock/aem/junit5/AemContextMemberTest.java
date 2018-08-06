@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.resourceresolver.MockResourceResolver;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -33,7 +32,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
-@Tag("junit5")
 class AemContextMemberTest {
 
   AemContext context;

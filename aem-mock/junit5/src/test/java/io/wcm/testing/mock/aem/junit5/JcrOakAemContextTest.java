@@ -28,7 +28,6 @@ import org.apache.jackrabbit.api.JackrabbitSession;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -36,7 +35,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with {@link JcrOakAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
-@Tag("junit5")
 class JcrOakAemContextTest {
 
   @BeforeEach
