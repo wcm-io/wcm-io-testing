@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.2.16" date="not released">
+      <action type="update" dev="sjain" issue="WTES-32">
+        Add implementation of MockAsset.getID method.
+      </action>
+      <action type="update" dev="sseifert">
+        Add AemContextBuilder.registerSlingModelsFromClassPath method to allow to switch off automatica registration of Sling Models from the classpath.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock, JCR Mock.
+      </action>
+    </release>
+
     <release version="2.2.14" date="2018-03-23">
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock.
@@ -193,7 +205,7 @@
         AemContext: Set current page via ComponentContext and allow setting current resource not related to current page.
       </action>
     </release>
-    
+
     <release version="1.5.0" date="2015-10-16">
       <action type="add" dev="sseifert">
         Add support for JCR_OAK, JCR_JACKRABBIT and NONE resource resolver types.
@@ -211,7 +223,7 @@
         Update to latest OSGi Mock and Sling Mock.
       </action>
     </release>
-    
+
     <release version="1.4.0" date="2015-09-16">
       <action type="add" dev="sseifert">
         MockPageManager: Support default content from the template's jcr:content node when creating pages.

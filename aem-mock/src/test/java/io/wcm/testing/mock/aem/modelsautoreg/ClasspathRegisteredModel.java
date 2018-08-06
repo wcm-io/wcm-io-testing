@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2014 wcm.io
+ * Copyright (C) 2018 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,21 @@
  * limitations under the License.
  * #L%
  */
+package io.wcm.testing.mock.aem.modelsautoreg;
+
+import javax.inject.Inject;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.models.annotations.Model;
+
 /**
- * Rule for providing easy access to AEM context in JUnit tests.
+ * For testing Sling Models support.
+ * This model is registered automatically via OSGi metadata (MANIFEST) in the classpath.
  */
-@org.osgi.annotation.versioning.Version("2.1.0")
-package io.wcm.testing.mock.aem.junit;
+@Model(adaptables = SlingHttpServletRequest.class)
+public interface ClasspathRegisteredModel {
+
+    @Inject
+    String getProp1();
+
+}
