@@ -29,7 +29,7 @@
       </action>
     </release>
 
-    <release version="2.2.16" date="not released">
+    <release version="2.2.16" date="2018-08-06">
       <action type="update" dev="sjain" issue="WTES-32">
         Add implementation of MockAsset.getID method.
       </action>
