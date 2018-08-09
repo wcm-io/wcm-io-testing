@@ -23,9 +23,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import io.wcm.testing.mock.aem.modelsautoreg.ScriptBindingsModel;
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.junit.After;
 import org.junit.Before;
@@ -120,6 +123,17 @@ public class AemContextImplTest {
     String mappedPath = context.resourceResolver().map(contentRoot + "/toolbar/profiles");
     // unlike sling AEM does not define a default mapping from /content to /
     assertEquals(contentRoot + "/toolbar/profiles", mappedPath);
+  }
+
+  @Test
+  public void testInjectCurrentPageInComponent(){
+    SlingHttpServletRequest request = context.request();
+    context.currentPage(contentRoot + "/toolbar");
+
+    ScriptBindingsModel component = request.adaptTo(ScriptBindingsModel.class);
+
+    assertNotNull(component.getCurrentPage());
+    assertEquals(component.getCurrentPage().getPath(), contentRoot + "/toolbar");
   }
 
 }

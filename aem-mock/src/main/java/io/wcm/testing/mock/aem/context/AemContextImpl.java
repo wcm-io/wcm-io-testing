@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 import org.osgi.annotation.versioning.ConsumerType;
@@ -151,6 +152,7 @@ public class AemContextImpl extends SlingContextImpl {
     if (page != null) {
       ComponentContext wcmComponentContext = new MockComponentContext(page, request());
       request.setAttribute(ComponentContext.CONTEXT_ATTR_NAME, wcmComponentContext);
+      addToSlingBindings( "currentPage", currentPage());
       currentResource(page.getContentResource());
       return page;
     }
@@ -159,6 +161,21 @@ public class AemContextImpl extends SlingContextImpl {
       currentResource((Resource)null);
       return null;
     }
+  }
+
+  /**
+   * Add a key, value pair to request (via {@link SlingBindings})
+   * so @ScriptVariable annotation will be injected in @Model
+   * @param key String
+   * @param value Object
+   */
+  private void addToSlingBindings(String key, Object value) {
+    SlingBindings slingBindings = (SlingBindings) request.getAttribute(SlingBindings.class.getName());
+    if(slingBindings == null){
+      slingBindings = new SlingBindings();
+      request.setAttribute(SlingBindings.class.getName(), slingBindings);
+    }
+    slingBindings.put(key, value);
   }
 
   /**
