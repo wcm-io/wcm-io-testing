@@ -35,10 +35,10 @@
   <packaging>bundle</packaging>
 
   <name>AEM Mocks JUnit 5</name>
-  <url>${site.url}/${site.url.module.prefix}/</url>
+  <url>${site.url}/testing/aem-mock/</url>
 
   <properties>
-    <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
+    <site.url.module.prefix>testing/aem-mock/junit5</site.url.module.prefix>
   </properties>
 
   <dependencies>
@@ -205,5 +205,12 @@
 
     </plugins>
   </reporting>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
+    </site>
+  </distributionManagement>
 
 </project>

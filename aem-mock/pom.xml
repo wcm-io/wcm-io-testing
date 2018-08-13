@@ -70,15 +70,6 @@
         </configuration>
       </plugin>
 
-      <!-- Generate site for this project -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <skipDeploy>false</skipDeploy>
-        </configuration>
-      </plugin>
-
     </plugins>
   </build>
 

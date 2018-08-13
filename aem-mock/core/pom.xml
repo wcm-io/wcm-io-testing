@@ -35,11 +35,7 @@
   <packaging>bundle</packaging>
 
   <name>AEM Mocks Core</name>
-  <url>${site.url}/${site.url.module.prefix}/</url>
-
-  <properties>
-    <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
-  </properties>
+  <url>${site.url}/testing/aem-mock/</url>
 
   <dependencies>
 
@@ -268,6 +264,16 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- do not generate site for this project -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <skipDeploy>true</skipDeploy>
+        </configuration>
       </plugin>
 
       <plugin>
