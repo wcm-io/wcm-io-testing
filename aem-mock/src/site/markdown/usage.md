@@ -1,9 +1,54 @@
 ## Usage
 
-### AEM Context JUnit Rule
+The `AemContext` object provides access to mock implementations of:
+
+* OSGi Component Context
+* OSGi Bundle Context
+* Sling Resource Resolver
+* Sling Request
+* Sling Response
+* Sling Script Helper
+
+Additionally it supports:
+
+* Registering OSGi services
+* Registering adapter factories
+* Accessing JSON Importer
+
+
+### JUnit 5: AEM Context JUnit Extension
+
+The AEM mock context can be injected into a JUnit test using a custom JUnit extension named `AemContextExtension`.
+This extension takes care of all initialization and cleanup tasks required to make sure all unit tests can run
+independently (and in parallel, if required).
+
+Example:
+
+```java
+@ExtendWith(AemContextExtension.class)
+public class ExampleTest {
+
+  private final AemContext context = new AemContext();
+
+  @Test
+  public void testSomething() {
+    Resource resource = context.resourceResolver().getResource("/content/sample/en");
+    Page page = resource.adaptTo(Page.class);
+    // further testing
+  }
+
+}
+
+```
+
+It is possible to combine such a unit test with a `@ExtendWith` annotation e.g. for
+[Mockito JUnit Jupiter Extension][mockito-junit5-extension].
+
+
+### JUnit 4: AEM Context JUnit Rule
 
 The AEM mock context can be injected into a JUnit test using a custom JUnit rule named `AemContext`.
-This rules takes care of all initialization and cleanup tasks required to make sure all unit tests can run
+This rule takes care of all initialization and cleanup tasks required to make sure all unit tests can run
 independently (and in parallel, if required).
 
 Example:
@@ -26,22 +71,7 @@ public class ExampleTest {
 ```
 
 It is possible to combine such a unit test with a `@RunWith` annotation e.g. for
-[Mockito JUnit Runner][mockito-testrunner].
-
-The `AemContext` object provides access to mock implementations of:
-
-* OSGi Component Context
-* OSGi Bundle Context
-* Sling Resource Resolver
-* Sling Request
-* Sling Response
-* Sling Script Helper
-
-Additionally it supports:
-
-* Registering OSGi services
-* Registering adapter factories
-* Accessing JSON Importer
+[Mockito JUnit Runner][mockito-junit4-testrunner].
 
 
 ### Choosing Resource Resolver Mock Type
@@ -50,12 +80,7 @@ The AEM mock context supports different resource resolver types (provided by the
 implementation). Example:
 
 ```java
-public class ExampleTest {
-
-  @Rule
-  public final AemContext context = new AemContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
-
-}
+private final AemContext context = new AemContext(ResourceResolverType.RESOURCERESOLVER_MOCK);
 
 ```
 
@@ -73,10 +98,10 @@ just one type which fits best for your testing needs.
 Example for accessing AEM API for reading and writing data:
 
 ```java
+@ExtendWith(AemContextExtension.class)
 public class ExampleTest {
 
-  @Rule
-  public final AemContext context = new AemContext();
+  private final AemContext context = new AemContext();
 
   @Test
   public void testSomething() {
@@ -233,10 +258,10 @@ public final class AppAemContext {
 In the unit test you can use this customized AEM context:
 
 ```java
+@ExtendWith(AemContextExtension.class)
 public class MyTest {
 
-  @Rule
-  public final AemContext context = AppAemContext.newAemContext();
+  private final AemContext context = AppAemContext.newAemContext();
 
   @Test
   public void testSomething() {
@@ -258,8 +283,7 @@ To use a plugin in your unit test class, use the `AemContextBuilder` class inste
 Example:
 
 ```java
-@Rule
-public AemContext context = new AemContextBuilder().plugin(MY_PLUGIN).build();
+AemContext context = new AemContextBuilder().plugin(MY_PLUGIN).build();
 ```
 
 More examples:
@@ -268,7 +292,8 @@ More examples:
 * [wcm.io Sling Extensions Mock Helper Test][wcm-io-mock-sling-test]
 
 
-[mockito-testrunner]: http://docs.mockito.googlecode.com/hg/latest/org/mockito/runners/MockitoJUnitRunner.html
+[mockito-junit4-testrunner]: https://www.javadoc.io/page/org.mockito/mockito-core/latest/org/mockito/junit/MockitoJUnitRunner.html
+[mockito-junit5-extension]: https://www.javadoc.io/page/org.mockito/mockito-junit-jupiter/latest/org/mockito/junit/jupiter/MockitoExtension.html
 [sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
 [wcm-io-mock-sling]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/main/java/io/wcm/testing/mock/wcmio/sling/ContextPlugins.java

@@ -35,10 +35,10 @@ Example JSON data:
 Example unit test:
 
 ```java
+@ExtendWith(AemContextExtension.class)
 public class ExampleTest {
 
-  @Rule
-  public final AemContext context = new AemContext();
+  private final AemContext context = new AemContext();
 
   @Before
   public void setUp() throws Exception {
