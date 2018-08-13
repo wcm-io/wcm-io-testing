@@ -31,7 +31,7 @@ import io.wcm.config.core.management.impl.ParameterPersistenceImpl;
 import io.wcm.config.core.management.impl.ParameterResolverImpl;
 import io.wcm.config.core.persistence.impl.ToolsConfigPagePersistenceProvider;
 import io.wcm.sling.commons.resource.ImmutableValueMap;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Mock context plugins.
@@ -45,9 +45,9 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Configuration.
    */
-  public static final ContextPlugin<AemContext> WCMIO_CONFIG = new AbstractContextPlugin<AemContext>() {
+  public static final ContextPlugin<AemContextImpl> WCMIO_CONFIG = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContext context) throws Exception {
+    public void afterSetUp(AemContextImpl context) throws Exception {
       setUp(context);
     }
   };
@@ -56,7 +56,7 @@ public final class ContextPlugins {
    * Set up all mandatory OSGi services for wcm.io Configuration support.
    * @param context Aem context
    */
-  static void setUp(AemContext context) {
+  static void setUp(AemContextImpl context) {
 
     // persistence providers
     context.registerInjectActivateService(new ToolsConfigPagePersistenceProvider(),

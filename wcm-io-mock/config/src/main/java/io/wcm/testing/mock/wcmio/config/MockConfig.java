@@ -37,7 +37,7 @@ import io.wcm.config.spi.ParameterProvider;
 import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;
 import io.wcm.config.spi.helpers.AbstractParameterProvider;
 import io.wcm.config.spi.helpers.AbstractPathApplicationProvider;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.
@@ -55,7 +55,7 @@ public final class MockConfig {
    * @deprecated Use {@link ContextPlugins#WCMIO_CONFIG} plugin.
    */
   @Deprecated
-  public static void setUp(AemContext context) {
+  public static void setUp(AemContextImpl context) {
     ContextPlugins.setUp(context);
   }
 
@@ -117,7 +117,7 @@ public final class MockConfig {
    * @param configurationId Configuration id
    * @param values Configuration values
    */
-  public static void writeConfiguration(AemContext context, String configurationId, Map<String, Object> values) {
+  public static void writeConfiguration(AemContextImpl context, String configurationId, Map<String, Object> values) {
     try {
       ParameterPersistence persistence = context.getService(ParameterPersistence.class);
       persistence.storeData(context.resourceResolver(), configurationId,

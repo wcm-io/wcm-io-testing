@@ -28,7 +28,7 @@ import io.wcm.handler.media.format.impl.MediaFormatProviderManagerImpl;
 import io.wcm.handler.media.impl.DefaultMediaHandlerConfig;
 import io.wcm.handler.media.impl.MediaHandlerConfigAdapterFactory;
 import io.wcm.handler.url.impl.DefaultUrlHandlerConfig;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Mock context plugins.
@@ -42,9 +42,9 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Handler
    */
-  public static final ContextPlugin<AemContext> WCMIO_HANDLER = new AbstractContextPlugin<AemContext>() {
+  public static final ContextPlugin<AemContextImpl> WCMIO_HANDLER = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContext context) throws Exception {
+    public void afterSetUp(AemContextImpl context) throws Exception {
       setUp(context);
     }
   };
@@ -53,7 +53,7 @@ public final class ContextPlugins {
    * Set up all mandatory OSGi services for wcm.io Handler support.
    * @param context Aem context
    */
-  static void setUp(AemContext context) {
+  static void setUp(AemContextImpl context) {
 
     // url handler
     registerOptional(context, "io.wcm.handler.url.impl.SiteRootDetectorImpl"); // since URL Handler 1.1.0
@@ -79,7 +79,7 @@ public final class ContextPlugins {
    * Registers an OSGi service if the class exists. Ignores the call if not.
    * @param className Class name
    */
-  private static void registerOptional(AemContext context, String className) {
+  private static void registerOptional(AemContextImpl context, String className) {
     try {
       Class clazz = Class.forName(className);
       context.registerInjectActivateService(clazz.newInstance());
