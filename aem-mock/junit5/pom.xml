@@ -172,8 +172,8 @@
         <configuration>
           <dependencySourceIncludes>
             <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
-            <include>org.apache.sling:org.apache.sling.testing.osgi-mock</include>
-            <include>org.apache.sling:org.apache.sling.testing.sling-mock</include>
+            <include>org.apache.sling:org.apache.sling.testing.osgi-mock.core</include>
+            <include>org.apache.sling:org.apache.sling.testing.sling-mock.core</include>
             <include>org.apache.sling:org.apache.sling.servlet-helpers</include>
             <include>org.apache.sling:org.apache.sling.resourcebuilder</include>
             <include>io.wcm:io.wcm.testing.aem-mock.core</include>
@@ -183,19 +183,19 @@
           <groups>
             <group>
               <title>AEM Mocks ${project.version}</title>
-              <packages>io.wcm.testing.mock.aem:io.wcm.testing.mock.aem.*</packages>
+              <packages>io.wcm.testing.mock.aem*</packages>
             </group>
             <group>
               <title>Sling Mocks ${sling-mock.version}</title>
-              <packages>org.apache.sling.testing.mock.sling:org.apache.sling.testing.mock.sling.*</packages>
+              <packages>org.apache.sling.testing.mock.sling*</packages>
             </group>
             <group>
               <title>OSGi Mocks ${osgi-mock.version}</title>
-              <packages>org.apache.sling.testing.mock.osgi:org.apache.sling.testing.mock.osgi.*</packages>
+              <packages>org.apache.sling.testing.mock.osgi*</packages>
             </group>
             <group>
               <title>JCR Mocks ${jcr-mock.version}</title>
-              <packages>org.apache.sling.testing.mock.jcr:org.apache.sling.testing.mock.jcr.*</packages>
+              <packages>org.apache.sling.testing.mock.jcr*</packages>
             </group>
           </groups>
           <excludePackageNames>osgimock.*,*.impl.*</excludePackageNames>
