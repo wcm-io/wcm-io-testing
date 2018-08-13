@@ -20,6 +20,8 @@
 package io.wcm.testing.mock.wcmio.sling;
 
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.sling.commons.request.RequestContext;
@@ -40,7 +42,7 @@ public final class MockSlingExtensions {
    * @param context AEM Context
    * @param request Request
    */
-  public static void setRequestContext(AemContextImpl context, SlingHttpServletRequest request) {
+  public static void setRequestContext(@NotNull AemContextImpl context, @Nullable SlingHttpServletRequest request) {
     MockRequestContext requestContext = (MockRequestContext)context.getService(RequestContext.class);
     requestContext.setRequest(request);
   }

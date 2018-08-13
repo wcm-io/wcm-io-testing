@@ -21,6 +21,7 @@ package io.wcm.testing.mock.wcmio.sling;
 
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import io.wcm.sling.commons.caservice.impl.ContextAwareServiceResolverImpl;
 import io.wcm.sling.commons.request.RequestContext;
@@ -41,7 +42,7 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Sling Extensions.
    */
-  public static final ContextPlugin<AemContextImpl> WCMIO_SLING = new AbstractContextPlugin<AemContextImpl>() {
+  public static final @NotNull ContextPlugin<AemContextImpl> WCMIO_SLING = new AbstractContextPlugin<AemContextImpl>() {
     @Override
     public void afterSetUp(AemContextImpl context) throws Exception {
       setUp(context);

@@ -27,6 +27,7 @@ import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.caconfig.management.ConfigurationManager;
 import org.apache.sling.caconfig.spi.ConfigurationPersistData;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.config.api.Parameter;
@@ -54,7 +55,8 @@ public final class MockCAConfig {
    * @param paths List of paths/subtrees this application belongs to
    * @return Application provider
    */
-  public static ApplicationProvider applicationProvider(final String applicationId, final String... paths) {
+  @SuppressWarnings("null")
+  public static ApplicationProvider applicationProvider(@NotNull final String applicationId, @NotNull final String @NotNull... paths) {
     final Pattern[] patterns = new Pattern[paths.length];
     for (int i = 0; i < paths.length; i++) {
       patterns[i] = Pattern.compile("^" + Pattern.quote(paths[i]) + "(/.+)?$");
@@ -68,7 +70,7 @@ public final class MockCAConfig {
    * @param pathPatterns Path patterns
    * @return Application provider
    */
-  public static ApplicationProvider applicationProvider(final String applicationId, final Pattern... pathPatterns) {
+  public static ApplicationProvider applicationProvider(@NotNull final String applicationId, @NotNull final Pattern @NotNull... pathPatterns) {
     return new ApplicationProvider() {
       @Override
       public String getLabel() {
@@ -96,7 +98,8 @@ public final class MockCAConfig {
    * @param contextPath Configuration id
    * @param values Configuration values
    */
-  public static void writeConfiguration(AemContextImpl context, String contextPath, Map<String, Object> values) {
+  @SuppressWarnings("null")
+  public static void writeConfiguration(@NotNull AemContextImpl context, @NotNull String contextPath, @NotNull Map<String, Object> values) {
     ConfigurationManager configManager = context.getService(ConfigurationManager.class);
     Resource contextResource = context.resourceResolver().getResource(contextPath);
     configManager.persistConfiguration(contextResource, ParameterProviderBridge.DEFAULT_CONFIG_NAME,
@@ -114,7 +117,7 @@ public final class MockCAConfig {
    * @return Configuration finder strategy
    */
   public static ConfigurationFinderStrategy configurationFinderStrategyAbsoluteParent(
-      final String applicationId, final int... levels) {
+      @NotNull final String applicationId, final int... levels) {
     return new AbstractAbsoluteParentConfigurationFinderStrategy(applicationId, levels) {
       // nothing to override
     };
@@ -125,7 +128,7 @@ public final class MockCAConfig {
    * @param parameters Parameter set
    * @return Parameter provider
    */
-  public static ParameterProvider parameterProvider(final Set<Parameter<?>> parameters) {
+  public static ParameterProvider parameterProvider(@NotNull final Set<Parameter<?>> parameters) {
     return new AbstractParameterProvider(parameters) {
       // nothing to override
     };
@@ -137,7 +140,7 @@ public final class MockCAConfig {
    * @param type Class definition
    * @return Parameter provider
    */
-  public static ParameterProvider parameterProvider(final Class<?> type) {
+  public static ParameterProvider parameterProvider(@NotNull final Class<?> type) {
     return new AbstractParameterProvider(type) {
       // nothing to override
     };

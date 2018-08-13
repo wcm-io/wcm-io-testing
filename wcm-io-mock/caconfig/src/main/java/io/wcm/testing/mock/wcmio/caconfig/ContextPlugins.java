@@ -21,6 +21,7 @@ package io.wcm.testing.mock.wcmio.caconfig;
 
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import io.wcm.testing.mock.aem.context.AemContextImpl;
 
@@ -37,7 +38,7 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Context-Aware Configuration.
    */
-  public static final ContextPlugin<AemContextImpl> WCMIO_CACONFIG = new AbstractContextPlugin<AemContextImpl>() {
+  public static final @NotNull ContextPlugin<AemContextImpl> WCMIO_CACONFIG = new AbstractContextPlugin<AemContextImpl>() {
     @Override
     public void afterSetUp(AemContextImpl context) throws Exception {
       setUp(context);

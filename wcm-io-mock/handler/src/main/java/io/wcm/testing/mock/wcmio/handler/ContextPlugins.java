@@ -21,6 +21,7 @@ package io.wcm.testing.mock.wcmio.handler;
 
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import io.wcm.handler.link.impl.DefaultLinkHandlerConfig;
 import io.wcm.handler.link.impl.LinkHandlerConfigAdapterFactory;
@@ -42,7 +43,7 @@ public final class ContextPlugins {
   /**
    * Context plugin for wcm.io Handler
    */
-  public static final ContextPlugin<AemContextImpl> WCMIO_HANDLER = new AbstractContextPlugin<AemContextImpl>() {
+  public static final @NotNull ContextPlugin<AemContextImpl> WCMIO_HANDLER = new AbstractContextPlugin<AemContextImpl>() {
     @Override
     public void afterSetUp(AemContextImpl context) throws Exception {
       setUp(context);

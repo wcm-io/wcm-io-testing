@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.jackrabbit.util.Text;
 import org.apache.sling.caconfig.resource.spi.ContextPathStrategy;
 import org.apache.sling.testing.mock.caconfig.MockContextAwareConfig;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.caconfig.extensions.contextpath.impl.AbsoluteParentContextPathStrategy;
@@ -50,7 +51,7 @@ public final class MockCAConfig {
    *          Example:<br>
    *          <code>Text.getAbsoluteParent("/foo/bar/test", 1) == "/foo/bar"</code>
    */
-  public static void contextPathStrategyAbsoluteParent(final AemContextImpl context,
+  public static void contextPathStrategyAbsoluteParent(@NotNull final AemContextImpl context,
       final int... levels) {
     context.registerInjectActivateService(new AbsoluteParentContextPathStrategy(),
         "levels", levels);
@@ -62,7 +63,7 @@ public final class MockCAConfig {
    * @param context AEM context
    * @param templatePaths List of template paths allowed for context root pages.
    */
-  public static void contextPathStrategyRootTemplate(final AemContextImpl context,
+  public static void contextPathStrategyRootTemplate(@NotNull final AemContextImpl context,
       final String... templatePaths) {
     context.registerInjectActivateService(new RootTemplateContextPathStrategy(),
         "templatePaths", templatePaths);
@@ -78,7 +79,8 @@ public final class MockCAConfig {
    *             {@link MockContextAwareConfig#writeConfiguration(org.apache.sling.testing.mock.sling.context.SlingContextImpl, String, String, Map)}
    */
   @Deprecated
-  public static void writeConfiguration(AemContextImpl context, String contextPath, String configName, Map<String, Object> values) {
+  public static void writeConfiguration(@NotNull AemContextImpl context, @NotNull String contextPath, @NotNull String configName,
+      @NotNull Map<String, Object> values) {
     MockContextAwareConfig.writeConfiguration(context, contextPath, configName, values);
   }
 
@@ -92,7 +94,8 @@ public final class MockCAConfig {
    *             {@link MockContextAwareConfig#writeConfiguration(org.apache.sling.testing.mock.sling.context.SlingContextImpl, String, String, Object[])}
    */
   @Deprecated
-  public static void writeConfiguration(AemContextImpl context, String contextPath, String configName, Object... values) {
+  public static void writeConfiguration(@NotNull AemContextImpl context, @NotNull String contextPath, @NotNull String configName,
+      @NotNull Object @NotNull... values) {
     MockContextAwareConfig.writeConfiguration(context, contextPath, configName, values);
   }
 
@@ -106,7 +109,8 @@ public final class MockCAConfig {
    *             {@link MockContextAwareConfig#writeConfigurationCollection(org.apache.sling.testing.mock.sling.context.SlingContextImpl, String, String, Collection)}
    */
   @Deprecated
-  public static void writeConfigurationCollection(AemContextImpl context, String contextPath, String configName, Collection<Map<String, Object>> values) {
+  public static void writeConfigurationCollection(@NotNull AemContextImpl context, @NotNull String contextPath, @NotNull String configName,
+      @NotNull Collection<Map<String, Object>> values) {
     MockContextAwareConfig.writeConfigurationCollection(context, contextPath, configName, values);
   }
 
