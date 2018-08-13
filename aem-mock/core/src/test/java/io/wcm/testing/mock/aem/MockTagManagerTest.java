@@ -49,6 +49,7 @@ import com.day.cq.wcm.api.Page;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class MockTagManagerTest {
 
   @Rule

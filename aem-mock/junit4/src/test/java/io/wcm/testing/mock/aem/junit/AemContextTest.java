@@ -40,6 +40,7 @@ import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("null")
 public class AemContextTest {
 
   private final AemContextCallback contextBeforeSetup = mock(AemContextCallback.class);

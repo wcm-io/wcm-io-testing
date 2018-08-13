@@ -41,6 +41,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.day.image.Layer;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("null")
 public class MockLayerAdapterFactoryTest {
 
   @Mock

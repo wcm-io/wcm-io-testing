@@ -9,6 +9,7 @@ import javax.jcr.Session;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.testing.mock.sling.NodeTypeDefinitionScanner;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
@@ -21,7 +22,7 @@ public final class TestAemContext {
    * All resource resolver types the unit tests of aem-mock should run with.
    * Without jackrabbit because it required special "unique root" handling.
    */
-  public static final ResourceResolverType[] ALL_TYPES = new ResourceResolverType[] {
+  public static final @NotNull ResourceResolverType @NotNull [] ALL_TYPES = new @NotNull ResourceResolverType[] {
     ResourceResolverType.JCR_MOCK,
     ResourceResolverType.RESOURCERESOLVER_MOCK,
     ResourceResolverType.JCR_OAK
@@ -31,7 +32,7 @@ public final class TestAemContext {
     // static methods only
   }
 
-  public static AemContext newAemContext() {
+  public static @NotNull AemContext newAemContext() {
     return new AemContext(new SetUpCallback(), ALL_TYPES);
   }
 
@@ -41,7 +42,7 @@ public final class TestAemContext {
   private static final class SetUpCallback implements AemContextCallback {
 
     @Override
-    public void execute(AemContext context) throws PersistenceException, IOException {
+    public void execute(@NotNull AemContext context) throws PersistenceException, IOException {
       try {
         // register manually because in project's unit tests itself MANIFEST.MF is not available
         NodeTypeDefinitionScanner.get().register(context.resourceResolver().adaptTo(Session.class),

@@ -28,6 +28,7 @@ import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
@@ -39,12 +40,13 @@ import com.google.common.collect.ImmutableMap;
 /**
  * Mock implementation of {@link Component}.
  */
+@SuppressWarnings("null")
 class MockComponent extends SlingAdaptable implements Component {
 
   private final Resource resource;
   private final ValueMap props;
 
-  MockComponent(Resource resource) {
+  MockComponent(@NotNull Resource resource) {
     this.resource = resource;
     this.props = ResourceUtil.getValueMap(resource);
   }

@@ -30,6 +30,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.adobe.cq.wcm.launches.utils.LaunchUtils;
 import com.day.cq.commons.Filter;
@@ -52,6 +53,7 @@ import com.google.common.collect.Iterators;
 /**
  * Mock implementation of {@link Page}.
  */
+@SuppressWarnings("null")
 class MockPage extends SlingAdaptable implements Page {
 
   private static final String RT_LAUNCH = "wcm/launches/components/launch";
@@ -61,7 +63,7 @@ class MockPage extends SlingAdaptable implements Page {
   private final ResourceResolver resourceResolver;
   private final ValueMap properties;
 
-  MockPage(final Resource resource) {
+  MockPage(@NotNull final Resource resource) {
     this.resource = resource;
     this.contentResource = this.resource.getChild(JcrConstants.JCR_CONTENT);
     this.resourceResolver = resource.getResourceResolver();

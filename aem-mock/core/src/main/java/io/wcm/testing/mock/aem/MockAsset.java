@@ -34,6 +34,7 @@ import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
@@ -47,6 +48,7 @@ import com.google.common.collect.Lists;
 /**
  * Mock implementation of {@link Asset}.
  */
+@SuppressWarnings("null")
 class MockAsset extends ResourceWrapper implements Asset {
 
   private final ResourceResolver resourceResolver;
@@ -55,7 +57,7 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final Resource renditionsResource;
   private boolean batchMode;
 
-  MockAsset(Resource resource) {
+  MockAsset(@NotNull Resource resource) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
     this.resource = resource;

@@ -28,6 +28,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
@@ -37,13 +38,14 @@ import com.day.cq.dam.commons.util.DamUtil;
 /**
  * Mock implementation of {@link Rendition}.
  */
+@SuppressWarnings("null")
 class MockRendition extends ResourceWrapper implements Rendition {
 
   private final Resource resource;
   private final Resource contentResource;
   private final ValueMap contentProps;
 
-  MockRendition(Resource resource) {
+  MockRendition(@NotNull Resource resource) {
     super(resource);
     this.resource = resource;
     this.contentResource = resource.getChild(JcrConstants.JCR_CONTENT);

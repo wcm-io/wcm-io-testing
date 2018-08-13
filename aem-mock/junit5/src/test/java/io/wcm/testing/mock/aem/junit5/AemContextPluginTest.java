@@ -39,6 +39,7 @@ import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
  * Test with {@link AemContext} with context plugins.
  */
 @ExtendWith(AemContextExtension.class)
+@SuppressWarnings("null")
 class AemContextPluginTest {
 
   private final AemContextCallback contextBeforeSetup = mock(AemContextCallback.class);

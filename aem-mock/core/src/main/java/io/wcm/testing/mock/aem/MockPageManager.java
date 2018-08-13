@@ -36,6 +36,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.commons.jcr.JcrUtil;
@@ -50,12 +51,12 @@ import com.day.cq.wcm.api.msm.Blueprint;
 /**
  * Mock implementation of {@link PageManager}
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({ "deprecation", "null" })
 class MockPageManager extends SlingAdaptable implements PageManager {
 
   private final ResourceResolver resourceResolver;
 
-  MockPageManager(final ResourceResolver resourceResolver) {
+  MockPageManager(@NotNull final ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
   }
 

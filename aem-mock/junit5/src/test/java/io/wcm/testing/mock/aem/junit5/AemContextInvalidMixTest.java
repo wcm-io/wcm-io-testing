@@ -32,6 +32,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 @ExtendWith(AemContextExtension.class)
 @Disabled // test is disabled because it fails - enable it only to test the failure
+@SuppressWarnings("null")
 class AemContextInvalidMixTest {
 
   @BeforeEach

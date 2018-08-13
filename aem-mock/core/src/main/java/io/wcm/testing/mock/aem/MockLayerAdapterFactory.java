@@ -25,6 +25,8 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.adapter.AdapterFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.service.component.annotations.Component;
 
@@ -43,7 +45,7 @@ public class MockLayerAdapterFactory implements AdapterFactory {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <AdapterType> AdapterType getAdapter(Object object, Class<AdapterType> type) {
+  public @Nullable <AdapterType> AdapterType getAdapter(@NotNull Object object, @NotNull Class<AdapterType> type) {
     if (type == Layer.class && object instanceof Adaptable) {
       InputStream is = ((Adaptable)object).adaptTo(InputStream.class);
       if (is != null) {

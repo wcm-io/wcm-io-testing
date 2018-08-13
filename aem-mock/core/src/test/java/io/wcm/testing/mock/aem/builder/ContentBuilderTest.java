@@ -45,6 +45,7 @@ import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class ContentBuilderTest {
 
   private static final String TEMPLATE = "/apps/sample/templates/sample";

@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.WCMMode;
@@ -53,7 +54,7 @@ public final class MockComponentContext implements ComponentContext {
    * @param currentPage Current page
    * @param request Request
    */
-  public MockComponentContext(Page currentPage, SlingHttpServletRequest request) {
+  public MockComponentContext(@NotNull Page currentPage, @NotNull SlingHttpServletRequest request) {
     this.currentPage = currentPage;
     this.request = request;
     boolean hasEditContext = WCMMode.fromRequest(request) != WCMMode.DISABLED;
@@ -71,6 +72,7 @@ public final class MockComponentContext implements ComponentContext {
   }
 
   @Override
+  @SuppressWarnings("null")
   public Component getComponent() {
     Resource currentResource = getResource();
     if (currentResource == null) {

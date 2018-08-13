@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem.context;
 
 import org.apache.sling.api.resource.Resource;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -33,7 +34,7 @@ public final class UniqueRoot extends org.apache.sling.testing.mock.sling.contex
 
   private Resource damRoot;
 
-  UniqueRoot(AemContextImpl context) {
+  UniqueRoot(@NotNull AemContextImpl context) {
     super(context);
   }
 

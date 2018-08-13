@@ -33,6 +33,7 @@ import javax.jcr.RepositoryException;
 import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
@@ -47,13 +48,14 @@ import io.wcm.testing.mock.aem.builder.ContentBuilder;
 /**
  * Mock implementation of {@link AssetManager}
  */
+@SuppressWarnings("null")
 class MockAssetManager implements AssetManager {
 
   private final ResourceResolver resourceResolver;
   private final ContentBuilder contentBuilder;
   private final ContentLoader contentLoader;
 
-  MockAssetManager(final ResourceResolver resourceResolver) {
+  MockAssetManager(@NotNull final ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
     this.contentBuilder = new ContentBuilder(resourceResolver);
     this.contentLoader = new ContentLoader(resourceResolver);

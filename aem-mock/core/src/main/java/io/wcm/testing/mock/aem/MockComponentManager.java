@@ -24,6 +24,7 @@ import java.util.Collection;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentManager;
@@ -31,11 +32,12 @@ import com.day.cq.wcm.api.components.ComponentManager;
 /**
  * Mock implementation of {@link ComponentManager}.
  */
+@SuppressWarnings("null")
 class MockComponentManager implements ComponentManager {
 
   private final ResourceResolver resourceResolver;
 
-  MockComponentManager(ResourceResolver resourceResolver) {
+  MockComponentManager(@NotNull ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
   }
 
@@ -48,6 +50,7 @@ class MockComponentManager implements ComponentManager {
     return null;
   }
 
+  @SuppressWarnings("unused")
   @Override
   public Component getComponentOfResource(Resource resource) {
     String resourceType = resource.getResourceType();

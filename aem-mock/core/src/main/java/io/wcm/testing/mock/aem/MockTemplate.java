@@ -27,6 +27,7 @@ import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.io.JSONWriter;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
@@ -35,12 +36,13 @@ import com.day.cq.wcm.api.Template;
 /**
  * Mock implementation of {@link Template}.
  */
+@SuppressWarnings("null")
 class MockTemplate extends ResourceWrapper implements Template {
 
   private final Resource resource;
   private final ValueMap properties;
 
-  MockTemplate(Resource resource) {
+  MockTemplate(@NotNull Resource resource) {
     super(resource);
     this.resource = resource;
     this.properties = resource.getValueMap();

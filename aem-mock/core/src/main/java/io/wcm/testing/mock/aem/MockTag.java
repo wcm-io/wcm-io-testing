@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.Filter;
 import com.day.cq.commons.LanguageUtil;
@@ -45,12 +46,14 @@ import com.day.cq.wcm.api.NameConstants;
 /**
  * Mock implementation of {@link Tag}.
  */
+@SuppressWarnings("null")
 class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
 
   /** resource being represented as a Tag */
   private final Resource resource;
 
-  MockTag(Resource resource) {
+  @SuppressWarnings("unused")
+  MockTag(@NotNull Resource resource) {
     if (resource == null) {
       throw new NullPointerException("resource is null");
     }

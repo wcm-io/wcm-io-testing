@@ -36,6 +36,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with {@link JcrMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
+@SuppressWarnings("null")
 class JcrMockAemContextMemberTest {
 
   JcrMockAemContext context;

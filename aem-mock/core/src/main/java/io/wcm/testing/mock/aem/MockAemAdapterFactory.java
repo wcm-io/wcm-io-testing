@@ -27,6 +27,8 @@ import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.service.component.annotations.Component;
 
@@ -67,7 +69,7 @@ import com.day.cq.wcm.api.designer.Designer;
 public class MockAemAdapterFactory implements AdapterFactory {
 
   @Override
-  public <AdapterType> AdapterType getAdapter(final Object adaptable, final Class<AdapterType> type) {
+  public @Nullable <AdapterType> AdapterType getAdapter(final @NotNull Object adaptable, final @NotNull Class<AdapterType> type) {
     if (adaptable instanceof Resource) {
       return getAdapter((Resource)adaptable, type);
     }
@@ -78,7 +80,7 @@ public class MockAemAdapterFactory implements AdapterFactory {
   }
 
   @SuppressWarnings("unchecked")
-  private <AdapterType> AdapterType getAdapter(final Resource resource, final Class<AdapterType> type) {
+  private @Nullable <AdapterType> AdapterType getAdapter(@NotNull final Resource resource, @NotNull final Class<AdapterType> type) {
     if (type == Page.class && isPrimaryType(resource, NameConstants.NT_PAGE)) {
       return (AdapterType)new MockPage(resource);
     }
@@ -98,7 +100,7 @@ public class MockAemAdapterFactory implements AdapterFactory {
   }
 
   @SuppressWarnings("unchecked")
-  private <AdapterType> AdapterType getAdapter(final ResourceResolver resolver, final Class<AdapterType> type) {
+  private @Nullable <AdapterType> AdapterType getAdapter(@NotNull final ResourceResolver resolver, @NotNull final Class<AdapterType> type) {
     if (type == PageManager.class) {
       return (AdapterType)new MockPageManager(resolver);
     }
@@ -117,7 +119,8 @@ public class MockAemAdapterFactory implements AdapterFactory {
     return null;
   }
 
-  private boolean isPrimaryType(final Resource resource, final String primaryType) {
+  @SuppressWarnings("null")
+  private boolean isPrimaryType(@NotNull final Resource resource, final String primaryType) {
     Node node = resource.adaptTo(Node.class);
     if (node != null) {
       // JCR-based resource resolver

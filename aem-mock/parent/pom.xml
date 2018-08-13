@@ -47,9 +47,6 @@
     <sling-mock.version>2.3.0-SNAPSHOT</sling-mock.version>
     <sling-mock.oak.version>2.1.0-SNAPSHOT</sling-mock.oak.version>
 
-    <!-- Set to 'enabled' to activate org.eclipse.jdt.core.compiler.annotation.nullanalysis feature in eclipse settings -->
-    <eclipse.settings.nullanalysis>disabled</eclipse.settings.nullanalysis>
-
   </properties>
 
   <dependencyManagement>

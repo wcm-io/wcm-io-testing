@@ -26,6 +26,7 @@ import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugins;
 import org.apache.sling.testing.mock.osgi.context.OsgiContextImpl;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 /*
@@ -41,8 +42,8 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public final class AemContextBuilder {
 
-  private final ContextPlugins plugins = new ContextPlugins();
-  private ResourceResolverType[] resourceResolverTypes;
+  private @NotNull final ContextPlugins plugins = new ContextPlugins();
+  private @NotNull ResourceResolverType[] resourceResolverTypes;
   private Map<String, Object> resourceResolverFactoryActivatorProps;
   private boolean registerSlingModelsFromClassPath = true;
 
@@ -57,7 +58,7 @@ public final class AemContextBuilder {
    * Create builder with given resource resolver type.
    * @param resourceResolverTypes Resource resolver type(s).
    */
-  public AemContextBuilder(ResourceResolverType... resourceResolverTypes) {
+  public AemContextBuilder(@NotNull ResourceResolverType @NotNull... resourceResolverTypes) {
     this.resourceResolverType(resourceResolverTypes);
   }
 
@@ -65,7 +66,7 @@ public final class AemContextBuilder {
    * @param types Resource resolver type(s).
    * @return this
    */
-  public AemContextBuilder resourceResolverType(ResourceResolverType... types) {
+  public @NotNull AemContextBuilder resourceResolverType(@NotNull ResourceResolverType @NotNull... types) {
     this.resourceResolverTypes = types;
     return this;
   }
@@ -76,7 +77,7 @@ public final class AemContextBuilder {
    * @return this
    */
   @SafeVarargs
-  public final <T extends OsgiContextImpl> AemContextBuilder plugin(ContextPlugin<T>... plugin) {
+  public final <T extends OsgiContextImpl> @NotNull AemContextBuilder plugin(@NotNull ContextPlugin<T> @NotNull... plugin) {
     plugins.addPlugin(plugin);
     return this;
   }
@@ -88,7 +89,7 @@ public final class AemContextBuilder {
    * @return this
    */
   @SafeVarargs
-  public final <T extends OsgiContextImpl> AemContextBuilder beforeSetUp(ContextCallback<T>... beforeSetUpCallback) {
+  public final <T extends OsgiContextImpl> @NotNull AemContextBuilder beforeSetUp(@NotNull ContextCallback<T> @NotNull... beforeSetUpCallback) {
     plugins.addBeforeSetUpCallback(beforeSetUpCallback);
     return this;
   }
@@ -100,7 +101,7 @@ public final class AemContextBuilder {
    * @return this
    */
   @SafeVarargs
-  public final <T extends OsgiContextImpl> AemContextBuilder afterSetUp(ContextCallback<T>... afterSetUpCallback) {
+  public final <T extends OsgiContextImpl> @NotNull AemContextBuilder afterSetUp(@NotNull ContextCallback<T> @NotNull... afterSetUpCallback) {
     plugins.addAfterSetUpCallback(afterSetUpCallback);
     return this;
   }
@@ -112,7 +113,7 @@ public final class AemContextBuilder {
    * @return this
    */
   @SafeVarargs
-  public final <T extends OsgiContextImpl> AemContextBuilder beforeTearDown(ContextCallback<T>... beforeTearDownCallback) {
+  public final <T extends OsgiContextImpl> @NotNull AemContextBuilder beforeTearDown(@NotNull ContextCallback<T> @NotNull... beforeTearDownCallback) {
     plugins.addBeforeTearDownCallback(beforeTearDownCallback);
     return this;
   }
@@ -124,7 +125,7 @@ public final class AemContextBuilder {
    * @return this
    */
   @SafeVarargs
-  public final <T extends OsgiContextImpl> AemContextBuilder afterTearDown(ContextCallback<T>... afterTearDownCallback) {
+  public final <T extends OsgiContextImpl> @NotNull AemContextBuilder afterTearDown(@NotNull ContextCallback<T> @NotNull... afterTearDownCallback) {
     plugins.addAfterTearDownCallback(afterTearDownCallback);
     return this;
   }
@@ -134,7 +135,7 @@ public final class AemContextBuilder {
    * @param props Configuration properties
    * @return this
    */
-  public AemContextBuilder resourceResolverFactoryActivatorProps(Map<String, Object> props) {
+  public @NotNull AemContextBuilder resourceResolverFactoryActivatorProps(@NotNull Map<String, Object> props) {
     this.resourceResolverFactoryActivatorProps = props;
     return this;
   }
@@ -144,7 +145,7 @@ public final class AemContextBuilder {
    * @param value If set to false Sling Models are not registered automatically from the classpath on startup.
    * @return this
    */
-  public AemContextBuilder registerSlingModelsFromClassPath(boolean value) {
+  public @NotNull AemContextBuilder registerSlingModelsFromClassPath(boolean value) {
     this.registerSlingModelsFromClassPath = value;
     return this;
   }
@@ -152,7 +153,7 @@ public final class AemContextBuilder {
   /**
    * @return Build {@link AemContext} instance.
    */
-  public AemContext build() {
+  public @NotNull AemContext build() {
     return new AemContext(this.plugins,
         this.resourceResolverFactoryActivatorProps,
         this.registerSlingModelsFromClassPath,

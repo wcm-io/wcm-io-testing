@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Add JUnit 5 extensions.
       </action>
+      <action type="update" dev="sseifert">
+        Add Jetbrains NotNull/Nullable annotations to API.
+      </action>
     </release>
 
     <release version="2.2.16" date="2018-08-06">

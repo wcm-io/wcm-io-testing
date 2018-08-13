@@ -28,6 +28,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.framework.BundleContext;
 
@@ -41,8 +42,8 @@ final class ContextResourceResolverFactory {
     // static methods only
   }
 
-  public static ResourceResolverFactory get(final ResourceResolverType resourceResolverType,
-      final BundleContext bundleContext) {
+  public static @NotNull ResourceResolverFactory get(@NotNull final ResourceResolverType resourceResolverType,
+      @NotNull final BundleContext bundleContext) {
     try {
       ResourceResolverFactory factory = MockSling.newResourceResolverFactory(resourceResolverType, bundleContext);
 
@@ -96,6 +97,7 @@ final class ContextResourceResolverFactory {
    * Registers default AEM JCR namespaces.
    * @param resolver Resource resolver
    */
+  @SuppressWarnings("null")
   private static void registerDefaultAemNamespaces(ResourceResolver resolver) throws RepositoryException {
     Session session = resolver.adaptTo(Session.class);
     NamespaceRegistry namespaceRegistry = session.getWorkspace().getNamespaceRegistry();

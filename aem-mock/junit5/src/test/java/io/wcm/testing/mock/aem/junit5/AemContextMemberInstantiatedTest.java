@@ -32,6 +32,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
+@SuppressWarnings("null")
 class AemContextMemberInstantiatedTest {
 
   AemContext context = new JcrMockAemContext();

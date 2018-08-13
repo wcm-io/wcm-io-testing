@@ -35,6 +35,7 @@ import com.day.cq.wcm.api.Template;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class MockAemAdapterFactoryTest {
 
   // Run all unit tests for each resource resolver types listed here

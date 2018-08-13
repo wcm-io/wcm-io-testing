@@ -45,6 +45,7 @@ import com.day.cq.wcm.foundation.WCMRenditionPicker;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class MockAssetTest {
 
   private static final byte[] BINARY_DATA = new byte[] {

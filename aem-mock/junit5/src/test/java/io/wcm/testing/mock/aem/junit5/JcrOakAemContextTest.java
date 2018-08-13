@@ -35,6 +35,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with {@link JcrOakAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
+@SuppressWarnings("null")
 class JcrOakAemContextTest {
 
   @BeforeEach

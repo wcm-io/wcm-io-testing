@@ -35,6 +35,7 @@ import com.day.cq.dam.api.Rendition;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class MockRenditionTest {
 
   @Rule

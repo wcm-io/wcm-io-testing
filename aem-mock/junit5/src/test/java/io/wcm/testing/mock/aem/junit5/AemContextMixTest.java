@@ -33,6 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Test with mixed resource resolver types in different test methods and generic aem context in setup method.
  */
 @ExtendWith(AemContextExtension.class)
+@SuppressWarnings("null")
 class AemContextMixTest {
 
   @BeforeEach

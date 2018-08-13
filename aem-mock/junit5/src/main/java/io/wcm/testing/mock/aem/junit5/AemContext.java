@@ -24,6 +24,8 @@ import java.util.Map;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugins;
 import org.apache.sling.testing.mock.sling.MockSling;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ConsumerType;
 
 import io.wcm.testing.mock.aem.context.AemContextImpl;
@@ -60,7 +62,7 @@ public class AemContext extends AemContextImpl {
    * Initialize AEM context.
    * @param resourceResolverType Resource resolver type.
    */
-  public AemContext(final ResourceResolverType resourceResolverType) {
+  public AemContext(@NotNull final ResourceResolverType resourceResolverType) {
     this(new ContextPlugins(), null, true, resourceResolverType);
   }
 
@@ -72,10 +74,10 @@ public class AemContext extends AemContextImpl {
    *          startup.
    * @param resourceResolverType Resource resolver type.
    */
-  AemContext(final ContextPlugins contextPlugins,
-      final Map<String, Object> resourceResolverFactoryActivatorProps,
+  AemContext(@NotNull final ContextPlugins contextPlugins,
+      @Nullable final Map<String, Object> resourceResolverFactoryActivatorProps,
       final boolean registerSlingModelsFromClassPath,
-      final ResourceResolverType resourceResolverType) {
+      @Nullable final ResourceResolverType resourceResolverType) {
 
     this.plugins = contextPlugins;
 

@@ -44,6 +44,7 @@ import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,7 @@ import com.day.cq.wcm.api.NameConstants;
  * Mock implementation of {@link TagManager}.
  */
 @ProviderType
+@SuppressWarnings("null")
 public final class MockTagManager implements TagManager {
 
   /** resource type for created tags */
@@ -73,7 +75,7 @@ public final class MockTagManager implements TagManager {
   private final ResourceResolver resourceResolver;
   private final Logger log;
 
-  MockTagManager(ResourceResolver resourceResolver) {
+  MockTagManager(@NotNull ResourceResolver resourceResolver) {
     this.resourceResolver = resourceResolver;
     log = LoggerFactory.getLogger(TagManager.class);
 
