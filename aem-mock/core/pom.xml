@@ -38,7 +38,7 @@
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <properties>
-    <site.url.module.prefix>testing/aem-mock/core</site.url.module.prefix>
+    <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
   </properties>
 
   <dependencies>
