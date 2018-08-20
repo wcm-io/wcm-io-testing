@@ -159,7 +159,12 @@ public class MockAssetTest {
 
   @Test
   public void testGetID() {
-    assertNotNull(asset.getID());
+    if (context.resourceResolverType() == ResourceResolverType.JCR_OAK) {
+      assertNotNull(asset.getID());
+    }
+    else {
+      assertEquals("442d55b6-d534-4faf-9394-c9c20d095985", asset.getID());
+    }
   }
 
 }
