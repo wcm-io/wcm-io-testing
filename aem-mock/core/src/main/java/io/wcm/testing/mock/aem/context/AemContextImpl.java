@@ -41,6 +41,7 @@ import com.google.common.collect.ImmutableSet;
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
+import io.wcm.testing.mock.aem.MockAemBindingsValuesProvider;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
 /**
@@ -62,6 +63,9 @@ public class AemContextImpl extends SlingContextImpl {
     // adapter factories
     registerInjectActivateService(new MockAemAdapterFactory());
     registerInjectActivateService(new MockLayerAdapterFactory());
+
+    // bindings value providerrs
+    registerInjectActivateService(new MockAemBindingsValuesProvider());
   }
 
   @Override
