@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         Add Jetbrains NotNull/Nullable annotations to API.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock, JCR Mock.
+      </action>
     </release>
 
     <release version="2.2.16" date="2018-08-06">

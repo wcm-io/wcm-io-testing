@@ -41,7 +41,7 @@
   <properties>
   
     <osgi-mock.version>2.4.0</osgi-mock.version>
-    <jcr-mock.version>1.3.6</jcr-mock.version>
+    <jcr-mock.version>1.3.7-SNAPSHOT</jcr-mock.version>
     <resourceresolver-mock.version>1.1.22</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
     <sling-mock.version>2.3.1-SNAPSHOT</sling-mock.version>
