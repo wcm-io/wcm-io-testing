@@ -119,7 +119,6 @@ public class MockAemAdapterFactory implements AdapterFactory {
     return null;
   }
 
-  @SuppressWarnings("null")
   private boolean isPrimaryType(@NotNull final Resource resource, final String primaryType) {
     Node node = resource.adaptTo(Node.class);
     if (node != null) {

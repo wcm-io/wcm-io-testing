@@ -26,9 +26,10 @@ import org.junit.Test;
 
 import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
 
+@SuppressWarnings("null")
 public class NoSlingModelsRegistrationTest {
 
-    @Rule
+  @Rule
   public AemContext context = new AemContextBuilder()
       .registerSlingModelsFromClassPath(false)
       .build();

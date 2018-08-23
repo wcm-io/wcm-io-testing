@@ -26,18 +26,30 @@ import javax.jcr.Session;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
+import org.apache.sling.spi.resource.provider.ResourceProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Test with {@link NoResourceResolverTypeAemContext}.
  */
-@ExtendWith(AemContextExtension.class)
+@ExtendWith({ AemContextExtension.class, MockitoExtension.class })
 class NoResourceResolverTypeAemContextTest {
+
+  @Mock
+  private ResourceProvider<?> resourceProvider;
 
   @BeforeEach
   void setUp(NoResourceResolverTypeAemContext context) {
+
+    // register dummy resource provider because otherwise ResourceResolverFactory get's not activated
+    // with latest sling resource resolver implementation
+    context.registerService(ResourceProvider.class, resourceProvider,
+        ResourceProvider.PROPERTY_ROOT, "/");
+
     assertTrue(context.resourceResolver() instanceof ResourceResolverImpl);
     assertNull(context.resourceResolver().adaptTo(Session.class));
   }
