@@ -19,22 +19,38 @@
  */
 package io.wcm.testing.mock.aem.context;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.SyntheticResource;
+import org.apache.sling.spi.resource.provider.ResourceProvider;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@RunWith(MockitoJUnitRunner.class)
 public class NoneResourceResolverTypeTest {
 
   @Rule
   public AemContext context = new AemContext(ResourceResolverType.NONE);
 
+  @Mock
+  private ResourceProvider<?> resourceProvider;
+
   @Test
   public void testResourceResolver() {
-    assertNotNull(context.resourceResolver());
+    // register dummy resource provider because otherwise ResourceResolverFactory get's not activated
+    // with latest sling resource resolver implementation
+    context.registerService(ResourceProvider.class, resourceProvider,
+        ResourceProvider.PROPERTY_ROOT, "/");
+
+    Resource root = context.resourceResolver().getResource("/");
+    assertTrue(root instanceof SyntheticResource);
   }
 
 }
