@@ -39,7 +39,6 @@ import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@SuppressWarnings("null")
 public class MockComponentContextTest {
 
   private static final String COMPONENT_RESOURCE_TYPE = "/apps/test/components/component1";
