@@ -45,7 +45,7 @@ public final class ContextPlugins {
    */
   public static final @NotNull ContextPlugin<AemContextImpl> WCMIO_HANDLER = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContextImpl context) throws Exception {
+    public void afterSetUp(@NotNull AemContextImpl context) throws Exception {
       setUp(context);
     }
   };
@@ -80,6 +80,7 @@ public final class ContextPlugins {
    * Registers an OSGi service if the class exists. Ignores the call if not.
    * @param className Class name
    */
+  @SuppressWarnings("null")
   private static void registerOptional(AemContextImpl context, String className) {
     try {
       Class clazz = Class.forName(className);

@@ -26,6 +26,7 @@ package io.wcm.testing.junit.rules.parameterized;
  */
 class ValueContainer<T> {
 
+  @SuppressWarnings("null")
   private T value;
 
   public void set(final T t) {

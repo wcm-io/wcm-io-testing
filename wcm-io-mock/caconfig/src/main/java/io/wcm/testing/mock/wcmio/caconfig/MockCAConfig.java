@@ -51,6 +51,7 @@ public final class MockCAConfig {
    *          Example:<br>
    *          <code>Text.getAbsoluteParent("/foo/bar/test", 1) == "/foo/bar"</code>
    */
+  @SuppressWarnings("null")
   public static void contextPathStrategyAbsoluteParent(@NotNull final AemContextImpl context,
       final int... levels) {
     context.registerInjectActivateService(new AbsoluteParentContextPathStrategy(),
@@ -63,6 +64,7 @@ public final class MockCAConfig {
    * @param context AEM context
    * @param templatePaths List of template paths allowed for context root pages.
    */
+  @SuppressWarnings("null")
   public static void contextPathStrategyRootTemplate(@NotNull final AemContextImpl context,
       final String... templatePaths) {
     context.registerInjectActivateService(new RootTemplateContextPathStrategy(),
