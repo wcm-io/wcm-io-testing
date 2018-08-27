@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.resource.PersistenceException;
+import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 
 import com.google.common.collect.ImmutableSortedSet;
@@ -37,7 +38,7 @@ import io.wcm.config.spi.ParameterProvider;
 import io.wcm.config.spi.helpers.AbstractAbsoluteParentConfigurationFinderStrategy;
 import io.wcm.config.spi.helpers.AbstractParameterProvider;
 import io.wcm.config.spi.helpers.AbstractPathApplicationProvider;
-import io.wcm.testing.mock.aem.junit.AemContext;
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Helps setting up a mock environment for wcm.io Configuration.
@@ -55,7 +56,7 @@ public final class MockConfig {
    * @deprecated Use {@link ContextPlugins#WCMIO_CONFIG} plugin.
    */
   @Deprecated
-  public static void setUp(AemContext context) {
+  public static void setUp(@NotNull AemContextImpl context) {
     ContextPlugins.setUp(context);
   }
 
@@ -70,7 +71,7 @@ public final class MockConfig {
    * @return Configuration finder strategy
    */
   public static ConfigurationFinderStrategy configurationFinderStrategyAbsoluteParent(
-      final String applicationId, final int... levels) {
+      @NotNull final String applicationId, final int... levels) {
     return new AbstractAbsoluteParentConfigurationFinderStrategy(applicationId, levels) {
       // nothing to override
     };
@@ -81,7 +82,7 @@ public final class MockConfig {
    * @param parameters Parameter set
    * @return Parameter provider
    */
-  public static ParameterProvider parameterProvider(final Set<Parameter<?>> parameters) {
+  public static ParameterProvider parameterProvider(@NotNull final Set<Parameter<?>> parameters) {
     return new AbstractParameterProvider(parameters) {
       // nothing to override
     };
@@ -93,7 +94,7 @@ public final class MockConfig {
    * @param type Class definition
    * @return Parameter provider
    */
-  public static ParameterProvider parameterProvider(final Class<?> type) {
+  public static ParameterProvider parameterProvider(@NotNull final Class<?> type) {
     return new AbstractParameterProvider(type) {
       // nothing to override
     };
@@ -105,7 +106,7 @@ public final class MockConfig {
    * @param paths List of paths/subtrees this application belongs to
    * @return Application provider
    */
-  public static ApplicationProvider applicationProvider(final String applicationId, final String... paths) {
+  public static ApplicationProvider applicationProvider(@NotNull final String applicationId, @NotNull final String @NotNull... paths) {
     return new AbstractPathApplicationProvider(applicationId, applicationId, paths) {
       // nothing to override
     };
@@ -117,7 +118,8 @@ public final class MockConfig {
    * @param configurationId Configuration id
    * @param values Configuration values
    */
-  public static void writeConfiguration(AemContext context, String configurationId, Map<String, Object> values) {
+  @SuppressWarnings("null")
+  public static void writeConfiguration(@NotNull AemContextImpl context, @NotNull String configurationId, @NotNull Map<String, Object> values) {
     try {
       ParameterPersistence persistence = context.getService(ParameterPersistence.class);
       persistence.storeData(context.resourceResolver(), configurationId,

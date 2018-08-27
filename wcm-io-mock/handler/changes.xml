@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.0.4" date="not released">
+      <action type="update" dev="sseifert">
+        Make compatible with aem-mock.junit4 and aem-mock.junit5.
+      </action>
+      <action type="update" dev="sseifert">
+        Add Jetbrains NotNull/Nullable annotations to API.
+      </action>
+    </release>
+
     <release version="1.0.2" date="2017-06-02">
       <action type="update" dev="sseifert">
         Make compatible with URL Handler 1.1.0, Rich Text Handler 1.1.0.

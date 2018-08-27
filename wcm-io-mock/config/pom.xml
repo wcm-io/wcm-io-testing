@@ -56,6 +56,18 @@
       <artifactId>io.wcm.testing.aem-mock</artifactId>
       <version>1.9.8</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.testing.osgi-mock</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
+      <version>2.4.0</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -111,6 +123,20 @@
       </plugin>
 
     </plugins>
+    <pluginManagement>
+      <plugins>
+      
+        <!-- Disable checkstyle for this project due to https://github.com/checkstyle/checkstyle/issues/4589, https://github.com/checkstyle/checkstyle/issues/3236 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
   </build>
 
   <distributionManagement>

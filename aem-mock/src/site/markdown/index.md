@@ -9,16 +9,17 @@ Mock implementation of selected AEM APIs.
 
 * [Usage](usage.html)
 * [Test content loading and creation](usage-content-loader-builder.html)
-* [API documentation](apidocs/)
+* [API documentation (JUnit 4)](junit4/apidocs/)
+* [API documentation (JUnit 5)](junit5/apidocs/)
 * [Changelog](changes-report.html)
 
 
-### AEM Support
+### Version Support Matrix
 
-You should pick the major version of AEM Mock depending on your AEM version:
-
-* AEM 6.0 or 6.1: use AEM Mock 1.x
-* AEM 6.2 or above: use AEM Mock 2.x
+|AEM Mock version |AEM version supported |JUnit version supported
+|-----------------|----------------------|------------------------
+|AEM Mock 2.x     |AEM 6.2 or up         |JUnit 4, JUnit 5
+|AEM Mock 1.x     |AEM 6.0 or 6.1        |JUnit 4
 
 
 ### Implemented mock features

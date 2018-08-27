@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.wcmio.sling;
 
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.jetbrains.annotations.Nullable;
 
 import io.wcm.sling.commons.request.RequestContext;
 
@@ -35,7 +36,7 @@ public final class MockRequestContext implements RequestContext {
     return request;
   }
 
-  public void setRequest(SlingHttpServletRequest request) {
+  public void setRequest(@Nullable SlingHttpServletRequest request) {
     this.request = request;
   }
 

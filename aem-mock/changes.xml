@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.3.0" date="not released">
+      <action type="add" dev="sseifert">
+        Add JUnit 5 extensions.
+      </action>
+      <action type="update" dev="sseifert">
+        Add Jetbrains NotNull/Nullable annotations to API.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock, JCR Mock.
+      </action>
+    </release>
+
     <release version="2.2.16" date="2018-08-06">
       <action type="update" dev="sjain" issue="WTES-32">
         Add implementation of MockAsset.getID method.

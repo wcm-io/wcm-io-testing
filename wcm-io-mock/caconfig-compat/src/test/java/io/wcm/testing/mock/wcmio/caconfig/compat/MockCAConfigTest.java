@@ -40,6 +40,7 @@ import io.wcm.config.spi.ParameterProvider;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 
+@SuppressWarnings("null")
 public class MockCAConfigTest {
 
   private static final String APP_ID_1 = "/apps/app1";

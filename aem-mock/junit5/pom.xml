@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  wcm.io
+  %%
+  Copyright (C) 2018 wcm.io
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.wcm</groupId>
+    <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
+    <version>2.3.0-SNAPSHOT</version>
+    <relativePath>../parent/pom.xml</relativePath>
+  </parent>
+
+  <groupId>io.wcm</groupId>
+  <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
+  <packaging>bundle</packaging>
+
+  <name>AEM Mocks JUnit 5</name>
+  <url>${site.url}/testing/aem-mock/</url>
+
+  <properties>
+    <site.url.module.prefix>testing/aem-mock/junit5</site.url.module.prefix>
+  </properties>
+
+  <dependencies>
+
+    <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
+         are loaded before AEM API deps -->
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
+      <version>${sling-mock.oak.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.testing.sling-mock.core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock.core</artifactId>
+      <version>2.3.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.wcm</groupId>
+      <artifactId>io.wcm.testing.aem-mock.core</artifactId>
+      <version>2.3.0-SNAPSHOT</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
+    <!-- (other versions of this APIs use other artifact ids) -->
+    <dependency>
+      <groupId>com.adobe.aem</groupId>
+      <artifactId>uber-jar</artifactId>
+      <classifier>apis</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.cmpn</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- JUnit 5 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.logging-mock</artifactId>
+      <version>${logging-mock.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>io.wcm.devops.maven.plugins</groupId>
+        <artifactId>eclipse-maven-plugin</artifactId>
+        <configuration>
+          <addVersionToProjectName>false</addVersionToProjectName>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+      </plugin>
+
+    </plugins>
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
+            <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
+          </configuration>
+        </plugin>
+
+        <!-- Disable checkstyle for this project due to https://github.com/checkstyle/checkstyle/issues/4589, https://github.com/checkstyle/checkstyle/issues/3236 -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <reporting>
+    <plugins>
+
+      <!-- Aggregate JavaDocs of AEM Mocks and Sling Mocks -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <dependencySourceIncludes>
+            <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
+            <include>org.apache.sling:org.apache.sling.testing.osgi-mock.core</include>
+            <include>org.apache.sling:org.apache.sling.testing.sling-mock.core</include>
+            <include>org.apache.sling:org.apache.sling.servlet-helpers</include>
+            <include>org.apache.sling:org.apache.sling.resourcebuilder</include>
+            <include>io.wcm:io.wcm.testing.aem-mock.core</include>
+          </dependencySourceIncludes>
+          <includeDependencySources>true</includeDependencySources>
+          <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
+          <groups>
+            <group>
+              <title>AEM Mocks ${project.version}</title>
+              <packages>io.wcm.testing.mock.aem*</packages>
+            </group>
+            <group>
+              <title>Sling Mocks ${sling-mock.version}</title>
+              <packages>org.apache.sling.testing.mock.sling*</packages>
+            </group>
+            <group>
+              <title>OSGi Mocks ${osgi-mock.version}</title>
+              <packages>org.apache.sling.testing.mock.osgi*</packages>
+            </group>
+            <group>
+              <title>JCR Mocks ${jcr-mock.version}</title>
+              <packages>org.apache.sling.testing.mock.jcr*</packages>
+            </group>
+          </groups>
+          <excludePackageNames>osgimock.*,*.impl.*</excludePackageNames>
+          <failOnError>false</failOnError>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </reporting>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
+    </site>
+  </distributionManagement>
+
+</project>

@@ -37,6 +37,7 @@ import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 import io.wcm.testing.mock.wcmio.caconfig.example.SimpleConfig;
 
+@SuppressWarnings("null")
 public class MockCAConfigTest {
 
   @Rule

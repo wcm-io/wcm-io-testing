@@ -34,6 +34,7 @@ import io.wcm.sling.models.injectors.impl.SlingObjectOverlayInjector;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.junit.AemContextBuilder;
 
+@SuppressWarnings("null")
 public class MockSlingExtensionsTest {
 
   @Rule

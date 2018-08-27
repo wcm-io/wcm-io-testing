@@ -19,23 +19,22 @@
   #L%
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.wcm</groupId>
-    <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.4</version>
-    <relativePath>../parent/pom.xml</relativePath>
+    <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
+    <version>2.3.0-SNAPSHOT</version>
+    <relativePath>parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm</groupId>
-  <artifactId>io.wcm.testing.aem-mock</artifactId>
-  <version>2.2.16</version>
-  <packaging>bundle</packaging>
+  <artifactId>io.wcm.testing.aem-mock.root</artifactId>
+  <packaging>pom</packaging>
 
   <name>AEM Mocks</name>
-  <description>Mock implementation of selected AEM APIs.</description>
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
@@ -47,363 +46,32 @@
 
   <properties>
     <site.url.module.prefix>testing/aem-mock</site.url.module.prefix>
-
-    <jcr-mock.version>1.3.4</jcr-mock.version>
-    <osgi-mock.version>2.3.10</osgi-mock.version>
-    <sling-mock.version>2.2.20</sling-mock.version>
-    <sling-mock.oak.version>2.0.2</sling-mock.oak.version>
-    <resourceresolver-mock.version>1.1.20</resourceresolver-mock.version>
-    <logging-mock.version>2.0.0</logging-mock.version>
-
   </properties>
 
-  <dependencies>
-
-    <!-- Make sure the following dependencies use the version from the imported AEM dependencies -->
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.api</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.jackrabbit</groupId>
-      <artifactId>jackrabbit-jcr-commons</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.commons.osgi</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.resourceresolver</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.serviceusermapper</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.jcr.api</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.jcr.resource</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.commons.mime</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.commons.json</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.commons.classloader</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.settings</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.i18n</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.models.impl</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.jackrabbit</groupId>
-      <artifactId>oak-jcr</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- Has to be put first in dependencies to make sure updates oak/jcr dependencies
-         are loaded before AEM API deps -->
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
-      <version>${sling-mock.oak.version}</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.testing.sling-mock</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.jcr-mock</artifactId>
-      <version>${jcr-mock.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.osgi-mock</artifactId>
-      <version>${osgi-mock.version}</version>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.compendium</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.sling-mock</artifactId>
-      <version>${sling-mock.version}</version>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.compendium</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.models.api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.jcr.api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.jcr.resource</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.models.impl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.resourceresolver</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.settings</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.resourceresolver-mock</artifactId>
-      <version>${resourceresolver-mock.version}</version>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.compendium</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.testing.junit-commons</artifactId>
-      <version>1.0.4</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-imaging</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
-    <!-- (other versions of this APIs use other artifact ids) -->
-    <dependency>
-      <groupId>com.adobe.aem</groupId>
-      <artifactId>uber-jar</artifactId>
-      <classifier>apis</classifier>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>osgi.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.osgi</groupId>
-      <artifactId>osgi.cmpn</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.logging-mock</artifactId>
-      <version>${logging-mock.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
-
-  <dependencyManagement>
-    <dependencies>
-
-      <!-- Import AEM dependencies -->
-      <dependency>
-        <groupId>io.wcm.maven</groupId>
-        <artifactId>io.wcm.maven.aem-dependencies</artifactId>
-        <version>6.2.0.0002</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>1.7.25</version>
-      </dependency>
-
-    </dependencies>
-  </dependencyManagement>
+  <modules>
+    <module>parent</module>
+    <module>core</module>
+    <module>junit4</module>
+    <module>junit5</module>
+    <module>relocate</module>
+  </modules>
 
   <build>
 
     <plugins>
 
+      <!-- Do not generate eclipse project files -->
       <plugin>
         <groupId>io.wcm.devops.maven.plugins</groupId>
         <artifactId>eclipse-maven-plugin</artifactId>
+        <inherited>true</inherited>
         <configuration>
-          <addVersionToProjectName>false</addVersionToProjectName>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <configuration>
-          <instructions>
-            <Sling-Nodetypes>
-              SLING-INF/nodetypes/aem-core-replication.cnd,
-              SLING-INF/nodetypes/aem-tagging.cnd,
-              SLING-INF/nodetypes/aem-commons.cnd,
-              SLING-INF/nodetypes/aem-dam.cnd
-            </Sling-Nodetypes>
-          </instructions>
+          <skip>true</skip>
         </configuration>
       </plugin>
 
     </plugins>
-    <pluginManagement>
-      <plugins>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
-            <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
-          </configuration>
-        </plugin>
-
-      </plugins>
-    </pluginManagement>
   </build>
-
-  <reporting>
-    <plugins>
-
-      <!-- Aggregate JavaDocs of AEM Mocks and Sling Mocks -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <dependencySourceIncludes>
-            <include>org.apache.sling:org.apache.sling.testing.jcr-mock</include>
-            <include>org.apache.sling:org.apache.sling.testing.osgi-mock</include>
-            <include>org.apache.sling:org.apache.sling.testing.sling-mock</include>
-            <include>org.apache.sling:org.apache.sling.servlet-helpers</include>
-            <include>org.apache.sling:org.apache.sling.resourcebuilder</include>
-          </dependencySourceIncludes>
-          <includeDependencySources>true</includeDependencySources>
-          <includeTransitiveDependencySources>true</includeTransitiveDependencySources>
-          <groups>
-            <group>
-              <title>AEM Mocks ${project.version}</title>
-              <packages>io.wcm.testing.mock.aem:io.wcm.testing.mock.aem.*</packages>
-            </group>
-            <group>
-              <title>Sling Mocks ${sling-mock.version}</title>
-              <packages>org.apache.sling.testing.mock.sling:org.apache.sling.testing.mock.sling.*</packages>
-            </group>
-            <group>
-              <title>OSGi Mocks ${osgi-mock.version}</title>
-              <packages>org.apache.sling.testing.mock.osgi:org.apache.sling.testing.mock.osgi.*</packages>
-            </group>
-            <group>
-              <title>JCR Mocks ${jcr-mock.version}</title>
-              <packages>org.apache.sling.testing.mock.jcr:org.apache.sling.testing.mock.jcr.*</packages>
-            </group>
-          </groups>
-          <excludePackageNames>osgimock.*,*.impl.*</excludePackageNames>
-          <failOnError>false</failOnError>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </reporting>
 
   <distributionManagement>
     <site>

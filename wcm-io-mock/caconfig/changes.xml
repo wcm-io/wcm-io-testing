@@ -27,6 +27,12 @@
       <action type="add" dev="sseifert">
         MockCAConfig: Deprecate methods for writing configurations, use methods from Apache Sling Context-Aware Configuration Mock Plugin instead.
       </action>
+      <action type="update" dev="sseifert">
+        Make compatible with aem-mock.junit4 and aem-mock.junit5.
+      </action>
+      <action type="update" dev="sseifert">
+        Add Jetbrains NotNull/Nullable annotations to API.
+      </action>
     </release>
 
     <release version="1.0.0" date="2017-04-04">
