@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.3.0" date="not released">
+    <release version="2.3.0" date="2018-08-27">
       <action type="add" dev="sseifert">
         Add JUnit 5 extensions.
       </action>
