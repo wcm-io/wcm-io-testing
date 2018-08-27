@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.caconfig</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.2</version>
   <packaging>bundle</packaging>
 
   <name>Context-Aware Configuration Mock Helper</name>
