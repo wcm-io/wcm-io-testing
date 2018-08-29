@@ -44,6 +44,7 @@ public final class MockComponentContext implements ComponentContext {
   private final Page currentPage;
   private final SlingHttpServletRequest request;
   private final EditContext editContext;
+  private final Cell cell;
 
   private final Map<String, Object> attributes = new HashMap<>();
   private boolean decorate = true;
@@ -59,6 +60,7 @@ public final class MockComponentContext implements ComponentContext {
     this.request = request;
     boolean hasEditContext = WCMMode.fromRequest(request) != WCMMode.DISABLED;
     editContext = hasEditContext ? new MockEditContext(this) : null;
+    cell = new MockCell();
   }
 
   @Override
@@ -127,6 +129,11 @@ public final class MockComponentContext implements ComponentContext {
     return editContext;
   }
 
+  @Override
+  public Cell getCell() {
+    return cell;
+  }
+
 
   // --- unsupported operations ---
 
@@ -142,11 +149,6 @@ public final class MockComponentContext implements ComponentContext {
 
   @Override
   public boolean isRoot() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Cell getCell() {
     throw new UnsupportedOperationException();
   }
 

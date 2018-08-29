@@ -22,13 +22,13 @@ package io.wcm.testing.mock.aem;
 import org.apache.sling.api.resource.Resource;
 
 import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 
 /**
  * Mock implementation of {@link Designer}.
- * This returns no designs at all (not even a default design).
  */
 class MockDesigner implements Designer {
 
@@ -39,32 +39,41 @@ class MockDesigner implements Designer {
 
   @Override
   public Design getDesign(Page page) {
-    return null;
+    return getDefaultDesign();
   }
 
   @Override
   public boolean hasDesign(String id) {
-    return false;
+    return true;
   }
 
   @Override
   public Design getDesign(String id) {
+    return getDefaultDesign();
+  }
+
+  @Override
+  public Style getStyle(Resource resource) {
+    if (resource != null) {
+      PageManager pageManager = resource.getResourceResolver().adaptTo(PageManager.class);
+      if (pageManager != null) {
+        Page page = pageManager.getContainingPage(resource);
+        if (page != null) {
+          return getDesign(page).getStyle(resource);
+        }
+      }
+    }
     return null;
   }
 
   @Override
-  public Style getStyle(Resource res) {
-    return null;
-  }
-
-  @Override
-  public Style getStyle(Resource res, String cellPath) {
-    return null;
+  public Style getStyle(Resource resource, String cellPath) {
+    return getStyle(resource);
   }
 
   // AEM 6.4
   public Design getDefaultDesign() {
-    return null;
+    return new MockDesign();
   }
 
 }

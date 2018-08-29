@@ -123,4 +123,18 @@ public class AemContextImplTest {
     assertEquals(contentRoot + "/toolbar/profiles", mappedPath);
   }
 
+  @Test
+  public void testSetCurrentPageViaSetResource_String() {
+    context.currentResource(contentRoot + "/toolbar/profiles/jcr:content");
+    assertEquals(contentRoot + "/toolbar/profiles", context.currentPage().getPath());
+    assertEquals(contentRoot + "/toolbar/profiles/jcr:content", context.currentResource().getPath());
+  }
+
+  @Test
+  public void testSetCurrentPageViaSetResource_Resource() {
+    context.currentResource(context.resourceResolver().getResource(contentRoot + "/toolbar/jcr:content"));
+    assertEquals(contentRoot + "/toolbar", context.currentPage().getPath());
+    assertEquals(contentRoot + "/toolbar/jcr:content", context.currentResource().getPath());
+  }
+
 }
