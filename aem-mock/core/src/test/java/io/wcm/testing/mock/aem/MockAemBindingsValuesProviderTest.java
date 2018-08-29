@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -32,7 +31,6 @@ import org.junit.Test;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
-import com.day.cq.wcm.api.WCMMode;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -78,14 +76,16 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getComponent());
   }
 
+  /*
+   -- Sling Models API 1.3.6/Impl 1.4.4 or higher required for these unit tests --
   @Test
   public void testBindingsModelFactory() throws Exception {
     context.currentPage(currentPage);
     context.currentResource(currentResource);
-
+  
     ModelFactory modelFactory = context.getService(ModelFactory.class);
     ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
-
+  
     assertNotNull(model);
     assertNotNull(model.getComponentContext());
     assertNull(model.getEditContext());
@@ -96,16 +96,16 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
   }
-
+  
   @Test
   public void testBindingsModelFactory_EditMode() throws Exception {
     WCMMode.EDIT.toRequest(context.request());
     context.currentPage(currentPage);
     context.currentResource(currentResource);
-
+  
     ModelFactory modelFactory = context.getService(ModelFactory.class);
     ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
-
+  
     assertNotNull(model);
     assertNotNull(model.getComponentContext());
     assertNotNull(model.getEditContext());
@@ -116,5 +116,6 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
   }
+  */
 
 }
