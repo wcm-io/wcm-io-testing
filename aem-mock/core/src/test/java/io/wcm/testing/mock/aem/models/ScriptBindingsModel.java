@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem.models;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
 
 import com.day.cq.wcm.api.Page;
@@ -33,28 +34,28 @@ import com.day.cq.wcm.api.components.EditContext;
 @Model(adaptables = SlingHttpServletRequest.class)
 public interface ScriptBindingsModel {
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   ComponentContext getComponentContext();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   EditContext getEditContext();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   ValueMap getProperties();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   PageManager getPageManager();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   Page getCurrentPage();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   Page getResourcePage();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   ValueMap getPageProperties();
 
-  @ScriptVariable
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   Component getComponent();
 
 }

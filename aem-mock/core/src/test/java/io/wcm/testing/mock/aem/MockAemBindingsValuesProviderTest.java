@@ -20,19 +20,25 @@
 package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.factory.ModelFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.WCMMode;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.models.ScriptBindingsModel;
 
+@SuppressWarnings("null")
 public class MockAemBindingsValuesProviderTest {
 
   @Rule
@@ -46,16 +52,69 @@ public class MockAemBindingsValuesProviderTest {
     context.addModelsForClasses(ScriptBindingsModel.class);
 
     currentPage = context.create().page("/content/testPage");
-    currentResource = context.create().resource(currentPage.getContentResource().getPath() + "/testResource");
-    context.currentResource(currentResource);
+    currentResource = context.create().resource(currentPage.getContentResource().getPath() + "/testResource",
+        "sling:resourceType", "/apps/app1/components/component1");
+
+    context.create().resource("/apps/app1/components/component1",
+        JcrConstants.JCR_PRIMARYTYPE, NameConstants.NT_COMPONENT);
   }
 
   @Test
-  @Ignore // does ot work
+  @Ignore // does not work because ResourceOverridingRequestWrapper - which does not magic copying of bindings - is not involved when just calling "adaptTo"
   public void testBindings() {
+    context.currentPage(currentPage);
+    context.currentResource(currentResource);
+
     ScriptBindingsModel model = context.request().adaptTo(ScriptBindingsModel.class);
 
+    assertNotNull(model);
     assertNotNull(model.getComponentContext());
+    assertNull(model.getEditContext());
+    assertNotNull(model.getProperties());
+    assertNotNull(model.getPageManager());
+    assertNotNull(model.getCurrentPage());
+    assertNotNull(model.getResourcePage());
+    assertNotNull(model.getPageProperties());
+    assertNotNull(model.getComponent());
+  }
+
+  @Test
+  public void testBindingsModelFactory() throws Exception {
+    context.currentPage(currentPage);
+    context.currentResource(currentResource);
+
+    ModelFactory modelFactory = context.getService(ModelFactory.class);
+    ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
+
+    assertNotNull(model);
+    assertNotNull(model.getComponentContext());
+    assertNull(model.getEditContext());
+    assertNotNull(model.getProperties());
+    assertNotNull(model.getPageManager());
+    assertNotNull(model.getCurrentPage());
+    assertNotNull(model.getResourcePage());
+    assertNotNull(model.getPageProperties());
+    assertNotNull(model.getComponent());
+  }
+
+  @Test
+  public void testBindingsModelFactory_EditMode() throws Exception {
+    WCMMode.EDIT.toRequest(context.request());
+    context.currentPage(currentPage);
+    context.currentResource(currentResource);
+
+    ModelFactory modelFactory = context.getService(ModelFactory.class);
+    ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
+
+    assertNotNull(model);
+    assertNotNull(model.getComponentContext());
+    assertNotNull(model.getEditContext());
+    assertNotNull(model.getProperties());
+    assertNotNull(model.getPageManager());
+    assertNotNull(model.getCurrentPage());
+    assertNotNull(model.getResourcePage());
+    assertNotNull(model.getPageProperties());
+    assertNotNull(model.getComponent());
   }
 
 }
