@@ -44,6 +44,7 @@ final class AemContextStore {
    * @param testInstance Test instance
    * @return AemContext or null
    */
+  @SuppressWarnings("null")
   public static AemContext getAemContext(ExtensionContext extensionContext, Object testInstance) {
     return getStore(extensionContext).get(testInstance, AemContext.class);
   }

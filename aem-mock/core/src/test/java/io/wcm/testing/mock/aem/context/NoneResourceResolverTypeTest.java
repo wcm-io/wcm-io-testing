@@ -17,47 +17,40 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem.junit5;
+package io.wcm.testing.mock.aem.context;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.jcr.Session;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
+import org.apache.sling.api.resource.SyntheticResource;
 import org.apache.sling.spi.resource.provider.ResourceProvider;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-/**
- * Test with {@link NoResourceResolverTypeAemContext}.
- */
-@ExtendWith({ AemContextExtension.class, MockitoExtension.class })
-class NoResourceResolverTypeAemContextTest {
+import io.wcm.testing.mock.aem.junit.AemContext;
+
+@RunWith(MockitoJUnitRunner.class)
+public class NoneResourceResolverTypeTest {
+
+  @Rule
+  public AemContext context = new AemContext(ResourceResolverType.NONE);
 
   @Mock
   private ResourceProvider<?> resourceProvider;
 
-  @BeforeEach
-  void setUp(NoResourceResolverTypeAemContext context) {
-
+  @Test
+  public void testResourceResolver() {
     // register dummy resource provider because otherwise ResourceResolverFactory get's not activated
     // with latest sling resource resolver implementation
     context.registerService(ResourceProvider.class, resourceProvider,
         ResourceProvider.PROPERTY_ROOT, "/");
 
-    assertTrue(context.resourceResolver() instanceof ResourceResolverImpl);
-    assertNull(context.resourceResolver().adaptTo(Session.class));
-  }
-
-  @Test
-  void testResource(AemContext context) {
-    Resource resource = context.resourceResolver().getResource("/content/test");
-    assertNull(resource);
+    Resource root = context.resourceResolver().getResource("/");
+    assertTrue(root instanceof SyntheticResource);
   }
 
 }

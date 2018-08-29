@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@SuppressWarnings("null")
 public class UniqueRootTest {
 
   @Rule

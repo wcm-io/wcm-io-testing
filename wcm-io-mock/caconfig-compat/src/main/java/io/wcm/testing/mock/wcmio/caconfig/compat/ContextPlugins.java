@@ -47,7 +47,7 @@ public final class ContextPlugins {
    */
   public static final @NotNull ContextPlugin<AemContextImpl> WCMIO_CACONFIG_COMPAT = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContextImpl context) throws Exception {
+    public void afterSetUp(@NotNull AemContextImpl context) throws Exception {
       setUpCompat(context);
     }
   };

@@ -45,7 +45,6 @@ import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@SuppressWarnings("null")
 public class ContentBuilderTest {
 
   private static final String TEMPLATE = "/apps/sample/templates/sample";
@@ -103,6 +102,7 @@ public class ContentBuilderTest {
   }
 
   @Test
+  @SuppressWarnings("unlikely-arg-type")
   public void testResource() {
     Resource resource = context.create().resource(contentRoot + "/test1/resource1");
     assertNotNull(resource);

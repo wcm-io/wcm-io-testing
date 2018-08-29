@@ -43,7 +43,6 @@ import com.day.cq.tagging.TagManager;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@SuppressWarnings("null")
 public class MockTagTest {
 
   @Rule

@@ -39,10 +39,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ListRuleWithCallbacksTest {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   private final Callback<Integer> setUpCallback = mock(Callback.class);
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   private final Callback<Integer> tearDownCallback = mock(Callback.class);
 
   @Rule

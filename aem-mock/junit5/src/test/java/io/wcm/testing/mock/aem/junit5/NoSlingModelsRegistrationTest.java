@@ -30,6 +30,7 @@ import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
  * Test with {@link AemContext} which uses by default {@link ResourceResolverMockAemContext}.
  */
 @ExtendWith(AemContextExtension.class)
+@SuppressWarnings("null")
 class NoSlingModelsRegistrationTest {
 
   private final AemContext context = new AemContextBuilder()
