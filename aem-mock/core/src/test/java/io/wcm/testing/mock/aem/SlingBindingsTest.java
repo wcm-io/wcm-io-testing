@@ -23,21 +23,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.WCMMode;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
-import io.wcm.testing.mock.aem.models.ScriptBindingsModel;
+import io.wcm.testing.mock.aem.models.SlingBindingsModel;
 
 @SuppressWarnings("null")
-public class MockAemBindingsValuesProviderTest {
+public class SlingBindingsTest {
 
   @Rule
   public AemContext context = TestAemContext.newAemContext();
@@ -47,7 +48,7 @@ public class MockAemBindingsValuesProviderTest {
 
   @Before
   public void setUp() throws Exception {
-    context.addModelsForClasses(ScriptBindingsModel.class);
+    context.addModelsForClasses(SlingBindingsModel.class);
 
     currentPage = context.create().page("/content/testPage");
     currentResource = context.create().resource(currentPage.getContentResource().getPath() + "/testResource",
@@ -58,13 +59,26 @@ public class MockAemBindingsValuesProviderTest {
   }
 
   @Test
-  @Ignore // does not work because ResourceOverridingRequestWrapper - which does not magic copying of bindings - is not involved when just calling "adaptTo"
   public void testBindings() {
     context.currentResource(currentResource);
 
-    ScriptBindingsModel model = context.request().adaptTo(ScriptBindingsModel.class);
+    SlingBindingsModel model = context.request().adaptTo(SlingBindingsModel.class);
 
     assertNotNull(model);
+
+    assertNotNull(model.getResolver());
+    assertNotNull(model.getResource());
+    assertNotNull(model.getRequest());
+    assertNotNull(model.getResponse());
+    if (context.resourceResolverType() == ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      assertNull(model.getCurrentNode());
+      assertNull(model.getcurrentSession());
+    }
+    else {
+      assertNotNull(model.getCurrentNode());
+      assertNotNull(model.getcurrentSession());
+    }
+
     assertNotNull(model.getComponentContext());
     assertNull(model.getEditContext());
     assertNotNull(model.getProperties());
@@ -74,9 +88,45 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
     assertNotNull(model.getDesigner());
-    assertNull(model.getCurrentDesign());
-    assertNull(model.getResourceDesign());
-    assertNull(model.getCurrentStyle());
+    assertNotNull(model.getCurrentDesign());
+    assertNotNull(model.getResourceDesign());
+    assertNotNull(model.getCurrentStyle());
+  }
+
+  @Test
+  public void testBindings_EditMode() {
+    WCMMode.EDIT.toRequest(context.request());
+    context.currentResource(currentResource);
+
+    SlingBindingsModel model = context.request().adaptTo(SlingBindingsModel.class);
+
+    assertNotNull(model);
+
+    assertNotNull(model.getResolver());
+    assertNotNull(model.getResource());
+    assertNotNull(model.getRequest());
+    assertNotNull(model.getResponse());
+    if (context.resourceResolverType() == ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      assertNull(model.getCurrentNode());
+      assertNull(model.getcurrentSession());
+    }
+    else {
+      assertNotNull(model.getCurrentNode());
+      assertNotNull(model.getcurrentSession());
+    }
+
+    assertNotNull(model.getComponentContext());
+    assertNotNull(model.getEditContext());
+    assertNotNull(model.getProperties());
+    assertNotNull(model.getPageManager());
+    assertNotNull(model.getCurrentPage());
+    assertNotNull(model.getResourcePage());
+    assertNotNull(model.getPageProperties());
+    assertNotNull(model.getComponent());
+    assertNotNull(model.getDesigner());
+    assertNotNull(model.getCurrentDesign());
+    assertNotNull(model.getResourceDesign());
+    assertNotNull(model.getCurrentStyle());
   }
 
   /*
@@ -89,6 +139,20 @@ public class MockAemBindingsValuesProviderTest {
     ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
   
     assertNotNull(model);
+  
+    assertNotNull(model.getResolver());
+    assertNotNull(model.getResource());
+    assertNotNull(model.getRequest());
+    assertNotNull(model.getResponse());
+    if (context.resourceResolverType() == ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      assertNull(model.getCurrentNode());
+      assertNull(model.getcurrentSession());
+    }
+    else {
+      assertNotNull(model.getCurrentNode());
+      assertNotNull(model.getcurrentSession());
+    }
+  
     assertNotNull(model.getComponentContext());
     assertNull(model.getEditContext());
     assertNotNull(model.getProperties());
@@ -98,32 +162,9 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
     assertNotNull(model.getDesigner());
-    assertNull(model.getCurrentDesign());
-    assertNull(model.getResourceDesign());
-    assertNull(model.getCurrentStyle());
-  }
-  
-  @Test
-  public void testBindingsModelFactory_EditMode() throws Exception {
-    WCMMode.EDIT.toRequest(context.request());
-    context.currentResource(currentResource);
-  
-    ModelFactory modelFactory = context.getService(ModelFactory.class);
-    ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
-  
-    assertNotNull(model);
-    assertNotNull(model.getComponentContext());
-    assertNotNull(model.getEditContext());
-    assertNotNull(model.getProperties());
-    assertNotNull(model.getPageManager());
-    assertNotNull(model.getCurrentPage());
-    assertNotNull(model.getResourcePage());
-    assertNotNull(model.getPageProperties());
-    assertNotNull(model.getComponent());
-    assertNotNull(model.getDesigner());
-    assertNull(model.getCurrentDesign());
-    assertNull(model.getResourceDesign());
-    assertNull(model.getCurrentStyle());
+    assertNotNull(model.getCurrentDesign());
+    assertNotNull(model.getResourceDesign());
+    assertNotNull(model.getCurrentStyle());
   }
   */
 

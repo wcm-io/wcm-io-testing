@@ -24,8 +24,8 @@
   <body>
 
     <release version="2.3.2" date="not released">
-      <action type="update" dev="sseifert">
-        Add mock implementation of BindingsValuesProvider for AEM-specific objects.
+      <action type="update" dev="sseifert" issue="WTES-34">
+        Dynamically resolve AEM-specific objects as SlingBindings properties.
       </action>
       <action type="update" dev="sseifert">
         Enhance Designer implementation and return (empty) Design and Style objects.

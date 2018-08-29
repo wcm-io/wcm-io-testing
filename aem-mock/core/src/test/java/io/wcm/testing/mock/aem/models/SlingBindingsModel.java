@@ -19,7 +19,13 @@
  */
 package io.wcm.testing.mock.aem.models;
 
+import javax.jcr.Node;
+import javax.jcr.Session;
+
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
@@ -35,8 +41,29 @@ import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 
 @Model(adaptables = SlingHttpServletRequest.class)
-public interface ScriptBindingsModel {
+public interface SlingBindingsModel {
 
+  // -- Sling --
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  ResourceResolver getResolver();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Resource getResource();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  SlingHttpServletRequest getRequest();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  SlingHttpServletResponse getResponse();
+
+  // -- JCR --
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Node getCurrentNode();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Session getcurrentSession();
+
+  // -- AEM --
   @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   ComponentContext getComponentContext();
 
