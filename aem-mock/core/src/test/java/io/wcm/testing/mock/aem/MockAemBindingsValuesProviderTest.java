@@ -60,7 +60,6 @@ public class MockAemBindingsValuesProviderTest {
   @Test
   @Ignore // does not work because ResourceOverridingRequestWrapper - which does not magic copying of bindings - is not involved when just calling "adaptTo"
   public void testBindings() {
-    context.currentPage(currentPage);
     context.currentResource(currentResource);
 
     ScriptBindingsModel model = context.request().adaptTo(ScriptBindingsModel.class);
@@ -84,7 +83,6 @@ public class MockAemBindingsValuesProviderTest {
    -- Sling Models API 1.3.6/Impl 1.4.4 or higher required for these unit tests --
   @Test
   public void testBindingsModelFactory() throws Exception {
-    context.currentPage(currentPage);
     context.currentResource(currentResource);
   
     ModelFactory modelFactory = context.getService(ModelFactory.class);
@@ -108,7 +106,6 @@ public class MockAemBindingsValuesProviderTest {
   @Test
   public void testBindingsModelFactory_EditMode() throws Exception {
     WCMMode.EDIT.toRequest(context.request());
-    context.currentPage(currentPage);
     context.currentResource(currentResource);
   
     ModelFactory modelFactory = context.getService(ModelFactory.class);
