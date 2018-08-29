@@ -62,6 +62,8 @@ public class AemContextImpl extends SlingContextImpl {
     // adapter factories
     registerInjectActivateService(new MockAemAdapterFactory());
     registerInjectActivateService(new MockLayerAdapterFactory());
+    registerInjectActivateService(new MockAemBindingsValuesProvider(),
+        MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
   }
 
   @Override

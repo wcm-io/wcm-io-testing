@@ -42,18 +42,43 @@ import com.day.cq.wcm.commons.WCMUtils;
  */
 final class MockAemSlingBindings {
 
-  private static final String NAME_COMPONENT_CONTEXT = "componentContext";
-  private static final String NAME_EDIT_CONTEXT = "editContext";
-  private static final String NAME_PROPERTIES = "properties";
-  private static final String NAME_PAGE_MANAGER = "pageManager";
-  private static final String NAME_CURRENT_PAGE = "currentPage";
-  private static final String NAME_RESOURCE_PAGE = "resourcePage";
-  private static final String NAME_PAGE_PROPERTIES = "pageProperties";
-  private static final String NAME_COMPONENT = "component";
-  private static final String NAME_DESIGNER = "designer";
-  private static final String NAME_CURRENT_DESIGN = "currentDesign";
-  private static final String NAME_RESOURCE_DESIGN = "resourceDesign";
-  private static final String NAME_CURRENT_STYLE = "currentStyle";
+  enum SlingBindingsProperty {
+
+    COMPONENT_CONTEXT("componentContext"),
+
+    EDIT_CONTEXT("editContext"),
+
+    PROPERTIES("properties"),
+
+    PAGE_MANAGER("pageManager"),
+
+    CURRENT_PAGE("currentPage"),
+
+    RESOURCE_PAGE("resourcePage"),
+
+    PAGE_PROPERTIES("pageProperties"),
+
+    COMPONENT("component"),
+
+    DESIGNER("designer"),
+
+    CURRENT_DESIGN("currentDesign"),
+
+    RESOURCE_DESIGN("resourceDesign"),
+
+    CURRENT_STYLE("currentStyle");
+
+    private final String key;
+
+    SlingBindingsProperty(String key) {
+      this.key = key;
+    }
+
+    public String key() {
+      return this.key;
+    }
+
+  }
 
   private static final String RA_DESIGN_CACHE_PREFIX = MockAemSlingBindings.class.getName() + "_design_";
 
@@ -63,40 +88,40 @@ final class MockAemSlingBindings {
 
   static @Nullable Object resolveSlingBindingProperty(@NotNull AemContextImpl context, @NotNull String property) {
 
-    if (StringUtils.equals(property, NAME_COMPONENT_CONTEXT)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.COMPONENT_CONTEXT.key)) {
       return getWcmComponentContext(context);
     }
-    if (StringUtils.equals(property, NAME_EDIT_CONTEXT)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.EDIT_CONTEXT.key())) {
       return getEditContext(context);
     }
-    if (StringUtils.equals(property, NAME_PROPERTIES)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.PROPERTIES.key())) {
       return getProperties(context);
     }
-    if (StringUtils.equals(property, NAME_PAGE_MANAGER)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.PAGE_MANAGER.key())) {
       return context.pageManager();
     }
-    if (StringUtils.equals(property, NAME_CURRENT_PAGE)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_PAGE.key())) {
       return context.currentPage();
     }
-    if (StringUtils.equals(property, NAME_RESOURCE_PAGE)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.RESOURCE_PAGE.key())) {
       return getResourcePage(context);
     }
-    if (StringUtils.equals(property, NAME_PAGE_PROPERTIES)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.PAGE_PROPERTIES.key())) {
       return getPageProperties(context);
     }
-    if (StringUtils.equals(property, NAME_COMPONENT)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.COMPONENT.key())) {
       return getComponent(context);
     }
-    if (StringUtils.equals(property, NAME_DESIGNER)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.DESIGNER.key())) {
       return getDesigner(context);
     }
-    if (StringUtils.equals(property, NAME_CURRENT_DESIGN)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_DESIGN.key())) {
       return getCurrentDesign(context);
     }
-    if (StringUtils.equals(property, NAME_RESOURCE_DESIGN)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.RESOURCE_DESIGN.key())) {
       return getResourceDesign(context);
     }
-    if (StringUtils.equals(property, NAME_CURRENT_STYLE)) {
+    if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_STYLE.key())) {
       return getStyle(context);
     }
 

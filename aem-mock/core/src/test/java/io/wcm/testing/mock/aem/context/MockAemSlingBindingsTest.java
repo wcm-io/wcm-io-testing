@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem;
+package io.wcm.testing.mock.aem.context;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -33,12 +33,11 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.WCMMode;
 
-import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 import io.wcm.testing.mock.aem.models.SlingBindingsModel;
 
 @SuppressWarnings("null")
-public class SlingBindingsTest {
+public class MockAemSlingBindingsTest {
 
   @Rule
   public AemContext context = TestAemContext.newAemContext();
@@ -134,12 +133,12 @@ public class SlingBindingsTest {
   @Test
   public void testBindingsModelFactory() throws Exception {
     context.currentResource(currentResource);
-  
+
     ModelFactory modelFactory = context.getService(ModelFactory.class);
-    ScriptBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), ScriptBindingsModel.class);
-  
+    SlingBindingsModel model = modelFactory.getModelFromWrappedRequest(context.request(), context.currentResource(), SlingBindingsModel.class);
+
     assertNotNull(model);
-  
+
     assertNotNull(model.getResolver());
     assertNotNull(model.getResource());
     assertNotNull(model.getRequest());
@@ -152,7 +151,7 @@ public class SlingBindingsTest {
       assertNotNull(model.getCurrentNode());
       assertNotNull(model.getcurrentSession());
     }
-  
+
     assertNotNull(model.getComponentContext());
     assertNull(model.getEditContext());
     assertNotNull(model.getProperties());
