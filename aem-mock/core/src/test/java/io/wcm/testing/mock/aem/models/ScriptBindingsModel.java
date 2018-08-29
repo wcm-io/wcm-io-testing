@@ -30,6 +30,9 @@ import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.components.EditContext;
+import com.day.cq.wcm.api.designer.Design;
+import com.day.cq.wcm.api.designer.Designer;
+import com.day.cq.wcm.api.designer.Style;
 
 @Model(adaptables = SlingHttpServletRequest.class)
 public interface ScriptBindingsModel {
@@ -57,5 +60,17 @@ public interface ScriptBindingsModel {
 
   @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
   Component getComponent();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Designer getDesigner();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Design getCurrentDesign();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Design getResourceDesign();
+
+  @ScriptVariable(injectionStrategy = InjectionStrategy.OPTIONAL)
+  Style getCurrentStyle();
 
 }

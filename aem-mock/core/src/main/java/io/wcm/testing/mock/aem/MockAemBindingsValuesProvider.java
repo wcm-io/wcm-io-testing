@@ -36,6 +36,9 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.components.EditContext;
+import com.day.cq.wcm.api.designer.Design;
+import com.day.cq.wcm.api.designer.Designer;
+import com.day.cq.wcm.api.designer.Style;
 import com.day.cq.wcm.commons.WCMUtils;
 
 /**
@@ -52,6 +55,12 @@ public class MockAemBindingsValuesProvider implements BindingsValuesProvider {
   private static final String NAME_RESOURCE_PAGE = "resourcePage";
   private static final String NAME_PAGE_PROPERTIES = "pageProperties";
   private static final String NAME_COMPONENT = "component";
+  private static final String NAME_DESIGNER = "designer";
+  private static final String NAME_CURRENT_DESIGN = "currentDesign";
+  private static final String NAME_RESOURCE_DESIGN = "resourceDesign";
+  private static final String NAME_CURRENT_STYLE = "currentStyle";
+
+  private static final String RA_DESIGN_CACHE_PREFIX = MockAemBindingsValuesProvider.class.getName() + "_design_";
 
   @Override
   @SuppressWarnings("null")
@@ -61,7 +70,7 @@ public class MockAemBindingsValuesProvider implements BindingsValuesProvider {
     ResourceResolver resolver = request.getResourceResolver();
 
     ComponentContext componentContext = WCMUtils.getComponentContext(request);
-    EditContext editContext = componentContext == null ? null : componentContext.getEditContext();
+    EditContext editContext = componentContext != null ? componentContext.getEditContext() : null;
     ValueMap properties = ResourceUtil.getValueMap(resource);
     PageManager pageManager = resolver.adaptTo(PageManager.class);
 
@@ -75,7 +84,7 @@ public class MockAemBindingsValuesProvider implements BindingsValuesProvider {
       pageProperties = new HierarchyNodeInheritanceValueMap(currentPage.getContentResource());
     }
 
-    final com.day.cq.wcm.api.components.Component component = WCMUtils.getComponent(resource);
+    com.day.cq.wcm.api.components.Component component = WCMUtils.getComponent(resource);
 
     if (componentContext != null) {
       bindings.put(NAME_COMPONENT_CONTEXT, componentContext);
@@ -104,6 +113,48 @@ public class MockAemBindingsValuesProvider implements BindingsValuesProvider {
       bindings.put(NAME_COMPONENT, component);
     }
 
+
+    // -- design and style --
+    Designer designer = request.getResourceResolver().adaptTo(Designer.class);
+    Design currentDesign = null;
+    Design resourceDesign = null;
+    Style currentStyle = null;
+    if (currentPage != null) {
+      currentDesign = getAndCacheDesign(currentPage, request, designer);
+    }
+    if (resourcePage != null) {
+      resourceDesign = getAndCacheDesign(resourcePage, request, designer);
+    }
+    if (currentDesign != null && componentContext != null) {
+      currentStyle = currentDesign.getStyle(componentContext.getCell());
+    }
+
+    if (designer != null) {
+      bindings.put(NAME_DESIGNER, designer);
+    }
+    if (currentDesign != null) {
+      bindings.put(NAME_CURRENT_DESIGN, currentDesign);
+    }
+    if (resourceDesign != null) {
+      bindings.put(NAME_RESOURCE_DESIGN, resourceDesign);
+    }
+    if (currentStyle != null) {
+      bindings.put(NAME_CURRENT_STYLE, currentStyle);
+    }
+
+  }
+
+  private Design getAndCacheDesign(Page page, SlingHttpServletRequest request, Designer designer) {
+    if (designer == null) {
+      return null;
+    }
+    String cacheKey = RA_DESIGN_CACHE_PREFIX + page.getPath();
+    Design design = (Design)request.getAttribute(cacheKey);
+    if (design == null) {
+      design = designer.getDesign(page);
+      request.setAttribute(cacheKey, design);
+    }
+    return design;
   }
 
 }

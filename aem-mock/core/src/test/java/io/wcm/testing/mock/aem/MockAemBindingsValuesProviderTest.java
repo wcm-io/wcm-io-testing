@@ -74,6 +74,10 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getResourcePage());
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
+    assertNotNull(model.getDesigner());
+    assertNull(model.getCurrentDesign());
+    assertNull(model.getResourceDesign());
+    assertNull(model.getCurrentStyle());
   }
 
   /*
@@ -95,6 +99,10 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getResourcePage());
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
+    assertNotNull(model.getDesigner());
+    assertNull(model.getCurrentDesign());
+    assertNull(model.getResourceDesign());
+    assertNull(model.getCurrentStyle());
   }
   
   @Test
@@ -115,6 +123,10 @@ public class MockAemBindingsValuesProviderTest {
     assertNotNull(model.getResourcePage());
     assertNotNull(model.getPageProperties());
     assertNotNull(model.getComponent());
+    assertNotNull(model.getDesigner());
+    assertNull(model.getCurrentDesign());
+    assertNull(model.getResourceDesign());
+    assertNull(model.getCurrentStyle());
   }
   */
 
