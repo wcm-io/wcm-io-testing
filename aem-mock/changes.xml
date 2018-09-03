@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.3.2" date="not released">
+    <release version="2.3.2" date="2018-09-03">
       <action type="update" dev="sseifert" issue="WTES-34">
         Dynamically resolve AEM-specific objects as SlingBindings properties.
       </action>
