@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>2.3.2</version>
     <relativePath>parent/pom.xml</relativePath>
   </parent>
 
@@ -63,7 +63,6 @@
       <plugin>
         <groupId>io.wcm.devops.maven.plugins</groupId>
         <artifactId>eclipse-maven-plugin</artifactId>
-        <inherited>true</inherited>
         <configuration>
           <skip>true</skip>
         </configuration>

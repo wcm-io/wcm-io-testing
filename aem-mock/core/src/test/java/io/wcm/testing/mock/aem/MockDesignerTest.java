@@ -19,8 +19,9 @@
  */
 package io.wcm.testing.mock.aem;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -53,27 +54,27 @@ public class MockDesignerTest {
 
   @Test
   public void testGetDesignPage() {
-    assertNull(underTest.getDesign(page));
+    assertNotNull(underTest.getDesign(page));
   }
 
   @Test
   public void testHasDesign() {
-    assertFalse(underTest.hasDesign("/any/id"));
+    assertTrue(underTest.hasDesign("/any/id"));
   }
 
   @Test
   public void testGetDesignString() {
-    assertNull(underTest.getDesign("/any/id"));
+    assertNotNull(underTest.getDesign("/any/id"));
   }
 
   @Test
   public void testGetStyleResource() {
-    assertNull(underTest.getStyle(page.getContentResource()));
+    assertNotNull(underTest.getStyle(page.getContentResource()));
   }
 
   @Test
   public void testGetStyleResourceString() {
-    assertNull(underTest.getStyle(page.getContentResource(), "anyCell"));
+    assertNotNull(underTest.getStyle(page.getContentResource(), "anyCell"));
   }
 
 }

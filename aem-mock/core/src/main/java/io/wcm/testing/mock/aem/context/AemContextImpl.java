@@ -62,6 +62,8 @@ public class AemContextImpl extends SlingContextImpl {
     // adapter factories
     registerInjectActivateService(new MockAemAdapterFactory());
     registerInjectActivateService(new MockLayerAdapterFactory());
+    registerInjectActivateService(new MockAemBindingsValuesProvider(),
+        MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
   }
 
   @Override
@@ -157,6 +159,15 @@ public class AemContextImpl extends SlingContextImpl {
     return (ContentBuilder)this.contentBuilder;
   }
 
+  @Override
+  public @Nullable Resource currentResource(@Nullable Resource resource) {
+    Resource result = super.currentResource(resource);
+    if (!hasWcmComponentContext()) {
+      setCurrentPageInWcmComponentContext(currentPage());
+    }
+    return result;
+  }
+
   /**
    * @return Current page from {@link ComponentContext}. If none is set the page containing the current resource.
    *         Null if no containing page exists.
@@ -202,16 +213,25 @@ public class AemContextImpl extends SlingContextImpl {
    */
   public @Nullable Page currentPage(@Nullable Page page) {
     if (page != null) {
-      ComponentContext wcmComponentContext = new MockComponentContext(page, request());
-      request.setAttribute(ComponentContext.CONTEXT_ATTR_NAME, wcmComponentContext);
       currentResource(page.getContentResource());
-      return page;
     }
     else {
-      request.setAttribute(ComponentContext.CONTEXT_ATTR_NAME, null);
       currentResource((Resource)null);
-      return null;
     }
+    setCurrentPageInWcmComponentContext(page);
+    return page;
+  }
+
+  private void setCurrentPageInWcmComponentContext(Page page) {
+    ComponentContext wcmComponentContext = null;
+    if (page != null) {
+      wcmComponentContext = new MockComponentContext(page, request());
+    }
+    request().setAttribute(ComponentContext.CONTEXT_ATTR_NAME, wcmComponentContext);
+  }
+
+  private boolean hasWcmComponentContext() {
+    return request().getAttribute(ComponentContext.CONTEXT_ATTR_NAME) != null;
   }
 
   /**
@@ -224,6 +244,15 @@ public class AemContextImpl extends SlingContextImpl {
       uniqueRoot = new UniqueRoot(this);
     }
     return (UniqueRoot)uniqueRoot;
+  }
+
+  @Override
+  protected @Nullable Object resolveSlingBindingProperty(@NotNull String property) {
+    Object result = super.resolveSlingBindingProperty(property);
+    if (result == null) {
+      result = MockAemSlingBindings.resolveSlingBindingProperty(this, property);
+    }
+    return result;
   }
 
 }
