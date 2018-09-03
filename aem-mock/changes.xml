@@ -33,6 +33,9 @@
       <action type="update" dev="sseifert">
         Set WCM ComponentContext also when setting current resource that is part of a page.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock.
+      </action>
     </release>
 
     <release version="2.3.0" date="2018-08-27">
