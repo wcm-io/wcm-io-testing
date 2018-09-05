@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="0.7.2" date="not released">
+    <release version="0.7.2" date="2018-09-05">
       <action type="update" dev="sseifert">
         Make JUnit 4 dependency provided.
       </action>
