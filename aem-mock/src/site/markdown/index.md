@@ -42,15 +42,15 @@ The mock implementation supports:
 
 ### Further Resources
 
-* [JUnit 5 and Sling/AEM Mocks][adaptto-talk-junit5-sling-aem-mocks] - Talk from adaptTo() 2018
-* [Unit Testing with Sling & AEM Mocks][adaptto-talk-unittesting-sling-aem-mocks] - Talk from adaptTo() 2016
-* [Mock AEM & Co for Unit Tests][adaptto-talk-lightning-mock-aem-unit-tests] - Lightning talk from adaptTo() 2014
+* [adaptTo() 2018 Talk: JUnit 5 and Sling/AEM Mocks][adaptto-talk-2018-junit5-sling-aem-mocks]
+* [adaptTo() 2016 Talk: Unit Testing with Sling & AEM Mocks][adaptto-2016-talk-unittesting-sling-aem-mocks]
+* [adaptTo() 2014 Lightning Talk: Mock AEM & Co for Unit Tests][adaptto-talk-2014-mock-aem-unit-tests]
 
 
 [osgi-mock]: http://sling.apache.org/documentation/development/osgi-mock.html
 [jcr-mock]: http://sling.apache.org/documentation/development/jcr-mock.html
 [sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
-[adaptto-talk-junit5-sling-aem-mocks]: https://adapt.to/2018/en/schedule/junit-5-and-sling-aem-mocks.html
-[adaptto-talk-unittesting-sling-aem-mocks]: https://adapt.to/2016/en/schedule/unit-testing-with-sling-aem-mocks.html
-[adaptto-talk-lightning-mock-aem-unit-tests]: https://adapt.to/2014/en/schedule/lightning-talks.html
+[adaptto-talk-2018-junit5-sling-aem-mocks]: https://adapt.to/2018/en/schedule/junit-5-and-sling-aem-mocks.html
+[adaptto-2016-talk-unittesting-sling-aem-mocks]: https://adapt.to/2016/en/schedule/unit-testing-with-sling-aem-mocks.html
+[adaptto-talk-2014-mock-aem-unit-tests]: https://adapt.to/2014/en/schedule/lightning-talks.html
