@@ -59,4 +59,10 @@ public class SlingModelsRegistrationTest {
     assertNotNull(model.getModelFactory());
   }
 
+  @Test
+  public void testOsgiServiceWithModelFactoryReference() {
+    OsgiServiceWithModelFactory service = context.registerInjectActivateService(new OsgiServiceWithModelFactory());
+    assertNotNull(service.getModelFactory());
+  }
+
 }
