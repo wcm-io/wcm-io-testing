@@ -19,11 +19,14 @@
  */
 package io.wcm.testing.mock.aem.context;
 
+import javax.script.Bindings;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,8 +89,7 @@ final class MockAemSlingBindings {
     // static methods only
   }
 
-  static @Nullable Object resolveSlingBindingProperty(@NotNull AemContextImpl context, @NotNull String property) {
-
+  static @Nullable Object resolveSlingBindingProperty(@NotNull AemContextImpl context, @NotNull String property, @NotNull Bindings previous) {
     if (StringUtils.equals(property, SlingBindingsProperty.COMPONENT_CONTEXT.key)) {
       return getWcmComponentContext(context);
     }
@@ -110,7 +112,7 @@ final class MockAemSlingBindings {
       return getPageProperties(context);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.COMPONENT.key())) {
-      return getComponent(context);
+      return getComponent(context, previous);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.DESIGNER.key())) {
       return getDesigner(context);
@@ -124,7 +126,6 @@ final class MockAemSlingBindings {
     if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_STYLE.key())) {
       return getStyle(context);
     }
-
     return null;
   }
 
@@ -161,8 +162,8 @@ final class MockAemSlingBindings {
     return null;
   }
 
-  private static Component getComponent(AemContextImpl context) {
-    Resource resource = context.currentResource();
+  private static Component getComponent(AemContextImpl context, Bindings previous) {
+    Resource resource = (Resource) previous.getOrDefault(SlingBindings.RESOURCE, context.currentResource());
     if (resource != null) {
       return WCMUtils.getComponent(resource);
     }

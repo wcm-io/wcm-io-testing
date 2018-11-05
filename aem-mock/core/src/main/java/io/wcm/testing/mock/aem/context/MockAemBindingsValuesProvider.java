@@ -53,7 +53,7 @@ class MockAemBindingsValuesProvider implements BindingsValuesProvider {
   }
 
   private void putProperty(Bindings bindings, String key) {
-    Object value = MockAemSlingBindings.resolveSlingBindingProperty(context, key);
+    Object value = MockAemSlingBindings.resolveSlingBindingProperty(context, key, bindings);
     if (value != null) {
       bindings.put(key, value);
     }

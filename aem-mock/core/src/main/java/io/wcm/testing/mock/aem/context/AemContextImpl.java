@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.script.SimpleBindings;
+
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
@@ -250,7 +252,7 @@ public class AemContextImpl extends SlingContextImpl {
   protected @Nullable Object resolveSlingBindingProperty(@NotNull String property) {
     Object result = super.resolveSlingBindingProperty(property);
     if (result == null) {
-      result = MockAemSlingBindings.resolveSlingBindingProperty(this, property);
+      result = MockAemSlingBindings.resolveSlingBindingProperty(this, property, new SimpleBindings());
     }
     return result;
   }
