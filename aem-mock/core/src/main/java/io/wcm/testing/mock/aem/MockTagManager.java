@@ -403,7 +403,7 @@ public final class MockTagManager implements TagManager {
         CollectionUtils.addAll(searchResources, searchResource.listChildren());
       }
 
-      String[] tags = resource.getValueMap().get(TagConstants.PN_TAGS, String[].class);
+      String[] tags = searchResource.getValueMap().get(TagConstants.PN_TAGS, String[].class);
       if (tags == null) {
         continue;
       }
