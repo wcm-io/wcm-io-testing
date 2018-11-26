@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock and JCR Mock.
       </action>
+      <action type="fix" dev="jwilliams">
+        Fix bug in MockTagManager.collectResourceTags methods.
+      </action>
     </release>
 
     <release version="2.3.2" date="2018-09-03">
