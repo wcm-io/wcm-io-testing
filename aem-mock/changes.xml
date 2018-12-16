@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, JCR Mock and Sling Mock Oak.
       </action>
+      <action type="update" dev="sseifert">
+        MockComponentContext: Allow to set cell and cssClasNames.
+      </action>
       <action type="fix" dev="jwilliams">
         Fix bug in MockTagManager.collectResourceTags methods.
       </action>
