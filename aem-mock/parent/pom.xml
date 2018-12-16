@@ -44,7 +44,7 @@
     <resourceresolver-mock.version>1.1.22</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
     <sling-mock.version>2.3.4</sling-mock.version>
-    <sling-mock.oak.version>2.1.0</sling-mock.oak.version>
+    <sling-mock.oak.version>2.1.2</sling-mock.oak.version>
 
   </properties>
 
