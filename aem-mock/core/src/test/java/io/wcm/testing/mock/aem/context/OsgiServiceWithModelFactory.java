@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2014 wcm.io
+ * Copyright (C) 2018 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,23 @@
  * limitations under the License.
  * #L%
  */
+package io.wcm.testing.mock.aem.context;
+
+import org.apache.sling.models.factory.ModelFactory;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
- * Mock implementation of selected AEM APIs.
+ * Sample service referencing ModelFactory.
  */
-@org.osgi.annotation.versioning.Version("1.6.0")
-package io.wcm.testing.mock.aem;
+@Component(service = OsgiServiceWithModelFactory.class)
+public class OsgiServiceWithModelFactory {
+
+  @Reference
+  private ModelFactory modelFactory;
+
+  public ModelFactory getModelFactory() {
+    return this.modelFactory;
+  }
+
+}

@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -44,12 +45,13 @@ public final class MockComponentContext implements ComponentContext {
   private final Page currentPage;
   private final SlingHttpServletRequest request;
   private final EditContext editContext;
-  private final Cell cell;
 
   private final Map<String, Object> attributes = new HashMap<>();
   private boolean decorate = true;
   private String decorationTagName;
   private String defaultDecorationTagName;
+  private Cell cell;
+  private Set<String> cssClassNames = Collections.emptySet();
 
   /**
    * @param currentPage Current page
@@ -134,6 +136,19 @@ public final class MockComponentContext implements ComponentContext {
     return cell;
   }
 
+  public void setCell(Cell cell) {
+    this.cell = cell;
+  }
+
+  @Override
+  public Set<String> getCssClassNames() {
+    return cssClassNames;
+  }
+
+  public void setCssClassNames(Set<String> cssClassNames) {
+    this.cssClassNames = cssClassNames;
+  }
+
 
   // --- unsupported operations ---
 
@@ -154,11 +169,6 @@ public final class MockComponentContext implements ComponentContext {
 
   @Override
   public AnalyzeContext getAnalyzeContext() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Set<String> getCssClassNames() {
     throw new UnsupportedOperationException();
   }
 

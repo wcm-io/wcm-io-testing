@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2014 wcm.io
+ * Copyright (C) 2018 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,24 @@
  * limitations under the License.
  * #L%
  */
+package io.wcm.testing.mock.aem.modelsautoreg;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
+import org.apache.sling.models.factory.ModelFactory;
+
 /**
- * Mock implementation of selected AEM APIs.
+ * Test sling model with reference to ModelFactory service.
  */
-@org.osgi.annotation.versioning.Version("1.6.0")
-package io.wcm.testing.mock.aem;
+@Model(adaptables = SlingHttpServletRequest.class)
+public class ModelWithModelFactory {
+
+  @OSGiService
+  private ModelFactory modelFactory;
+
+  public ModelFactory getModelFactory() {
+    return this.modelFactory;
+  }
+
+}

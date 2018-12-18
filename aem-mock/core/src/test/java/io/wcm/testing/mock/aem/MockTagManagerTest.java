@@ -244,6 +244,18 @@ public class MockTagManagerTest {
     assertNull(tag);
   }
 
+  @Test
+  public void testGetTagsForSubtree() {
+    Tag[] tags = tagManager.getTagsForSubtree(rootPage.adaptTo(Resource.class), false);
+
+    assertNotNull(tags);
+    assertEquals(4, tags.length);
+    assertTrue(containsPath(tags, tagRoot + "/default/tagA"));
+    assertTrue(containsPath(tags, tagRoot + "/wcmio/aem/api"));
+    assertTrue(containsPath(tags, tagRoot + "/default/tagB"));
+    assertTrue(containsPath(tags, tagRoot + "/wcmio/nondescript"));
+  }
+
   private boolean containsPath(Tag[] tags, String path) {
     for (Tag tag : tags) {
       if (StringUtils.equals(tag.getPath(), path)) {
