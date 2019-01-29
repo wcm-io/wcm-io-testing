@@ -98,6 +98,11 @@ class MockAsset extends ResourceWrapper implements Asset {
   }
 
   @Override
+  public String getMetadataValueFromJcr(String name) {
+    return getMetadataValue(name);
+  }
+
+  @Override
   public long getLastModified() {
     Calendar lastModified = contentProps.get(JcrConstants.JCR_LASTMODIFIED, Calendar.class);
     if (lastModified != null) {
@@ -278,11 +283,6 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public Rendition getImagePreviewRendition() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getMetadataValueFromJcr(String arg0) {
     throw new UnsupportedOperationException();
   }
 

@@ -80,6 +80,7 @@ public class MockAssetTest {
     assertEquals(807L, asset.getMetadata().get(DamConstants.TIFF_IMAGEWIDTH));
     assertEquals(595L, asset.getMetadata(DamConstants.TIFF_IMAGELENGTH));
     assertEquals("Scott Reynolds", asset.getMetadataValue(DamConstants.DC_TITLE));
+    assertEquals("Scott Reynolds", asset.getMetadataValueFromJcr(DamConstants.DC_TITLE));
   }
 
   @Test
