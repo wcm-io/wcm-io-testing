@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         MockAsset: Support getMetadataValueFromJcr method.
       </action>
+      <action type="update" dev="sseifert">
+        MockDesign: Return default path for getPath().
+      </action>
     </release>
 
     <release version="2.3.4" date="2018-12-18">

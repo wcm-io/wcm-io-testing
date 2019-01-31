@@ -33,6 +33,7 @@ import org.apache.sling.api.resource.ValueMap;
 import com.day.cq.wcm.api.designer.Cell;
 import com.day.cq.wcm.api.designer.ComponentStyle;
 import com.day.cq.wcm.api.designer.Design;
+import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 
 /**
@@ -61,6 +62,11 @@ class MockDesign implements Design {
   @Override
   public Style getStyle(Resource resource, boolean ignoreExcludedComponents) {
     return defaultStyle;
+  }
+
+  @Override
+  public String getPath() {
+    return Designer.DEFAULT_DESIGN_PATH;
   }
 
 
@@ -99,11 +105,6 @@ class MockDesign implements Design {
 
   @Override
   public Calendar getLastModified() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getPath() {
     throw new UnsupportedOperationException();
   }
 
