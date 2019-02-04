@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
@@ -43,6 +44,9 @@ class MockComponent extends SlingAdaptable implements Component {
 
   private final Resource resource;
   private final ValueMap props;
+
+  private Component superComponent;
+  private boolean superComponentInitialized;
 
   @SuppressWarnings("deprecation")
   MockComponent(Resource resource) {
@@ -121,6 +125,21 @@ class MockComponent extends SlingAdaptable implements Component {
     return ImmutableMap.copyOf(attrs);
   }
 
+  @Override
+  public Component getSuperComponent() {
+    if (!superComponentInitialized) {
+      String resourceSuperType = resource.getResourceSuperType();
+      if (StringUtils.isNotEmpty(resourceSuperType)) {
+        Resource superResource = resource.getResourceResolver().getResource(resourceSuperType);
+        if (superResource != null) {
+          superComponent = new MockComponent(superResource);
+        }
+      }
+      superComponentInitialized = true;
+    }
+    return superComponent;
+  }
+
 
   // --- unsupported operations ---
 
@@ -191,11 +210,6 @@ class MockComponent extends SlingAdaptable implements Component {
 
   @Override
   public ComponentEditConfig getDesignEditConfig(String cellName) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Component getSuperComponent() {
     throw new UnsupportedOperationException();
   }
 

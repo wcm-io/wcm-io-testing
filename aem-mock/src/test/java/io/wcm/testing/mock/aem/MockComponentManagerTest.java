@@ -65,6 +65,9 @@ public class MockComponentManagerTest {
 
     context.create().resource("/libs/app1/components/c3");
 
+    context.create().resource("/apps/app1/components/c4",
+        "sling:resourceSuperType", "app1/components/c1");
+
     context.create().resource("/content/myresource", ImmutableMap.<String, Object>builder()
         .put("sling:resourceType", "/apps/app1/components/c1")
         .build());
@@ -90,6 +93,16 @@ public class MockComponentManagerTest {
     assertTrue(component.noDecoration());
     assertEquals("myTag", component.getHtmlTagAttributes().get(NameConstants.PN_TAG_NAME));
     assertEquals("myValue2", component.getHtmlTagAttributes().get("prop2"));
+    assertNull(component.getSuperComponent());
+  }
+
+  @Test
+  public void testSuperComponent() {
+    Component component = underTest.getComponent("/apps/app1/components/c4");
+
+    Component superComponent = component.getSuperComponent();
+    assertNotNull(superComponent);
+    assertEquals("/apps/app1/components/c1", superComponent.getPath());
   }
 
   @Test

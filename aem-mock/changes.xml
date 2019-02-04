@@ -25,6 +25,9 @@
 
     <release version="1.9.10" date="not released">
       <action type="update" dev="sseifert">
+        MockComponent: Support getSuperComponent method.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>
     </release>
