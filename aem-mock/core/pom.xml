@@ -316,6 +316,15 @@
           </configuration>
         </plugin>
 
+        <!-- Skip until https://github.com/checkstyle/checkstyle/issues/3238 / https://github.com/checkstyle/checkstyle/issues/3238 is solved -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        
       </plugins>
     </pluginManagement>
   </build>

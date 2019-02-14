@@ -328,8 +328,8 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create child resource below the page's jcr:content resource. If parent resource(s) do not exist they are created
-   * automatically using <code>nt:unstructured</code> nodes.
+   * Create child resource below the page's <code>jcr:content</code> resource. If parent resource(s) do not exist they
+   * are created automatically using <code>nt:unstructured</code> nodes.
    * @param page Page to create resource in
    * @param name Child resource name
    * @return Resource object
@@ -339,8 +339,8 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create child resource below the page's jcr:content resource. If parent resource(s) do not exist they are created
-   * automatically using <code>nt:unstructured</code> nodes.
+   * Create child resource below the page's <code>jcr:content</code> resource. If parent resource(s) do not exist they
+   * are created automatically using <code>nt:unstructured</code> nodes.
    * @param page Page to create resource in
    * @param name Child resource name
    * @param properties Properties for resource.
@@ -352,8 +352,8 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create child resource below the page's jcr:content resource. If parent resource(s) do not exist they are created
-   * automatically using <code>nt:unstructured</code> nodes.
+   * Create child resource below the page's <code>jcr:content</code> resource. If parent resource(s) do not exist they
+   * are created automatically using <code>nt:unstructured</code> nodes.
    * @param page Page to create resource in
    * @param name Child resource name
    * @param properties Properties for resource.
