@@ -24,6 +24,9 @@
   <body>
 
     <release version="2.3.6" date="not released">
+      <action type="add" dev="sseifert">
+        ContentBuilder: Add convenience methods to create child resources in pages.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock.
       </action>

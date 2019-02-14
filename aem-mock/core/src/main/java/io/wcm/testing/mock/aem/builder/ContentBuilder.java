@@ -34,6 +34,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.testing.mock.osgi.MapUtil;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -324,6 +325,42 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     catch (AccessControlException | InvalidTagFormatException ex) {
       throw new RuntimeException("Unable to create tag: " + tagId, ex);
     }
+  }
+
+  /**
+   * Create child resource below the page's jcr:content resource. If parent resource(s) do not exist they are created
+   * automatically using <code>nt:unstructured</code> nodes.
+   * @param page Page to create resource in
+   * @param name Child resource name
+   * @return Resource object
+   */
+  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name) {
+    return resource(page, name, ValueMap.EMPTY);
+  }
+
+  /**
+   * Create child resource below the page's jcr:content resource. If parent resource(s) do not exist they are created
+   * automatically using <code>nt:unstructured</code> nodes.
+   * @param page Page to create resource in
+   * @param name Child resource name
+   * @param properties Properties for resource.
+   * @return Resource object
+   */
+  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Map<String, Object> properties) {
+    String path = page.getContentResource().getPath() + "/" + StringUtils.stripStart(name, "/");
+    return resource(path, properties);
+  }
+
+  /**
+   * Create child resource below the page's jcr:content resource. If parent resource(s) do not exist they are created
+   * automatically using <code>nt:unstructured</code> nodes.
+   * @param page Page to create resource in
+   * @param name Child resource name
+   * @param properties Properties for resource.
+   * @return Resource object
+   */
+  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Object @NotNull... properties) {
+    return resource(page, name, MapUtil.toMap(properties));
   }
 
 }
