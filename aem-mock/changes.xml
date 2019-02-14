@@ -25,6 +25,9 @@
 
     <release version="2.3.6" date="not released">
       <action type="update" dev="sseifert">
+        Update to latest OSGi Mock.
+      </action>
+      <action type="update" dev="sseifert">
         MockAsset: Support getMetadataValueFromJcr method.
       </action>
       <action type="update" dev="sseifert">
