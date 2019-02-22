@@ -14,14 +14,6 @@ Mock implementation of selected AEM APIs.
 * [Changelog](changes-report.html)
 
 
-### Version Support Matrix
-
-|AEM Mock version |AEM version supported |JUnit version supported
-|-----------------|----------------------|------------------------
-|AEM Mock 2.x     |AEM 6.2 or up         |JUnit 4, JUnit 5
-|AEM Mock 1.x     |AEM 6.0 or 6.1        |JUnit 4
-
-
 ### Implemented mock features
 
 The mock implementation supports:
@@ -38,6 +30,14 @@ The mock implementation supports:
 * Setting run modes
 * Layer adapter factory
 * Context Plugins
+
+
+### AEM Version Support Matrix
+
+|AEM Mock version |AEM version supported |JUnit version supported
+|-----------------|----------------------|------------------------
+|AEM Mock 2.x     |AEM 6.2 or up         |JUnit 4, JUnit 5
+|AEM Mock 1.x     |AEM 6.0 or 6.1        |JUnit 4
 
 
 ### Further Resources

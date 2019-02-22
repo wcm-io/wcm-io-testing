@@ -23,6 +23,24 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.4.0" date="2019-02-22">
+      <action type="add" dev="sseifert">
+        ContentBuilder: Add convenience methods to create child resources in pages.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock.
+      </action>
+      <action type="update" dev="sseifert">
+        MockAsset: Support getMetadataValueFromJcr method.
+      </action>
+      <action type="update" dev="sseifert">
+        MockDesign: Return default path for getPath().
+      </action>
+      <action type="update" dev="sseifert">
+        MockComponent: Support getSuperComponent method.
+      </action>
+    </release>
+
     <release version="2.3.4" date="2018-12-18">
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, JCR Mock and Sling Mock Oak.

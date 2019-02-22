@@ -237,4 +237,19 @@ public class ContentBuilderTest {
     assertEquals("tag2", tag2.getName());
   }
 
+  @Test
+  public void testResourceInPage() {
+    Page page = context.create().page(contentRoot + "/test1/page1");
+
+    Resource resource1 = context.create().resource(page, "test1");
+    assertNotNull(resource1);
+    assertEquals(contentRoot + "/test1/page1/jcr:content/test1", resource1.getPath());
+
+    Resource resource2 = context.create().resource(page, "/test2/test21",
+        "prop1", "value1");
+    assertNotNull(resource2);
+    assertEquals(contentRoot + "/test1/page1/jcr:content/test2/test21", resource2.getPath());
+    assertEquals("value1", resource2.getValueMap().get("prop1", String.class));
+  }
+
 }
