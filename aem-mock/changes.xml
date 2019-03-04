@@ -25,7 +25,7 @@
 
     <release version="2.4.2" date="not released">
       <action type="update" dev="sseifert">
-        Update to latest JCR Mock, Resource Resolver Mock.
+        Update to latest OSGi Mock, JCR Mock, Resource Resolver Mock.
       </action>
       <action type="fix" dev="sseifert">
         Explicitly set the version of osgi-mock.junit4 dependency in aem-mock.junit4.
