@@ -25,6 +25,9 @@
 
     <release version="2.4.2" date="not released">
       <action type="update" dev="sseifert">
+        ContentBuilder: Add create page and asset methods with properties varargs parameter instead of properties map.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest OSGi Mock, JCR Mock, Resource Resolver Mock.
       </action>
       <action type="fix" dev="sseifert">
