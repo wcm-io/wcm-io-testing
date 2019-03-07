@@ -183,6 +183,12 @@
       <version>${resourceresolver-mock.version}</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.servlet-helpers</artifactId>
+      <version>${servlet-helpers.version}</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
