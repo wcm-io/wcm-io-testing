@@ -50,12 +50,12 @@
 
   <dependencies>
 
-      <!-- For build compatibility with Java 11 -->
-      <dependency>
-        <groupId>javax.annotation</groupId>
-        <artifactId>javax.annotation-api</artifactId>
-        <scope>test</scope>
-      </dependency>
+    <!-- For build compatibility with Java 11 -->
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
