@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
@@ -53,20 +53,14 @@
 
     <dependency>
       <groupId>io.wcm</groupId>
-      <artifactId>io.wcm.testing.aem-mock</artifactId>
-      <version>1.9.8</version>
+      <artifactId>io.wcm.testing.aem-mock.junit4</artifactId>
+      <version>2.4.0</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.testing.osgi-mock</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.osgi-mock.junit4</artifactId>
-      <version>2.4.0</version>
+      <artifactId>org.apache.sling.testing.logging-mock</artifactId>
+      <version>2.0.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -90,8 +84,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
-    <!-- (other versions of this APIs use other artifact ids) -->
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>osgi.core</artifactId>
@@ -104,7 +96,8 @@
     </dependency>
     <dependency>
       <groupId>com.adobe.aem</groupId>
-      <artifactId>aem-api</artifactId>
+      <artifactId>uber-jar</artifactId>
+      <classifier>apis</classifier>
       <scope>provided</scope>
     </dependency>
 
