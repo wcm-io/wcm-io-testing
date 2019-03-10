@@ -20,8 +20,8 @@
 language: java
 
 jdk:
-  - oraclejdk8
-  - oraclejdk11
+- oraclejdk8
+- openjdk11
 
 # Make sure travis can use container-based infrastructure
 sudo: false
@@ -29,7 +29,7 @@ sudo: false
 install: "mvn -s ./.travis.maven-settings.xml clean"
 
 script:
-- "mvn -s ./.travis.maven-settings.xml -Pcontinuous-integration -U -Dmaven.javadoc.skip=true install"
+- "mvn -s ./.travis.maven-settings.xml -Pcontinuous-integration -U install"
 # Remove wcm.io artefacts from repository before cache
 - rm -rf $HOME/.m2/repository/io/wcm
 - rm -rf $HOME/.m2/repository/com/adobe/aem/uber-jar
