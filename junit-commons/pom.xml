@@ -35,7 +35,7 @@
   <packaging>bundle</packaging>
 
   <name>JUnit Commons</name>
-  <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>
+  <description>Common extensions of JUnit 4.</description>
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>

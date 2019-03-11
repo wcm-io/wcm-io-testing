@@ -12,7 +12,7 @@ Helper tools for supporting Unit Tests, Integration test and test automation in 
     * [Context-Aware Configuration (Compatibility mode)](wcm-io-mock/caconfig-compat/): Helps setting up mock environment for Context-aware configuration compatibility Layer for wcm.io Configuration.
     * [Configuration (deprecated)](wcm-io-mock/config/): Helps setting up mock environment for wcm.io Configuration.
     * [Handler](wcm-io-mock/handler/): Helps setting up mock environment for wcm.io Handler.
-* [JUnit Commons](junit-commons/): Common extensions of JUnit for supporting the wcm.io JUnit tests.
+* [JUnit Commons](junit-commons/): Common extensions of JUnit 4 for supporting AEM Mocks JUnit 4 integration.
 
 
 ### Mocking stack
