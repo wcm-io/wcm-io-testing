@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.4.2" date="not released">
+    <release version="2.4.2" date="2019-03-14">
       <action type="update" dev="sseifert">
         ContentBuilder: Add create page and asset methods with properties varargs parameter instead of properties map.
       </action>
