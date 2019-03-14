@@ -91,7 +91,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param template Template
    * @return Page object
    */
-  public Page page(@NotNull String path, @NotNull String template) {
+  public Page page(@NotNull String path, @Nullable String template) {
     return page(path, template, ValueMap.EMPTY);
   }
 
@@ -103,7 +103,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param title Page title
    * @return Page object
    */
-  public Page page(@NotNull String path, @NotNull String template, @NotNull String title) {
+  public Page page(@NotNull String path, @Nullable String template, @NotNull String title) {
     return page(path, template, ImmutableMap.<String, Object>builder()
         .put(NameConstants.PN_TITLE, title)
         .build());
@@ -114,10 +114,10 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
    * @param path Page path
    * @param template Template
-   * @param contentProperties Properties for <code>jcr:content</code> node.
+   * @param pageProperties Properties for <code>jcr:content</code> node.
    * @return Page object
    */
-  public Page page(@NotNull String path, @NotNull String template, @NotNull Map<String, Object> contentProperties) {
+  public Page page(@NotNull String path, @Nullable String template, @NotNull Map<String, Object> pageProperties) {
     String parentPath = ResourceUtil.getParent(path);
     if (parentPath == null) {
       throw new IllegalArgumentException("Resource has no parent: " + path);
@@ -127,9 +127,9 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     try {
       PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
       Page page = pageManager.create(parentPath, name, template, name, true);
-      if (!contentProperties.isEmpty()) {
-        ModifiableValueMap pageProperties = page.getContentResource().adaptTo(ModifiableValueMap.class);
-        pageProperties.putAll(contentProperties);
+      if (!pageProperties.isEmpty()) {
+        ModifiableValueMap props = page.getContentResource().adaptTo(ModifiableValueMap.class);
+        props.putAll(pageProperties);
         resourceResolver.commit();
       }
       return page;
@@ -140,14 +140,15 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create DAM asset.
-   * @param path Asset path
-   * @param classpathResource Classpath resource URL for binary file.
-   * @param mimeType Mime type
-   * @return Asset
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param path Page path
+   * @param template Template
+   * @param pageProperties Properties for <code>jcr:content</code> node.
+   * @return Page object
    */
-  public Asset asset(@NotNull String path, @NotNull String classpathResource, @NotNull String mimeType) {
-    return asset(path, classpathResource, mimeType, null);
+  public Page page(@NotNull String path, @Nullable String template, @NotNull Object @NotNull... pageProperties) {
+    return page(path, template, MapUtil.toMap(pageProperties));
   }
 
   /**
@@ -155,7 +156,18 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param path Asset path
    * @param classpathResource Classpath resource URL for binary file.
    * @param mimeType Mime type
-   * @param metadata Asset metadata
+   * @return Asset
+   */
+  public Asset asset(@NotNull String path, @NotNull String classpathResource, @NotNull String mimeType) {
+    return asset(path, classpathResource, mimeType, (Map<String, Object>)null);
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param classpathResource Classpath resource URL for binary file.
+   * @param mimeType Mime type
+   * @param metadata Asset metadata properties
    * @return Asset
    */
   public Asset asset(@NotNull String path, @NotNull String classpathResource, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
@@ -171,15 +183,15 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create DAM asset with a generated dummy image. The image is empty.
+   * Create DAM asset.
    * @param path Asset path
-   * @param width Dummy image width
-   * @param height Dummy image height
+   * @param classpathResource Classpath resource URL for binary file.
    * @param mimeType Mime type
+   * @param metadata Asset metadata properties
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType) {
-    return asset(path, width, height, mimeType, null);
+  public Asset asset(@NotNull String path, @NotNull String classpathResource, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
+    return asset(path, classpathResource, mimeType, MapUtil.toMap(metadata));
   }
 
   /**
@@ -188,7 +200,19 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param width Dummy image width
    * @param height Dummy image height
    * @param mimeType Mime type
-   * @param metadata Asset metadata
+   * @return Asset
+   */
+  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType) {
+    return asset(path, width, height, mimeType, (Map<String, Object>)null);
+  }
+
+  /**
+   * Create DAM asset with a generated dummy image. The image is empty.
+   * @param path Asset path
+   * @param width Dummy image width
+   * @param height Dummy image height
+   * @param mimeType Mime type
+   * @param metadata Asset metadata properties
    * @return Asset
    */
   public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
@@ -201,14 +225,16 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Create DAM asset.
+   * Create DAM asset with a generated dummy image. The image is empty.
    * @param path Asset path
-   * @param inputStream Binary data for original rendition
+   * @param width Dummy image width
+   * @param height Dummy image height
    * @param mimeType Mime type
+   * @param metadata Asset metadata properties
    * @return Asset
    */
-  public Asset asset(@NotNull String path, @NotNull InputStream inputStream, @NotNull String mimeType) {
-    return asset(path, inputStream, mimeType, null);
+  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
+    return asset(path, width, height, mimeType, MapUtil.toMap(metadata));
   }
 
   /**
@@ -216,7 +242,18 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param path Asset path
    * @param inputStream Binary data for original rendition
    * @param mimeType Mime type
-   * @param metadata Asset metadata
+   * @return Asset
+   */
+  public Asset asset(@NotNull String path, @NotNull InputStream inputStream, @NotNull String mimeType) {
+    return asset(path, inputStream, mimeType, (Map<String, Object>)null);
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param inputStream Binary data for original rendition
+   * @param mimeType Mime type
+   * @param metadata Asset metadata properties
    * @return Asset
    */
   public Asset asset(@NotNull String path, @NotNull InputStream inputStream, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
@@ -234,6 +271,18 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     }
 
     return asset;
+  }
+
+  /**
+   * Create DAM asset.
+   * @param path Asset path
+   * @param inputStream Binary data for original rendition
+   * @param mimeType Mime type
+   * @param metadata Asset metadata properties
+   * @return Asset
+   */
+  public Asset asset(@NotNull String path, @NotNull InputStream inputStream, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
+    return asset(path, inputStream, mimeType, MapUtil.toMap(metadata));
   }
 
   /**

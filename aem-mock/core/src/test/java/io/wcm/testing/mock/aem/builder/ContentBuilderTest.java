@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Map;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
@@ -90,10 +89,9 @@ public class ContentBuilderTest {
 
   @Test
   public void testPageWithProperties() {
-    Page page = context.create().page(contentRoot + "/test1/page2", TEMPLATE, ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TITLE, "Test Title")
-        .put("stringProp", "value1")
-        .build());
+    Page page = context.create().page(contentRoot + "/test1/page2", TEMPLATE,
+        NameConstants.PN_TITLE, "Test Title",
+        "stringProp", "value1");
     assertNotNull(page);
     assertEquals("page2", page.getName());
     assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
@@ -113,10 +111,9 @@ public class ContentBuilderTest {
 
   @Test
   public void testResourceWithProperties() {
-    Resource resource = context.create().resource(contentRoot + "/test1/resource2", ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TITLE, "Test Title")
-        .put("stringProp", "value1")
-        .build());
+    Resource resource = context.create().resource(contentRoot + "/test1/resource2",
+        NameConstants.PN_TITLE, "Test Title",
+        "stringProp", "value1");
     assertNotNull(resource);
     assertEquals("resource2", resource.getName());
     assertEquals("Test Title", resource.getValueMap().get(NameConstants.PN_TITLE, String.class));
@@ -206,8 +203,8 @@ public class ContentBuilderTest {
 
   @Test
   public void testAssetWithMetadata() throws Exception {
-    Map<String, Object> metadata = ImmutableMap.of("prop1", "value1", "prop2", 1);
-    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg", metadata);
+    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg",
+        "prop1", "value1", "prop2", 1);
     assertNotNull(asset);
 
     assertEquals(1, asset.getRenditions().size());

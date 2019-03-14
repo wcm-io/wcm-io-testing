@@ -11,4 +11,13 @@ Helps setting up mock environment for [wcm.io Context-Aware Configuration][cacon
 * [Changelog](changes-report.html)
 
 
+### AEM Version Support Matrix
+
+|Context-Aware Configuration Mock Helper version |AEM version supported
+|------------------------------------------------|----------------------
+|1.1.x or higher                                 |AEM 6.2 and up
+|1.0.x                                           |AEM 6.1 and up
+|0.x                                             |AEM 6.0 and up
+
+
 [caconfig]: http://wcm.io/caconfig/

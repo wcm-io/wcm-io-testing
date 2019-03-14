@@ -20,5 +20,5 @@
 /**
  * Content builder for creating test content.
  */
-@org.osgi.annotation.versioning.Version("1.5")
+@org.osgi.annotation.versioning.Version("1.6")
 package io.wcm.testing.mock.aem.builder;

@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -35,7 +35,7 @@
   <packaging>bundle</packaging>
 
   <name>JUnit Commons</name>
-  <description>Common extensions of JUnit for supporting the wcm.io JUnit tests.</description>
+  <description>Common extensions of JUnit 4.</description>
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
