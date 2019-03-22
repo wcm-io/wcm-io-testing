@@ -526,6 +526,7 @@ public final class MockTagManager implements TagManager {
   }
 
   // AEM 6.4
+  @SuppressWarnings("unused")
   public Iterable<Tag> findTagsByKeyword(String arg0, Locale arg1, String arg2) {
     throw new UnsupportedOperationException();
   }
