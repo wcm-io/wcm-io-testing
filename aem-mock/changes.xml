@@ -27,6 +27,9 @@
       <action type="fix" dev="sseifert">
         Allow to adapt MockTemplate to resource.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
     </release>
 
     <release version="2.4.4" date="2019-03-17">
