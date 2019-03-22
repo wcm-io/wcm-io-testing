@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.event.EventAdmin;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
@@ -68,6 +70,9 @@ import com.day.cq.wcm.api.designer.Designer;
 @ProviderType
 public class MockAemAdapterFactory implements AdapterFactory {
 
+  @Reference
+  private EventAdmin eventAdmin;
+
   @Override
   public @Nullable <AdapterType> AdapterType getAdapter(final @NotNull Object adaptable, final @NotNull Class<AdapterType> type) {
     if (adaptable instanceof Resource) {
@@ -88,7 +93,7 @@ public class MockAemAdapterFactory implements AdapterFactory {
       return (AdapterType)new MockTemplate(resource);
     }
     if (type == Asset.class && DamUtil.isAsset(resource)) {
-      return (AdapterType)new MockAsset(resource);
+      return (AdapterType)new MockAsset(resource, eventAdmin);
     }
     if (type == Rendition.class && DamUtil.isRendition(resource)) {
       return (AdapterType)new MockRendition(resource);
@@ -114,7 +119,7 @@ public class MockAemAdapterFactory implements AdapterFactory {
       return (AdapterType)new MockDesigner();
     }
     if (type == AssetManager.class) {
-      return (AdapterType)new MockAssetManager(resolver);
+      return (AdapterType)new MockAssetManager(resolver, eventAdmin);
     }
     return null;
   }

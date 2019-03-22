@@ -24,11 +24,14 @@
   <body>
 
     <release version="2.4.6" date="not released">
-      <action type="fix" dev="sseifert">
-        Allow to adapt MockTemplate to resource.
+      <action type="update" dev="sseifert">
+        Send DAM OSGi events when creating assets, creation or removing renditions via AssetManager/Asset API.
       </action>
       <action type="update" dev="sseifert">
         Update to latest Sling Mock.
+      </action>
+      <action type="fix" dev="sseifert">
+        Allow to adapt MockTemplate to resource.
       </action>
     </release>
 
