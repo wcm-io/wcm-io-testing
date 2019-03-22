@@ -36,7 +36,6 @@ import com.day.cq.wcm.api.Template;
 /**
  * Mock implementation of {@link Template}.
  */
-@SuppressWarnings("null")
 class MockTemplate extends ResourceWrapper implements Template {
 
   private final Resource resource;
@@ -46,6 +45,16 @@ class MockTemplate extends ResourceWrapper implements Template {
     super(resource);
     this.resource = resource;
     this.properties = resource.getValueMap();
+  }
+
+  @Override
+  public String getPath() {
+    return super.getPath();
+  }
+
+  @Override
+  public String getName() {
+    return super.getName();
   }
 
   @Override
@@ -106,6 +115,15 @@ class MockTemplate extends ResourceWrapper implements Template {
       return false;
     }
     return StringUtils.equals(getPath(), ((MockTemplate)obj).getPath());
+  }
+
+  @Override
+  @SuppressWarnings({ "unchecked", "null" })
+  public <AdapterType> AdapterType adaptTo(Class<AdapterType> type) {
+    if (type == Resource.class) {
+      return (AdapterType)this.getResource();
+    }
+    return super.adaptTo(type);
   }
 
 
