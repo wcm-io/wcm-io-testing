@@ -28,6 +28,9 @@
         Send DAM OSGi events when creating assets, creation or removing renditions via AssetManager/Asset API.
       </action>
       <action type="update" dev="sseifert">
+        JUnit 5 integration: Support setting AemContext fields in super classes.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>
       <action type="fix" dev="sseifert">
