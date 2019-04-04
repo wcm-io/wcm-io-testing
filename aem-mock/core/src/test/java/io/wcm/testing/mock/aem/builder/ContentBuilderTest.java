@@ -100,6 +100,49 @@ public class ContentBuilderTest {
   }
 
   @Test
+  public void testPage_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page1");
+    assertNotNull(page);
+    assertEquals("page1", page.getName());
+    assertEquals(ContentBuilder.DUMMY_TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("page1", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithTemplate_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page1", TEMPLATE);
+    assertNotNull(page);
+    assertEquals("page1", page.getName());
+    assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("page1", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithTitle_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page1/subpage1", TEMPLATE, "Test Title");
+    assertNotNull(page);
+    assertEquals("subpage1", page.getName());
+    assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("Test Title", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithProperties_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page2", TEMPLATE,
+        NameConstants.PN_TITLE, "Test Title",
+        "stringProp", "value1");
+    assertNotNull(page);
+    assertEquals("page2", page.getName());
+    assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("Test Title", page.getTitle());
+    assertEquals("value1", page.getProperties().get("stringProp", String.class));
+  }
+
+  @Test
   @SuppressWarnings("unlikely-arg-type")
   public void testResource() {
     Resource resource = context.create().resource(contentRoot + "/test1/resource1");

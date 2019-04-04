@@ -31,6 +31,9 @@
         JUnit 5 integration: Support setting AemContext fields in super classes.
       </action>
       <action type="update" dev="sseifert">
+        ContentBuilder: Add overlays of create page methods with parent page and child page name.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>
       <action type="fix" dev="sseifert">

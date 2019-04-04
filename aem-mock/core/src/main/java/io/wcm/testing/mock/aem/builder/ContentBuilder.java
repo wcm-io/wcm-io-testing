@@ -152,6 +152,71 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param parentPage Parent page of the newp age
+   * @param name Child page name
+   * @return Page object
+   */
+  public Page page(@NotNull Page parentPage, @NotNull String name) {
+    return page(parentPage, name, DUMMY_TEMPLATE, ValueMap.EMPTY);
+  }
+
+  /**
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param parentPage Parent page of the newp age
+   * @param name Child page name
+   * @param template Template
+   * @return Page object
+   */
+  public Page page(@NotNull Page parentPage, @NotNull String name, @Nullable String template) {
+    return page(parentPage, name, template, ValueMap.EMPTY);
+  }
+
+  /**
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param parentPage Parent page of the newp age
+   * @param name Child page name
+   * @param template Template
+   * @param title Page title
+   * @return Page object
+   */
+  public Page page(@NotNull Page parentPage, @NotNull String name, @Nullable String template, @NotNull String title) {
+    return page(parentPage, name, template, ImmutableMap.<String, Object>builder()
+        .put(NameConstants.PN_TITLE, title)
+        .build());
+  }
+
+  /**
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param parentPage Parent page of the newp age
+   * @param name Child page name
+   * @param template Template
+   * @param pageProperties Properties for <code>jcr:content</code> node.
+   * @return Page object
+   */
+  public Page page(@NotNull Page parentPage, @NotNull String name, @Nullable String template, @NotNull Map<String, Object> pageProperties) {
+    String path = parentPage.getPath() + "/" + StringUtils.stripStart(name, "/");
+    return page(path, template, pageProperties);
+  }
+
+  /**
+   * Create content page.
+   * If parent resource(s) do not exist they are created automatically using <code>nt:unstructured</code> nodes.
+   * @param parentPage Parent page of the newp age
+   * @param name Child page name
+   * @param template Template
+   * @param pageProperties Properties for <code>jcr:content</code> node.
+   * @return Page object
+   */
+  public Page page(@NotNull Page parentPage, @NotNull String name, @Nullable String template, @NotNull Object @NotNull... pageProperties) {
+    return page(parentPage, name, template, MapUtil.toMap(pageProperties));
+  }
+
+  /**
    * Create DAM asset.
    * @param path Asset path
    * @param classpathResource Classpath resource URL for binary file.
