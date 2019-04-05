@@ -23,6 +23,24 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.4.6" date="2019-04-05">
+      <action type="update" dev="sseifert">
+        Send DAM OSGi events when creating assets, creation or removing renditions via AssetManager/Asset API.
+      </action>
+      <action type="update" dev="sseifert">
+        JUnit 5 integration: Support setting AemContext fields in super classes.
+      </action>
+      <action type="update" dev="sseifert">
+        ContentBuilder: Add overlays of create page methods with parent page and child page name.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
+      <action type="fix" dev="sseifert">
+        Allow to adapt MockTemplate to resource.
+      </action>
+    </release>
+
     <release version="2.4.4" date="2019-03-17">
       <action type="fix" dev="sseifert">
         Eliminate compile dependency to slf4j-simple - it's not required to run aem-mock.

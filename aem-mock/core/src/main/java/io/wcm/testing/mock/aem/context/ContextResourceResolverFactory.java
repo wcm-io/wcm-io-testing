@@ -81,14 +81,17 @@ final class ContextResourceResolverFactory {
     }
   }
 
+  @SuppressWarnings("unused")
   private static void initializeJcrOak(ResourceResolverFactory factory) {
     // nothing to do - namespaces are registered automatically together with node types
   }
 
+  @SuppressWarnings("unused")
   private static void initializeResourceResolverMock(ResourceResolverFactory factory) {
     // nothing to do
   }
 
+  @SuppressWarnings("unused")
   private static void initializeResourceResolverNone(ResourceResolverFactory factory) {
     // nothing to do
   }
