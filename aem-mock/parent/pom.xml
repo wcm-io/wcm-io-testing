@@ -56,7 +56,7 @@
       <dependency>
         <groupId>io.wcm.maven</groupId>
         <artifactId>io.wcm.maven.aem-dependencies</artifactId>
-        <version>6.4.0.0000</version>
+        <version>6.5.0.0000-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -64,8 +64,7 @@
       <dependency>
         <groupId>org.apache.sling</groupId>
         <artifactId>org.apache.sling.models.impl</artifactId>
-        <!-- contains 1.4.7.T20171213143738-2a16423 -->
-        <version>1.4.6</version>
+        <version>1.4.10</version>
       </dependency>
 
       <dependency>
