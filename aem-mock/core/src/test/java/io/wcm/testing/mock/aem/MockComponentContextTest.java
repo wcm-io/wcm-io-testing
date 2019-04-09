@@ -21,8 +21,13 @@ package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
+import java.util.Set;
 
 import org.apache.jackrabbit.JcrConstants;
 import org.apache.sling.api.resource.Resource;
@@ -33,8 +38,10 @@ import org.junit.Test;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentContext;
+import com.day.cq.wcm.api.designer.Cell;
 import com.day.cq.wcm.commons.WCMUtils;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -113,6 +120,25 @@ public class MockComponentContextTest {
   public void testGetEditContext() {
     // no edit context in wcmmode=disabled
     assertNull(underTest.getEditContext());
+  }
+
+  @SuppressWarnings("null")
+  @Test
+  public void testGetCell() {
+    assertNotNull(underTest.getCell());
+
+    Cell newCell = mock(Cell.class);
+    ((MockComponentContext)underTest).setCell(newCell);
+    assertSame(newCell, underTest.getCell());
+  }
+
+  @Test
+  public void testGetCssClassNames() {
+    assertNotNull(underTest.getCssClassNames());
+
+    Set<String> classNames = ImmutableSet.of("class");
+    ((MockComponentContext)underTest).setCssClassNames(classNames);
+    assertEquals(classNames, underTest.getCssClassNames());
   }
 
 }

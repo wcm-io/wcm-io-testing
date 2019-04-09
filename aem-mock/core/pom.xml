@@ -19,14 +19,13 @@
   #L%
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.4.7-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -184,6 +183,12 @@
       <version>${resourceresolver-mock.version}</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.servlet-helpers</artifactId>
+      <version>${servlet-helpers.version}</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -196,15 +201,13 @@
       <artifactId>javax.servlet-api</artifactId>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
       <scope>compile</scope>
     </dependency>
 
     <!-- Include AEM and OSGi APIs in 'provided' scope to let the consuming project decide which to use -->
-    <!-- (other versions of this APIs use other artifact ids) -->
     <dependency>
       <groupId>com.adobe.aem</groupId>
       <artifactId>uber-jar</artifactId>
@@ -312,6 +315,15 @@
           </configuration>
         </plugin>
 
+        <!-- Skip until https://github.com/checkstyle/checkstyle/issues/3238 / https://github.com/checkstyle/checkstyle/issues/3238 is solved -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        
       </plugins>
     </pluginManagement>
   </build>

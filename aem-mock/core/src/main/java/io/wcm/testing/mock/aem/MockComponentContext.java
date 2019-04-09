@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -49,6 +50,8 @@ public final class MockComponentContext implements ComponentContext {
   private boolean decorate = true;
   private String decorationTagName;
   private String defaultDecorationTagName;
+  private Cell cell;
+  private Set<String> cssClassNames = Collections.emptySet();
 
   /**
    * @param currentPage Current page
@@ -59,6 +62,7 @@ public final class MockComponentContext implements ComponentContext {
     this.request = request;
     boolean hasEditContext = WCMMode.fromRequest(request) != WCMMode.DISABLED;
     editContext = hasEditContext ? new MockEditContext(this) : null;
+    cell = new MockCell();
   }
 
   @Override
@@ -127,6 +131,24 @@ public final class MockComponentContext implements ComponentContext {
     return editContext;
   }
 
+  @Override
+  public Cell getCell() {
+    return cell;
+  }
+
+  public void setCell(Cell cell) {
+    this.cell = cell;
+  }
+
+  @Override
+  public Set<String> getCssClassNames() {
+    return cssClassNames;
+  }
+
+  public void setCssClassNames(Set<String> cssClassNames) {
+    this.cssClassNames = cssClassNames;
+  }
+
 
   // --- unsupported operations ---
 
@@ -146,17 +168,7 @@ public final class MockComponentContext implements ComponentContext {
   }
 
   @Override
-  public Cell getCell() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public AnalyzeContext getAnalyzeContext() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Set<String> getCssClassNames() {
     throw new UnsupportedOperationException();
   }
 

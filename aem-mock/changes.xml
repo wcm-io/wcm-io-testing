@@ -23,7 +23,88 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.3.0" date="not released">
+    <release version="2.4.6" date="2019-04-05">
+      <action type="update" dev="sseifert">
+        Send DAM OSGi events when creating assets, creation or removing renditions via AssetManager/Asset API.
+      </action>
+      <action type="update" dev="sseifert">
+        JUnit 5 integration: Support setting AemContext fields in super classes.
+      </action>
+      <action type="update" dev="sseifert">
+        ContentBuilder: Add overlays of create page methods with parent page and child page name.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
+      <action type="fix" dev="sseifert">
+        Allow to adapt MockTemplate to resource.
+      </action>
+    </release>
+
+    <release version="2.4.4" date="2019-03-17">
+      <action type="fix" dev="sseifert">
+        Eliminate compile dependency to slf4j-simple - it's not required to run aem-mock.
+      </action>
+    </release>
+
+    <release version="2.4.2" date="2019-03-14">
+      <action type="update" dev="sseifert">
+        ContentBuilder: Add create page and asset methods with properties varargs parameter instead of properties map.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, JCR Mock, Resource Resolver Mock.
+      </action>
+      <action type="fix" dev="sseifert">
+        Explicitly set the version of osgi-mock.junit4 dependency in aem-mock.junit4.
+      </action>
+    </release>
+
+    <release version="2.4.0" date="2019-02-22">
+      <action type="add" dev="sseifert">
+        ContentBuilder: Add convenience methods to create child resources in pages.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock.
+      </action>
+      <action type="update" dev="sseifert">
+        MockAsset: Support getMetadataValueFromJcr method.
+      </action>
+      <action type="update" dev="sseifert">
+        MockDesign: Return default path for getPath().
+      </action>
+      <action type="update" dev="sseifert">
+        MockComponent: Support getSuperComponent method.
+      </action>
+    </release>
+
+    <release version="2.3.4" date="2018-12-18">
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, JCR Mock and Sling Mock Oak.
+      </action>
+      <action type="update" dev="sseifert">
+        MockComponentContext: Allow to set cell and cssClasNames.
+      </action>
+      <action type="fix" dev="jwilliams">
+        Fix bug in MockTagManager.collectResourceTags methods.
+      </action>
+    </release>
+
+    <release version="2.3.2" date="2018-09-03">
+      <action type="update" dev="sseifert" issue="WTES-34">
+        Dynamically resolve AEM-specific objects as SlingBindings properties.
+      </action>
+      <action type="update" dev="sseifert">
+        Enhance Designer implementation and return (empty) Design and Style objects.
+      </action>
+      <action type="update" dev="sseifert">
+        Set WCM ComponentContext also when setting current resource that is part of a page.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock.
+      </action>
+    </release>
+
+    <release version="2.3.0" date="2018-08-27">
       <action type="add" dev="sseifert">
         Add JUnit 5 extensions.
       </action>

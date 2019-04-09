@@ -403,7 +403,7 @@ public final class MockTagManager implements TagManager {
         CollectionUtils.addAll(searchResources, searchResource.listChildren());
       }
 
-      String[] tags = resource.getValueMap().get(TagConstants.PN_TAGS, String[].class);
+      String[] tags = searchResource.getValueMap().get(TagConstants.PN_TAGS, String[].class);
       if (tags == null) {
         continue;
       }
@@ -526,6 +526,7 @@ public final class MockTagManager implements TagManager {
   }
 
   // AEM 6.4
+  @SuppressWarnings("unused")
   public Iterable<Tag> findTagsByKeyword(String arg0, Locale arg1, String arg2) {
     throw new UnsupportedOperationException();
   }

@@ -59,7 +59,7 @@ final class AemContextStore {
       Optional<Class<?>> aemContextType) {
     AemContext context = getAemContext(extensionContext, testInstance);
     if (context == null) {
-      context = createAemContext(extensionContext, aemContextType);
+      context = createAemContext(aemContextType);
       storeAemContext(extensionContext, testInstance, context);
     }
     return context;
@@ -88,8 +88,7 @@ final class AemContextStore {
     return context.getStore(AEM_CONTEXT_NAMESPACE);
   }
 
-  private static AemContext createAemContext(ExtensionContext extensionContext,
-      Optional<Class<?>> aemContextType) {
+  private static AemContext createAemContext(Optional<Class<?>> aemContextType) {
     Class<?> type = aemContextType.orElse(DEFAULT_AEM_CONTEXT_TYPE);
     if (type == AemContext.class) {
       type = DEFAULT_AEM_CONTEXT_TYPE;

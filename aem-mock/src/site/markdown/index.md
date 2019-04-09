@@ -14,14 +14,6 @@ Mock implementation of selected AEM APIs.
 * [Changelog](changes-report.html)
 
 
-### Version Support Matrix
-
-|AEM Mock version |AEM version supported |JUnit version supported
-|-----------------|----------------------|------------------------
-|AEM Mock 2.x     |AEM 6.2 or up         |JUnit 4, JUnit 5
-|AEM Mock 1.x     |AEM 6.0 or 6.1        |JUnit 4
-
-
 ### Implemented mock features
 
 The mock implementation supports:
@@ -39,12 +31,26 @@ The mock implementation supports:
 * Layer adapter factory
 * Context Plugins
 
-The following features are *not supported*:
 
-* Other parts of the AEM API
+### AEM Version Support Matrix
+
+|AEM Mock version |AEM version supported |JUnit version supported
+|-----------------|----------------------|------------------------
+|AEM Mock 2.x     |AEM 6.2 and up        |JUnit 4, JUnit 5
+|AEM Mock 1.x     |AEM 6.0 and 6.1       |JUnit 4
+
+
+### Further Resources
+
+* [adaptTo() 2018 Talk: JUnit 5 and Sling/AEM Mocks][adaptto-talk-2018-junit5-sling-aem-mocks]
+* [adaptTo() 2016 Talk: Unit Testing with Sling & AEM Mocks][adaptto-talk-2016-unittesting-sling-aem-mocks]
+* [adaptTo() 2014 Lightning Talk: Mock AEM & Co for Unit Tests][adaptto-talk-2014-mock-aem-unit-tests]
 
 
 [osgi-mock]: http://sling.apache.org/documentation/development/osgi-mock.html
 [jcr-mock]: http://sling.apache.org/documentation/development/jcr-mock.html
 [sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
+[adaptto-talk-2018-junit5-sling-aem-mocks]: https://adapt.to/2018/en/schedule/junit-5-and-sling-aem-mocks.html
+[adaptto-talk-2016-unittesting-sling-aem-mocks]: https://adapt.to/2016/en/schedule/unit-testing-with-sling-aem-mocks.html
+[adaptto-talk-2014-mock-aem-unit-tests]: https://adapt.to/2014/en/schedule/lightning-talks.html

@@ -34,11 +34,13 @@ import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.service.event.EventAdmin;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Revision;
 import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
@@ -54,11 +56,13 @@ class MockAssetManager implements AssetManager {
   private final ResourceResolver resourceResolver;
   private final ContentBuilder contentBuilder;
   private final ContentLoader contentLoader;
+  private final EventAdmin eventAdmin;
 
-  MockAssetManager(@NotNull final ResourceResolver resourceResolver) {
+  MockAssetManager(@NotNull final ResourceResolver resourceResolver, EventAdmin eventAdmin) {
     this.resourceResolver = resourceResolver;
     this.contentBuilder = new ContentBuilder(resourceResolver);
     this.contentLoader = new ContentLoader(resourceResolver);
+    this.eventAdmin = eventAdmin;
   }
 
   @Override
@@ -102,6 +106,10 @@ class MockAssetManager implements AssetManager {
       if (autoSave) {
         resourceResolver.commit();
       }
+
+      // send DamEvent after asset creation
+      eventAdmin.sendEvent(DamEvent.assetCreated(path, resourceResolver.getUserID()).toEvent());
+
     }
     catch (IOException ex) {
       throw new RuntimeException("Unable to create asset at " + path, ex);

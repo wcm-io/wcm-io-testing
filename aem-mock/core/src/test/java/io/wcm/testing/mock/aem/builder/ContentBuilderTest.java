@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Map;
 
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
@@ -90,10 +89,52 @@ public class ContentBuilderTest {
 
   @Test
   public void testPageWithProperties() {
-    Page page = context.create().page(contentRoot + "/test1/page2", TEMPLATE, ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TITLE, "Test Title")
-        .put("stringProp", "value1")
-        .build());
+    Page page = context.create().page(contentRoot + "/test1/page2", TEMPLATE,
+        NameConstants.PN_TITLE, "Test Title",
+        "stringProp", "value1");
+    assertNotNull(page);
+    assertEquals("page2", page.getName());
+    assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("Test Title", page.getTitle());
+    assertEquals("value1", page.getProperties().get("stringProp", String.class));
+  }
+
+  @Test
+  public void testPage_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page1");
+    assertNotNull(page);
+    assertEquals("page1", page.getName());
+    assertEquals(ContentBuilder.DUMMY_TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("page1", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithTemplate_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page1", TEMPLATE);
+    assertNotNull(page);
+    assertEquals("page1", page.getName());
+    assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("page1", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithTitle_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page1/subpage1", TEMPLATE, "Test Title");
+    assertNotNull(page);
+    assertEquals("subpage1", page.getName());
+    assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("Test Title", page.getTitle());
+  }
+
+  @Test
+  public void testPageWithProperties_withParentPage() {
+    Page parentPage = context.create().page(contentRoot + "/test1");
+    Page page = context.create().page(parentPage, "page2", TEMPLATE,
+        NameConstants.PN_TITLE, "Test Title",
+        "stringProp", "value1");
     assertNotNull(page);
     assertEquals("page2", page.getName());
     assertEquals(TEMPLATE, page.getProperties().get(NameConstants.PN_TEMPLATE, String.class));
@@ -113,10 +154,9 @@ public class ContentBuilderTest {
 
   @Test
   public void testResourceWithProperties() {
-    Resource resource = context.create().resource(contentRoot + "/test1/resource2", ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TITLE, "Test Title")
-        .put("stringProp", "value1")
-        .build());
+    Resource resource = context.create().resource(contentRoot + "/test1/resource2",
+        NameConstants.PN_TITLE, "Test Title",
+        "stringProp", "value1");
     assertNotNull(resource);
     assertEquals("resource2", resource.getName());
     assertEquals("Test Title", resource.getValueMap().get(NameConstants.PN_TITLE, String.class));
@@ -206,8 +246,8 @@ public class ContentBuilderTest {
 
   @Test
   public void testAssetWithMetadata() throws Exception {
-    Map<String, Object> metadata = ImmutableMap.of("prop1", "value1", "prop2", 1);
-    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg", metadata);
+    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg",
+        "prop1", "value1", "prop2", 1);
     assertNotNull(asset);
 
     assertEquals(1, asset.getRenditions().size());
@@ -235,6 +275,21 @@ public class ContentBuilderTest {
 
     assertEquals("tag1", tag1.getName());
     assertEquals("tag2", tag2.getName());
+  }
+
+  @Test
+  public void testResourceInPage() {
+    Page page = context.create().page(contentRoot + "/test1/page1");
+
+    Resource resource1 = context.create().resource(page, "test1");
+    assertNotNull(resource1);
+    assertEquals(contentRoot + "/test1/page1/jcr:content/test1", resource1.getPath());
+
+    Resource resource2 = context.create().resource(page, "/test2/test21",
+        "prop1", "value1");
+    assertNotNull(resource2);
+    assertEquals(contentRoot + "/test1/page1/jcr:content/test2/test21", resource2.getPath());
+    assertEquals("value1", resource2.getValueMap().get("prop1", String.class));
   }
 
 }

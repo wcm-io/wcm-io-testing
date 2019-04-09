@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -35,13 +36,16 @@ import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.osgi.service.event.EventHandler;
 
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.UIHelper;
 import com.day.cq.wcm.foundation.WCMRenditionPicker;
 
+import io.wcm.testing.mock.aem.MockAssetManagerTest.DamEventHandler;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
@@ -56,6 +60,7 @@ public class MockAssetTest {
   public AemContext context = TestAemContext.newAemContext();
 
   private Asset asset;
+  private DamEventHandler damEventHandler;
 
   @Before
   public void setUp() throws Exception {
@@ -63,6 +68,8 @@ public class MockAssetTest {
 
     Resource resource = this.context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg");
     this.asset = resource.adaptTo(Asset.class);
+
+    damEventHandler = (DamEventHandler)context.registerService(EventHandler.class, new DamEventHandler());
   }
 
   @Test
@@ -80,6 +87,7 @@ public class MockAssetTest {
     assertEquals(807L, asset.getMetadata().get(DamConstants.TIFF_IMAGEWIDTH));
     assertEquals(595L, asset.getMetadata(DamConstants.TIFF_IMAGELENGTH));
     assertEquals("Scott Reynolds", asset.getMetadataValue(DamConstants.DC_TITLE));
+    assertEquals("Scott Reynolds", asset.getMetadataValueFromJcr(DamConstants.DC_TITLE));
   }
 
   @Test
@@ -117,11 +125,24 @@ public class MockAssetTest {
     Resource resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/" + renditionName);
     assertNotNull(resource);
 
+    Optional<DamEvent> damEvent = damEventHandler.getLastEvent();
+    assertTrue(damEvent.isPresent());
+    assertEquals(DamEvent.Type.RENDITION_UPDATED, damEvent.get().getType());
+    assertEquals(asset.getPath(), damEvent.get().getAssetPath());
+    assertEquals(rendition.getPath(), damEvent.get().getAdditionalInfo());
+
     asset.removeRendition(renditionName);
 
     assertNull(asset.getRendition(renditionName));
     resource = context.resourceResolver().getResource("/content/dam/sample/portraits/scott_reynolds.jpg/jcr:content/renditions/" + renditionName);
     assertNull(resource);
+
+    damEvent = damEventHandler.getLastEvent();
+    assertTrue(damEvent.isPresent());
+    assertEquals(DamEvent.Type.RENDITION_REMOVED, damEvent.get().getType());
+    assertEquals(asset.getPath(), damEvent.get().getAssetPath());
+    assertEquals(rendition.getPath(), damEvent.get().getAdditionalInfo());
+
   }
 
   @Test

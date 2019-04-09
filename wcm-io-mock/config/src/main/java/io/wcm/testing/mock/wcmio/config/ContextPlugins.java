@@ -48,7 +48,7 @@ public final class ContextPlugins {
    */
   public static final @NotNull ContextPlugin<AemContextImpl> WCMIO_CONFIG = new AbstractContextPlugin<AemContextImpl>() {
     @Override
-    public void afterSetUp(AemContextImpl context) throws Exception {
+    public void afterSetUp(@NotNull AemContextImpl context) throws Exception {
       setUp(context);
     }
   };

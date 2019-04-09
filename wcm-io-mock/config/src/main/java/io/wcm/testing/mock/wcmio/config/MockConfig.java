@@ -118,6 +118,7 @@ public final class MockConfig {
    * @param configurationId Configuration id
    * @param values Configuration values
    */
+  @SuppressWarnings("null")
   public static void writeConfiguration(@NotNull AemContextImpl context, @NotNull String configurationId, @NotNull Map<String, Object> values) {
     try {
       ParameterPersistence persistence = context.getService(ParameterPersistence.class);

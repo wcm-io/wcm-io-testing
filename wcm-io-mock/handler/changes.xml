@@ -23,7 +23,19 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="1.0.4" date="not released">
+    <release version="1.1.0" date="not released">
+      <action type="update" dev="sseifert">
+        Switch to AEM 6.2 as minimum version.
+      </action>
+    </release>
+
+    <release version="1.0.6" date="2018-09-05">
+      <action type="update" dev="sseifert">
+        Make JUnit 4 dependency provided.
+      </action>
+    </release>
+
+    <release version="1.0.4" date="2018-08-27">
       <action type="update" dev="sseifert">
         Make compatible with aem-mock.junit4 and aem-mock.junit5.
       </action>

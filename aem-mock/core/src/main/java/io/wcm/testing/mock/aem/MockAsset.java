@@ -35,10 +35,12 @@ import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.service.event.EventAdmin;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.api.Revision;
@@ -55,15 +57,17 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final Resource resource;
   private final ValueMap contentProps;
   private final Resource renditionsResource;
+  private final EventAdmin eventAdmin;
   private boolean batchMode;
 
-  MockAsset(@NotNull Resource resource) {
+  MockAsset(@NotNull Resource resource, EventAdmin eventAdmin) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
     this.resource = resource;
     Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
     this.contentProps = ResourceUtil.getValueMap(contentResource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
+    this.eventAdmin = eventAdmin;
   }
 
   @SuppressWarnings("unchecked")
@@ -95,6 +99,11 @@ class MockAsset extends ResourceWrapper implements Asset {
     else {
       return value.toString();
     }
+  }
+
+  @Override
+  public String getMetadataValueFromJcr(String name) {
+    return getMetadataValue(name);
   }
 
   @Override
@@ -189,6 +198,10 @@ class MockAsset extends ResourceWrapper implements Asset {
     catch (PersistenceException ex) {
       throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
     }
+
+    // send DamEvent after rendition creation
+    eventAdmin.sendEvent(DamEvent.renditionUpdated(getPath(), resourceResolver.getUserID(), rendition.getPath()).toEvent());
+
     return rendition.adaptTo(Rendition.class);
   }
 
@@ -206,6 +219,9 @@ class MockAsset extends ResourceWrapper implements Asset {
         throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
       }
     }
+
+    // send DamEvent after rendition creation
+    eventAdmin.sendEvent(DamEvent.renditionRemoved(getPath(), resourceResolver.getUserID(), rendition.getPath()).toEvent());
   }
 
   @Override
@@ -278,11 +294,6 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public Rendition getImagePreviewRendition() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getMetadataValueFromJcr(String arg0) {
     throw new UnsupportedOperationException();
   }
 
