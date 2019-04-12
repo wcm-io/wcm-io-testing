@@ -34,10 +34,11 @@
         "jcr:title": "AEM API",
         "jcr:description": "Tag representing AEM API",
         "jcr:title.en": "English AEM API",
-        "jcr:title.en_US": "AEM API for US",
+        "jcr:title.en_us": "AEM API for US",
         "jcr:title.de": "German AEM API",
-        "jcr:title.de_DE": "AEM API for Germany",
+        "jcr:title.de_de": "AEM API for Germany",
         "jcr:title.ja": "Japanese AEM API",
+        "jcr:title.pt_br": "Portuguese (Brazil) AEM API",
         "sling:resourceType": "cq/tagging/components/tag"
       },
       "content": {

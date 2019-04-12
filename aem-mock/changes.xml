@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Add methods newly defined in AEM 6.5 API.
       </action>
+      <action type="fix" dev="sseifert" issue="WTES-36">
+        Fix MockTag.getLocalizedTitle: AEM uses language and country code always in lowercase mode.
+      </action>
     </release>
 
     <release version="2.4.6" date="2019-04-05">

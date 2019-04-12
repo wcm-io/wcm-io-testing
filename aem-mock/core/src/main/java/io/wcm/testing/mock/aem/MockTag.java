@@ -163,10 +163,10 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     }
     ValueMap properties = resource.getValueMap();
     String localeStr = locale.getLanguage() + "_" + locale.getCountry();
-    String title = properties.get(JcrConstants.JCR_TITLE + "." + localeStr, String.class);
+    String title = properties.get(StringUtils.lowerCase(JcrConstants.JCR_TITLE + "." + localeStr), String.class);
     if (title == null) {
       localeStr = locale.getLanguage();
-      title = properties.get(JcrConstants.JCR_TITLE + "." + localeStr, String.class);
+      title = properties.get(StringUtils.lowerCase(JcrConstants.JCR_TITLE + "." + localeStr), String.class);
     }
 
     return title;

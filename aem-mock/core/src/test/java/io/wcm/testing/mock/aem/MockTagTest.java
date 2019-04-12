@@ -58,6 +58,8 @@ public class MockTagTest {
   private Tag nondescript;
   private Tag nondescript2;
 
+  private static final Locale LOCALE_PT_BR = new Locale("pt", "br");
+
   @Before
   public void setUp() throws Exception {
     tagRoot = MockTagManager.getTagRootPath();
@@ -169,14 +171,16 @@ public class MockTagTest {
     assertEquals("AEM API for Germany", aemApi.getLocalizedTitle(Locale.GERMANY));
     assertEquals("Japanese AEM API", aemApi.getLocalizedTitle(Locale.JAPANESE));
     assertEquals("Japanese AEM API", aemApi.getLocalizedTitle(Locale.JAPAN));
+    assertEquals("Portuguese (Brazil) AEM API", aemApi.getLocalizedTitle(LOCALE_PT_BR));
     localizedTitles = aemApi.getLocalizedTitles();
     assertNotNull(localizedTitles);
-    assertEquals(5, localizedTitles.size());
+    assertEquals(6, localizedTitles.size());
     assertEquals("English AEM API", localizedTitles.get(Locale.ENGLISH));
     assertEquals("AEM API for US", localizedTitles.get(Locale.US));
     assertEquals("German AEM API", localizedTitles.get(Locale.GERMAN));
     assertEquals("AEM API for Germany", localizedTitles.get(Locale.GERMANY));
     assertEquals("Japanese AEM API", localizedTitles.get(Locale.JAPANESE));
+    assertEquals("Portuguese (Brazil) AEM API", localizedTitles.get(LOCALE_PT_BR));
     assertEquals(null, localizedTitles.get(Locale.JAPAN));
 
   }
