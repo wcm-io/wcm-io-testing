@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Binary;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -299,6 +301,18 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   // AEM 6.3
   public void initAssetState() {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5
+  @SuppressWarnings("unused")
+  public Rendition addRendition(String arg0, Binary arg1, String arg2) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5
+  @SuppressWarnings("unused")
+  public Rendition addRendition(String arg0, Binary arg1, Map<String, Object> arg2) {
     throw new UnsupportedOperationException();
   }
 

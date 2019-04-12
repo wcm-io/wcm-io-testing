@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.jcr.Binary;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
@@ -152,6 +153,12 @@ class MockAssetManager implements AssetManager {
 
   @Override
   public String assignAssetID(Asset asset) throws PathNotFoundException, RepositoryException {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5
+  @SuppressWarnings("unused")
+  public Asset createOrUpdateAsset(String arg0, Binary arg1, String arg2, boolean arg3) {
     throw new UnsupportedOperationException();
   }
 
