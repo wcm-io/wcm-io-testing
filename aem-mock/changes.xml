@@ -28,7 +28,10 @@
         Add methods newly defined in AEM 6.5 API.
       </action>
       <action type="fix" dev="sseifert" issue="WTES-36">
-        Fix MockTag.getLocalizedTitle: AEM uses language and country code always in lowercase mode.
+        MockTag.getLocalizedTitle: AEM uses language and country code always in lowercase mode.
+      </action>
+      <action type="fix" dev="sseifert" issue="WTES-36">
+        MockTag.getLocalizedTitle: Replace namespace delimiter and separator with space in title and localized title.
       </action>
     </release>
 

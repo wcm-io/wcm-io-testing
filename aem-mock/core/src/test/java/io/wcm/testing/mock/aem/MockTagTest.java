@@ -171,7 +171,7 @@ public class MockTagTest {
     assertEquals("AEM API for Germany", aemApi.getLocalizedTitle(Locale.GERMANY));
     assertEquals("Japanese AEM API", aemApi.getLocalizedTitle(Locale.JAPANESE));
     assertEquals("Japanese AEM API", aemApi.getLocalizedTitle(Locale.JAPAN));
-    assertEquals("Portuguese (Brazil) AEM API", aemApi.getLocalizedTitle(LOCALE_PT_BR));
+    assertEquals("Portuguese (Brazil) AEM API  with special chars", aemApi.getLocalizedTitle(LOCALE_PT_BR));
     localizedTitles = aemApi.getLocalizedTitles();
     assertNotNull(localizedTitles);
     assertEquals(6, localizedTitles.size());
@@ -180,7 +180,7 @@ public class MockTagTest {
     assertEquals("German AEM API", localizedTitles.get(Locale.GERMAN));
     assertEquals("AEM API for Germany", localizedTitles.get(Locale.GERMANY));
     assertEquals("Japanese AEM API", localizedTitles.get(Locale.JAPANESE));
-    assertEquals("Portuguese (Brazil) AEM API", localizedTitles.get(LOCALE_PT_BR));
+    assertEquals("Portuguese (Brazil) AEM API/:with special chars", localizedTitles.get(LOCALE_PT_BR));
     assertEquals(null, localizedTitles.get(Locale.JAPAN));
 
   }
