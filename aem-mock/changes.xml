@@ -25,6 +25,9 @@
 
     <release version="2.4.8" date="not releaed">
       <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
+      <action type="update" dev="sseifert">
         Add methods newly defined in AEM 6.5 API.
       </action>
       <action type="fix" dev="sseifert" issue="WTES-36">
