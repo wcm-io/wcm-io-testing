@@ -224,6 +224,14 @@
       <artifactId>osgi.cmpn</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- Workaround for AEM 6.5: The new uber-jar does no longer contain the package com.day.imageio.plugins -->
+    <dependency>
+      <groupId>com.day.commons</groupId>
+      <artifactId>day-commons-gfx</artifactId>
+      <version>2.1.28</version>
+      <scope>compile</scope>
+    </dependency>
 
     <!-- JUnit 4 -->
     <dependency>
