@@ -22,6 +22,8 @@ package io.wcm.testing.mock.aem;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.jcr.Binary;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -112,6 +114,14 @@ class MockRendition extends ResourceWrapper implements Rendition {
       return false;
     }
     return StringUtils.equals(getPath(), ((MockRendition)obj).getPath());
+  }
+
+
+  // --- unsupported operations ---
+
+  // AEM 6.5
+  public Binary getBinary() {
+    throw new UnsupportedOperationException();
   }
 
 }

@@ -19,6 +19,9 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.tagging.TagConstants.NAMESPACE_DELIMITER;
+import static com.day.cq.tagging.TagConstants.SEPARATOR;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,6 +45,7 @@ import com.day.cq.tagging.Tag;
 import com.day.cq.tagging.TagConstants;
 import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.NameConstants;
+
 
 /**
  * Mock implementation of {@link Tag}.
@@ -163,13 +167,13 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     }
     ValueMap properties = resource.getValueMap();
     String localeStr = locale.getLanguage() + "_" + locale.getCountry();
-    String title = properties.get(JcrConstants.JCR_TITLE + "." + localeStr, String.class);
+    String title = properties.get(StringUtils.lowerCase(JcrConstants.JCR_TITLE + "." + localeStr), String.class);
     if (title == null) {
       localeStr = locale.getLanguage();
-      title = properties.get(JcrConstants.JCR_TITLE + "." + localeStr, String.class);
+      title = properties.get(StringUtils.lowerCase(JcrConstants.JCR_TITLE + "." + localeStr), String.class);
     }
 
-    return title;
+    return escapeTitle(title);
   }
 
   @Override
@@ -240,7 +244,8 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
 
   @Override
   public String getTitle() {
-    return resource.getValueMap().get(JcrConstants.JCR_TITLE, getName());
+    String title = resource.getValueMap().get(JcrConstants.JCR_TITLE, getName());
+    return escapeTitle(title);
   }
 
   @Override
@@ -249,7 +254,6 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     if (title == null) {
       title = getTitle();
     }
-
     return title;
   }
 
@@ -316,6 +320,10 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
           + "or jcr:like(@" + property + ", '" + ns + ":" + relPath + "/%') or "
           + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
     }
+  }
+
+  private static String escapeTitle(String title) {
+    return StringUtils.replace(StringUtils.replace(title, SEPARATOR, " "), NAMESPACE_DELIMITER, " ");
   }
 
   // --- unsupported operations ---
