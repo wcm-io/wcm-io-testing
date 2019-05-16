@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessControlException;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +40,14 @@ import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.service.event.EventAdmin;
 
+import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
 import com.day.cq.dam.api.DamConstants;
+import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.tagging.InvalidTagFormatException;
 import com.day.cq.tagging.Tag;
@@ -54,6 +58,8 @@ import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
 import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
+
+import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
  * Helper class for building test content in the resource hierarchy with as less boilerplate code as possible.
@@ -67,11 +73,22 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   // cache generated dummy images in cache because often the a dummy image with the same parameter is reused.
   private static final Map<String, byte[]> DUMMY_IMAGE_CACHE = new HashMap<>();
 
+  private final @Nullable AemContextImpl context;
+
   /**
    * @param resourceResolver Resource resolver
    */
   public ContentBuilder(@NotNull ResourceResolver resourceResolver) {
     super(resourceResolver);
+    this.context = null;
+  }
+
+  /**
+   * @param context Context
+   */
+  public ContentBuilder(@NotNull AemContextImpl context) {
+    super(context.resourceResolver());
+    this.context = context;
   }
 
   /**
@@ -423,6 +440,85 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    */
   public Rendition assetRendition(@NotNull Asset asset, String name, @NotNull InputStream inputStream, @NotNull String mimeType) {
     return asset.addRendition(name, inputStream, mimeType);
+  }
+
+  /**
+   * Create DAM content fragment.
+   * @param path Content fragment asset path
+   * @param data Content fragment structured data
+   * @return Content fragment
+   */
+  public ContentFragment contentFragmentStructured(@NotNull String path, @Nullable Map<String, Object> data) {
+    return contentFragmentTextOrStructured(path, null, null, data);
+  }
+
+  /**
+   * Create DAM content fragment.
+   * @param path Content fragment asset path
+   * @param data Content fragment structured data
+   * @return Content fragment
+   */
+  public ContentFragment contentFragmentStructured(@NotNull String path, @NotNull Object @NotNull... data) {
+    return contentFragmentStructured(path, MapUtil.toMap(data));
+  }
+
+  /**
+   * Create DAM content fragment.
+   * @param path Content fragment asset path
+   * @param text Text value
+   * @param mimeType Mime type of the value
+   * @return Content fragment
+   */
+  public ContentFragment contentFragmentText(@NotNull String path, @NotNull String text, @NotNull String mimeType) {
+    return contentFragmentTextOrStructured(path, text, mimeType, null);
+  }
+
+  private ContentFragment contentFragmentTextOrStructured(@NotNull String path,
+      @Nullable String text, @Nullable String mimeType,
+      @Nullable Map<String, Object> data) {
+    // create asset
+    resource(path, JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSET);
+    resource(path + "/" + JcrConstants.JCR_CONTENT, JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSETCONTENT);
+    String renditionsPath = path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER;
+    resource(renditionsPath, JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_FOLDER);
+
+    // store asset metadata
+    Map<String, Object> metadataProps = new HashMap<>();
+    if (mimeType != null) {
+      metadataProps.put(DamConstants.DC_FORMAT, mimeType);
+    }
+    resource(path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER, metadataProps);
+
+    // store text as original rendition
+    if (text != null) {
+      try (InputStream is = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))) {
+        ContentLoader contentLoader = new ContentLoader(resourceResolver);
+        contentLoader.binaryFile(is, renditionsPath + "/" + DamConstants.ORIGINAL_FILE, mimeType);
+      }
+      catch (IOException ex) {
+        throw new RuntimeException("Unable to create content fragment at " + path, ex);
+      }
+
+      // create model/elements/main node
+      resource(path + "/" + JcrConstants.JCR_CONTENT + "/model/elements/main",
+          "name", "main",
+          "jcr:title", "Main");
+    }
+
+    if (data != null) {
+      // create data/master node
+      resource(path + "/" + JcrConstants.JCR_CONTENT + "/data/master", data);
+    }
+
+    // send DamEvent after asset creation
+    if (context != null) {
+      EventAdmin eventAdmin = context.getService(EventAdmin.class);
+      if (eventAdmin != null) {
+        eventAdmin.sendEvent(DamEvent.assetCreated(path, resourceResolver.getUserID()).toEvent());
+      }
+    }
+
+    return resourceResolver.getResource(path).adaptTo(ContentFragment.class);
   }
 
   /**
