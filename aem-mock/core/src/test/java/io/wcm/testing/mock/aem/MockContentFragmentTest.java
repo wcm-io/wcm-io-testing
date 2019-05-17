@@ -28,7 +28,10 @@ import org.junit.Test;
 
 import com.adobe.cq.dam.cfm.ContentElement;
 import com.adobe.cq.dam.cfm.ContentFragment;
+import com.adobe.cq.dam.cfm.ContentVariation;
+import com.adobe.cq.dam.cfm.VariationTemplate;
 import com.day.cq.dam.api.DamConstants;
+import com.google.common.collect.ImmutableList;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -61,6 +64,28 @@ public class MockContentFragmentTest {
     assertEquals("123", cf.getElement("param2").getContent());
     assertEquals("true", cf.getElement("param3").getContent());
     assertEquals("v1\nv2", cf.getElement("param4").getContent());
+
+    // update data
+    ContentElement param1 = cf.getElement("param1");
+    param1.setContent("new_value", null);
+    assertEquals("new_value", param1.getContent());
+
+    // create variation
+    VariationTemplate varTemplate = cf.createVariation("v1", "V1", "desc1");
+    ContentVariation var = param1.createVariation(varTemplate);
+    assertEquals("v1", var.getName());
+    assertEquals("V1", var.getTitle());
+    assertEquals("desc1", var.getDescription());
+    var.setContent("var_value", null);
+    assertEquals("var_value", var.getContent());
+
+    assertEquals(1, ImmutableList.copyOf(cf.listAllVariations()).size());
+    assertEquals(1, ImmutableList.copyOf(param1.getVariations()).size());
+    var = param1.getVariation("v1");
+    assertEquals("v1", var.getName());
+
+    // remove variation
+    param1.removeVariation(var);
   }
 
   @Test
@@ -86,6 +111,29 @@ public class MockContentFragmentTest {
     ContentElement contentElement = cf.getElement("main");
     assertEquals("<p>Text</p>", contentElement.getContent());
     assertEquals("text/html", contentElement.getContentType());
+
+    // update text
+    contentElement.setContent("Text", "text/plain");
+    assertEquals("Text", contentElement.getContent());
+    assertEquals("text/plain", contentElement.getContentType());
+
+    // create variation
+    VariationTemplate varTemplate = cf.createVariation("v1", "V1", "desc1");
+    ContentVariation var = contentElement.createVariation(varTemplate);
+    assertEquals("v1", var.getName());
+    assertEquals("V1", var.getTitle());
+    assertEquals("desc1", var.getDescription());
+    var.setContent("Var-Text", "text/plain");
+    assertEquals("Var-Text", var.getContent());
+    assertEquals("text/plain", var.getContentType());
+
+    assertEquals(1, ImmutableList.copyOf(cf.listAllVariations()).size());
+    assertEquals(1, ImmutableList.copyOf(contentElement.getVariations()).size());
+    var = contentElement.getVariation("v1");
+    assertEquals("v1", var.getName());
+
+    // remove variation
+    contentElement.removeVariation(var);
   }
 
 }

@@ -25,7 +25,10 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 import org.apache.sling.api.resource.ModifiableValueMap;
+import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceUtil;
 
 import com.adobe.cq.dam.cfm.ContentElement;
 import com.adobe.cq.dam.cfm.ContentFragment;
@@ -34,16 +37,15 @@ import com.adobe.cq.dam.cfm.ElementTemplate;
 import com.adobe.cq.dam.cfm.FragmentTemplate;
 import com.adobe.cq.dam.cfm.VariationDef;
 import com.adobe.cq.dam.cfm.VariationTemplate;
-import com.adobe.cq.dam.cfm.VersionDef;
-import com.adobe.cq.dam.cfm.VersionedContent;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Mock implementation of {@link ContentFragment}.
  */
-class MockContentFragment implements ContentFragment {
+class MockContentFragment extends MockContentFragment_Versionable implements ContentFragment {
 
   private final Resource assetResource;
   private final Asset asset;
@@ -133,12 +135,12 @@ class MockContentFragment implements ContentFragment {
   public Iterator<ContentElement> getElements() {
     if (structuredDataProps != null) {
       return structuredDataProps.keySet().stream()
-          .map(key -> (ContentElement)new MockContentFragment_ContentElement(this, key))
+          .map(key -> (ContentElement)new MockContentFragment_ContentElement_Structured(this, key, structuredDataProps))
           .iterator();
     }
     else if (modelElementsResource != null) {
       return StreamSupport.stream(modelElementsResource.getChildren().spliterator(), false)
-          .map(resource -> (ContentElement)new MockContentFragment_ContentElement(this, resource))
+          .map(resource -> (ContentElement)new MockContentFragment_ContentElement_Text(this, resource))
           .iterator();
     }
     else {
@@ -150,13 +152,13 @@ class MockContentFragment implements ContentFragment {
   public ContentElement getElement(String elementName) {
     if (structuredDataProps != null) {
       if (structuredDataProps.containsKey(elementName)) {
-        return new MockContentFragment_ContentElement(this, elementName);
+        return new MockContentFragment_ContentElement_Structured(this, elementName, structuredDataProps);
       }
     }
     else if (modelElementsResource != null) {
       Resource resource = modelElementsResource.getChild(elementName);
       if (resource != null) {
-        return new MockContentFragment_ContentElement(this, resource);
+        return new MockContentFragment_ContentElement_Text(this, resource);
       }
     }
     return null;
@@ -181,13 +183,39 @@ class MockContentFragment implements ContentFragment {
     return this.contentResource;
   }
 
-  ModifiableValueMap getStructuredDataProps() {
-    return this.structuredDataProps;
+  @Override
+  public VariationTemplate createVariation(String name, String title, String description) throws ContentFragmentException {
+    ResourceResolver resourceResolver = contentResource.getResourceResolver();
+    try {
+      Resource variations = ResourceUtil.getOrCreateResource(resourceResolver, contentResource.getPath() + "/model/variations",
+          JcrConstants.NT_UNSTRUCTURED, JcrConstants.NT_UNSTRUCTURED, false);
+      if (variations.getChild(name) != null) {
+        throw new ContentFragmentException("Variation " + name + " already exists.");
+      }
+      Resource child = resourceResolver.create(variations, name, ImmutableMap.<String, Object>of(
+          "name", name,
+          JcrConstants.JCR_TITLE, title,
+          JcrConstants.JCR_DESCRIPTION, description));
+      return new MockContentFragment_VariationDef(child);
+    }
+    catch (PersistenceException ex) {
+      throw new ContentFragmentException("Unable to create variation: " + name, ex);
+    }
+  }
+
+  @Override
+  public Iterator<VariationDef> listAllVariations() {
+    Resource variations = contentResource.getChild("model/variations");
+    if (variations == null) {
+      return Collections.emptyIterator();
+    }
+    return StreamSupport.stream(variations.getChildren().spliterator(), false)
+        .map(resource -> (VariationDef)new MockContentFragment_VariationDef(resource))
+        .iterator();
   }
 
 
   // --- unsupported operations ---
-
 
   @Override
   public FragmentTemplate getTemplate() {
@@ -196,16 +224,6 @@ class MockContentFragment implements ContentFragment {
 
   @Override
   public ContentElement createElement(ElementTemplate template) throws ContentFragmentException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public VariationTemplate createVariation(String name, String title, String description) throws ContentFragmentException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Iterator<VariationDef> listAllVariations() {
     throw new UnsupportedOperationException();
   }
 
@@ -221,21 +239,6 @@ class MockContentFragment implements ContentFragment {
 
   @Override
   public void removeAssociatedContent(Resource content) throws ContentFragmentException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public VersionDef createVersion(String label, String comment) throws ContentFragmentException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public VersionedContent getVersionedContent(VersionDef version) throws ContentFragmentException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Iterator<VersionDef> listVersions() throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
