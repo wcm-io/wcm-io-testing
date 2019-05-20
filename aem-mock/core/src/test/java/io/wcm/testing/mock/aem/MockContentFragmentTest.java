@@ -86,6 +86,13 @@ public class MockContentFragmentTest {
 
     // remove variation
     param1.removeVariation(var);
+
+    // create variation with only name
+    varTemplate = cf.createVariation("v2", null, null);
+    var = param1.createVariation(varTemplate);
+    assertEquals("v2", var.getName());
+    assertEquals("v2", var.getTitle());
+    assertEquals("", var.getDescription());
   }
 
   @Test

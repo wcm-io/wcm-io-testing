@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.5.2" date="not released">
+      <action type="add" dev="sseifert">
+        Allow empty values for title and descriptions when creating content fragment variants.
+      </action>
+    </release>
+
     <release version="2.5.0" date="2019-05-20">
       <action type="add" dev="sseifert">
         Add support for text-based and structured content fragments.
