@@ -34,6 +34,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.event.EventAdmin;
 
+import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
@@ -65,7 +66,8 @@ import com.day.cq.wcm.api.designer.Designer;
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.Rendition",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.tagging.TagManager",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.tagging.Tag",
-        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.designer.Designer"
+        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.designer.Designer",
+        AdapterFactory.ADAPTER_CLASSES + "=com.adobe.cq.dam.cfm.ContentFragment"
     })
 @ProviderType
 public class MockAemAdapterFactory implements AdapterFactory {
@@ -100,6 +102,9 @@ public class MockAemAdapterFactory implements AdapterFactory {
     }
     if (type == Tag.class && isPrimaryType(resource, TagConstants.NT_TAG)) {
       return (AdapterType)new MockTag(resource);
+    }
+    if (type == ContentFragment.class && DamUtil.isAsset(resource)) {
+      return (AdapterType)new MockContentFragment(resource);
     }
     return null;
   }
