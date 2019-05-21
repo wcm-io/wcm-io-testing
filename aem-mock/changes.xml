@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Allow empty values for title and descriptions when creating content fragment variants.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Servlet Helpers.
+      </action>
     </release>
 
     <release version="2.5.0" date="2019-05-20">
