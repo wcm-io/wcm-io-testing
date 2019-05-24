@@ -157,22 +157,17 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
       }
     }
     else if (modelElementsResource != null) {
-      //Fixing according to ContentFragment documentation for getElement method:
-      //Parameters:
-      //elementName - The name of the element; null or empty string for the "main" or "master" element
-      //See https://helpx.adobe.com/experience-manager/6-4/sites/developing/using/reference-materials/javadoc/com/adobe/cq/dam/cfm/ContentFragment.html#getElement-java.lang.String-
-
       Resource resource = null;
-      String validatedElementName = elementName;
+      String checkedElementName = elementName;
       if(elementName == null || elementName.equals("")) {
-    	validatedElementName = "main";
-    	resource = modelElementsResource.getChild(elementName);
+    	checkedElementName = "main";
+    	resource = modelElementsResource.getChild(checkedElementName);
     	if (resource == null) {
-          validatedElementName = "master";
-          resource = modelElementsResource.getChild(elementName);
+        checkedElementName = "master";
+          resource = modelElementsResource.getChild(checkedElementName);
         }
       } else {
-    	  resource = modelElementsResource.getChild(validatedElementName);
+    	  resource = modelElementsResource.getChild(checkedElementName);
       }
       
       if (resource != null) {
