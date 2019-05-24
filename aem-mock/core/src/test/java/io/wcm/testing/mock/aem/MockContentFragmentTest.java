@@ -115,6 +115,16 @@ public class MockContentFragmentTest {
     assertTrue(cf.getElements().hasNext());
     assertTrue(cf.hasElement("main"));
 
+    //getElement with null param should act as if "main" param was passed
+    ContentElement contentElementEmptyParam = cf.getElement("");
+    assertEquals("<p>Text</p>", contentElementEmptyParam.getContent());
+    assertEquals("text/html", contentElementEmptyParam.getContentType());
+    
+    //getElement with null param should act as if "main" param was passed
+    ContentElement contentElementNullParam = cf.getElement(null);
+    assertEquals("<p>Text</p>", contentElementNullParam.getContent());
+    assertEquals("text/html", contentElementNullParam.getContentType());
+
     ContentElement contentElement = cf.getElement("main");
     assertEquals("<p>Text</p>", contentElement.getContent());
     assertEquals("text/html", contentElement.getContentType());
