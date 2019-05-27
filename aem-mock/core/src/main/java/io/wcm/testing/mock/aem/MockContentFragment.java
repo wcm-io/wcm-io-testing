@@ -157,7 +157,17 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
       }
     }
     else if (modelElementsResource != null) {
-      Resource resource = modelElementsResource.getChild(elementName);
+      Resource resource = null;
+      if (StringUtils.isEmpty(elementName)) {
+        // if parameter is null or empty lookup "main" and "master" following the contract from the javadocs
+        resource = modelElementsResource.getChild("main");
+        if (resource == null) {
+          resource = modelElementsResource.getChild("master");
+        }
+      }
+      else {
+        resource = modelElementsResource.getChild(elementName);
+      }
       if (resource != null) {
         return new MockContentFragment_ContentElement_Text(this, resource);
       }
