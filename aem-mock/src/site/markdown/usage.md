@@ -298,5 +298,5 @@ More examples:
 [sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
 [wcm-io-mock-sling]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/main/java/io/wcm/testing/mock/wcmio/sling/ContextPlugins.java
 [wcm-io-mock-sling-test]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/test/java/io/wcm/testing/mock/wcmio/sling/MockSlingExtensionsTest.java
-[wcm-io-sling-commons]: http://wcm.io/sling/commons/
-[wcm-io-sling-models]: http://wcm.io/sling/models/
+[wcm-io-sling-commons]: https://wcm.io/sling/commons/
+[wcm-io-sling-models]: https://wcm.io/sling/models/

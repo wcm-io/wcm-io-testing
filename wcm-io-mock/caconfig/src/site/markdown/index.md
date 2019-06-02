@@ -20,4 +20,4 @@ Helps setting up mock environment for [wcm.io Context-Aware Configuration][cacon
 |0.x                                             |AEM 6.0 and up
 
 
-[caconfig]: http://wcm.io/caconfig/
+[caconfig]: https://wcm.io/caconfig/

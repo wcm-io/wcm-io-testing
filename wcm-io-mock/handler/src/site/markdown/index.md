@@ -20,4 +20,4 @@ Helps setting up mock environment for [wcm.io Handler][handler].
 |0.x                         |AEM 6.0 and up
 
 
-[handler]: http://wcm.io/handler/
+[handler]: https://wcm.io/handler/
