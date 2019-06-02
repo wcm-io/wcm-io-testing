@@ -294,8 +294,8 @@ More examples:
 
 [mockito-junit4-testrunner]: https://www.javadoc.io/page/org.mockito/mockito-core/latest/org/mockito/junit/MockitoJUnitRunner.html
 [mockito-junit5-extension]: https://www.javadoc.io/page/org.mockito/mockito-junit-jupiter/latest/org/mockito/junit/jupiter/MockitoExtension.html
-[sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
-[sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
+[sling-mock]: https://sling.apache.org/documentation/development/sling-mock.html
+[sling-mock-rrtypes]: https://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
 [wcm-io-mock-sling]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/main/java/io/wcm/testing/mock/wcmio/sling/ContextPlugins.java
 [wcm-io-mock-sling-test]: https://github.com/wcm-io/wcm-io-testing/blob/develop/wcm-io-mock/sling/src/test/java/io/wcm/testing/mock/wcmio/sling/MockSlingExtensionsTest.java
 [wcm-io-sling-commons]: https://wcm.io/sling/commons/

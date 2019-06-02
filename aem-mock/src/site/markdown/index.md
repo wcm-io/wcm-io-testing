@@ -47,10 +47,10 @@ The mock implementation supports:
 * [adaptTo() 2014 Lightning Talk: Mock AEM & Co for Unit Tests][adaptto-talk-2014-mock-aem-unit-tests]
 
 
-[osgi-mock]: http://sling.apache.org/documentation/development/osgi-mock.html
-[jcr-mock]: http://sling.apache.org/documentation/development/jcr-mock.html
-[sling-mock]: http://sling.apache.org/documentation/development/sling-mock.html
-[sling-mock-rrtypes]: http://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
+[osgi-mock]: https://sling.apache.org/documentation/development/osgi-mock.html
+[jcr-mock]: https://sling.apache.org/documentation/development/jcr-mock.html
+[sling-mock]: https://sling.apache.org/documentation/development/sling-mock.html
+[sling-mock-rrtypes]: https://sling.apache.org/documentation/development/sling-mock.html#resource-resolver-types
 [adaptto-talk-2018-junit5-sling-aem-mocks]: https://adapt.to/2018/en/schedule/junit-5-and-sling-aem-mocks.html
 [adaptto-talk-2016-unittesting-sling-aem-mocks]: https://adapt.to/2016/en/schedule/unit-testing-with-sling-aem-mocks.html
 [adaptto-talk-2014-mock-aem-unit-tests]: https://adapt.to/2014/en/schedule/lightning-talks.html
