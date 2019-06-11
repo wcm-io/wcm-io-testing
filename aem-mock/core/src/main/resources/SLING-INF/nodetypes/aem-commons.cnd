@@ -153,11 +153,9 @@
  * @node cq:actionConfigs widget configurations for edit bar or menu items.
  * @prop cq:emptyText text to be displayed if not visual content is present
  * @node cq:dropTargets collection of {@link cq:DropTargetConfig} nodes.
- * @prop cq:inherit if true, missing values will be inherited from the super config
   */
 [cq:EditConfig] > nt:unstructured, nt:hierarchyNode
   orderable
-  - cq:inherit (boolean)
   - cq:dialogMode (string) < 'auto', 'floating', 'inline'
   + cq:inplaceEditing (cq:InplaceEditingConfig) = cq:InplaceEditingConfig
   - cq:layout (string) < 'editbar', 'rollover', 'auto'
@@ -167,7 +165,6 @@
   - cq:emptyText (string)
   + cq:dropTargets (nt:base) = nt:unstructured
   + cq:listeners (nt:base) = cq:EditListenersConfig
-  - cq:disableTargeting (boolean)   /* this is "+" in the original file which is definitely wrong - changed to "-" */
 
 /**
  * Configures one drop target of a component. The name of the this node will

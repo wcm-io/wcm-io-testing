@@ -67,7 +67,8 @@ public final class TestAemContext {
             ImmutableList.of("SLING-INF/nodetypes/aem-core-replication.cnd",
                 "SLING-INF/nodetypes/aem-tagging.cnd",
                 "SLING-INF/nodetypes/aem-commons.cnd",
-                "SLING-INF/nodetypes/aem-dam.cnd"),
+                "SLING-INF/nodetypes/aem-dam.cnd",
+                "SLING-INF/nodetypes/aem-dam1.cnd"),
                 context.resourceResolverType().getNodeTypeMode());
       }
       catch (RepositoryException ex) {

@@ -31,6 +31,9 @@
         MockContentFragment.getElement: Fallback to "main" and "master" elements if element name is null or empty string.
       </action>
       <action type="update" dev="sseifert">
+        Update subset of AEM built-in node types.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest Servlet Helpers.
       </action>
     </release>

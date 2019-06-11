@@ -1,0 +1,8 @@
+<dam  = 'http://www.day.com/dam/1.0'>
+
+[dam:Thumbnails]
+  mixin
+  + dam:thumbnails (nt:folder)
+[dam:Metadata]
+  mixin
+  + metadata (nt:unstructured)
