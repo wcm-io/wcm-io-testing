@@ -24,7 +24,7 @@
   <body>
 
     <release version="2.5.2" date="not released">
-      <action type="add" dev="sseifert">
+      <action type="update" dev="sseifert">
         Allow empty values for title and descriptions when creating content fragment variants.
       </action>
       <action type="update" dev="rijoalvi">
