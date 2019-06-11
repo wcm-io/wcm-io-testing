@@ -34,7 +34,7 @@
         Update subset of AEM built-in node types.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest Servlet Helpers.
+        Update to latest Servlet Helpers, Sling Mock, Sling Mock Oak.
       </action>
     </release>
 
