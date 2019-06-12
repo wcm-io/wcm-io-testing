@@ -253,4 +253,10 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
     throw new UnsupportedOperationException();
   }
 
+  // AEM 6.4/6.5
+  @SuppressWarnings("unused")
+  public void removeVariation(String variation) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
 }

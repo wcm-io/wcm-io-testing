@@ -36,6 +36,7 @@ import com.google.common.collect.ImmutableList;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
+@SuppressWarnings("null")
 public class MockContentFragmentTest {
 
   @Rule
@@ -119,7 +120,7 @@ public class MockContentFragmentTest {
     ContentElement contentElementEmptyParam = cf.getElement("");
     assertEquals("<p>Text</p>", contentElementEmptyParam.getContent());
     assertEquals("text/html", contentElementEmptyParam.getContentType());
-    
+
     //getElement with null param should act as if "main" param was passed
     ContentElement contentElementNullParam = cf.getElement(null);
     assertEquals("<p>Text</p>", contentElementNullParam.getContent());
