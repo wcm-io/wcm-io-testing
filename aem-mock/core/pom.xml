@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-    <version>2.4.7-SNAPSHOT</version>
+    <version>2.5.1-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -304,7 +304,8 @@
               SLING-INF/nodetypes/aem-core-replication.cnd,
               SLING-INF/nodetypes/aem-tagging.cnd,
               SLING-INF/nodetypes/aem-commons.cnd,
-              SLING-INF/nodetypes/aem-dam.cnd
+              SLING-INF/nodetypes/aem-dam.cnd,
+              SLING-INF/nodetypes/aem-dam1.cnd
             </Sling-Nodetypes>
           </instructions>
         </configuration>

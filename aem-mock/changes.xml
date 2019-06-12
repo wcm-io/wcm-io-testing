@@ -23,7 +23,28 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.4.8" date="not releaed">
+    <release version="2.5.2" date="not released">
+      <action type="update" dev="sseifert">
+        Allow empty values for title and descriptions when creating content fragment variants.
+      </action>
+      <action type="update" dev="rijoalvi">
+        MockContentFragment.getElement: Fallback to "main" and "master" elements if element name is null or empty string.
+      </action>
+      <action type="update" dev="sseifert">
+        Update subset of AEM built-in node types.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Servlet Helpers, Sling Mock, Sling Mock Oak.
+      </action>
+    </release>
+
+    <release version="2.5.0" date="2019-05-20">
+      <action type="add" dev="sseifert">
+        Add support for text-based and structured content fragments.
+      </action>
+    </release>
+
+    <release version="2.4.8" date="2019-05-09">
       <action type="update" dev="sseifert">
         Update to latest Sling Mock, Sling Mock Oak.
       </action>

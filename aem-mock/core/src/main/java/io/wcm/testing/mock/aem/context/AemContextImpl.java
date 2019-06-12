@@ -154,7 +154,7 @@ public class AemContextImpl extends SlingContextImpl {
   @Override
   public @NotNull ContentBuilder create() {
     if (this.contentBuilder == null) {
-      this.contentBuilder = new ContentBuilder(resourceResolver());
+      this.contentBuilder = new ContentBuilder(this);
     }
     return (ContentBuilder)this.contentBuilder;
   }
