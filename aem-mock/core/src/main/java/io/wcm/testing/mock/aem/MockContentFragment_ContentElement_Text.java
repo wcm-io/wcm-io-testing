@@ -173,4 +173,16 @@ class MockContentFragment_ContentElement_Text extends MockContentFragment_Versio
     throw new UnsupportedOperationException();
   }
 
+  /*  -- compiles only with uber-jar >= 6.4.0 --
+  // AEM 6.4/6.5
+  public FragmentData getValue() {
+    throw new UnsupportedOperationException();
+  }
+  
+  // AEM 6.4/6.5
+  public void setValue(FragmentData arg0) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+  */
+
 }
