@@ -42,10 +42,10 @@ The mock implementation supports:
 
 ### Further Resources
 
+* [Ask the AEM Community Expert March 2019: Unit Testing with AEM Mocks][atace-03-19-unit-testing-with-aem-mocks-video] | [Slides][atace-03-19-unit-testing-with-aem-mocks-slides]
 * [adaptTo() 2018 Talk: JUnit 5 and Sling/AEM Mocks][adaptto-talk-2018-junit5-sling-aem-mocks]
 * [adaptTo() 2016 Talk: Unit Testing with Sling & AEM Mocks][adaptto-talk-2016-unittesting-sling-aem-mocks]
 * [adaptTo() 2014 Lightning Talk: Mock AEM & Co for Unit Tests][adaptto-talk-2014-mock-aem-unit-tests]
-* [Ask the AEM Community Expert 03'19: Unit Testing with AEM Mocks][atace-03-19-unit-testing-with-aem-mocks-video] | [Slides][atace-03-19-unit-testing-with-aem-mocks-slides]
 
 
 [osgi-mock]: https://sling.apache.org/documentation/development/osgi-mock.html
