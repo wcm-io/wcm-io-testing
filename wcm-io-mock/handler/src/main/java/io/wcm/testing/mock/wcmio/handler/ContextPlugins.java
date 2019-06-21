@@ -58,8 +58,9 @@ public final class ContextPlugins {
 
     // url handler
     registerOptional(context, "io.wcm.handler.url.impl.SiteRootDetectorImpl"); // since URL Handler 1.1.0
-    registerOptional(context, "io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory"); // URL Handler 1.0.0
+    registerOptional(context, "io.wcm.handler.url.impl.UrlHandlerConfigAdapterFactory"); // since URL Handler 1.0.0
     registerOptional(context, "io.wcm.handler.url.impl.UrlHandlerAdapterFactory"); // since URL Handler 1.1.0
+    registerOptional(context, "io.wcm.handler.url.impl.clientlib.ClientlibProxyRewriterImpl"); // since URL Handler 1.3.0
     context.registerInjectActivateService(new DefaultUrlHandlerConfig());
 
     // media handler
@@ -80,7 +81,6 @@ public final class ContextPlugins {
    * Registers an OSGi service if the class exists. Ignores the call if not.
    * @param className Class name
    */
-  @SuppressWarnings("null")
   private static void registerOptional(AemContextImpl context, String className) {
     try {
       Class clazz = Class.forName(className);
