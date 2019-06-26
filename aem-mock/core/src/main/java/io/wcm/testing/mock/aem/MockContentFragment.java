@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -156,7 +157,17 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
       }
     }
     else if (modelElementsResource != null) {
-      Resource resource = modelElementsResource.getChild(elementName);
+      Resource resource = null;
+      if (StringUtils.isEmpty(elementName)) {
+        // if parameter is null or empty lookup "main" and "master" following the contract from the javadocs
+        resource = modelElementsResource.getChild("main");
+        if (resource == null) {
+          resource = modelElementsResource.getChild("master");
+        }
+      }
+      else {
+        resource = modelElementsResource.getChild(elementName);
+      }
       if (resource != null) {
         return new MockContentFragment_ContentElement_Text(this, resource);
       }
@@ -194,8 +205,8 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
       }
       Resource child = resourceResolver.create(variations, name, ImmutableMap.<String, Object>of(
           "name", name,
-          JcrConstants.JCR_TITLE, title,
-          JcrConstants.JCR_DESCRIPTION, description));
+          JcrConstants.JCR_TITLE, StringUtils.defaultString(title, name),
+          JcrConstants.JCR_DESCRIPTION, StringUtils.defaultString(description)));
       return new MockContentFragment_VariationDef(child);
     }
     catch (PersistenceException ex) {
@@ -239,6 +250,12 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
 
   @Override
   public void removeAssociatedContent(Resource content) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.4/6.5
+  @SuppressWarnings("unused")
+  public void removeVariation(String variation) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 

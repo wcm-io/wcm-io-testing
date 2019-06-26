@@ -19,4 +19,4 @@ Helps setting up mock environment for [wcm.io Configuration][config].
 |0.x                               |AEM 6.0 and up
 
 
-[config]: http://wcm.io/config/
+[config]: https://wcm.io/config/

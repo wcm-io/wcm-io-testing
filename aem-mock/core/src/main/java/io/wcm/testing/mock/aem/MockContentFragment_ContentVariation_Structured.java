@@ -85,4 +85,28 @@ class MockContentFragment_ContentVariation_Structured extends MockContentFragmen
     throw new UnsupportedOperationException();
   }
 
+  // AEM 6.4/6.5
+  @SuppressWarnings("unused")
+  public void setTitle(String title) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.4/6.5
+  @SuppressWarnings("unused")
+  public void setDescription(String description) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
+  /*  -- compiles only with uber-jar >= 6.4.0 --
+  // AEM 6.4/6.5
+  public FragmentData getValue() {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.4/6.5
+  public void setValue(FragmentData arg0) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+  */
+
 }

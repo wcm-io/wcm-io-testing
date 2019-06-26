@@ -37,6 +37,7 @@
 <xmpPLUS = 'http://ns.adobe.com/xap/1.0/PLUS/'>
 <xmpRights = 'http://ns.adobe.com/xap/1.0/rights/'>
 <xmpTPg = 'http://ns.adobe.com/xap/1.0/t/pg/'>
+<stock = 'http://ns.adobe.com/stock/1.0/'>
 
 [xmp:Property] > nt:unstructured
   - namespace (String)

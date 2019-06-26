@@ -51,4 +51,16 @@ class MockContentFragment_VariationDef implements VariationDef, VariationTemplat
     return resource.getValueMap().get(JcrConstants.JCR_DESCRIPTION, String.class);
   }
 
+  // AEM 6.4/6.5
+  @SuppressWarnings("unused")
+  public void setTitle(String title) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.4/6.5
+  @SuppressWarnings("unused")
+  public void setDescription(String description) {
+    throw new UnsupportedOperationException();
+  }
+
 }

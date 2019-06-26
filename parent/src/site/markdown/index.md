@@ -19,9 +19,9 @@ Helper tools for supporting Unit Tests, Integration test and test automation in 
 
 Initially wcm.io provided mocking implementations for JCR, OSGi and Sling. These implementations are now part of the Apache Sling project and maintained by the Sling Community:
 
-* [Sling Mocks](http://sling.apache.org/documentation/development/sling-mock.html)
-* [OSGi Mocks](http://sling.apache.org/documentation/development/osgi-mock.html)
-* [JCR Mocks](http://sling.apache.org/documentation/development/jcr-mock.html)
+* [Sling Mocks](https://sling.apache.org/documentation/development/sling-mock.html)
+* [OSGi Mocks](https://sling.apache.org/documentation/development/osgi-mock.html)
+* [JCR Mocks](https://sling.apache.org/documentation/development/jcr-mock.html)
 
 
 ### GitHub Repository
