@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -75,10 +76,38 @@ public class MockAssetManagerTest {
     assertEquals(asset.getPath(), damEvent.get().getAssetPath());
   }
 
+  @Test
+  public void testCreateAssetWithoutOriginalRendition() throws IOException {
+    String assetName = "myasset.gif";
+
+    Asset asset = context.assetManager().createAsset(context.uniqueRoot().dam() + '/' + assetName, null, null, true);
+
+    assertNotNull(asset);
+    assertNull(asset.getOriginal());
+    assertEquals(asset.getName(), assetName);
+    assertEquals("", asset.getMimeType());
+
+    Optional<DamEvent> damEvent = damEventHandler.getLastEvent();
+    assertTrue(damEvent.isPresent());
+    assertEquals(DamEvent.Type.ASSET_CREATED, damEvent.get().getType());
+    assertEquals(asset.getPath(), damEvent.get().getAssetPath());
+
+    // update asset with original rendition by calling createAsset method again
+    InputStream testImage = openTestAsset();
+    String mimeType = "image/gif";
+
+    asset = context.assetManager().createAsset(context.uniqueRoot().dam() + '/' + assetName, testImage, "image/gif", true);
+
+    assertNotNull(asset);
+    assertNotNull(asset.getOriginal().getStream());
+    assertTrue(IOUtils.contentEquals(openTestAsset(), asset.getOriginal().getStream()));
+    assertEquals(asset.getName(), assetName);
+    assertEquals(asset.getMimeType(), mimeType);
+  }
+
   private InputStream openTestAsset() {
     return getClass().getClassLoader().getResourceAsStream("sample-image.gif");
   }
-
 
   static final class DamEventHandler implements EventHandler {
 
