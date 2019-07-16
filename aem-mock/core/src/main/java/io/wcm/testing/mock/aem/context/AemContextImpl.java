@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.jackrabbit.vault.packaging.impl.PackagingImpl;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
@@ -42,6 +43,7 @@ import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
+import io.wcm.testing.mock.aem.granite.MockResourceCollectionManager;
 
 /**
  * Defines AEM context objects with lazy initialization.
@@ -64,6 +66,10 @@ public class AemContextImpl extends SlingContextImpl {
     registerInjectActivateService(new MockLayerAdapterFactory());
     registerInjectActivateService(new MockAemBindingsValuesProvider(),
         MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
+
+    // Granite resource collection manager
+    registerInjectActivateService(new PackagingImpl());
+    registerInjectActivateService(new MockResourceCollectionManager());
   }
 
   @Override

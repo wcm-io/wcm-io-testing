@@ -305,7 +305,8 @@
               SLING-INF/nodetypes/aem-tagging.cnd,
               SLING-INF/nodetypes/aem-commons.cnd,
               SLING-INF/nodetypes/aem-dam.cnd,
-              SLING-INF/nodetypes/aem-dam1.cnd
+              SLING-INF/nodetypes/aem-dam1.cnd,
+              SLING-INF/nodetypes/vlt.cnd
             </Sling-Nodetypes>
           </instructions>
         </configuration>
