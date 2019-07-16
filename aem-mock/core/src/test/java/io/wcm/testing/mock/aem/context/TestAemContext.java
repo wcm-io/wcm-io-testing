@@ -39,7 +39,7 @@ public final class TestAemContext {
   /**
    * All resource resolver types the unit tests of aem-mock should run with.
    */
-  private static final @NotNull ResourceResolverType @NotNull [] ALL_TYPES = new @NotNull ResourceResolverType[] {
+  public static final @NotNull ResourceResolverType @NotNull [] ALL_TYPES = new @NotNull ResourceResolverType[] {
     ResourceResolverType.JCR_MOCK,
     ResourceResolverType.RESOURCERESOLVER_MOCK,
     ResourceResolverType.JCR_OAK

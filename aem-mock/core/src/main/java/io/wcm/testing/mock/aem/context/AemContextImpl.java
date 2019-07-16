@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.jackrabbit.vault.packaging.impl.PackagingImpl;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
@@ -68,7 +67,6 @@ public class AemContextImpl extends SlingContextImpl {
         MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
 
     // Granite resource collection manager
-    registerInjectActivateService(new PackagingImpl());
     registerInjectActivateService(new MockResourceCollectionManager());
   }
 

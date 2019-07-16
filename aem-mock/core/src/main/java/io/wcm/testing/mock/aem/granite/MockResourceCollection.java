@@ -28,8 +28,6 @@ import javax.jcr.Session;
 
 import org.apache.jackrabbit.vault.fs.api.ProgressTrackerListener;
 import org.apache.jackrabbit.vault.fs.api.WorkspaceFilter;
-import org.apache.jackrabbit.vault.packaging.JcrPackage;
-import org.apache.jackrabbit.vault.packaging.JcrPackageDefinition;
 
 import com.adobe.granite.workflow.collection.ResourceCollection;
 
@@ -38,29 +36,30 @@ import com.adobe.granite.workflow.collection.ResourceCollection;
  */
 class MockResourceCollection implements ResourceCollection {
 
-  private final JcrPackage jcrPackage;
+  private final String packagePath;
+  private final WorkspaceFilter packageFilter;
+  private final Session session;
 
-  MockResourceCollection(JcrPackage jcrPackage) {
-    this.jcrPackage = jcrPackage;
+  MockResourceCollection(String packagePath, WorkspaceFilter packageFilter, Session session) {
+    this.packagePath = packagePath;
+    this.packageFilter = packageFilter;
+    this.session = session;
   }
 
   @Override
   public List<Node> list(String[] allowedNodesTypes) throws RepositoryException {
-    Session session = jcrPackage.getNode().getSession();
     List<Node> nodes = new ArrayList<>();
     FilterPathCollector filterPathCollector = new FilterPathCollector();
-    JcrPackageDefinition packageDef = jcrPackage.getDefinition();
-    WorkspaceFilter packageFilter = packageDef.getMetaInf().getFilter();
 
     if (packageFilter.getFilterSets().size() == 1) {
-      String path = packageFilter.getFilterSets().get(0).getRoot();
-      addNode(session, nodes, path, allowedNodesTypes);
+      String filterPath = packageFilter.getFilterSets().get(0).getRoot();
+      addNode(nodes, filterPath, allowedNodesTypes);
     }
     else {
       packageFilter.dumpCoverage(session, filterPathCollector, true);
       List<String> list = filterPathCollector.getPaths();
-      for (String path : list) {
-        addNode(session, nodes, path, allowedNodesTypes);
+      for (String filterPath : list) {
+        addNode(nodes, filterPath, allowedNodesTypes);
       }
     }
     return nodes;
@@ -68,17 +67,10 @@ class MockResourceCollection implements ResourceCollection {
 
   @Override
   public String getPath() {
-    try {
-      return jcrPackage.getNode().getPath();
-    }
-    catch (RepositoryException ex) {
-      // ignore
-      return null;
-    }
+    return packagePath;
   }
 
-  private void addNode(Session session, List<Node> nodes, String path,
-      String[] allowedNodeTypes) throws RepositoryException {
+  private void addNode(List<Node> nodes, String path, String[] allowedNodeTypes) throws RepositoryException {
     if (session.nodeExists(path)) {
       Node node = session.getNode(path);
       if (isAllowedNodeType(node, allowedNodeTypes)) {

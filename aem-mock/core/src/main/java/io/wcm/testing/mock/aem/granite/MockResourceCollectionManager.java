@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem.granite;
 
 import static org.apache.jackrabbit.vault.packaging.JcrPackage.NT_VLT_PACKAGE_DEFINITION;
+import static org.apache.jackrabbit.vault.packaging.JcrPackageDefinition.NN_FILTER;
 
 import java.util.List;
 import java.util.Map;
@@ -30,11 +31,9 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.vault.packaging.JcrPackage;
-import org.apache.jackrabbit.vault.packaging.JcrPackageManager;
-import org.apache.jackrabbit.vault.packaging.Packaging;
+import org.apache.jackrabbit.vault.fs.api.WorkspaceFilter;
+import org.apache.jackrabbit.vault.packaging.impl.JcrWorkspaceFilter;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,19 +49,17 @@ public final class MockResourceCollectionManager implements ResourceCollectionMa
 
   private static final Logger log = LoggerFactory.getLogger(MockResourceCollectionManager.class);
 
-  @Reference
-  private Packaging packaging;
-
   @Override
   public ResourceCollection createCollection(Node node) {
     try {
-      JcrPackageManager packageManager = packaging.getPackageManager(node.getSession());
-      JcrPackage jcrPackage = packageManager.open(node.getParent().getParent());
-      if (jcrPackage == null) {
-        log.info("Resource collection at {} is not a package.", node.getPath());
-        return null;
+      if (node.isNodeType(NT_VLT_PACKAGE_DEFINITION) && node.hasNode(NN_FILTER)) {
+        String packagePath = node.getParent().getParent().getPath();
+        WorkspaceFilter packageFilter = JcrWorkspaceFilter.loadFilter(node);
+        return new MockResourceCollection(packagePath, packageFilter, node.getSession());
       }
-      return new MockResourceCollection(jcrPackage);
+      else {
+        log.info("Resource collection at {} is not a package.", node.getPath());
+      }
     }
     catch (RepositoryException ex) {
       log.warn("Unable to create collection.", ex);
@@ -76,7 +73,7 @@ public final class MockResourceCollectionManager implements ResourceCollectionMa
     try {
       getCollectionsForNode(baseNode, resourceCollections);
     }
-    catch (Exception ex) {
+    catch (RepositoryException ex) {
       log.warn("Unable to get resource collections for node.", ex);
     }
     return ImmutableList.copyOf(resourceCollections.values());
