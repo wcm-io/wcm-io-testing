@@ -19,6 +19,15 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_DESCRIPTION;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_LASTMODIFIED;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.wcm.api.NameConstants.NN_ICON_PNG;
+import static com.day.cq.wcm.api.NameConstants.NN_THUMBNAIL_PNG;
+import static com.day.cq.wcm.api.NameConstants.PN_RANKING;
+import static com.day.cq.wcm.api.NameConstants.PN_SHORT_TITLE;
+
 import java.util.Calendar;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,14 +38,15 @@ import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.io.JSONWriter;
 import org.jetbrains.annotations.NotNull;
 
-import com.day.cq.commons.jcr.JcrConstants;
-import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Template;
 
 /**
  * Mock implementation of {@link Template}.
  */
 class MockTemplate extends ResourceWrapper implements Template {
+
+  private static final String NN_INITIAL = "initial";
+  private static final String NN_STRUCTURE = "structure";
 
   private final Resource resource;
   private final ValueMap properties;
@@ -59,22 +69,22 @@ class MockTemplate extends ResourceWrapper implements Template {
 
   @Override
   public String getTitle() {
-    return this.properties.get(JcrConstants.JCR_TITLE, String.class);
+    return this.properties.get(JCR_TITLE, String.class);
   }
 
   @Override
   public String getShortTitle() {
-    return this.properties.get(NameConstants.PN_SHORT_TITLE, String.class);
+    return this.properties.get(PN_SHORT_TITLE, String.class);
   }
 
   @Override
   public String getDescription() {
-    return this.properties.get(JcrConstants.JCR_DESCRIPTION, String.class);
+    return this.properties.get(JCR_DESCRIPTION, String.class);
   }
 
   @Override
   public String getIconPath() {
-    Resource iconResource = this.resource.getChild(NameConstants.NN_ICON_PNG);
+    Resource iconResource = this.resource.getChild(NN_ICON_PNG);
     if (iconResource != null) {
       return iconResource.getPath();
     }
@@ -85,7 +95,7 @@ class MockTemplate extends ResourceWrapper implements Template {
 
   @Override
   public String getThumbnailPath() {
-    Resource thumbnailResource = this.resource.getChild(NameConstants.NN_THUMBNAIL_PNG);
+    Resource thumbnailResource = this.resource.getChild(NN_THUMBNAIL_PNG);
     if (thumbnailResource != null) {
       return thumbnailResource.getPath();
     }
@@ -96,7 +106,7 @@ class MockTemplate extends ResourceWrapper implements Template {
 
   @Override
   public Long getRanking() {
-    return this.properties.get(NameConstants.PN_RANKING, Long.class);
+    return this.properties.get(PN_RANKING, Long.class);
   }
 
   @Override
@@ -106,7 +116,7 @@ class MockTemplate extends ResourceWrapper implements Template {
 
   // AEM 6.3
   public Calendar getLastModified() {
-    return properties.get(JcrConstants.JCR_LASTMODIFIED, Calendar.class);
+    return properties.get(JCR_LASTMODIFIED, Calendar.class);
   }
 
   @Override
@@ -124,6 +134,28 @@ class MockTemplate extends ResourceWrapper implements Template {
       return (AdapterType)this.getResource();
     }
     return super.adaptTo(type);
+  }
+
+  @Override
+  public boolean hasStructureSupport() {
+    return resource.getChild(NN_STRUCTURE) != null;
+  }
+
+  @Override
+  public String getInitialContentPath() {
+    Resource initialContentResource;
+    if (hasStructureSupport()) {
+      initialContentResource = resource.getChild(NN_INITIAL + "/" + JCR_CONTENT);
+    }
+    else {
+      initialContentResource = resource.getChild(JCR_CONTENT);
+    }
+    if (initialContentResource != null) {
+      return initialContentResource.getPath();
+    }
+    else {
+      return null;
+    }
   }
 
 
@@ -145,22 +177,12 @@ class MockTemplate extends ResourceWrapper implements Template {
   }
 
   @Override
-  public String getInitialContentPath() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public String getPageTypePath() {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public ValueMap getProperties() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean hasStructureSupport() {
     throw new UnsupportedOperationException();
   }
 

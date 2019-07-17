@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Add mock implementations of Granite ResourceCollectionManager and ResourceCollection.
       </action>
+      <action type="add" dev="sseifert">
+        MockPageManager: Support copying initial content of structured templates as well as from classic templates.
+      </action>
       <action type="fix" dev="sseifert" issue="WTES-39">
         MockAssetManager: Allow creating assets with null InputStream and updating existing assets.
       </action>
