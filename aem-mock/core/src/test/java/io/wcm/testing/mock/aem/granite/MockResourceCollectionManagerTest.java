@@ -19,10 +19,14 @@
  */
 package io.wcm.testing.mock.aem.granite;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
 import static com.day.cq.commons.jcr.JcrConstants.JCR_PRIMARYTYPE;
 import static com.day.cq.dam.api.DamConstants.NT_DAM_ASSET;
 import static com.day.cq.wcm.api.NameConstants.NT_PAGE;
+import static org.apache.jackrabbit.vault.packaging.JcrPackage.NN_VLT_DEFINITION;
 import static org.apache.jackrabbit.vault.packaging.JcrPackage.NT_VLT_PACKAGE_DEFINITION;
+import static org.apache.jackrabbit.vault.packaging.JcrPackageDefinition.NN_FILTER;
+import static org.apache.jackrabbit.vault.packaging.JcrPackageDefinition.PN_ROOT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -126,15 +130,15 @@ public class MockResourceCollectionManagerTest {
   }
 
   private void createPackage(String path, String... filterPaths) {
-    context.create().resource(path,
+    Resource page = context.create().resource(path,
         JCR_PRIMARYTYPE, NT_PAGE);
-    context.create().resource(path + "/jcr:content",
+    Resource pageContent = context.create().resource(page, JCR_CONTENT,
         JCR_PRIMARYTYPE, "cq:PageContent");
-    Resource vltDef = context.create().resource(path + "/jcr:content/vlt:definition",
+    Resource vltDef = context.create().resource(pageContent, NN_VLT_DEFINITION,
         JCR_PRIMARYTYPE, NT_VLT_PACKAGE_DEFINITION);
     for (int i = 0; i < filterPaths.length; i++) {
-      context.create().resource(vltDef.getPath() + "/filter/item" + i,
-          "root", filterPaths[i]);
+      context.create().resource(vltDef, NN_FILTER + "/item" + i,
+          PN_ROOT, filterPaths[i]);
     }
   }
 
