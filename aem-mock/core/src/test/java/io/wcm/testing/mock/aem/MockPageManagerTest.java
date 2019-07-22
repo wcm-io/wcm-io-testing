@@ -19,6 +19,16 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_PRIMARYTYPE;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.commons.jcr.JcrConstants.NT_UNSTRUCTURED;
+import static com.day.cq.wcm.api.NameConstants.NT_TEMPLATE;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_MOD_BY;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATED;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATED_BY;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATION_ACTION;
+import static com.day.cq.wcm.api.NameConstants.PN_TEMPLATE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -46,8 +56,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.day.cq.commons.jcr.JcrConstants;
-import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
@@ -84,20 +92,23 @@ public class MockPageManagerTest {
 
   @Test
   public void testCreatePage() throws WCMException, PersistenceException {
-    testCreatePageInternal(false);
+    testCreatePageInternal(false, "/apps/sample/templates/homepage");
     verify(this.resourceResolver, never()).commit();
   }
 
   @Test
   public void testCreatePageWithAutoSave() throws WCMException, PersistenceException {
-    testCreatePageInternal(true);
+    testCreatePageInternal(true, "/apps/sample/templates/homepage");
     verify(this.resourceResolver, times(1)).commit();
   }
 
   @Test
-  public void testCreatePageWithDefaultContent() throws WCMException {
+  public void testCreatePageWithDefaultContent_Classic() throws WCMException {
     // prepare some default content for template
+    context.build().resource("/apps/sample/templates/homepage",
+        JCR_PRIMARYTYPE, NT_TEMPLATE);
     context.build().resource("/apps/sample/templates/homepage/jcr:content",
+        JCR_PRIMARYTYPE, NT_UNSTRUCTURED,
         "sling:resourceType", "/apps/sample/components/page/homepage");
     context.create().resource("/apps/sample/templates/homepage/jcr:content/node1",
         "prop1", "abc",
@@ -107,7 +118,7 @@ public class MockPageManagerTest {
     context.create().resource("/apps/sample/templates/homepage/jcr:content/node2",
         "prop4", true);
 
-    testCreatePageInternal(false);
+    testCreatePageInternal(false, "/apps/sample/templates/homepage");
 
     Resource pageResource = this.resourceResolver.getResource("/content/sample/en/test1/jcr:content");
     ValueMap props = pageResource.getValueMap();
@@ -127,21 +138,59 @@ public class MockPageManagerTest {
     assertEquals(true, props.get("prop4", Boolean.class));
   }
 
-  private void testCreatePageInternal(final boolean autoSave) throws WCMException {
-    Page page = this.pageManager.create("/content/sample/en", "test1", "/apps/sample/templates/homepage", "title1", autoSave);
+  private void testCreatePageInternal(final boolean autoSave, String template) throws WCMException {
+    Page page = this.pageManager.create("/content/sample/en", "test1", template, "title1", autoSave);
     assertNotNull(page);
 
     Resource pageResource = this.resourceResolver.getResource("/content/sample/en/test1/jcr:content");
     assertNotNull(pageResource);
     ValueMap props = pageResource.getValueMap();
-    assertEquals("title1", props.get(JcrConstants.JCR_TITLE, String.class));
-    assertEquals("/apps/sample/templates/homepage", props.get(NameConstants.PN_TEMPLATE, String.class));
+    assertEquals("title1", props.get(JCR_TITLE, String.class));
+    assertEquals(template, props.get(PN_TEMPLATE, String.class));
   }
 
   @Test
-  public void testCreatePageWithDefaultContent_WTES23() throws Exception {
+  public void testCreatePageWithDefaultContent_Classic_WTES23() throws Exception {
     context.load().json("/WTEST-23/sample_templates.json", "/content/templates");
     context.pageManager().create("/content", "", "/content/templates/sample-template", "Some title", true);
+  }
+
+  @Test
+  public void testCreatePageWithDefaultContent_StructureSupport() throws WCMException {
+    // prepare some default content for template
+    context.build().resource("/conf/app1/settings/wcm/templates/homepage",
+        JCR_PRIMARYTYPE, NT_TEMPLATE);
+    context.build().resource("/conf/app1/settings/wcm/templates/homepage/structure/jcr:content",
+        JCR_PRIMARYTYPE, NT_UNSTRUCTURED);
+    context.build().resource("/conf/app1/settings/wcm/templates/homepage/initial/jcr:content",
+        JCR_PRIMARYTYPE, NT_UNSTRUCTURED,
+        "sling:resourceType", "/apps/sample/components/page/homepage");
+    context.create().resource("/conf/app1/settings/wcm/templates/homepage/initial/jcr:content/node1",
+        "prop1", "abc",
+        "prop2", "def");
+    context.create().resource("/conf/app1/settings/wcm/templates/homepage/initial/jcr:content/node1/node11",
+        "prop3", 55);
+    context.create().resource("/conf/app1/settings/wcm/templates/homepage/initial/jcr:content/node2",
+        "prop4", true);
+
+    testCreatePageInternal(false, "/conf/app1/settings/wcm/templates/homepage");
+
+    Resource pageResource = this.resourceResolver.getResource("/content/sample/en/test1/jcr:content");
+    ValueMap props = pageResource.getValueMap();
+    assertEquals("/apps/sample/components/page/homepage", props.get("sling:resourceType", String.class));
+
+    Resource node1 = pageResource.getChild("node1");
+    props = node1.getValueMap();
+    assertEquals("abc", props.get("prop1", String.class));
+    assertEquals("def", props.get("prop2", String.class));
+
+    Resource node11 = pageResource.getChild("node1/node11");
+    props = node11.getValueMap();
+    assertEquals(55, (int)props.get("prop3", Integer.class));
+
+    Resource node2 = pageResource.getChild("node2");
+    props = node2.getValueMap();
+    assertEquals(true, props.get("prop4", Boolean.class));
   }
 
   @Test
@@ -248,11 +297,11 @@ public class MockPageManagerTest {
     }
     // set custom page properties
     Resource resource = resourceResolver.getResource("/content/sample/en");
-    ValueMap props = resource.getChild(JcrConstants.JCR_CONTENT).adaptTo(ModifiableValueMap.class);
-    props.put(NameConstants.PN_PAGE_LAST_MOD_BY, "user-with-other-name");
-    props.put(NameConstants.PN_PAGE_LAST_REPLICATED, Calendar.getInstance());
-    props.put(NameConstants.PN_PAGE_LAST_REPLICATED_BY, "user-with-other-name");
-    props.put(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION, "Activate");
+    ValueMap props = resource.getChild(JCR_CONTENT).adaptTo(ModifiableValueMap.class);
+    props.put(PN_PAGE_LAST_MOD_BY, "user-with-other-name");
+    props.put(PN_PAGE_LAST_REPLICATED, Calendar.getInstance());
+    props.put(PN_PAGE_LAST_REPLICATED_BY, "user-with-other-name");
+    props.put(PN_PAGE_LAST_REPLICATION_ACTION, "Activate");
     resourceResolver.commit();
     Calendar calendar = Calendar.getInstance();
 
@@ -262,10 +311,10 @@ public class MockPageManagerTest {
     Page page = pageManager.getPage("/content/sample/en");
     assertEquals(calendar.getTimeInMillis(), page.getLastModified().getTimeInMillis());
     assertEquals("admin", page.getLastModifiedBy());
-    props = page.adaptTo(Resource.class).getChild(JcrConstants.JCR_CONTENT).getValueMap();
-    assertNull(props.get(NameConstants.PN_PAGE_LAST_REPLICATED));
-    assertNull(props.get(NameConstants.PN_PAGE_LAST_REPLICATED_BY));
-    assertNull(props.get(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION));
+    props = page.adaptTo(Resource.class).getChild(JCR_CONTENT).getValueMap();
+    assertNull(props.get(PN_PAGE_LAST_REPLICATED));
+    assertNull(props.get(PN_PAGE_LAST_REPLICATED_BY));
+    assertNull(props.get(PN_PAGE_LAST_REPLICATION_ACTION));
   }
 
 }

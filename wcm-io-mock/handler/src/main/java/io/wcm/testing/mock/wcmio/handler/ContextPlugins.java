@@ -68,6 +68,12 @@ public final class ContextPlugins {
     context.registerInjectActivateService(new DefaultMediaHandlerConfig());
     context.registerInjectActivateService(new MediaFormatProviderManagerImpl());
 
+    // media handler rendition metadata listener service - since Media Handler 1.6.0
+    registerOptional(context, "io.wcm.handler.mediasource.dam.impl.metadata.AssetSynchonizationService");
+    registerOptional(context, "io.wcm.handler.mediasource.dam.impl.metadata.RenditionMetadataListenerService",
+        "threadPoolSize", 0, // switch to synchronous mode for unit test
+        "allowedRunMode", new String[0]); // support all run modes (unit tests use 'publish' by default)
+
     // link handler
     context.registerInjectActivateService(new LinkHandlerConfigAdapterFactory());
     context.registerInjectActivateService(new DefaultLinkHandlerConfig());
@@ -79,9 +85,11 @@ public final class ContextPlugins {
 
   /**
    * Registers an OSGi service if the class exists. Ignores the call if not.
+   * @param context AEM Context
    * @param className Class name
+   * @param properties Service properties
    */
-  private static void registerOptional(AemContextImpl context, String className) {
+  private static void registerOptional(AemContextImpl context, String className, Object... properties) {
     try {
       Class clazz = Class.forName(className);
       context.registerInjectActivateService(clazz.newInstance());

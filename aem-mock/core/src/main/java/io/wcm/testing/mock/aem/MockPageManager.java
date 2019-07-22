@@ -19,6 +19,19 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_PRIMARYTYPE;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.wcm.api.NameConstants.NT_PAGE;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_MOD;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_MOD_BY;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_PUBLISHED;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_PUBLISHED_BY;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATED;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATED_BY;
+import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATION_ACTION;
+import static com.day.cq.wcm.api.NameConstants.PN_TEMPLATE;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,9 +51,7 @@ import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.jetbrains.annotations.NotNull;
 
-import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.commons.jcr.JcrUtil;
-import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.Revision;
@@ -99,20 +110,27 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     try {
       // page node
       Map<String, Object> props = new HashMap<String, Object>();
-      props.put(JcrConstants.JCR_PRIMARYTYPE, NameConstants.NT_PAGE);
+      props.put(JCR_PRIMARYTYPE, NT_PAGE);
       pageResource = this.resourceResolver.create(parentResource, childResourceName, props);
 
       // page content node
       props = new HashMap<String, Object>();
-      props.put(JcrConstants.JCR_PRIMARYTYPE, "cq:PageContent");
-      props.put(JcrConstants.JCR_TITLE, title);
-      props.put(NameConstants.PN_TEMPLATE, template);
-      Resource contentResource = this.resourceResolver.create(pageResource, JcrConstants.JCR_CONTENT, props);
+      props.put(JCR_PRIMARYTYPE, "cq:PageContent");
+      props.put(JCR_TITLE, title);
+      props.put(PN_TEMPLATE, template);
+      Resource contentResource = this.resourceResolver.create(pageResource, JCR_CONTENT, props);
 
-      // create default content from template
-      Resource defaultContent = resourceResolver.getResource(template + "/" + JcrConstants.JCR_CONTENT);
-      if (defaultContent != null) {
-        copyContent(defaultContent, contentResource, true);
+      // create initial content from template
+      Resource templateResource = resourceResolver.getResource(template);
+      if (templateResource != null) {
+        Template templateInstance = templateResource.adaptTo(Template.class);
+        if (templateInstance != null) {
+          String initialContentPath = templateInstance.getInitialContentPath();
+          Resource initialContentResource = resourceResolver.getResource(initialContentPath);
+          if (initialContentResource != null) {
+            copyContent(initialContentResource, contentResource, true);
+          }
+        }
       }
 
       if (autoSave) {
@@ -132,7 +150,7 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     Node node = target.adaptTo(Node.class);
 
     for (Map.Entry<String, Object> entry : sourceProps.entrySet()) {
-      if (skipPrimaryType && StringUtils.equals(entry.getKey(), JcrConstants.JCR_PRIMARYTYPE)) {
+      if (skipPrimaryType && StringUtils.equals(entry.getKey(), JCR_PRIMARYTYPE)) {
         continue;
       }
 
@@ -180,7 +198,7 @@ class MockPageManager extends SlingAdaptable implements PageManager {
   public void delete(final Resource resource, final boolean shallow, final boolean autoSave) throws WCMException {
     try {
       if (shallow) {
-        Resource contentResource = resource.getChild(JcrConstants.JCR_CONTENT);
+        Resource contentResource = resource.getChild(JCR_CONTENT);
         if (contentResource != null) {
           this.resourceResolver.delete(contentResource);
         }
@@ -255,19 +273,19 @@ class MockPageManager extends SlingAdaptable implements PageManager {
       throw new UnsupportedOperationException("Only shallow touch supported");
     }
     try {
-      Resource pageContent = resourceResolver.getResource(page.getPath() + '/' + JcrConstants.JCR_CONTENT);
+      Resource pageContent = resourceResolver.getResource(page.getPath() + '/' + JCR_CONTENT);
       if (pageContent != null) {
         ModifiableValueMap properties = pageContent.adaptTo(ModifiableValueMap.class);
         if (now != null) {
-          properties.put(NameConstants.PN_PAGE_LAST_MOD, now);
-          properties.put(NameConstants.PN_PAGE_LAST_MOD_BY, resourceResolver.getUserID());
+          properties.put(PN_PAGE_LAST_MOD, now);
+          properties.put(PN_PAGE_LAST_MOD_BY, resourceResolver.getUserID());
         }
         if (clearRepl) {
-          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED);
-          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATED_BY);
-          properties.remove(NameConstants.PN_PAGE_LAST_REPLICATION_ACTION);
-          properties.remove(NameConstants.PN_PAGE_LAST_PUBLISHED);
-          properties.remove(NameConstants.PN_PAGE_LAST_PUBLISHED_BY);
+          properties.remove(PN_PAGE_LAST_REPLICATED);
+          properties.remove(PN_PAGE_LAST_REPLICATED_BY);
+          properties.remove(PN_PAGE_LAST_REPLICATION_ACTION);
+          properties.remove(PN_PAGE_LAST_PUBLISHED);
+          properties.remove(PN_PAGE_LAST_PUBLISHED_BY);
         }
       }
     }

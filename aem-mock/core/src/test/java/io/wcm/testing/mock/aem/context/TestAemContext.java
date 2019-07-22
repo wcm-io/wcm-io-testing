@@ -38,7 +38,6 @@ public final class TestAemContext {
 
   /**
    * All resource resolver types the unit tests of aem-mock should run with.
-   * Without jackrabbit because it required special "unique root" handling.
    */
   public static final @NotNull ResourceResolverType @NotNull [] ALL_TYPES = new @NotNull ResourceResolverType[] {
     ResourceResolverType.JCR_MOCK,
@@ -51,7 +50,11 @@ public final class TestAemContext {
   }
 
   public static @NotNull AemContext newAemContext() {
-    return new AemContext(new SetUpCallback(), ALL_TYPES);
+    return newAemContext(ALL_TYPES);
+  }
+
+  public static @NotNull AemContext newAemContext(ResourceResolverType... resourceResolverTypes) {
+    return new AemContext(new SetUpCallback(), resourceResolverTypes);
   }
 
   /**
@@ -68,7 +71,8 @@ public final class TestAemContext {
                 "SLING-INF/nodetypes/aem-tagging.cnd",
                 "SLING-INF/nodetypes/aem-commons.cnd",
                 "SLING-INF/nodetypes/aem-dam.cnd",
-                "SLING-INF/nodetypes/aem-dam1.cnd"),
+                "SLING-INF/nodetypes/aem-dam1.cnd",
+                "SLING-INF/nodetypes/vlt.cnd"),
                 context.resourceResolverType().getNodeTypeMode());
       }
       catch (RepositoryException ex) {

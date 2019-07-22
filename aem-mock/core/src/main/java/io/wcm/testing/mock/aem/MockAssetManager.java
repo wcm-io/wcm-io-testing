@@ -19,6 +19,18 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_PRIMARYTYPE;
+import static com.day.cq.commons.jcr.JcrConstants.NT_FOLDER;
+import static com.day.cq.commons.jcr.JcrConstants.NT_UNSTRUCTURED;
+import static com.day.cq.dam.api.DamConstants.METADATA_FOLDER;
+import static com.day.cq.dam.api.DamConstants.NT_DAM_ASSET;
+import static com.day.cq.dam.api.DamConstants.NT_DAM_ASSETCONTENT;
+import static com.day.cq.dam.api.DamConstants.ORIGINAL_FILE;
+import static com.day.cq.dam.api.DamConstants.RENDITIONS_FOLDER;
+import static com.day.cq.dam.api.DamConstants.TIFF_IMAGELENGTH;
+import static com.day.cq.dam.api.DamConstants.TIFF_IMAGEWIDTH;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,19 +44,18 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.sling.api.resource.ModifiableValueMap;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
 import org.osgi.service.event.EventAdmin;
 
-import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.AssetManager;
-import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Revision;
 import com.day.image.Layer;
-import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
@@ -67,41 +78,42 @@ class MockAssetManager implements AssetManager {
   }
 
   @Override
-  public Asset createAsset(String path, InputStream inputStream, String mimeType, boolean autoSave) {
+  public Asset createAsset(String assetPath, InputStream inputStream, String mimeType, boolean autoSave) {
+    String assetContentPath = assetPath + "/" + JCR_CONTENT;
+    String metadataPath = assetContentPath + "/" + METADATA_FOLDER;
+    String renditionsPath = assetContentPath + "/" + RENDITIONS_FOLDER;
+
     try {
       // create asset
-      contentBuilder.resource(path, ImmutableMap.<String, Object>builder()
-          .put(JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSET)
-          .build());
-      contentBuilder.resource(path + "/" + JcrConstants.JCR_CONTENT, ImmutableMap.<String, Object>builder()
-          .put(JcrConstants.JCR_PRIMARYTYPE, DamConstants.NT_DAM_ASSETCONTENT)
-          .build());
-      String renditionsPath = path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER;
-      contentBuilder.resource(renditionsPath, ImmutableMap.<String, Object>builder()
-          .put(JcrConstants.JCR_PRIMARYTYPE, JcrConstants.NT_FOLDER)
-          .build());
+      createOrUpdateResource(assetPath, NT_DAM_ASSET, null);
+      createOrUpdateResource(assetContentPath, NT_DAM_ASSETCONTENT, null);
+      createOrUpdateResource(renditionsPath, NT_FOLDER, null);
 
       // store asset metadata
       Map<String, Object> metadataProps = new HashMap<>();
 
       // try to detect image with/height if input stream contains image data
-      byte[] data = IOUtils.toByteArray(inputStream);
-      try (InputStream is = new ByteArrayInputStream(data)) {
-        try {
-          Layer layer = new Layer(is);
-          metadataProps.put(DamConstants.TIFF_IMAGEWIDTH, layer.getWidth());
-          metadataProps.put(DamConstants.TIFF_IMAGELENGTH, layer.getHeight());
-        }
-        /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
-          // ignore
+      byte[] data = inputStream != null ? IOUtils.toByteArray(inputStream) : null;
+      if (data != null) {
+        try (InputStream is = new ByteArrayInputStream(data)) {
+          try {
+            Layer layer = new Layer(is);
+            metadataProps.put(TIFF_IMAGEWIDTH, layer.getWidth());
+            metadataProps.put(TIFF_IMAGELENGTH, layer.getHeight());
+          }
+          /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
+            // ignore
+          }
         }
       }
 
-      contentBuilder.resource(path + "/" + JcrConstants.JCR_CONTENT + "/" + DamConstants.METADATA_FOLDER, metadataProps);
+      createOrUpdateResource(metadataPath, NT_UNSTRUCTURED, metadataProps);
 
       // store original rendition
-      try (InputStream is = new ByteArrayInputStream(data)) {
-        contentLoader.binaryFile(is, renditionsPath + "/" + DamConstants.ORIGINAL_FILE, mimeType);
+      if (data != null) {
+        try (InputStream is = new ByteArrayInputStream(data)) {
+          contentLoader.binaryFile(is, renditionsPath + "/" + ORIGINAL_FILE, mimeType);
+        }
       }
 
       if (autoSave) {
@@ -109,14 +121,32 @@ class MockAssetManager implements AssetManager {
       }
 
       // send DamEvent after asset creation
-      eventAdmin.sendEvent(DamEvent.assetCreated(path, resourceResolver.getUserID()).toEvent());
+      eventAdmin.sendEvent(DamEvent.assetCreated(assetPath, resourceResolver.getUserID()).toEvent());
 
     }
     catch (IOException ex) {
-      throw new RuntimeException("Unable to create asset at " + path, ex);
+      throw new RuntimeException("Unable to create asset at " + assetPath, ex);
     }
 
-    return resourceResolver.getResource(path).adaptTo(Asset.class);
+    return resourceResolver.getResource(assetPath).adaptTo(Asset.class);
+  }
+
+  private void createOrUpdateResource(String path, String jcrPrimaryType, Map<String, Object> props) {
+    Resource resource = resourceResolver.getResource(path);
+    if (resource == null) {
+      // create new resource
+      Map<String, Object> newResourceProps = new HashMap<>();
+      newResourceProps.put(JCR_PRIMARYTYPE, jcrPrimaryType);
+      if (props != null) {
+        newResourceProps.putAll(props);
+      }
+      contentBuilder.resource(path, newResourceProps);
+    }
+    else if (props != null) {
+      // update existing resource
+      ModifiableValueMap existingResourceProps = resource.adaptTo(ModifiableValueMap.class);
+      existingResourceProps.putAll(props);
+    }
   }
 
   // --- unsupported operations ---

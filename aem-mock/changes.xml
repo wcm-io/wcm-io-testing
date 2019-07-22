@@ -23,6 +23,18 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.6.0" date="2019-07-22">
+      <action type="add" dev="sseifert">
+        Add mock implementations of Granite ResourceCollectionManager and ResourceCollection.
+      </action>
+      <action type="add" dev="sseifert">
+        MockPageManager: Support copying initial content of structured templates as well as from classic templates.
+      </action>
+      <action type="fix" dev="sseifert" issue="WTES-39">
+        MockAssetManager: Allow creating assets with null InputStream and updating existing assets.
+      </action>
+    </release>
+
     <release version="2.5.2" date="2019-06-26">
       <action type="update" dev="sseifert">
         Allow empty values for title and descriptions when creating content fragment variants.

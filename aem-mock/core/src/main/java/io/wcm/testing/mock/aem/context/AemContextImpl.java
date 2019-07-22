@@ -42,6 +42,7 @@ import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
+import io.wcm.testing.mock.aem.granite.MockResourceCollectionManager;
 
 /**
  * Defines AEM context objects with lazy initialization.
@@ -64,6 +65,9 @@ public class AemContextImpl extends SlingContextImpl {
     registerInjectActivateService(new MockLayerAdapterFactory());
     registerInjectActivateService(new MockAemBindingsValuesProvider(),
         MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
+
+    // Granite resource collection manager
+    registerInjectActivateService(new MockResourceCollectionManager());
   }
 
   @Override
