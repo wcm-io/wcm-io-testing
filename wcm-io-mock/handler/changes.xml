@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.2.2" date="2019-07-22">
+      <action type="update" dev="sseifert">
+        Fix OSGi service parameter pass-through for optional services.
+      </action>
+    </release>
+
     <release version="1.2.0" date="2019-07-22">
       <action type="update" dev="sseifert">
         Support rendition metadata listener service with Media Handler 1.6.0.
