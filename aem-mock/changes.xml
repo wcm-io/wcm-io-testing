@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Add support for testing content policies.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
     </release>
 
     <release version="2.6.0" date="2019-07-22">

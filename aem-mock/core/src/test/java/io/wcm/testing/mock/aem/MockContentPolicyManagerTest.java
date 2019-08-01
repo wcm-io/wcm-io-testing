@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,6 +37,7 @@ import com.day.cq.wcm.api.designer.Style;
 import com.day.cq.wcm.api.policies.ContentPolicy;
 import com.day.cq.wcm.api.policies.ContentPolicyManager;
 import com.day.cq.wcm.commons.WCMUtils;
+import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
@@ -134,6 +136,39 @@ public class MockContentPolicyManagerTest {
 
     Style style = getStyle();
     assertEquals("value1", style.get("prop1", String.class));
+  }
+
+  @Test
+  @SuppressWarnings("null")
+  public void testWithNestedResources() {
+    context.currentResource(context.create().resource(page, "resource1",
+        PROPERTY_RESOURCE_TYPE, RT_TEST));
+
+    // create policy with nested resources
+    context.contentPolicyMapping(RT_TEST,
+        ImmutableMap.<String, Object>of(
+            "prop1", "value1",
+            "child1", ImmutableMap.<String,Object>of(
+                "prop2","value2",
+                "child2", ImmutableMap.<String,Object>of(
+                    "prop3", "value3")
+                )
+            ));
+
+    ComponentContext componentContext = WCMUtils.getComponentContext(context.request());
+    ContentPolicy policy = underTest.getPolicy(componentContext);
+
+    assertNotNull(policy);
+    assertEquals("value1", policy.getProperties().get("prop1", String.class));
+
+    Resource resource = policy.adaptTo(Resource.class);
+    assertEquals("value1", resource.getValueMap().get("prop1", String.class));
+
+    Resource child1 = resource.getChild("child1");
+    assertEquals("value2", child1.getValueMap().get("prop2", String.class));
+
+    Resource child2 = child1.getChild("child2");
+    assertEquals("value3", child2.getValueMap().get("prop3", String.class));
   }
 
   private Style getStyle() {
