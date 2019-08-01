@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -31,6 +32,12 @@ import com.day.cq.wcm.api.designer.Style;
  * Mock implementation of {@link Designer}.
  */
 class MockDesigner implements Designer {
+
+  private final ResourceResolver resourceResolver;
+
+  MockDesigner(ResourceResolver resourceResolver) {
+    this.resourceResolver = resourceResolver;
+  }
 
   @Override
   public String getDesignPath(Page page) {
@@ -73,7 +80,7 @@ class MockDesigner implements Designer {
 
   // AEM 6.4
   public Design getDefaultDesign() {
-    return new MockDesign();
+    return new MockDesign(resourceResolver);
   }
 
 }

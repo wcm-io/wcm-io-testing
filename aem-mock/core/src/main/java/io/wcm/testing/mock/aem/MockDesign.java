@@ -28,6 +28,7 @@ import javax.jcr.RepositoryException;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.wcm.api.designer.Cell;
@@ -35,33 +36,54 @@ import com.day.cq.wcm.api.designer.ComponentStyle;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
+import com.day.cq.wcm.api.policies.ContentPolicy;
+import com.day.cq.wcm.api.policies.ContentPolicyManager;
 
 /**
  * Mock implementation of {@link Design}.
  */
 class MockDesign implements Design {
 
-  // all getStyle methods just return an empty but non-null Style object
-  private final Style defaultStyle = new MockStyle(this, ValueMap.EMPTY);
+  private final Style emptyStyle = new MockStyle(ValueMap.EMPTY, this);
+  private final ResourceResolver resourceResolver;
+
+  MockDesign(ResourceResolver resourceResolver) {
+    this.resourceResolver = resourceResolver;
+  }
 
   @Override
   public Style getStyle(String path) {
-    return defaultStyle;
+    Resource resource = resourceResolver.getResource(path);
+    if (resource != null) {
+      return getStyle(resource);
+    }
+    return emptyStyle;
   }
 
   @Override
   public Style getStyle(Cell cell) {
-    return defaultStyle;
+    if (cell instanceof MockCell) {
+      Resource resource = ((MockCell)cell).getComponentContext().getResource();
+      return getStyle(resource);
+    }
+    return emptyStyle;
   }
 
   @Override
   public Style getStyle(Resource resource) {
-    return defaultStyle;
+    ContentPolicyManager contentPolicyManager = resource.getResourceResolver().adaptTo(ContentPolicyManager.class);
+    if (contentPolicyManager != null && (contentPolicyManager instanceof MockContentPolicyManager)) {
+      ContentPolicy policy = ((MockContentPolicyManager)contentPolicyManager).getPolicy(resource);
+      if (policy != null) {
+        return new MockStyle(policy.getProperties(), this);
+      }
+    }
+    return emptyStyle;
   }
 
   @Override
   public Style getStyle(Resource resource, boolean ignoreExcludedComponents) {
-    return defaultStyle;
+    return getStyle(resource);
   }
 
   @Override
@@ -73,7 +95,7 @@ class MockDesign implements Design {
   // --- unsupported operations ---
 
   @Override
-  public Map<String, ComponentStyle> getComponentStyles(Cell arg0) {
+  public Map<String, ComponentStyle> getComponentStyles(Cell cell) {
     throw new UnsupportedOperationException();
   }
 
@@ -89,7 +111,7 @@ class MockDesign implements Design {
 
   @Override
   @SuppressWarnings("deprecation")
-  public com.day.cq.commons.Doctype getDoctype(Style arg0) {
+  public com.day.cq.commons.Doctype getDoctype(Style style) {
     throw new UnsupportedOperationException();
   }
 
@@ -119,23 +141,23 @@ class MockDesign implements Design {
   }
 
   @Override
-  public void writeCSS(Writer arg0, boolean arg1) throws IOException, RepositoryException {
+  public void writeCSS(Writer writer, boolean includeCustom) throws IOException, RepositoryException {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void writeCssIncludes(Writer arg0) throws IOException {
+  public void writeCssIncludes(Writer writer) throws IOException {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void writeCssIncludes(PageContext arg0) throws IOException {
+  public void writeCssIncludes(PageContext pageContext) throws IOException {
     throw new UnsupportedOperationException();
   }
 
   @Override
   @SuppressWarnings("deprecation")
-  public void writeCssIncludes(Writer arg0, com.day.cq.commons.Doctype arg1) throws IOException {
+  public void writeCssIncludes(Writer writer, com.day.cq.commons.Doctype doctype) throws IOException {
     throw new UnsupportedOperationException();
   }
 

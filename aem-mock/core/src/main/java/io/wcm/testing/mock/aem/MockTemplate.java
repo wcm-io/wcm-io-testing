@@ -45,8 +45,9 @@ import com.day.cq.wcm.api.Template;
  */
 class MockTemplate extends ResourceWrapper implements Template {
 
-  private static final String NN_INITIAL = "initial";
-  private static final String NN_STRUCTURE = "structure";
+  static final String NN_INITIAL = "initial";
+  static final String NN_STRUCTURE = "structure";
+  static final String NN_POLICIES = "policies";
 
   private final Resource resource;
   private final ValueMap properties;

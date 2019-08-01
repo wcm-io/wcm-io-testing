@@ -62,7 +62,7 @@ public final class MockComponentContext implements ComponentContext {
     this.request = request;
     boolean hasEditContext = WCMMode.fromRequest(request) != WCMMode.DISABLED;
     editContext = hasEditContext ? new MockEditContext(this) : null;
-    cell = new MockCell();
+    cell = new MockCell(this);
   }
 
   @Override

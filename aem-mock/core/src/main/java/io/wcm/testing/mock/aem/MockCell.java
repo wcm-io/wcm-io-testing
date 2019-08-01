@@ -21,12 +21,24 @@ package io.wcm.testing.mock.aem;
 
 import java.util.Iterator;
 
+import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.designer.Cell;
 
 /**
  * Mock implementation of {@link Cell}.
  */
 class MockCell implements Cell {
+
+  private final ComponentContext componentContext;
+
+  MockCell(ComponentContext componentContext) {
+    this.componentContext = componentContext;
+  }
+
+  public ComponentContext getComponentContext() {
+    return this.componentContext;
+  }
+
 
   // --- unsupported operations ---
 
