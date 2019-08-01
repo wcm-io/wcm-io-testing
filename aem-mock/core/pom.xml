@@ -189,6 +189,11 @@
       <version>${servlet-helpers.version}</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.jackrabbit.vault</groupId>
+      <artifactId>org.apache.jackrabbit.vault</artifactId>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>

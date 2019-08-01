@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.testing.mock.osgi.MapUtil;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.context.SlingContextImpl;
 import org.jetbrains.annotations.NotNull;
@@ -35,11 +36,13 @@ import com.day.cq.dam.api.AssetManager;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.ComponentContext;
+import com.day.cq.wcm.api.policies.ContentPolicyMapping;
 import com.day.cq.wcm.commons.WCMUtils;
 import com.google.common.collect.ImmutableSet;
 
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
+import io.wcm.testing.mock.aem.MockContentPolicyStorage;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 import io.wcm.testing.mock.aem.granite.MockResourceCollectionManager;
@@ -248,6 +251,28 @@ public class AemContextImpl extends SlingContextImpl {
       uniqueRoot = new UniqueRoot(this);
     }
     return (UniqueRoot)uniqueRoot;
+  }
+
+  /**
+   * Creates a mocked content policy with the given properties and maps it to all content resources with the given
+   * resource type. This is a shortcut to easily test your components with a content policy.
+   * @param resourceType Resource type that should be mapped to the content policy
+   * @param properties Properties for the content policy
+   * @return New content policy mapping
+   */
+  public @NotNull ContentPolicyMapping contentPolicyMapping(@NotNull String resourceType, Map<String, Object> properties) {
+    return MockContentPolicyStorage.storeContentPolicyMapping(resourceType, properties, resourceResolver());
+  }
+
+  /**
+   * Creates a mocked content policy with the given properties and maps it to all content resources with the given
+   * resource type. This is a shortcut to easily test your components with a content policy.
+   * @param resourceType Resource type that should be mapped to the content policy
+   * @param properties Properties for the content policy
+   * @return New content policy mapping
+   */
+  public @NotNull ContentPolicyMapping contentPolicyMapping(@NotNull String resourceType, @NotNull Object @NotNull... properties) {
+    return contentPolicyMapping(resourceType, MapUtil.toMap(properties));
   }
 
   @Override

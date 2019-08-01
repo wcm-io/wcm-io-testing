@@ -20,5 +20,5 @@
 /**
  * AEM context implementation for unit tests.
  */
-@org.osgi.annotation.versioning.Version("1.6.0")
+@org.osgi.annotation.versioning.Version("1.7.0")
 package io.wcm.testing.mock.aem.context;
