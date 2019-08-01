@@ -19,8 +19,11 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_LASTMODIFIED;
 import static io.wcm.testing.mock.aem.MockContentPolicyStorage.MOCK_POLICIES_PATH;
 import static io.wcm.testing.mock.aem.MockContentPolicyStorage.PN_POLICY;
+
+import java.util.Calendar;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -60,6 +63,16 @@ class MockContentPolicyMapping implements ContentPolicyMapping {
       }
     }
     return null;
+  }
+
+  // AEM 6.3
+  public String getName() {
+    return resource.getName();
+  }
+
+  // AEM 6.3
+  public Calendar getLastModified() {
+    return resource.getValueMap().get(JCR_LASTMODIFIED, Calendar.class);
   }
 
 

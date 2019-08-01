@@ -21,11 +21,15 @@ package io.wcm.testing.mock.aem;
 
 import java.util.List;
 
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.policies.ContentPolicy;
 import com.day.cq.wcm.api.policies.ContentPolicyManager;
@@ -47,15 +51,28 @@ class MockContentPolicyManager implements ContentPolicyManager {
     return getPolicy(componentContext.getResource());
   }
 
-  ContentPolicy getPolicy(Resource contentResource) {
+  // AEM 6.3
+  public ContentPolicyMapping getPolicyMapping(Resource contentResource) {
     String resourceType = contentResource.getResourceType();
     if (StringUtils.isNotBlank(resourceType)) {
-      ContentPolicyMapping mapping = MockContentPolicyStorage.getContentPolicyMapping(resourceType, resourceResolver);
-      if (mapping != null) {
-        return mapping.getPolicy();
-      }
+      return MockContentPolicyStorage.getContentPolicyMapping(resourceType, resourceResolver);
     }
     return null;
+  }
+
+  // AEM 6.3
+  public ContentPolicy getPolicy(Resource contentResource) {
+    ContentPolicyMapping mapping = getPolicyMapping(contentResource);
+    if (mapping != null) {
+      return mapping.getPolicy();
+    }
+    return null;
+  }
+
+  // AEM 6.4
+  @SuppressWarnings("unused")
+  public @Nullable ContentPolicy getPolicy(@NotNull Resource contentResource, @Nullable SlingHttpServletRequest request) {
+    return getPolicy(contentResource);
   }
 
 
@@ -78,6 +95,24 @@ class MockContentPolicyManager implements ContentPolicyManager {
 
   @Override
   public List<ContentPolicyMapping> getPolicyMappings(ContentPolicy contentPolicy) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.3
+  @SuppressWarnings("unused")
+  public String getPolicyLocation(Resource resource) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.3
+  @SuppressWarnings("unused")
+  public List<Template> getTemplates(String policyAbsolutePath) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.3
+  @SuppressWarnings("unused")
+  public List<Template> getTemplates(String policyAbsolutePath, Predicate filter) {
     throw new UnsupportedOperationException();
   }
 

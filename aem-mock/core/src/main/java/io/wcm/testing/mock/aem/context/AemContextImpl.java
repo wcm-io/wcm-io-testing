@@ -258,6 +258,7 @@ public class AemContextImpl extends SlingContextImpl {
    * resource type. This is a shortcut to easily test your components with a content policy.
    * @param resourceType Resource type that should be mapped to the content policy
    * @param properties Properties for the content policy
+   * @return New content policy mapping
    */
   public @NotNull ContentPolicyMapping contentPolicyMapping(@NotNull String resourceType, Map<String, Object> properties) {
     return MockContentPolicyStorage.storeContentPolicyMapping(resourceType, properties, resourceResolver());
@@ -268,6 +269,7 @@ public class AemContextImpl extends SlingContextImpl {
    * resource type. This is a shortcut to easily test your components with a content policy.
    * @param resourceType Resource type that should be mapped to the content policy
    * @param properties Properties for the content policy
+   * @return New content policy mapping
    */
   public @NotNull ContentPolicyMapping contentPolicyMapping(@NotNull String resourceType, @NotNull Object @NotNull... properties) {
     return contentPolicyMapping(resourceType, MapUtil.toMap(properties));

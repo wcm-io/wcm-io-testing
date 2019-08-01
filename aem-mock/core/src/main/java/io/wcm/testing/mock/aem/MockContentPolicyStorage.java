@@ -68,6 +68,7 @@ public final class MockContentPolicyStorage {
    * @param resourceType Resource type that should be mapped to the content policy
    * @param properties Properties for the content policy
    * @param resourceResolver Resource resolver
+   * @return New content policy mapping
    */
   public static @NotNull ContentPolicyMapping storeContentPolicyMapping(@NotNull String resourceType,
       @NotNull Map<String, Object> properties, @NotNull ResourceResolver resourceResolver) {
