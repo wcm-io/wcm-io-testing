@@ -28,7 +28,7 @@
         Add support for testing content policies.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest Sling Mock.
+        Update to latest OSGi Mock, Sling Mock.
       </action>
     </release>
 
