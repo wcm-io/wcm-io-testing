@@ -39,14 +39,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.event.EventAdmin;
 
 import com.adobe.cq.dam.cfm.ContentFragment;
 import com.day.cq.commons.jcr.JcrConstants;
-import com.day.cq.dam.api.Asset;
-import com.day.cq.dam.api.AssetManager;
-import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.DamUtil;
 import com.day.cq.tagging.Tag;
 import com.day.cq.tagging.TagManager;
@@ -70,9 +65,6 @@ import com.day.cq.wcm.api.policies.ContentPolicyMapping;
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.PageManager",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.Template",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.components.ComponentManager",
-        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.Asset",
-        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.AssetManager",
-        AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.Rendition",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.tagging.TagManager",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.tagging.Tag",
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.designer.Designer",
@@ -83,9 +75,6 @@ import com.day.cq.wcm.api.policies.ContentPolicyMapping;
     })
 @ProviderType
 public class MockAemAdapterFactory implements AdapterFactory {
-
-  @Reference
-  private EventAdmin eventAdmin;
 
   @Override
   public @Nullable <AdapterType> AdapterType getAdapter(final @NotNull Object adaptable, final @NotNull Class<AdapterType> type) {
@@ -105,12 +94,6 @@ public class MockAemAdapterFactory implements AdapterFactory {
     }
     if (type == Template.class && isPrimaryType(resource, NT_TEMPLATE)) {
       return (AdapterType)new MockTemplate(resource);
-    }
-    if (type == Asset.class && DamUtil.isAsset(resource)) {
-      return (AdapterType)new MockAsset(resource, eventAdmin);
-    }
-    if (type == Rendition.class && DamUtil.isRendition(resource)) {
-      return (AdapterType)new MockRendition(resource);
     }
     if (type == Tag.class && isPrimaryType(resource, NT_TAG)) {
       return (AdapterType)new MockTag(resource);
@@ -142,9 +125,6 @@ public class MockAemAdapterFactory implements AdapterFactory {
     }
     if (type == Designer.class) {
       return (AdapterType)new MockDesigner(resolver);
-    }
-    if (type == AssetManager.class) {
-      return (AdapterType)new MockAssetManager(resolver, eventAdmin);
     }
     if (type == ContentPolicyManager.class) {
       return (AdapterType)new MockContentPolicyManager(resolver);

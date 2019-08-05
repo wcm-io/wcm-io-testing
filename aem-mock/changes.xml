@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Add support for testing content policies.
       </action>
+      <action type="add" dev="sseifert">
+        Add support for DAM services AssetStore and AssetHandler with default implementation for JPEG, GIF, PNG and TIFF.
+      </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock.
       </action>

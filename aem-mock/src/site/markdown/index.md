@@ -22,8 +22,8 @@ The mock implementation supports:
 * Resource access using different resource resolver types (see [Resource Resolver Types][sling-mock-rrtypes])
 * Implementation of AEM WCM API objects `PageManager`, `Page`, `Template`, `ComponentManager`, `Component`, `TagManager`, `Tag`, `Designer`,
   `ComponentContext`, `EditContext`, `EditConfig`, `Style`, `ContentPolicy`, `ContentPolicyMapping`, `ContentPolicyManager`
-* Implementation of AEM DAM API objects `Asset`, `Rendition` and `ContentFragment`.
-* Implementation of AEM Granite API objects `ResourceCollectionManager` and `ResourceCollection`
+* Implementation of AEM DAM API objects `Asset`, `Rendition`, `ContentFragment`, `AssetStore`, `AssetHandler`.
+* Implementation of AEM Granite API objects `ResourceCollectionManager`, `ResourceCollection`
 * JUnit rule `AemContext` for easy access to all context objects and registering adapter factories and OSGi services
 * Import and create test content for unit tests (see [Test content loading and creation](usage-content-loader-builder.html))
 * Registers OSGi services and adapter factories supported by the mock implementations

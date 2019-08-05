@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem;
+package io.wcm.testing.mock.aem.dam;
 
 import java.io.InputStream;
 import java.util.Calendar;
