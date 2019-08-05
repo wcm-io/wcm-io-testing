@@ -32,8 +32,6 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.Imaging;
 import org.osgi.service.component.annotations.Component;
 
 import com.adobe.granite.asset.api.AssetRelation;
@@ -76,24 +74,8 @@ public final class MockAssetHandler implements AssetHandler {
   @Override
   public BufferedImage getImage(Rendition rendition, Dimension maxDimension) throws IOException {
     try (InputStream is = rendition.getStream()) {
-
-      switch (rendition.getMimeType()) {
-        case JPEG_MIME_TYPE:
-        case PNG_MIME_TYPE:
-        case GIF_MIME_TYPE:
-          // mime types directly supported by layer
-          Layer layer = new Layer(is, maxDimension);
-          return layer.getImage();
-
-        default:
-          // for other mime types use Apache Commons Imaging
-          // ignore maxDimension in this case
-          return Imaging.getBufferedImage(is);
-      }
-
-    }
-    catch (ImageReadException ex) {
-      throw new IOException(ex);
+      Layer layer = new Layer(is, maxDimension);
+      return layer.getImage();
     }
   }
 
