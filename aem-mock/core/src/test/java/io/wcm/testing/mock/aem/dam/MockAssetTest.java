@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem;
+package io.wcm.testing.mock.aem.dam;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,8 +45,8 @@ import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.commons.util.UIHelper;
 import com.day.cq.wcm.foundation.WCMRenditionPicker;
 
-import io.wcm.testing.mock.aem.MockAssetManagerTest.DamEventHandler;
 import io.wcm.testing.mock.aem.context.TestAemContext;
+import io.wcm.testing.mock.aem.dam.MockAssetManagerTest.DamEventHandler;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 @SuppressWarnings("null")

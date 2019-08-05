@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem;
+package io.wcm.testing.mock.aem.dam;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

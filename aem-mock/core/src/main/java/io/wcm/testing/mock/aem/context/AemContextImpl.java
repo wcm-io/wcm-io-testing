@@ -45,6 +45,7 @@ import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockContentPolicyStorage;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
+import io.wcm.testing.mock.aem.dam.MockAemDamAdapterFactory;
 import io.wcm.testing.mock.aem.granite.MockResourceCollectionManager;
 
 /**
@@ -65,6 +66,7 @@ public class AemContextImpl extends SlingContextImpl {
 
     // adapter factories
     registerInjectActivateService(new MockAemAdapterFactory());
+    registerInjectActivateService(new MockAemDamAdapterFactory());
     registerInjectActivateService(new MockLayerAdapterFactory());
     registerInjectActivateService(new MockAemBindingsValuesProvider(),
         MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
