@@ -27,12 +27,10 @@
       <action type="add" dev="sseifert">
         Add support for testing content policies.
       </action>
-      <action type="add" dev="sseifert">
-        Add support for DAM services AssetStore and AssetHandler with default implementation for JPEG, GIF, PNG and TIFF.
-      </action>
-      <action type="update" dev="sseifert">
-        Add TwelveMonkeys ImageIO dependencies to support TIFF and SVG file formats.
-      </action>
+      <action type="add" dev="sseifert"><![CDATA[
+        Add support for DAM services AssetStore and AssetHandler with default implementation for JPEG, GIF, PNG, TIFF, SVG.
+        For TIFF and SVG file formats <a href="usage-imageio.html">Java ImageIO plugins</a> are required.
+      ]]></action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock.
       </action>
