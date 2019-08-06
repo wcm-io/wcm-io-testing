@@ -53,12 +53,14 @@ public final class MockAssetHandler implements AssetHandler {
   static final String PNG_MIME_TYPE = "image/png";
   static final String GIF_MIME_TYPE = "image/gif";
   static final String TIFF_MIME_TYPE = "image/tiff";
+  static final String SVG_MIME_TYPE = "image/svg+xml";
 
   private static final String[] MIME_TYPES = new String[] {
       JPEG_MIME_TYPE,
       PNG_MIME_TYPE,
       GIF_MIME_TYPE,
-      TIFF_MIME_TYPE
+      TIFF_MIME_TYPE,
+      SVG_MIME_TYPE
   };
 
   @Override

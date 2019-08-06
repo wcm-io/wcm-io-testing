@@ -31,7 +31,7 @@
         Add support for DAM services AssetStore and AssetHandler with default implementation for JPEG, GIF, PNG and TIFF.
       </action>
       <action type="update" dev="sseifert">
-        Add jai-imageio-core dependency to support more file formats like TIFF in Layer class.
+        Add TwelveMonkeys ImageIO dependencies to support TIFF and SVG file formats.
       </action>
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock.

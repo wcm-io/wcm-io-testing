@@ -212,10 +212,24 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- Java ImageIO Support for TIFF -->
     <dependency>
-      <groupId>com.github.jai-imageio</groupId>
-      <artifactId>jai-imageio-core</artifactId>
-      <version>1.4.0</version>
+      <groupId>com.twelvemonkeys.imageio</groupId>
+      <artifactId>imageio-tiff</artifactId>
+      <version>3.4.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- Java ImageIO Support for SVG -->
+    <dependency>
+      <groupId>com.twelvemonkeys.imageio</groupId>
+      <artifactId>imageio-batik</artifactId>
+      <version>3.4.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-transcoder</artifactId>
+      <version>1.9.1</version>
       <scope>compile</scope>
     </dependency>
 

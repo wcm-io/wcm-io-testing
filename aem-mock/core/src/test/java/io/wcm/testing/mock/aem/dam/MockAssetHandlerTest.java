@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem.dam;
 import static io.wcm.testing.mock.aem.dam.MockAssetHandler.GIF_MIME_TYPE;
 import static io.wcm.testing.mock.aem.dam.MockAssetHandler.JPEG_MIME_TYPE;
 import static io.wcm.testing.mock.aem.dam.MockAssetHandler.PNG_MIME_TYPE;
+import static io.wcm.testing.mock.aem.dam.MockAssetHandler.SVG_MIME_TYPE;
 import static io.wcm.testing.mock.aem.dam.MockAssetHandler.TIFF_MIME_TYPE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -73,6 +74,11 @@ public class MockAssetHandlerTest {
   @Test
   public void testAssetHandler_TIFF() throws Exception {
     assertAssertHandlerImage("/dam/filetype/sample.tif", TIFF_MIME_TYPE, 100, 50);
+  }
+
+  @Test
+  public void testAssetHandler_SVG() throws Exception {
+    assertAssertHandlerImage("/dam/filetype/sample.svg", SVG_MIME_TYPE, 100, 50);
   }
 
   private void assertAssertHandlerImage(String classpathResource, String contentType, int width, int height)
