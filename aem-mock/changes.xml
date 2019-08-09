@@ -32,6 +32,9 @@
         For TIFF and SVG file formats <a href="usage-imageio.html">Java ImageIO plugins</a> are required.
       ]]></action>
       <action type="update" dev="sseifert">
+        Implement Component.getLocalResource method.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock.
       </action>
     </release>
