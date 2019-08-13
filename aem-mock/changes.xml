@@ -35,6 +35,9 @@
         Implement Component.getLocalResource method.
       </action>
       <action type="update" dev="sseifert">
+        MockAssetManager: Send DamEvent when creating original rendition.
+      </action>
+      <action type="update" dev="sseifert">
         Update to latest OSGi Mock, Sling Mock.
       </action>
     </release>
