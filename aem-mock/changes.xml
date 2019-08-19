@@ -24,6 +24,7 @@
   <body>
 
     <release version="2.7.0" date="not released">
+      <action type="add">See <![CDATA[<a href="https://wcm-io.atlassian.net/wiki/x/AQCLS">What's new in AEM Mocks 2.5.0-2.7.0</a>]]> for an overview of the last three releases.</action>
       <action type="add" dev="sseifert">
         Add support for testing content policies.
       </action>
