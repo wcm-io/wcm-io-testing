@@ -31,15 +31,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.modelsautoreg.ClasspathRegisteredModel;
 
-@RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("null")
 public class AemContextTest {
 

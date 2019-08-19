@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem.context;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.SyntheticResource;
@@ -27,20 +28,16 @@ import org.apache.sling.spi.resource.provider.ResourceProvider;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("null")
 public class NoneResourceResolverTypeTest {
 
   @Rule
   public AemContext context = new AemContext(ResourceResolverType.NONE);
 
-  @Mock
-  private ResourceProvider<?> resourceProvider;
+  private ResourceProvider<?> resourceProvider = mock(ResourceProvider.class);
 
   @Test
   public void testResourceResolver() {

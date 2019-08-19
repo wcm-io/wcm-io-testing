@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import java.util.Calendar;
 import java.util.List;
@@ -36,9 +37,6 @@ import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import com.day.cq.commons.Filter;
 import com.day.cq.commons.jcr.JcrConstants;
@@ -50,14 +48,12 @@ import com.google.common.collect.ImmutableMap;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("null")
 public class MockPageTest {
 
   @Rule
   public AemContext context = TestAemContext.newAemContext();
-  @Mock
-  private Resource mockResource;
+  private Resource mockResource = mock(Resource.class);
 
   private Page page;
 
