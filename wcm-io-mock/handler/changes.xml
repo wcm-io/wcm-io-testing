@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="1.3.0" date="not released">
+    <release version="1.3.0" date="2019-08-20">
       <action type="update" dev="sseifert">
         Support image map link resolver service with Link Handler 1.3.0.
       </action>
