@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.12</version>
+    <version>1.1.13-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
@@ -39,11 +39,11 @@
   
   <properties>
   
-    <osgi-mock.version>2.4.8</osgi-mock.version>
+    <osgi-mock.version>2.4.10</osgi-mock.version>
     <jcr-mock.version>1.4.4</jcr-mock.version>
     <resourceresolver-mock.version>1.1.24</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
-    <sling-mock.version>2.3.14</sling-mock.version>
+    <sling-mock.version>2.3.16</sling-mock.version>
     <sling-mock.oak.version>2.1.6</sling-mock.oak.version>
     <servlet-helpers.version>1.2.0</servlet-helpers.version>
 
@@ -65,6 +65,12 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>1.7.25</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.jackrabbit.vault</groupId>
+        <artifactId>org.apache.jackrabbit.vault</artifactId>
+        <version>3.1.18</version>
       </dependency>
 
     </dependencies>

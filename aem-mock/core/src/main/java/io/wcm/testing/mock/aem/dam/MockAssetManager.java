@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem;
+package io.wcm.testing.mock.aem.dam;
 
 import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
 import static com.day.cq.commons.jcr.JcrConstants.JCR_PRIMARYTYPE;
@@ -110,10 +110,12 @@ class MockAssetManager implements AssetManager {
       createOrUpdateResource(metadataPath, NT_UNSTRUCTURED, metadataProps);
 
       // store original rendition
+      String originalRenditionPath = renditionsPath + "/" + ORIGINAL_FILE;
       if (data != null) {
         try (InputStream is = new ByteArrayInputStream(data)) {
-          contentLoader.binaryFile(is, renditionsPath + "/" + ORIGINAL_FILE, mimeType);
+          contentLoader.binaryFile(is, originalRenditionPath, mimeType);
         }
+        eventAdmin.sendEvent(DamEvent.renditionUpdated(assetPath, resourceResolver.getUserID(), originalRenditionPath).toEvent());
       }
 
       if (autoSave) {

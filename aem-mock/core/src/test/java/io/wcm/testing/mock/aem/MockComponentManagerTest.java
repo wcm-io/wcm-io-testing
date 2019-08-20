@@ -94,6 +94,9 @@ public class MockComponentManagerTest {
     assertEquals("myTag", component.getHtmlTagAttributes().get(NameConstants.PN_TAG_NAME));
     assertEquals("myValue2", component.getHtmlTagAttributes().get("prop2"));
     assertNull(component.getSuperComponent());
+
+    Resource localResource = component.getLocalResource(NameConstants.NN_HTML_TAG);
+    assertEquals("myValue2", localResource.getValueMap().get("prop2", String.class));
   }
 
   @Test

@@ -141,6 +141,11 @@ class MockComponent extends SlingAdaptable implements Component {
     return superComponent;
   }
 
+  @Override
+  public Resource getLocalResource(String name) {
+    return resource.getChild(name);
+  }
+
 
   // --- unsupported operations ---
 
@@ -211,11 +216,6 @@ class MockComponent extends SlingAdaptable implements Component {
 
   @Override
   public ComponentEditConfig getDesignEditConfig(String cellName) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Resource getLocalResource(String name) {
     throw new UnsupportedOperationException();
   }
 

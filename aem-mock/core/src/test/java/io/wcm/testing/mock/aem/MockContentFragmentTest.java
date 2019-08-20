@@ -36,7 +36,6 @@ import com.google.common.collect.ImmutableList;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@SuppressWarnings("null")
 public class MockContentFragmentTest {
 
   @Rule

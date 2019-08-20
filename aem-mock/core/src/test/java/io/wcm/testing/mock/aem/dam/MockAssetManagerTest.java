@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.testing.mock.aem;
+package io.wcm.testing.mock.aem.dam;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -70,10 +70,14 @@ public class MockAssetManagerTest {
     assertEquals(asset.getName(), assetName);
     assertEquals(asset.getMimeType(), mimeType);
 
-    Optional<DamEvent> damEvent = damEventHandler.getLastEvent();
-    assertTrue(damEvent.isPresent());
-    assertEquals(DamEvent.Type.ASSET_CREATED, damEvent.get().getType());
-    assertEquals(asset.getPath(), damEvent.get().getAssetPath());
+    List<DamEvent> damEvents = damEventHandler.getLastEvents(2);
+    assertEquals(2, damEvents.size());
+
+    assertEquals(DamEvent.Type.RENDITION_UPDATED, damEvents.get(0).getType());
+    assertEquals(asset.getPath(), damEvents.get(0).getAssetPath());
+    assertEquals(asset.getOriginal().getPath(), damEvents.get(0).getAdditionalInfo());
+    assertEquals(DamEvent.Type.ASSET_CREATED, damEvents.get(1).getType());
+    assertEquals(asset.getPath(), damEvents.get(1).getAssetPath());
   }
 
   @Test
@@ -131,6 +135,14 @@ public class MockAssetManagerTest {
       else {
         return Optional.of(events.get(events.size() - 1));
       }
+    }
+
+    public List<DamEvent> getLastEvents(int number) {
+      List<DamEvent> result = new ArrayList<>();
+      for (int i = events.size() - number; i < events.size(); i++) {
+        result.add(events.get(i));
+      }
+      return result;
     }
 
   }

@@ -53,8 +53,6 @@ import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
@@ -63,7 +61,6 @@ import com.day.cq.wcm.api.WCMException;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
-@RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("null")
 public class MockPageManagerTest {
 

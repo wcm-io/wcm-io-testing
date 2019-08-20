@@ -77,6 +77,7 @@ public final class ContextPlugins {
     // link handler
     context.registerInjectActivateService(new LinkHandlerConfigAdapterFactory());
     context.registerInjectActivateService(new DefaultLinkHandlerConfig());
+    registerOptional(context, "io.wcm.handler.link.impl.ImageMapLinkResolverImpl"); // since Link Handler 1.3.0
 
     // rich text handler
     registerOptional(context, "io.wcm.handler.richtext.impl.DefaultRichTextHandlerConfig"); // since Rich Text Handler 1.1.0

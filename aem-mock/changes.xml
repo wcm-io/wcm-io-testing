@@ -23,6 +23,26 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="2.7.0" date="not released">
+      <action type="add">See <![CDATA[<a href="https://wcm-io.atlassian.net/wiki/x/AQCLS">What's new in AEM Mocks 2.5.0-2.7.0</a>]]> for an overview of the last three releases.</action>
+      <action type="add" dev="sseifert">
+        Add support for testing content policies.
+      </action>
+      <action type="add" dev="sseifert"><![CDATA[
+        Add support for DAM services AssetStore and AssetHandler with default implementation for JPEG, GIF, PNG, TIFF, SVG.
+        For TIFF and SVG file formats <a href="usage-imageio.html">Java ImageIO plugins</a> are required.
+      ]]></action>
+      <action type="update" dev="sseifert">
+        Implement Component.getLocalResource method.
+      </action>
+      <action type="update" dev="sseifert">
+        MockAssetManager: Send DamEvent when creating original rendition.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, Sling Mock.
+      </action>
+    </release>
+
     <release version="2.6.0" date="2019-07-22">
       <action type="add" dev="sseifert">
         Add mock implementations of Granite ResourceCollectionManager and ResourceCollection.

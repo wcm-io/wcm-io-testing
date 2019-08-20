@@ -25,22 +25,35 @@ import java.util.Set;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.wcm.api.designer.Cell;
 import com.day.cq.wcm.api.designer.Design;
 import com.day.cq.wcm.api.designer.Style;
+import com.drew.lang.annotations.Nullable;
 
 /**
  * Mock implementation of {@link Style}.
  */
 class MockStyle implements Style {
 
-  private final Design design;
   private final ValueMap props;
+  private final Design design;
 
-  MockStyle(Design design, ValueMap props) {
-    this.design = design;
+  /**
+   * @param props Value map for style properties
+   * @param design Design
+   */
+  MockStyle(@NotNull ValueMap props, @Nullable Design design) {
     this.props = props;
+    this.design = design;
+  }
+
+  /**
+   * @param props Value map for style properties
+   */
+  MockStyle(@NotNull ValueMap props) {
+    this(props, (Design)null);
   }
 
   @Override
@@ -57,90 +70,75 @@ class MockStyle implements Style {
     return this.props.get(name, type);
   }
 
-
   @Override
   public <T> T get(String name, T defaultValue) {
     return this.props.get(name, defaultValue);
   }
-
 
   @Override
   public int size() {
     return this.props.size();
   }
 
-
   @Override
   public boolean isEmpty() {
     return this.props.isEmpty();
   }
-
 
   @Override
   public boolean containsKey(Object key) {
     return this.props.containsKey(key);
   }
 
-
   @Override
   public boolean containsValue(Object value) {
     return this.props.containsValue(value);
   }
-
 
   @Override
   public Object get(Object key) {
     return this.props.get(key);
   }
 
-
   @Override
   public Object put(String key, Object value) {
     return this.props.put(key, value);
   }
-
 
   @Override
   public Object remove(Object key) {
     return this.props.remove(key);
   }
 
-
   @Override
   public void putAll(Map<? extends String, ? extends Object> m) {
     this.props.putAll(m);
   }
-
 
   @Override
   public void clear() {
     this.props.clear();
   }
 
-
   @Override
   public Set<String> keySet() {
     return this.props.keySet();
   }
-
 
   @Override
   public Collection<Object> values() {
     return this.props.values();
   }
 
-
   @Override
   public Set<Entry<String, Object>> entrySet() {
     return this.props.entrySet();
   }
 
-
   @Override
   public boolean equals(Object o) {
     return this.props.equals(o);
   }
-
 
   @Override
   public int hashCode() {

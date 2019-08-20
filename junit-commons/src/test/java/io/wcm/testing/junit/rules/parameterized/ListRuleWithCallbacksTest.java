@@ -33,17 +33,14 @@ import java.util.Arrays;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ListRuleWithCallbacksTest {
 
   @SuppressWarnings({ "unchecked", "null" })
-  private final Callback<Integer> setUpCallback = mock(Callback.class);
+  private Callback<Integer> setUpCallback = mock(Callback.class);
 
   @SuppressWarnings({ "unchecked", "null" })
-  private final Callback<Integer> tearDownCallback = mock(Callback.class);
+  private Callback<Integer> tearDownCallback = mock(Callback.class);
 
   @Rule
   public Generator<Integer> generator = new ListGenerator<Integer>(Arrays.asList(new Integer[] {

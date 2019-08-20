@@ -209,6 +209,20 @@ interface RequestAttributeModel {
 MockSlingExtensions.setRequestContext(context, context.request());
 ```
 
+### Content Policies
+
+AEM Mock does not implement the full stack with editable templates, policy mappings and policies stored in the repository. But it provides a shortcut way to quickly provide a content policy with some properties for any resource type, and ensures these properties can be read either via Style objects or via the Content Policy API.
+
+Example for setting a content policy for a resource type:
+
+```java
+// create a content policy with mapping for resource type
+context.contentPolicyMapping("app1/componenty/component1",
+    "prop1", "value1",
+    "prop2", 123);
+```
+
+
 ### Setting run modes
 
 Example:
