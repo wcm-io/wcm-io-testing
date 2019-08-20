@@ -10,7 +10,6 @@ Helper tools for supporting Unit Tests, Integration test and test automation in 
     * [Sling](wcm-io-mock/sling/): Helps setting up mock environment for wcm.io Sling Commons and Sling Models Extensions.
     * [Context-Aware Configuration](wcm-io-mock/caconfig/): Helps setting up mock environment for wcm.io Context-Aware Configuration.
     * [Context-Aware Configuration (Compatibility mode)](wcm-io-mock/caconfig-compat/): Helps setting up mock environment for Context-aware configuration compatibility Layer for wcm.io Configuration.
-    * [Configuration (deprecated)](wcm-io-mock/config/): Helps setting up mock environment for wcm.io Configuration.
     * [Handler](wcm-io-mock/handler/): Helps setting up mock environment for wcm.io Handler.
 * [JUnit Commons](junit-commons/): Common extensions of JUnit 4 for supporting AEM Mocks JUnit 4 integration.
 

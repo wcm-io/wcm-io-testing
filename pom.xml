@@ -42,7 +42,6 @@
     <module>junit-commons</module>
     <module>aem-mock</module>
     <module>wcm-io-mock/sling</module>
-    <module>wcm-io-mock/config</module>
     <module>wcm-io-mock/caconfig</module>
     <module>wcm-io-mock/caconfig-compat</module>
     <module>wcm-io-mock/handler</module>
