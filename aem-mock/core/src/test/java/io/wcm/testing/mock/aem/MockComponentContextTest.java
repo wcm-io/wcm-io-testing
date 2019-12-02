@@ -76,6 +76,17 @@ public class MockComponentContextTest {
   }
 
   @Test
+  public void testGetRoot() {
+    assertTrue(underTest.isRoot());
+    assertSame(underTest, underTest.getRoot());
+  }
+
+  @Test
+  public void testGetParent() {
+    assertNull(underTest.getParent());
+  }
+
+  @Test
   public void testGetPage() {
     assertEquals(page.getPath(), underTest.getPage().getPath());
   }
