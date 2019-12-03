@@ -29,6 +29,7 @@ import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.wrappers.ValueMapDecorator;
 import org.jetbrains.annotations.NotNull;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -52,7 +53,7 @@ class MockComponent extends SlingAdaptable implements Component {
 
   MockComponent(@NotNull Resource resource) {
     this.resource = resource;
-    this.props = ResourceUtil.getValueMap(resource);
+    this.props = new RemoveKeyPrefixMap(new HashMap<>(ResourceUtil.getValueMap(resource)));
   }
 
   @Override
@@ -237,6 +238,64 @@ class MockComponent extends SlingAdaptable implements Component {
   @Override
   public String[] getInfoProviders() {
     throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Emulate behavior of AEM code: Remove './' prefix from all keys in the map.
+   */
+  private static class RemoveKeyPrefixMap extends ValueMapDecorator {
+
+    RemoveKeyPrefixMap(Map<String, Object> base) {
+      super(base);
+    }
+
+    @Override
+    public <T> T get(String name, Class<T> type) {
+      return super.get(removeKeyPrefix(name), type);
+    }
+
+    @Override
+    public <T> T get(String name, T defaultValue) {
+      return super.get(removeKeyPrefix(name), defaultValue);
+    }
+
+    @Override
+    public Object get(Object key) {
+      return super.get(sanitizeKey(key));
+    }
+
+    @Override
+    public Object remove(Object key) {
+      return super.remove(sanitizeKey(key));
+    }
+
+    @Override
+    public Object put(String key, Object value) {
+      return super.put(removeKeyPrefix(key), value);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+      return super.containsKey(sanitizeKey(key));
+    }
+
+    private String removeKeyPrefix(String key) {
+      if (key == null) {
+        return null;
+      }
+      if (key.startsWith("./")) {
+        return key.substring(2);
+      }
+      return key;
+    }
+
+    private Object sanitizeKey(Object key) {
+      if (key instanceof String) {
+        return removeKeyPrefix((String)key);
+      }
+      return key;
+    }
+
   }
 
 }

@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to Sling Mock, Sling Servlet Helpers.
       </action>
+      <action type="fix" dev="sseifert">
+        MockComponent: Make sure accessing child resources via the getProperties() method does not work, same way as in AEM itself.
+      </action>
     </release>
 
     <release version="2.7.0" date="2019-08-20">
