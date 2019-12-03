@@ -24,6 +24,9 @@
   <body>
 
     <release version="2.7.2" date="not released">
+      <action type="update" dev="drudolph" issue="WTES-47">
+        MockComponentContext: Implement getRoot(), isRoot() and getParent() considering a single root ComponentContext being provided.
+      </action>
       <action type="update" dev="sseifert">
         Update to Sling Mock, Sling Servlet Helpers.
       </action>

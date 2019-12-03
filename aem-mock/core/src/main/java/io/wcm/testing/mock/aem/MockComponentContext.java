@@ -149,23 +149,23 @@ public final class MockComponentContext implements ComponentContext {
     this.cssClassNames = cssClassNames;
   }
 
-
-  // --- unsupported operations ---
-
   @Override
   public ComponentContext getParent() {
-    throw new UnsupportedOperationException();
+    return null;
   }
 
   @Override
   public ComponentContext getRoot() {
-    throw new UnsupportedOperationException();
+    return this;
   }
 
   @Override
   public boolean isRoot() {
-    throw new UnsupportedOperationException();
+    return true;
   }
+
+
+  // --- unsupported operations ---
 
   @Override
   public AnalyzeContext getAnalyzeContext() {
