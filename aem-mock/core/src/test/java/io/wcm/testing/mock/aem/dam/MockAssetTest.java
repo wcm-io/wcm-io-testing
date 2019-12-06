@@ -38,6 +38,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.osgi.service.event.EventHandler;
 
+import com.adobe.granite.asset.api.AssetException;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.DamEvent;
@@ -142,7 +143,6 @@ public class MockAssetTest {
     assertEquals(DamEvent.Type.RENDITION_REMOVED, damEvent.get().getType());
     assertEquals(asset.getPath(), damEvent.get().getAssetPath());
     assertEquals(rendition.getPath(), damEvent.get().getAdditionalInfo());
-
   }
 
   @Test
@@ -186,6 +186,11 @@ public class MockAssetTest {
     else {
       assertEquals("442d55b6-d534-4faf-9394-c9c20d095985", asset.getID());
     }
+  }
+
+  @Test(expected = AssetException.class)
+  public void testRemoveNonExistingRendition() {
+    asset.removeRendition("non-existing");
   }
 
 }
