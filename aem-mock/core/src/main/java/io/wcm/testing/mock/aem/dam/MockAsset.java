@@ -39,7 +39,6 @@ import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
 import org.osgi.service.event.EventAdmin;
 
-import com.adobe.granite.asset.api.AssetException;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
@@ -212,7 +211,8 @@ class MockAsset extends ResourceWrapper implements Asset {
   public void removeRendition(String name) {
     Resource rendition = renditionsResource.getChild(name);
     if (rendition == null) {
-      throw new AssetException("Rendition with name '" + name + "' does not exist.");
+      // rendition does not exist, do nothing
+      return;
     }
 
     try {

@@ -38,7 +38,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.osgi.service.event.EventHandler;
 
-import com.adobe.granite.asset.api.AssetException;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
 import com.day.cq.dam.api.DamEvent;
@@ -188,7 +187,7 @@ public class MockAssetTest {
     }
   }
 
-  @Test(expected = AssetException.class)
+  @Test
   public void testRemoveNonExistingRendition() {
     asset.removeRendition("non-existing");
   }
