@@ -25,14 +25,14 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.1.14</version>
+    <version>1.2.0-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.wcm-io-mock.handler</artifactId>
-  <version>1.3.0</version>
-  <packaging>bundle</packaging>
+  <version>1.3.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <name>Handler Mock Helper</name>
   <description>Helps setting up mock environment for wcm.io Handler.</description>
@@ -164,10 +164,20 @@
     <plugins>
 
       <plugin>
-        <groupId>io.wcm.devops.maven.plugins</groupId>
-        <artifactId>eclipse-maven-plugin</artifactId>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-baseline-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <addVersionToProjectName>false</addVersionToProjectName>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
         </configuration>
       </plugin>
 

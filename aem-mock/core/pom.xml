@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.core</artifactId>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
 
   <name>AEM Mocks Core</name>
   <url>${site.url}/testing/aem-mock/</url>
@@ -290,19 +290,6 @@
 
     <plugins>
 
-      <!-- Publish test artifact -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- do not generate site for this project -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -314,28 +301,40 @@
       </plugin>
 
       <plugin>
-        <groupId>io.wcm.devops.maven.plugins</groupId>
-        <artifactId>eclipse-maven-plugin</artifactId>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
         <configuration>
-          <addVersionToProjectName>false</addVersionToProjectName>
+          <bnd>
+            Sling-Nodetypes: \
+              SLING-INF/nodetypes/aem-core-replication.cnd,\
+              SLING-INF/nodetypes/aem-tagging.cnd,\
+              SLING-INF/nodetypes/aem-commons.cnd,\
+              SLING-INF/nodetypes/aem-dam.cnd,\
+              SLING-INF/nodetypes/aem-dam1.cnd,\
+              SLING-INF/nodetypes/vlt.cnd
+          </bnd>
         </configuration>
       </plugin>
-
       <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-baseline-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <instructions>
-            <Sling-Nodetypes>
-              SLING-INF/nodetypes/aem-core-replication.cnd,
-              SLING-INF/nodetypes/aem-tagging.cnd,
-              SLING-INF/nodetypes/aem-commons.cnd,
-              SLING-INF/nodetypes/aem-dam.cnd,
-              SLING-INF/nodetypes/aem-dam1.cnd,
-              SLING-INF/nodetypes/vlt.cnd
-            </Sling-Nodetypes>
-          </instructions>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
         </configuration>
+        <executions>
+          <!-- Publish test artifact -->
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>

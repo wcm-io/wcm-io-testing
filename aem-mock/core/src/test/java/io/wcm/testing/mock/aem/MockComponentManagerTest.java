@@ -19,6 +19,13 @@
  */
 package io.wcm.testing.mock.aem;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_DESCRIPTION;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.commons.jcr.JcrConstants.NT_UNSTRUCTURED;
+import static com.day.cq.wcm.api.NameConstants.NN_HTML_TAG;
+import static com.day.cq.wcm.api.NameConstants.PN_COMPONENT_GROUP;
+import static com.day.cq.wcm.api.NameConstants.PN_NO_DECORATION;
+import static com.day.cq.wcm.api.NameConstants.PN_TAG_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -30,8 +37,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.day.cq.commons.jcr.JcrConstants;
-import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentManager;
 import com.google.common.collect.ImmutableMap;
@@ -49,16 +54,14 @@ public class MockComponentManagerTest {
   @Before
   public void setUp() {
     // create some component paths
-    context.create().resource("/apps/app1/components/c1", ImmutableMap.<String, Object>builder()
-        .put(JcrConstants.JCR_TITLE, "myTitle")
-        .put(JcrConstants.JCR_DESCRIPTION, "myDescription")
-        .put(NameConstants.PN_COMPONENT_GROUP, "myGroup")
-        .put(NameConstants.PN_NO_DECORATION, true)
-        .build());
-    context.create().resource("/apps/app1/components/c1/" + NameConstants.NN_HTML_TAG, ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TAG_NAME, "myTag")
-        .put("prop2", "myValue2")
-        .build());
+    context.create().resource("/apps/app1/components/c1",
+        JCR_TITLE, "myTitle",
+        JCR_DESCRIPTION, "myDescription",
+        PN_COMPONENT_GROUP, "myGroup",
+        PN_NO_DECORATION, true);
+    context.create().resource("/apps/app1/components/c1/" + NN_HTML_TAG,
+        PN_TAG_NAME, "myTag",
+        "prop2", "myValue2");
 
     context.create().resource("/libs/app1/components/c2");
     context.create().resource("/apps/app1/components/c2");
@@ -84,18 +87,18 @@ public class MockComponentManagerTest {
     assertEquals("c1", component.getName());
     assertEquals("myTitle", component.getTitle());
     assertEquals("myDescription", component.getDescription());
-    assertEquals("myTitle", component.getProperties().get(JcrConstants.JCR_TITLE, String.class));
+    assertEquals("myTitle", component.getProperties().get(JCR_TITLE, String.class));
     assertTrue(StringUtils.isEmpty(component.getResourceType())
-        || StringUtils.equals(JcrConstants.NT_UNSTRUCTURED, component.getResourceType()));
+        || StringUtils.equals(NT_UNSTRUCTURED, component.getResourceType()));
     assertTrue(component.isAccessible());
     assertNotNull(component.adaptTo(Resource.class));
     assertEquals("myGroup", component.getComponentGroup());
     assertTrue(component.noDecoration());
-    assertEquals("myTag", component.getHtmlTagAttributes().get(NameConstants.PN_TAG_NAME));
+    assertEquals("myTag", component.getHtmlTagAttributes().get(PN_TAG_NAME));
     assertEquals("myValue2", component.getHtmlTagAttributes().get("prop2"));
     assertNull(component.getSuperComponent());
 
-    Resource localResource = component.getLocalResource(NameConstants.NN_HTML_TAG);
+    Resource localResource = component.getLocalResource(NN_HTML_TAG);
     assertEquals("myValue2", localResource.getValueMap().get("prop2", String.class));
   }
 
@@ -131,12 +134,23 @@ public class MockComponentManagerTest {
 
   @Test
   public void testGetComponentOfResourceWithoutResourceType() {
-    context.create().resource("/content/myresourceWithoutResourceType", ImmutableMap.<String, Object>builder()
-        .build());
+    context.create().resource("/content/myresourceWithoutResourceType");
 
     Resource resource = context.resourceResolver().getResource("/content/myresourceWithoutResourceType");
     Component component = underTest.getComponentOfResource(resource);
     assertNull(component);
+  }
+
+  @Test
+  public void testPropertyFromComponentWithChildResourceDoesNotWork() {
+    context.create().resource("/apps/app1/components/c1/child1",
+        "prop1", "value1");
+
+    Component component = underTest.getComponent("/apps/app1/components/c1");
+
+    // this would return "value1" if the properties would be mapped by a valuemap - but
+    // due to the key sanitizing logic it does not work, we emulate the behavior of the AEM product code here
+    assertNull(component.getProperties().get("child1/prop1"));
   }
 
 }

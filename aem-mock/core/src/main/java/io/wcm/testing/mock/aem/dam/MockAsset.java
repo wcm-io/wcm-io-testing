@@ -210,16 +210,19 @@ class MockAsset extends ResourceWrapper implements Asset {
   @Override
   public void removeRendition(String name) {
     Resource rendition = renditionsResource.getChild(name);
-    if (rendition != null) {
-      try {
-        resourceResolver.delete(rendition);
-        if (!isBatchMode()) {
-          resourceResolver.commit();
-        }
+    if (rendition == null) {
+      // rendition does not exist, do nothing
+      return;
+    }
+
+    try {
+      resourceResolver.delete(rendition);
+      if (!isBatchMode()) {
+        resourceResolver.commit();
       }
-      catch (PersistenceException ex) {
-        throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
-      }
+    }
+    catch (PersistenceException ex) {
+      throw new RuntimeException("Unable to remove resource: " + rendition.getPath(), ex);
     }
 
     // send DamEvent after rendition creation
