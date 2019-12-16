@@ -23,7 +23,7 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
-    <release version="2.7.2" date="not released">
+    <release version="2.7.2" date="2019-12-16">
       <action type="update" dev="drudolph" issue="WTES-47">
         MockComponentContext: Implement getRoot(), isRoot() and getParent() considering a single root ComponentContext being provided.
       </action>
