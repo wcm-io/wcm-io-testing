@@ -322,7 +322,7 @@ class MockPage extends SlingAdaptable implements Page {
     return result;
   }
 
-  // AEM 6.3
+  @Override
   public Locale getLanguage() {
     return getLanguage(false);
   }

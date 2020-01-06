@@ -39,8 +39,9 @@ The mock implementation supports:
 
 |AEM Mock version |AEM version supported |JUnit version supported
 |-----------------|----------------------|------------------------
-|AEM Mock 2.x     |AEM 6.2 and up        |JUnit 4, JUnit 5
-|AEM Mock 1.x     |AEM 6.0 and 6.1       |JUnit 4
+|AEM Mock 3.x     |AEM 6.3+              |JUnit 4, JUnit 5
+|AEM Mock 2.x     |AEM 6.2+              |JUnit 4, JUnit 5
+|AEM Mock 1.x     |AEM 6.0+              |JUnit 4
 
 
 ### Further Resources

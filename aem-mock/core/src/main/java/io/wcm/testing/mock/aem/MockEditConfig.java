@@ -34,8 +34,9 @@ import com.day.cq.wcm.api.components.InplaceEditingConfig;
 import com.day.cq.wcm.api.components.Toolbar;
 
 /**
- * Mock implementatoin of {@link EditConfig}.
+ * Mock implementation of {@link EditConfig}.
  */
+@SuppressWarnings("deprecation")
 final class MockEditConfig implements EditConfig {
 
   private EditLayout layout = EditLayout.AUTO;
