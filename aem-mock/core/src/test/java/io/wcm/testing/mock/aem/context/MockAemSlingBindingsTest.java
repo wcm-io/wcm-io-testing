@@ -21,7 +21,9 @@ package io.wcm.testing.mock.aem.context;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
 
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.Before;
@@ -90,6 +92,39 @@ public class MockAemSlingBindingsTest {
     assertNotNull(model.getCurrentDesign());
     assertNotNull(model.getResourceDesign());
     assertNotNull(model.getCurrentStyle());
+  }
+
+  @Test
+  public void testBidnings_resourcePage() {
+    // set the current resource
+    context.currentResource(currentResource);
+
+    // get the model
+    SlingHttpServletRequest request = context.request();
+    SlingBindingsModel model = request.adaptTo(SlingBindingsModel.class);
+
+    // assert the model returns the correct page, resource, and resourcePage
+    assertNotNull(model);
+    assertEquals(this.currentPage, model.getCurrentPage());
+    assertEquals(this.currentResource, model.getResource());
+    assertEquals(this.currentPage, model.getResourcePage());
+
+    // create a new sibling page
+    Page page = context.create().page("/content/testPage2");
+    Resource resource = context.create().resource(page.getContentResource().getPath() + "/testResource",
+            "sling:resourceType", "/apps/app1/components/component1");
+
+    // use the model factory to wrap the request to get the model for the resource on the NEW page
+    OsgiServiceWithModelFactory service = context.registerInjectActivateService(new OsgiServiceWithModelFactory());
+    SlingBindingsModel model2 = service.getModelFactory().getModelFromWrappedRequest(request, resource, SlingBindingsModel.class);
+
+    // assert the new model is as expected
+    assertNotNull(model2);
+    assertEquals(this.currentPage, model2.getCurrentPage());
+    assertEquals(resource, model2.getResource());
+    // this test confirms that the "resourcePage" is the page that contains the "resource"
+    //assertEquals(page, model2.getResourcePage());
+    assertEquals(this.context.pageManager().getContainingPage(model2.getResource()).getPath(), model2.getResourcePage().getPath());
   }
 
   @Test
