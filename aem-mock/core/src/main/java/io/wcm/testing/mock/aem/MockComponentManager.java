@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
@@ -32,7 +33,6 @@ import com.day.cq.wcm.api.components.ComponentManager;
 /**
  * Mock implementation of {@link ComponentManager}.
  */
-@SuppressWarnings("null")
 class MockComponentManager implements ComponentManager {
 
   private final ResourceResolver resourceResolver;
@@ -50,11 +50,10 @@ class MockComponentManager implements ComponentManager {
     return null;
   }
 
-  @SuppressWarnings("unused")
   @Override
   public Component getComponentOfResource(Resource resource) {
     String resourceType = resource.getResourceType();
-    if (resourceType != null) {
+    if (StringUtils.isNotEmpty(resourceType)) {
       resourceType = ResourceUtil.resourceTypeToPath(resource.getResourceType());
       return getComponent(resourceType);
     }

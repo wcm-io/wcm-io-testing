@@ -59,6 +59,8 @@ import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.WCMException;
 import com.day.cq.wcm.api.msm.Blueprint;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Mock implementation of {@link PageManager}
  */
@@ -144,6 +146,7 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     return pageResource.adaptTo(Page.class);
   }
 
+  @SuppressFBWarnings("STYLE")
   private void copyContent(Resource source, Resource target, boolean skipPrimaryType) throws PersistenceException {
     ValueMap sourceProps = source.adaptTo(ValueMap.class);
     ModifiableValueMap targetProps = target.adaptTo(ModifiableValueMap.class);
@@ -180,11 +183,13 @@ class MockPageManager extends SlingAdaptable implements PageManager {
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public void delete(final Page page, final boolean shallow) throws WCMException {
     delete(page.adaptTo(Resource.class), shallow);
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public void delete(final Page page, final boolean shallow, final boolean autoSave) throws WCMException {
     delete(page.adaptTo(Resource.class), shallow, autoSave);
   }

@@ -48,7 +48,7 @@ final class MockEditConfig implements EditConfig {
   private Boolean orderable;
   private Boolean deepCancel;
   private JSONItem liveRelationship;
-  private Map<String, DropTarget> dropTargets = new HashMap<>();
+  private final Map<String, DropTarget> dropTargets = new HashMap<>();
 
   @Override
   public EditLayout getLayout() {
