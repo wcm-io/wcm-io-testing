@@ -51,7 +51,7 @@ public class MockContentPolicyTest {
     ContentPolicy underTest = new MockContentPolicy(resource);
 
     assertEquals("value1", underTest.getProperties().get("prop1", String.class));
-    assertEquals(timestamp.getTimeInMillis(), underTest.getLastModified());
+    assertEquals(timestamp.getTimeInMillis(), underTest.getLastModified().getTimeInMillis());
     assertEquals("user1", underTest.getLastModifiedBy());
 
     assertEquals(resource.getPath(), underTest.adaptTo(Resource.class).getPath());
@@ -64,9 +64,8 @@ public class MockContentPolicyTest {
     ContentPolicy underTest = new MockContentPolicy(resource);
 
     assertNull(underTest.getProperties().get("prop1", String.class));
-    assertEquals(0, underTest.getLastModified());
+    assertNull(underTest.getLastModified());
     assertNull(underTest.getLastModifiedBy());
-
   }
 
 }

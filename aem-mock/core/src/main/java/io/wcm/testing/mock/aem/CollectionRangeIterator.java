@@ -32,7 +32,7 @@ class CollectionRangeIterator<E> implements RangeIterator<E> {
 
   private final Collection<E> collection;
   private long index;
-  private Iterator<E> iterator;
+  private final Iterator<E> iterator;
 
   CollectionRangeIterator(Collection<E> collection) {
     this.collection = collection;
@@ -57,6 +57,7 @@ class CollectionRangeIterator<E> implements RangeIterator<E> {
   }
 
   @Override
+  @SuppressWarnings("PMD.AssignmentInOperand")
   public void skip(long skipNum) {
     long skip = Math.max(0, Math.min(skipNum, getSize()));
 

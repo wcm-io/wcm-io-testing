@@ -55,7 +55,7 @@ public final class MockAssetStore implements AssetStore {
 
   @Override
   public AssetHandler[] getAllAssetHandler() {
-    return assetHandlers.toArray(new AssetHandler[assetHandlers.size()]);
+    return assetHandlers.toArray(new AssetHandler[0]);
   }
 
 

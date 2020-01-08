@@ -97,7 +97,7 @@ class MockContentFragment_ContentElement_Text extends MockContentFragment_Versio
         return IOUtils.toString(is, StandardCharsets.UTF_8);
       }
       catch (IOException ex) {
-        throw new RuntimeException("Unable to get content fragment text from " + rendition.getPath());
+        throw new RuntimeException("Unable to get content fragment text from " + rendition.getPath(), ex);
       }
     }
     return null;
@@ -178,7 +178,7 @@ class MockContentFragment_ContentElement_Text extends MockContentFragment_Versio
   public FragmentData getValue() {
     throw new UnsupportedOperationException();
   }
-  
+
   // AEM 6.4/6.5
   public void setValue(FragmentData arg0) throws ContentFragmentException {
     throw new UnsupportedOperationException();

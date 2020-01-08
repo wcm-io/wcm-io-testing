@@ -43,6 +43,7 @@ import com.day.cq.wcm.api.Template;
 /**
  * Mock implementation of {@link Template}.
  */
+@SuppressWarnings("deprecation")
 class MockTemplate extends ResourceWrapper implements Template {
 
   static final String NN_INITIAL = "initial";
@@ -115,7 +116,7 @@ class MockTemplate extends ResourceWrapper implements Template {
     return getPath().hashCode();
   }
 
-  // AEM 6.3
+  @Override
   public Calendar getLastModified() {
     return properties.get(JCR_LASTMODIFIED, Calendar.class);
   }

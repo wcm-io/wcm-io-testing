@@ -32,6 +32,8 @@ import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.framework.BundleContext;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Create resolve resolver instance and initialize it depending on it's type.
  */
@@ -101,6 +103,7 @@ final class ContextResourceResolverFactory {
    * @param resolver Resource resolver
    */
   @SuppressWarnings("null")
+  @SuppressFBWarnings("STYLE")
   private static void registerDefaultAemNamespaces(ResourceResolver resolver) throws RepositoryException {
     Session session = resolver.adaptTo(Session.class);
     NamespaceRegistry namespaceRegistry = session.getWorkspace().getNamespaceRegistry();

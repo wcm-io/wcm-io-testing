@@ -39,7 +39,7 @@ import org.junit.runners.model.Statement;
 //CHECKSTYLE:OFF
 public class GeneratorFactoryTest {
 
-  public class CollectingStatement<T> extends Statement {
+  public static class CollectingStatement<T> extends Statement {
 
     public Set<T> values = new HashSet<>();
     private final Generator<T> g;
@@ -54,7 +54,7 @@ public class GeneratorFactoryTest {
     }
   }
 
-  private class ExceptionThrowingStatement extends Statement {
+  private static class ExceptionThrowingStatement extends Statement {
 
     @Override
     public void evaluate() {
@@ -63,7 +63,7 @@ public class GeneratorFactoryTest {
 
   }
 
-  private class CountingStatement extends Statement {
+  private static class CountingStatement extends Statement {
 
     private int count = 0;
 

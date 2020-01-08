@@ -51,7 +51,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
     return getPolicy(componentContext.getResource());
   }
 
-  // AEM 6.3
+  @Override
   public ContentPolicyMapping getPolicyMapping(Resource contentResource) {
     String resourceType = contentResource.getResourceType();
     if (StringUtils.isNotBlank(resourceType)) {
@@ -60,7 +60,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
     return null;
   }
 
-  // AEM 6.3
+  @Override
   public ContentPolicy getPolicy(Resource contentResource) {
     ContentPolicyMapping mapping = getPolicyMapping(contentResource);
     if (mapping != null) {
@@ -98,20 +98,17 @@ class MockContentPolicyManager implements ContentPolicyManager {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.3
-  @SuppressWarnings("unused")
+  @Override
   public String getPolicyLocation(Resource resource) {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.3
-  @SuppressWarnings("unused")
+  @Override
   public List<Template> getTemplates(String policyAbsolutePath) {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.3
-  @SuppressWarnings("unused")
+  @Override
   public List<Template> getTemplates(String policyAbsolutePath, Predicate filter) {
     throw new UnsupportedOperationException();
   }

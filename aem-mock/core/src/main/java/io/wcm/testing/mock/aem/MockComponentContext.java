@@ -37,6 +37,8 @@ import com.day.cq.wcm.api.components.ComponentManager;
 import com.day.cq.wcm.api.components.EditContext;
 import com.day.cq.wcm.api.designer.Cell;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Mock implementation of {@link ComponentContext}.
  */
@@ -76,13 +78,16 @@ public final class MockComponentContext implements ComponentContext {
   }
 
   @Override
-  @SuppressWarnings("null")
+  @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
   public Component getComponent() {
     Resource currentResource = getResource();
     if (currentResource == null) {
       return null;
     }
     ComponentManager componentManager = currentResource.getResourceResolver().adaptTo(ComponentManager.class);
+    if (componentManager == null) {
+      throw new RuntimeException("No component manager.");
+    }
     return componentManager.getComponentOfResource(currentResource);
   }
 

@@ -151,14 +151,22 @@ public class AemContextImpl extends SlingContextImpl {
    * @return Page manager
    */
   public @NotNull PageManager pageManager() {
-    return resourceResolver().adaptTo(PageManager.class);
+    PageManager pageManager = resourceResolver().adaptTo(PageManager.class);
+    if (pageManager == null) {
+      throw new RuntimeException("No page manager.");
+    }
+    return pageManager;
   }
 
   /**
    * @return Asset manager
    */
   public @NotNull AssetManager assetManager() {
-    return resourceResolver().adaptTo(AssetManager.class);
+    AssetManager assetManager = resourceResolver().adaptTo(AssetManager.class);
+    if (assetManager == null) {
+      throw new RuntimeException("No asset manager");
+    }
+    return assetManager;
   }
 
   /**
