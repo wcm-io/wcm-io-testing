@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Switch to AEM 6.3 as minimum version.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
     </release>
 
     <release version="2.7.2" date="2019-12-16">
@@ -34,7 +37,7 @@
         MockComponentContext: Implement getRoot(), isRoot() and getParent() considering a single root ComponentContext being provided.
       </action>
       <action type="update" dev="sseifert">
-        Update to Sling Mock, Sling Servlet Helpers.
+        Update to latest Sling Mock, Sling Servlet Helpers.
       </action>
       <action type="fix" dev="sseifert">
         MockComponent: Make sure accessing child resources via the getProperties() method does not work, same way as in AEM itself.
