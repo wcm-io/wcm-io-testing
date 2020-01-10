@@ -28,7 +28,7 @@
         Switch to AEM 6.3 as minimum version.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest Sling Mock.
+        Update to latest Sling Mock, ResourceResolver Mock.
       </action>
     </release>
 
