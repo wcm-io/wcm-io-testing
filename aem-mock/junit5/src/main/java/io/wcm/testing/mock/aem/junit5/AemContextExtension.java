@@ -77,7 +77,7 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
    */
   @Override
   public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-    AemContext aemContext = AemContextStore.getOrCreateAemContext(extensionContext, extensionContext.getRequiredTestInstance(),
+    AemContext aemContext = AemContextStore.getOrCreateAemContext(extensionContext, extensionContext.getRequiredTestClass(),
         getAemContextType(parameterContext, extensionContext));
     if (paramIsNotInstanceOfExistingContext(parameterContext, aemContext)) {
       throw new ParameterResolutionException(
@@ -127,12 +127,20 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
   private Optional<Class<?>> getAemContextType(ParameterContext parameterContext, ExtensionContext extensionContext) {
     // If a @BeforeEach or @AfterEach method has only a generic AemContext parameter check if
     // test method has a more specific parameter and use this
-    if (isAbstractAemContext(parameterContext)) {
+    if (isTestInstance(extensionContext) && isAbstractAemContext(parameterContext)) {
       return getParameterFromTestMethod(extensionContext, AemContext.class);
     }
     else {
       return Optional.of(parameterContext.getParameter().getType());
     }
+  }
+
+  /**
+   * On @BeforeAll is no test instance available
+   * @return {@code true} if test instance avaible
+   */
+  private boolean isTestInstance(ExtensionContext extensionContext) {
+    return extensionContext.getTestInstance().isPresent();
   }
 
   private boolean isAbstractAemContext(ParameterContext parameterContext) {
@@ -145,7 +153,7 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
 
   private Optional<Class<?>> getParameterFromTestMethod(ExtensionContext extensionContext, Class<?> type) {
     return Arrays.stream(extensionContext.getRequiredTestMethod().getParameterTypes())
-        .filter(clazz -> type.isAssignableFrom(clazz))
+        .filter(type::isAssignableFrom)
         .findFirst();
   }
 
