@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         Update to latest Sling Mock, OSGi Mock, ResourceResolver Mock.
       </action>
+      <action type="fix" dev="sseifert" issue="WTES-49">
+        Incorrect resourcePage provided in mocked model using a wrapped resource from another page.
+      </action>
     </release>
 
     <release version="2.7.2" date="2019-12-16">
