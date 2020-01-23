@@ -19,26 +19,63 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.*;
+
+import javax.swing.text.html.Option;
 
 /**
  * JUnit 5 extension that allows to inject {@link AemContext} (or subclasses of it) parameters in test methods,
  * and ensures that the context is set up and teared down properly for each test method.
  */
 public final class AemContextExtension implements ParameterResolver, TestInstancePostProcessor,
-    BeforeEachCallback, AfterEachCallback, AfterTestExecutionCallback {
+    BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterTestExecutionCallback {
+
+  @Override
+  public void beforeAll(ExtensionContext extensionContext) throws Exception {
+    final Class<?> testClass = extensionContext.getRequiredTestClass();
+    final Field aemContextField = getStaticAemContextField(testClass);
+
+    if (aemContextField == null) {
+      return;
+    }
+
+    aemContextField.setAccessible(true);
+    AemContext aemContext = (AemContext) aemContextField.get(testClass);
+
+    if (aemContext != null) {
+      if (!aemContext.isSetUp()) {
+        aemContext.setUpContext();
+      }
+      AemContextStore.storeAemContext(extensionContext, testClass, aemContext);
+    } else {
+      aemContext = AemContextStore.getOrCreateAemContext(extensionContext, testClass,
+          Optional.of(aemContextField.getType()));
+      aemContextField.set(testClass, aemContext);
+    }
+  }
+
+  private Boolean hasStaticContext(Class<?> testClass) {
+    return Arrays.stream(testClass.getDeclaredFields())
+        .filter(field -> field.getType().isAssignableFrom(AemContext.class))
+        .anyMatch(field -> Modifier.isStatic(field.getModifiers()));
+  }
+
+  private Field getStaticAemContextField(Class<?> testClass) {
+    return Arrays.stream(testClass.getDeclaredFields())
+        .filter(field -> field.getType().isAssignableFrom(AemContext.class))
+        .filter(field -> Modifier.isStatic(field.getModifiers()))
+        .findFirst().orElse(null);
+  }
 
   /**
    * Checks if test class has a {@link AemContext} or derived field.
@@ -112,8 +149,10 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
       aemContext.getContextPlugins().executeAfterTearDownCallback(aemContext);
 
       // Tear down {@link AemContext} after test is complete.
-      aemContext.tearDownContext();
-      AemContextStore.removeAemContext(extensionContext, extensionContext.getRequiredTestInstance());
+      if (!hasStaticContext(extensionContext.getRequiredTestClass())) {
+        aemContext.tearDownContext();
+        AemContextStore.removeAemContext(extensionContext, extensionContext.getRequiredTestInstance());
+      }
     });
   }
 
@@ -137,7 +176,7 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
 
   /**
    * On @BeforeAll is no test instance available
-   * @return {@code true} if test instance avaible
+   * @return {@code true} if test instance is available
    */
   private boolean isTestInstance(ExtensionContext extensionContext) {
     return extensionContext.getTestInstance().isPresent();
