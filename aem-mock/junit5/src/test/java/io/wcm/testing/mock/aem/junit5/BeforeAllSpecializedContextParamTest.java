@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2018 wcm.io
+ * Copyright (C) 2020 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,29 +19,34 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
-import org.apache.sling.api.resource.Resource;
+import static org.apache.sling.hamcrest.ResourceMatchers.props;
+import static org.junit.Assert.assertThat;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
- * Test with specialized context in {@code BeforeAll}-method.
+ * Test with specialized context parameter in {@code BeforeAll}-method.
  */
 @ExtendWith(AemContextExtension.class)
-class AemContextBeforeAllSpecializedContext {
+class BeforeAllSpecializedContextParamTest {
+
+  private static final String RESOURCE1_PATH = "/content/test";
 
   @BeforeAll
   static void setUpAll(JcrMockAemContext context) {
-    context.create().resource("/content/test",
-        "prop1", "value1");
+    context.create().resource(RESOURCE1_PATH, "prop1", "value1");
   }
 
   @Test
-  void test(JcrMockAemContext context) {
-    Resource resource = context.resourceResolver().getResource("/content/test");
-    assertEquals("value1", resource.getValueMap().get("prop1"));
+  void test1(JcrMockAemContext context) {
+    assertThat(context.resourceResolver().getResource(RESOURCE1_PATH), props("prop1", "value1"));
+  }
+
+  @Test
+  void test2(JcrMockAemContext context) {
+    assertThat(context.resourceResolver().getResource(RESOURCE1_PATH), props("prop1", "value1"));
   }
 
 }

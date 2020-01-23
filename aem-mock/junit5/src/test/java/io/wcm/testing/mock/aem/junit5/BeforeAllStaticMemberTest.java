@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2018 wcm.io
+ * Copyright (C) 2020 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,28 +19,39 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
-import org.apache.sling.api.resource.Resource;
+import static org.apache.sling.hamcrest.ResourceMatchers.props;
+import static org.junit.Assert.assertThat;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
- * Test with generic context in {@code BeforeAll}-method.
+ * Test with static uninitialized context field and {@code BeforeAll}.
  */
 @ExtendWith(AemContextExtension.class)
-class AemContextBeforeAllGenericContext {
+@SuppressFBWarnings("UWF_UNWRITTEN_FIELD")
+class BeforeAllStaticMemberTest {
+
+  private static final String RESOURCE1_PATH = "/content/test";
+
+  private static AemContext context;
 
   @BeforeAll
-  static void setUpAll(AemContext context) {
-    context.create().resource("/content/test",
-        "prop1", "value1");
+  static void setUpAll() {
+    context.create().resource(RESOURCE1_PATH, "prop1", "value1");
   }
 
   @Test
-  void test(AemContext context) {
-    Resource resource = context.resourceResolver().getResource("/content/test");
-    assertEquals("value1", resource.getValueMap().get("prop1"));
+  void test1() {
+    assertThat(context.resourceResolver().getResource(RESOURCE1_PATH), props("prop1", "value1"));
   }
+
+  @Test
+  void test2() {
+    assertThat(context.resourceResolver().getResource(RESOURCE1_PATH), props("prop1", "value1"));
+  }
+
 }

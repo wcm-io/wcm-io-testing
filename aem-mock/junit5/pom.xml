@@ -129,6 +129,11 @@
       <version>${logging-mock.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.hamcrest</artifactId>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
