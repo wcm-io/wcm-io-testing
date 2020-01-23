@@ -34,8 +34,8 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Unit Test log configuration for Logback</name>
-  <description>Default configuration for logback logging implementation in unit tests.</description>
+  <name>Log configuration for Logback</name>
+  <description>Default configuration for Logback logging in unit tests.</description>
   <url>${site.url}/${site.url.module.prefix}/</url>
 
   <scm>
