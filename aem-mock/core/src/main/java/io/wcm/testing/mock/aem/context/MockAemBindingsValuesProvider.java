@@ -23,6 +23,8 @@ import java.util.Map;
 
 import javax.script.Bindings;
 
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.scripting.api.BindingsValuesProvider;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -47,13 +49,14 @@ class MockAemBindingsValuesProvider implements BindingsValuesProvider {
 
   @Override
   public void addBindings(Bindings bindings) {
+    SlingHttpServletRequest request = (SlingHttpServletRequest)bindings.get(SlingBindings.REQUEST);
     for (SlingBindingsProperty property : SlingBindingsProperty.values()) {
-      putProperty(bindings, property.key());
+      putProperty(bindings, property.key(), request);
     }
   }
 
-  private void putProperty(Bindings bindings, String key) {
-    Object value = MockAemSlingBindings.resolveSlingBindingProperty(context, key);
+  private void putProperty(Bindings bindings, String key, SlingHttpServletRequest request) {
+    Object value = MockAemSlingBindings.resolveSlingBindingProperty(context, key, request);
     if (value != null) {
       bindings.put(key, value);
     }

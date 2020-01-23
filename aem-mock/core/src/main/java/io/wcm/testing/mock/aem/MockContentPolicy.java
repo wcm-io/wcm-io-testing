@@ -45,14 +45,8 @@ class MockContentPolicy extends MockLabeledResource implements ContentPolicy {
   }
 
   @Override
-  public long getLastModified() {
-    Calendar calendar = getValueMap().get(JCR_LASTMODIFIED, Calendar.class);
-    if (calendar != null) {
-      return calendar.getTimeInMillis();
-    }
-    else {
-      return 0;
-    }
+  public Calendar getLastModified() {
+    return getValueMap().get(JCR_LASTMODIFIED, Calendar.class);
   }
 
   @Override

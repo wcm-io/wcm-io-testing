@@ -55,7 +55,6 @@ public final class MockCAConfig {
    * @param paths List of paths/subtrees this application belongs to
    * @return Application provider
    */
-  @SuppressWarnings("null")
   public static ApplicationProvider applicationProvider(@NotNull final String applicationId, @NotNull final String @NotNull... paths) {
     final Pattern[] patterns = new Pattern[paths.length];
     for (int i = 0; i < paths.length; i++) {
@@ -98,10 +97,15 @@ public final class MockCAConfig {
    * @param contextPath Configuration id
    * @param values Configuration values
    */
-  @SuppressWarnings("null")
   public static void writeConfiguration(@NotNull AemContextImpl context, @NotNull String contextPath, @NotNull Map<String, Object> values) {
     ConfigurationManager configManager = context.getService(ConfigurationManager.class);
+    if (configManager == null) {
+      throw new RuntimeException("Configuration manager does not exist.");
+    }
     Resource contextResource = context.resourceResolver().getResource(contextPath);
+    if (contextResource == null) {
+      throw new RuntimeException("Context resource does not exist: " + contextPath);
+    }
     configManager.persistConfiguration(contextResource, ParameterProviderBridge.DEFAULT_CONFIG_NAME,
         new ConfigurationPersistData(values));
   }

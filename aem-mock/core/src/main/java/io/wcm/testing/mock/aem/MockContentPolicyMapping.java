@@ -65,12 +65,12 @@ class MockContentPolicyMapping implements ContentPolicyMapping {
     return null;
   }
 
-  // AEM 6.3
+  @Override
   public String getName() {
     return resource.getName();
   }
 
-  // AEM 6.3
+  @Override
   public Calendar getLastModified() {
     return resource.getValueMap().get(JCR_LASTMODIFIED, Calendar.class);
   }

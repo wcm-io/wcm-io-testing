@@ -62,7 +62,6 @@ import com.day.cq.wcm.api.NameConstants;
  * Mock implementation of {@link TagManager}.
  */
 @ProviderType
-@SuppressWarnings("null")
 public final class MockTagManager implements TagManager {
 
   /** resource type for created tags */
@@ -189,7 +188,7 @@ public final class MockTagManager implements TagManager {
     }
 
     // ensure the parent exists first
-    String parentTagPath = tagPath.substring(0, tagPath.lastIndexOf("/"));
+    String parentTagPath = tagPath.substring(0, tagPath.lastIndexOf('/'));
     if (!getTagRootPath().equals(parentTagPath)) {
       createTag(parentTagPath, null, null, false);
     }
@@ -212,10 +211,8 @@ public final class MockTagManager implements TagManager {
 
       return tagResource.adaptTo(Tag.class);
     }
-    catch (PersistenceException e) {
-      log.error("failed to create tag", e);
-      // throw this as a failure to indicate it failed
-      throw new AccessControlException("failed to create tag");
+    catch (PersistenceException ex) {
+      throw new RuntimeException("failed to create tag", ex);
     }
   }
 
@@ -231,8 +228,12 @@ public final class MockTagManager implements TagManager {
 
   @Override
   public void deleteTag(Tag tag, boolean autoSave) throws AccessControlException {
+    Resource tagResource = tag.adaptTo(Resource.class);
+    if (tagResource == null) {
+      return;
+    }
     try {
-      resourceResolver.delete(tag.adaptTo(Resource.class));
+      resourceResolver.delete(tagResource);
       if (autoSave) {
         resourceResolver.commit();
         resourceResolver.refresh();
@@ -268,7 +269,10 @@ public final class MockTagManager implements TagManager {
       if (tag == null) {
         return null;
       }
-      tagPaths.add(tag.adaptTo(Resource.class).getPath());
+      Resource tagResource = tag.adaptTo(Resource.class);
+      if (tagResource != null) {
+        tagPaths.add(tagResource.getPath());
+      }
     }
 
     Queue<Resource> searchResources = new LinkedList<Resource>();
@@ -339,7 +343,7 @@ public final class MockTagManager implements TagManager {
 
   /**
    * Test matching of tags. <em>matching</em> is defined as either being equivalent to or starting with.
-   * @param haystack the tag (absolute path) to be tested as matching the <code>needle<code> tag.
+   * @param haystack the tag (absolute path) to be tested as matching the <code>needle</code> tag.
    * @param needle the tag (absolute path) to verify the <code>haystack</code> as matching.
    * @return state of <code>haystack</code> tag matching the <code>needle</code> tag.
    */
@@ -349,13 +353,15 @@ public final class MockTagManager implements TagManager {
   }
 
   private List<Tag> getNamespacesList() {
-    Resource tagRoot = resourceResolver.getResource(getTagRootPath());
     List<Tag> namespaces = new ArrayList<Tag>();
-    for (Iterator<Resource> resources = tagRoot.listChildren(); resources.hasNext();) {
-      Resource resource = resources.next();
-      Tag tag = resource.adaptTo(Tag.class);
-      if (tag != null) {
-        namespaces.add(tag);
+    Resource tagRoot = resourceResolver.getResource(getTagRootPath());
+    if (tagRoot != null) {
+      for (Iterator<Resource> resources = tagRoot.listChildren(); resources.hasNext();) {
+        Resource resource = resources.next();
+        Tag tag = resource.adaptTo(Tag.class);
+        if (tag != null) {
+          namespaces.add(tag);
+        }
       }
     }
     return namespaces;
@@ -364,7 +370,7 @@ public final class MockTagManager implements TagManager {
   @Override
   public Tag[] getNamespaces() {
     List<Tag> namespaces = getNamespacesList();
-    return namespaces.toArray(new Tag[namespaces.size()]);
+    return namespaces.toArray(new Tag[0]);
   }
 
   @Override
@@ -385,7 +391,7 @@ public final class MockTagManager implements TagManager {
   @Override
   public Tag[] getTagsForSubtree(Resource resource, boolean shallow) {
     Collection<Tag> tags = collectResourceTags(resource, !shallow);
-    return tags.toArray(new Tag[tags.size()]);
+    return tags.toArray(new Tag[0]);
   }
 
   private Collection<Tag> collectResourceTags(Resource resource, boolean recurse) {
@@ -441,9 +447,13 @@ public final class MockTagManager implements TagManager {
   @Override
   public void setTags(Resource resource, Tag[] tags, boolean autoSave) {
     ModifiableValueMap props = resource.adaptTo(ModifiableValueMap.class);
+    if (props == null) {
+      throw new RuntimeException("Unable to get modifiable value map: " + resource.getPath());
+    }
     if (tags == null) {
       props.remove(TagConstants.PN_TAGS);
-    } else {
+    }
+    else {
       String[] tagStrings = new String[tags.length];
       for (int i = 0; i < tags.length; ++i) {
         // 6.0 has appeared to have switched to storing (the shorter) tagIDs, from where 5.6 was storing absolute paths.
