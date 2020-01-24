@@ -19,19 +19,13 @@
  */
 package io.wcm.testing.mock.aem.junit5;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.*;
-
-import javax.swing.text.html.Option;
 
 /**
  * JUnit 5 extension that allows to inject {@link AemContext} (or subclasses of it) parameters in test methods,
@@ -40,41 +34,23 @@ import javax.swing.text.html.Option;
 public final class AemContextExtension implements ParameterResolver, TestInstancePostProcessor,
     BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterTestExecutionCallback {
 
-  @Override
-  public void beforeAll(ExtensionContext extensionContext) throws Exception {
-    final Class<?> testClass = extensionContext.getRequiredTestClass();
-    final Field aemContextField = getStaticAemContextField(testClass);
-
-    if (aemContextField == null) {
-      return;
-    }
-
-    aemContextField.setAccessible(true);
-    AemContext aemContext = (AemContext) aemContextField.get(testClass);
-
-    if (aemContext != null) {
-      if (!aemContext.isSetUp()) {
-        aemContext.setUpContext();
-      }
-      AemContextStore.storeAemContext(extensionContext, testClass, aemContext);
-    } else {
-      aemContext = AemContextStore.getOrCreateAemContext(extensionContext, testClass,
-          Optional.of(aemContextField.getType()));
-      aemContextField.set(testClass, aemContext);
-    }
-  }
-
   private Boolean hasStaticContext(Class<?> testClass) {
     return Arrays.stream(testClass.getDeclaredFields())
         .filter(field -> field.getType().isAssignableFrom(AemContext.class))
         .anyMatch(field -> Modifier.isStatic(field.getModifiers()));
   }
 
-  private Field getStaticAemContextField(Class<?> testClass) {
-    return Arrays.stream(testClass.getDeclaredFields())
-        .filter(field -> field.getType().isAssignableFrom(AemContext.class))
-        .filter(field -> Modifier.isStatic(field.getModifiers()))
-        .findFirst().orElse(null);
+  @Override
+  public void beforeAll(ExtensionContext extensionContext) throws Exception {
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    Field aemContextField = getField(testClass, AemContext.class);
+
+    // check if field exists and is static
+    if (aemContextField == null || !Modifier.isStatic(aemContextField.getModifiers())) {
+      return;
+    }
+
+    setAemContextInStore(testClass, extensionContext, aemContextField);
   }
 
   /**
@@ -84,20 +60,26 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
    */
   @Override
   public void postProcessTestInstance(Object testInstance, ExtensionContext extensionContext) throws Exception {
-    Field aemContextField = getFieldFromTestInstance(testInstance, AemContext.class);
-    if (aemContextField != null) {
-      AemContext context = (AemContext)aemContextField.get(testInstance);
-      if (context != null) {
-        if (!context.isSetUp()) {
-          context.setUpContext();
-        }
-        AemContextStore.storeAemContext(extensionContext, testInstance, context);
+    Field aemContextField = getField(testInstance, AemContext.class);
+
+    if (aemContextField == null) {
+      return;
+    }
+
+    setAemContextInStore(testInstance, extensionContext, aemContextField);
+  }
+
+  private void setAemContextInStore(Object testTarget, ExtensionContext extensionContext, Field aemContextField) throws IllegalAccessException {
+    AemContext aemContext = (AemContext) aemContextField.get(testTarget);
+    if (aemContext != null) {
+      if (!aemContext.isSetUp()) {
+        aemContext.setUpContext();
       }
-      else {
-        context = AemContextStore.getOrCreateAemContext(extensionContext, testInstance,
-            Optional.of(aemContextField.getType()));
-        aemContextField.set(testInstance, context);
-      }
+      AemContextStore.storeAemContext(extensionContext, testTarget, aemContext);
+    } else {
+      aemContext = AemContextStore.getOrCreateAemContext(extensionContext, testTarget,
+          Optional.of(aemContextField.getType()));
+      aemContextField.set(testTarget, aemContext);
     }
   }
 
@@ -127,7 +109,7 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
   }
 
   @Override
-  public void beforeEach(ExtensionContext extensionContext) throws Exception {
+  public void beforeEach(ExtensionContext extensionContext) {
     applyAemContext(extensionContext, aemContext -> {
       // call context plugins setup after all @BeforeEach methods were called
       aemContext.getContextPlugins().executeAfterSetUpCallback(aemContext);
@@ -135,7 +117,7 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
   }
 
   @Override
-  public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
+  public void afterTestExecution(ExtensionContext extensionContext) {
     applyAemContext(extensionContext, aemContext -> {
       // call context plugins setup before any @AfterEach method is called
       aemContext.getContextPlugins().executeBeforeTearDownCallback(aemContext);
@@ -196,24 +178,25 @@ public final class AemContextExtension implements ParameterResolver, TestInstanc
         .findFirst();
   }
 
-  private Field getFieldFromTestInstance(Object testInstance, Class<?> type) {
-    return getFieldFromTestInstance(testInstance.getClass(), type);
+  private Field getField(Object testInstance, Class<?> type) {
+    return getField(testInstance.getClass(), type);
   }
 
-  private Field getFieldFromTestInstance(Class<?> instanceClass, Class<?> type) {
+  private Field getField(Class<?> instanceClass, Class<?> type) {
     if (instanceClass == null) {
       return null;
     }
+
     Field contextField = Arrays.stream(instanceClass.getDeclaredFields())
         .filter(field -> type.isAssignableFrom(field.getType()))
         .findFirst()
         .orElse(null);
-    if (contextField != null) {
-      contextField.setAccessible(true);
+
+    if (contextField == null) {
+      return getField(instanceClass.getSuperclass(), type);
     }
-    else {
-      return getFieldFromTestInstance(instanceClass.getSuperclass(), type);
-    }
+
+    contextField.setAccessible(true);
     return contextField;
   }
 
