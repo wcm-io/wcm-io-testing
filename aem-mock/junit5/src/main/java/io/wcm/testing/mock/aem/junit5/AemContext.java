@@ -95,6 +95,7 @@ public class AemContext extends AemContextImpl {
    */
   protected void setUpContext() {
     isSetUp = true;
+    // call context plugins setup before @BeforeEach/@BeforeAll methods are called
     plugins.executeBeforeSetUpCallback(this);
     super.setUp();
   }

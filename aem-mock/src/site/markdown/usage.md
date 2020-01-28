@@ -44,6 +44,7 @@ public class ExampleTest {
 It is possible to combine such a unit test with a `@ExtendWith` annotation e.g. for
 [Mockito JUnit Jupiter Extension][mockito-junit5-extension].
 
+It is recommended to define the AemContext field as non-static field and use `@BeforeEach` and `@AfterEach` methods if you want to execute setup or tear down code for each test run. Since version 3.0.0 AEM Mocks also supports static AemContext fields and `@BeforeAll` and `@AfterAll` methods. However, you have to make sure you have no side-effects between the tests, as all changes in the AemContext object (e.g. content written to repository or OSGi services registered) are visible to all tests in the class.
 
 ### JUnit 4: AEM Context JUnit Rule
 

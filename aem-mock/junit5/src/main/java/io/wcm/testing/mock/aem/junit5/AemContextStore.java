@@ -22,6 +22,8 @@ package io.wcm.testing.mock.aem.junit5;
 import java.lang.reflect.Constructor;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
@@ -33,6 +35,7 @@ final class AemContextStore {
 
   private static final Namespace AEM_CONTEXT_NAMESPACE = Namespace.create(AemContextExtension.class);
   private static final Class<ResourceResolverMockAemContext> DEFAULT_AEM_CONTEXT_TYPE = ResourceResolverMockAemContext.class;
+  private static final String BEFORE_ALL_SUFFIX = "_BeforeAll";
 
   private AemContextStore() {
     // static methods only
@@ -41,26 +44,23 @@ final class AemContextStore {
   /**
    * Get {@link AemContext} from extension context store.
    * @param extensionContext Extension context
-   * @param testInstance Test instance
    * @return AemContext or null
    */
-  @SuppressWarnings("null")
-  public static AemContext getAemContext(ExtensionContext extensionContext, Object testInstance) {
-    return getStore(extensionContext).get(testInstance, AemContext.class);
+  public static @Nullable AemContext getAemContext(@NotNull ExtensionContext extensionContext) {
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    return getStore(extensionContext).get(testClass, AemContext.class);
   }
 
   /**
    * Get {@link AemContext} from extension context store - if it does not exist create a new one and store it.
    * @param extensionContext Extension context
-   * @param testInstance Test instance
    * @return AemContext (never null)
    */
-  public static AemContext getOrCreateAemContext(ExtensionContext extensionContext, Object testInstance,
-      Optional<Class<?>> aemContextType) {
-    AemContext context = getAemContext(extensionContext, testInstance);
+  public static @NotNull AemContext getOrCreateAemContext(@NotNull ExtensionContext extensionContext, Optional<Class<?>> aemContextType) {
+    AemContext context = getAemContext(extensionContext);
     if (context == null) {
       context = createAemContext(aemContextType);
-      storeAemContext(extensionContext, testInstance, context);
+      storeAemContext(extensionContext, context);
     }
     return context;
   }
@@ -68,20 +68,20 @@ final class AemContextStore {
   /**
    * Removes {@link AemContext} from extension context store (if it exists).
    * @param extensionContext Extension context
-   * @param testInstance Test instance
    */
-  public static void removeAemContext(ExtensionContext extensionContext, Object testInstance) {
-    getStore(extensionContext).remove(testInstance);
+  public static void removeAemContext(@NotNull ExtensionContext extensionContext) {
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    getStore(extensionContext).remove(testClass);
   }
 
   /**
    * Store {@link AemContext} in extension context store.
    * @param extensionContext Extension context
-   * @param testInstance Test instance
    * @param aemContext AEM context
    */
-  public static void storeAemContext(ExtensionContext extensionContext, Object testInstance, AemContext aemContext) {
-    getStore(extensionContext).put(testInstance, aemContext);
+  public static void storeAemContext(@NotNull ExtensionContext extensionContext, @NotNull AemContext aemContext) {
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    getStore(extensionContext).put(testClass, aemContext);
   }
 
   private static Store getStore(ExtensionContext context) {
@@ -104,6 +104,26 @@ final class AemContextStore {
       // CHECKSTYLE:ON
       throw new IllegalStateException("Could not create " + type.getName() + " instance.", ex);
     }
+  }
+
+  /**
+   * Get "before-all" state of test class cached in extension store.
+   * @param extensionContext Extension context
+   * @return State or null
+   */
+  public static @Nullable Boolean getBeforeAllState(@NotNull ExtensionContext extensionContext) {
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    return getStore(extensionContext).get(testClass.getName() + BEFORE_ALL_SUFFIX, Boolean.class);
+  }
+
+  /**
+   * Stores "before-all" state of test class in extension store.
+   * @param extensionContext Extension context
+   * @param state State
+   */
+  public static void storeBeforeAllState(@NotNull ExtensionContext extensionContext, @NotNull Boolean state) {
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    getStore(extensionContext).put(testClass.getName() + BEFORE_ALL_SUFFIX, state);
   }
 
 }
