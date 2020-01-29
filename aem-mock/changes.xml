@@ -24,6 +24,9 @@
   <body>
 
     <release version="3.0.0" date="not released">
+      <action type="add" dev="pklink" issue="WTES-42">
+        Add support for @BeforeAll and @AfterAll annotation.
+      </action>
       <action type="update" dev="sseifert">
         Switch to AEM 6.3 as minimum version.
       </action>
