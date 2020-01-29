@@ -20,5 +20,5 @@
 /**
  * Mock implementation of selected AEM DAM APIs.
  */
-@org.osgi.annotation.versioning.Version("2.0")
+@org.osgi.annotation.versioning.Version("2.0.0")
 package io.wcm.testing.mock.aem.dam;
