@@ -561,7 +561,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param name Child resource name
    * @return Resource object
    */
-  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name) {
+  public @NotNull Resource resource(@NotNull Page page, @NotNull String name) {
     return resource(page, name, ValueMap.EMPTY);
   }
 
@@ -573,7 +573,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param properties Properties for resource.
    * @return Resource object
    */
-  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Map<String, Object> properties) {
+  public @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Map<String, Object> properties) {
     String path = page.getContentResource().getPath() + "/" + StringUtils.stripStart(name, "/");
     return resource(path, properties);
   }
@@ -586,7 +586,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param properties Properties for resource.
    * @return Resource object
    */
-  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Object @NotNull... properties) {
+  public @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Object @NotNull... properties) {
     return resource(page, name, MapUtil.toMap(properties));
   }
 
