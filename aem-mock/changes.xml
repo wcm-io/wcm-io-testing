@@ -27,6 +27,9 @@
       <action type="add" dev="pklink" issue="WTES-42">
         Add support for @BeforeAll and @AfterAll annotation.
       </action>
+      <action type="add" dev="sseifert">
+        Add mock implementation of PageManagerFactory.
+      </action>
       <action type="update" dev="sseifert">
         Switch to AEM 6.3 as minimum version.
       </action>
