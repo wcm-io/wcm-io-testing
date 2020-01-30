@@ -1,4 +1,4 @@
-## About Log configuration for Logback
+## About Testing Log configuration for Logback
 
 Default configuration for [Logback][logback] logging in unit tests.
 
