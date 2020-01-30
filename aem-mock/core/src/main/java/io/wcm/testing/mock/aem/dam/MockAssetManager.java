@@ -57,6 +57,7 @@ import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Revision;
 import com.day.image.Layer;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
 /**
@@ -78,6 +79,7 @@ class MockAssetManager implements AssetManager {
   }
 
   @Override
+  @SuppressFBWarnings({ "BAD_PRACTICE", "STYLE" })
   public Asset createAsset(String assetPath, InputStream inputStream, String mimeType, boolean autoSave) {
     String assetContentPath = assetPath + "/" + JCR_CONTENT;
     String metadataPath = assetContentPath + "/" + METADATA_FOLDER;
@@ -133,6 +135,7 @@ class MockAssetManager implements AssetManager {
     return resourceResolver.getResource(assetPath).adaptTo(Asset.class);
   }
 
+  @SuppressFBWarnings("STYLE")
   private void createOrUpdateResource(String path, String jcrPrimaryType, Map<String, Object> props) {
     Resource resource = resourceResolver.getResource(path);
     if (resource == null) {

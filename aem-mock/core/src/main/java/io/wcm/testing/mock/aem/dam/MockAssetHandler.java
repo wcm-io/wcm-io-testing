@@ -27,10 +27,6 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -105,37 +101,12 @@ public final class MockAssetHandler implements AssetHandler {
   }
 
   @Override
-  public void createThumbnails(Node node, Node renditionFolder, Session session, List<Integer[]> dimensions) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void createThumbnailsExt(Node node, Node renditionFolder, Session session, List<Map<String, Object>> thumbnailConfigs) throws IOException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void exportAsset(Node asset, OutputStream os) throws AssetHandlerException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public void exportAsset(Asset asset, OutputStream os) throws AssetHandlerException {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public ExtractedMetadata extractMetadata(Node node) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public ExtractedMetadata extractMetadata(Asset asset) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public BufferedImage getImage(Node node) throws IOException {
     throw new UnsupportedOperationException();
   }
 
@@ -146,11 +117,6 @@ public final class MockAssetHandler implements AssetHandler {
 
   @Override
   public List<String> processSubAssets(Asset asset) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public List<String> processSubAssets(Node asset, Session session) {
     throw new UnsupportedOperationException();
   }
 

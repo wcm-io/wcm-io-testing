@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
     <relativePath>parent/pom.xml</relativePath>
   </parent>
 
@@ -42,9 +42,11 @@
     <module>junit-commons</module>
     <module>aem-mock</module>
     <module>wcm-io-mock/sling</module>
+    <module>wcm-io-mock/wcm</module>
     <module>wcm-io-mock/caconfig</module>
     <module>wcm-io-mock/caconfig-compat</module>
     <module>wcm-io-mock/handler</module>
+    <module>logging/logback</module>
   </modules>
 
   <build>

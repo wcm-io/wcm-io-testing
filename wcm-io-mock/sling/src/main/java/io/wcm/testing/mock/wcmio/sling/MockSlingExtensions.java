@@ -42,10 +42,11 @@ public final class MockSlingExtensions {
    * @param context AEM Context
    * @param request Request
    */
-  @SuppressWarnings("null")
   public static void setRequestContext(@NotNull AemContextImpl context, @Nullable SlingHttpServletRequest request) {
     MockRequestContext requestContext = (MockRequestContext)context.getService(RequestContext.class);
-    requestContext.setRequest(request);
+    if (requestContext != null) {
+      requestContext.setRequest(request);
+    }
   }
 
 }

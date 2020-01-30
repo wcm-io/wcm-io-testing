@@ -46,6 +46,8 @@ import com.day.cq.tagging.TagConstants;
 import com.day.cq.tagging.TagManager;
 import com.day.cq.wcm.api.NameConstants;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 
 /**
  * Mock implementation of {@link Tag}.
@@ -59,7 +61,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   @SuppressWarnings("unused")
   MockTag(@NotNull Resource resource) {
     if (resource == null) {
-      throw new NullPointerException("resource is null");
+      throw new IllegalArgumentException("resource is null");
     }
     if (!resource.getPath().startsWith(MockTagManager.getTagRootPath() + "/")) {
       throw new IllegalArgumentException("Tags should exist under " + MockTagManager.getTagRootPath());
@@ -74,9 +76,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     }
     Tag tag = (Tag)o;
     Resource tagResource = tag.adaptTo(Resource.class);
-    //return resource.equals(tagResource); // broken - workaround it
-    return (resource.getResourceResolver().equals(tagResource.getResourceResolver()))
-        && (resource.getPath().equals(tagResource.getPath()));
+    return tagResource != null && StringUtils.equals(resource.getPath(), tagResource.getPath());
   }
 
   @Override
@@ -87,17 +87,22 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   @Override
   public int compareTo(Tag tag) {
     Resource tagResource = tag.adaptTo(Resource.class);
-    return resource.getPath().compareTo(tagResource.getPath());
+    if (tagResource != null) {
+      return resource.getPath().compareTo(tagResource.getPath());
+    }
+    else {
+      return -1;
+    }
   }
 
   @Override
   public String toString() {
-    StringBuilder string = new StringBuilder();
-    string.append("Tag [");
-    string.append("path=").append(getPath());
-    string.append(", title=").append(getTitle());
-    string.append(", desc=").append(getDescription());
-    string.append("]");
+    StringBuilder string = new StringBuilder()
+        .append("Tag [")
+        .append("path=").append(getPath())
+        .append(", title=").append(getTitle())
+        .append(", desc=").append(getDescription())
+        .append("]");
     return string.toString();
   }
 
@@ -118,12 +123,14 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
    * Find all nodes tagged with this tag.
    */
   @Override
+  @SuppressFBWarnings("STYLE")
   public Iterator<Resource> find() {
     TagManager tagManager = resource.getResourceResolver().adaptTo(TagManager.class);
     return tagManager.find(getPath());
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public long getCount() {
     TagManager tagManager = resource.getResourceResolver().adaptTo(TagManager.class);
     return tagManager.find(getPath()).getSize();
@@ -155,7 +162,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
       return "";
     }
     String tagID = getTagID();
-    tagID = tagID.substring(tagID.indexOf(TagConstants.NAMESPACE_DELIMITER) + 1);
+    tagID = tagID.substring(tagID.indexOf(NAMESPACE_DELIMITER) + 1);
 
     return tagID;
   }
@@ -211,6 +218,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public Tag getParent() {
     if (isNamespace()) {
       return null;
@@ -224,6 +232,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public String getTagID() {
     StringBuilder tagID = new StringBuilder(resource.getPath().length());
     Tag tag = this;
@@ -236,7 +245,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
       tag = tag.getParent();
     }
 
-    tagID.insert(0, TagConstants.NAMESPACE_DELIMITER);
+    tagID.insert(0, NAMESPACE_DELIMITER);
     tagID.insert(0, tag.adaptTo(Resource.class).getName());
 
     return tagID.toString();
@@ -258,6 +267,7 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public boolean isNamespace() {
     return MockTagManager.getTagRootPath().equals(resource.getParent().getPath());
   }

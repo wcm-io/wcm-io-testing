@@ -45,6 +45,7 @@ class AemContextPluginTest {
   private final AemContextCallback contextBeforeSetup = mock(AemContextCallback.class);
   private final AemContextCallback contextAfterSetup = mock(AemContextCallback.class);
   private final AemContextCallback contextBeforeTeardown = mock(AemContextCallback.class);
+  // note: we cannot test the execution of the afterTearDown method as this happens after @AfterEach
   private final AemContextCallback contextAfterTeardown = mock(AemContextCallback.class);
 
   private final AemContext context = new AemContextBuilder()
@@ -60,18 +61,18 @@ class AemContextPluginTest {
       .build();
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() throws Exception {
     verify(contextBeforeSetup).execute(context);
   }
 
   @Test
-  public void testRequest() throws Exception {
+  void testRequest() throws Exception {
     verify(contextAfterSetup).execute(context);
     assertNotNull(context.request());
   }
 
   @Test
-  public void testResourceResolverFactoryActivatorProps() throws Exception {
+  void testResourceResolverFactoryActivatorProps() throws Exception {
     verify(contextAfterSetup).execute(context);
 
     // skip this test for resource resolver mock, because it does not respect the custom config
@@ -95,14 +96,14 @@ class AemContextPluginTest {
   }
 
   @Test
-  public void testSlingModelClasspathRegistered() {
+  void testSlingModelClasspathRegistered() {
     context.request().setAttribute("prop1", "myValue");
     ClasspathRegisteredModel model = context.request().adaptTo(ClasspathRegisteredModel.class);
     assertEquals("myValue", model.getProp1());
   }
 
   @AfterEach
-  public void tearDown() throws Exception {
+  void tearDown() throws Exception {
     verify(contextBeforeTeardown).execute(context);
   }
 

@@ -35,8 +35,8 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public final class AemContextBuilder {
 
-  private @NotNull final ContextPlugins plugins = new ContextPlugins();
-  private @NotNull ResourceResolverType[] resourceResolverTypes;
+  private final ContextPlugins plugins = new ContextPlugins();
+  private ResourceResolverType[] resourceResolverTypes;
   private Map<String, Object> resourceResolverFactoryActivatorProps;
   private boolean registerSlingModelsFromClassPath = true;
 

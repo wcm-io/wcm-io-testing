@@ -92,6 +92,41 @@ public class MockAemSlingBindingsTest {
     assertNotNull(model.getCurrentStyle());
   }
 
+  /*
+  -- Sling Models API 1.3.6/Impl 1.4.4 or higher required for these unit tests --
+  @Test
+  public void testBindings_resourcePage() {
+    // set the current resource
+    context.currentResource(currentResource);
+  
+    // get the model
+    SlingHttpServletRequest request = context.request();
+    SlingBindingsModel model = request.adaptTo(SlingBindingsModel.class);
+  
+    // assert the model returns the correct page, resource, and resourcePage
+    assertNotNull(model);
+    assertEquals(this.currentPage, model.getCurrentPage());
+    assertEquals(this.currentResource, model.getResource());
+    assertEquals(this.currentPage, model.getResourcePage());
+  
+    // create a new sibling page
+    Page page2 = context.create().page("/content/testPage2");
+    Resource resourcePage2 = context.create().resource(page2.getContentResource().getPath() + "/testResource",
+            "sling:resourceType", "/apps/app1/components/component1");
+  
+    // use the model factory to wrap the request to get the model for the resource on the NEW page
+    ModelFactory modelFactory = context.getService(ModelFactory.class);
+    SlingBindingsModel model2 = modelFactory.getModelFromWrappedRequest(request, resourcePage2, SlingBindingsModel.class);
+  
+    // assert the new model is as expected
+    assertNotNull(model2);
+    assertEquals(this.currentPage.getPath(), model2.getCurrentPage().getPath());
+    assertEquals(resourcePage2.getPath(), model2.getResource().getPath());
+    // this test confirms that the "resourcePage" is the page that contains the "resource"
+    assertEquals(page2.getPath(), model2.getResourcePage().getPath());
+  }
+  */
+
   @Test
   public void testBindings_EditMode() {
     WCMMode.EDIT.toRequest(context.request());

@@ -59,6 +59,7 @@ import com.day.cq.wcm.api.WCMException;
 import com.day.image.Layer;
 import com.google.common.collect.ImmutableMap;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.wcm.testing.mock.aem.context.AemContextImpl;
 
 /**
@@ -143,9 +144,15 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     String name = ResourceUtil.getName(path);
     try {
       PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
+      if (pageManager == null) {
+        throw new RuntimeException("No page manager.");
+      }
       Page page = pageManager.create(parentPath, name, template, name, true);
       if (!pageProperties.isEmpty()) {
         ModifiableValueMap props = page.getContentResource().adaptTo(ModifiableValueMap.class);
+        if (props == null) {
+          throw new RuntimeException("No ModifiableValueMap.");
+        }
         props.putAll(pageProperties);
         resourceResolver.commit();
       }
@@ -340,6 +347,9 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    */
   public Asset asset(@NotNull String path, @NotNull InputStream inputStream, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
     AssetManager assetManager = resourceResolver.adaptTo(AssetManager.class);
+    if (assetManager == null) {
+      throw new RuntimeException("No asset manager.");
+    }
     Asset asset = assetManager.createAsset(path, inputStream, mimeType, true);
 
     if (metadata != null && !metadata.isEmpty()) {
@@ -349,6 +359,9 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
         metadataResource = resource(metadataPath);
       }
       ModifiableValueMap metadataProperties = metadataResource.adaptTo(ModifiableValueMap.class);
+      if (metadataProperties == null) {
+        throw new RuntimeException("No ModifiableValueMap.");
+      }
       metadataProperties.putAll(metadata);
     }
 
@@ -473,6 +486,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     return contentFragmentTextOrStructured(path, text, mimeType, null);
   }
 
+  @SuppressFBWarnings("STYLE")
   private ContentFragment contentFragmentTextOrStructured(@NotNull String path,
       @Nullable String text, @Nullable String mimeType,
       @Nullable Map<String, Object> data) {
@@ -528,6 +542,9 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    */
   public Tag tag(@NotNull String tagId) {
     TagManager tagManager = resourceResolver.adaptTo(TagManager.class);
+    if (tagManager == null) {
+      throw new RuntimeException("No tag manager.");
+    }
     String tagTitle = ResourceUtil.getName(StringUtils.substringAfter(tagId, ":"));
     try {
       return tagManager.createTag(tagId, tagTitle, null, true);
@@ -544,7 +561,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param name Child resource name
    * @return Resource object
    */
-  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name) {
+  public @NotNull Resource resource(@NotNull Page page, @NotNull String name) {
     return resource(page, name, ValueMap.EMPTY);
   }
 
@@ -556,7 +573,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param properties Properties for resource.
    * @return Resource object
    */
-  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Map<String, Object> properties) {
+  public @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Map<String, Object> properties) {
     String path = page.getContentResource().getPath() + "/" + StringUtils.stripStart(name, "/");
     return resource(path, properties);
   }
@@ -569,7 +586,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param properties Properties for resource.
    * @return Resource object
    */
-  public final @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Object @NotNull... properties) {
+  public @NotNull Resource resource(@NotNull Page page, @NotNull String name, @NotNull Object @NotNull... properties) {
     return resource(page, name, MapUtil.toMap(properties));
   }
 

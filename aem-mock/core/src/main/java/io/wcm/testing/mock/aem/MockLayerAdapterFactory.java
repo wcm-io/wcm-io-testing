@@ -41,7 +41,7 @@ import com.day.image.Layer;
         AdapterFactory.ADAPTER_CLASSES + "=com.day.image.Layer"
     })
 @ProviderType
-public class MockLayerAdapterFactory implements AdapterFactory {
+public final class MockLayerAdapterFactory implements AdapterFactory {
 
   @SuppressWarnings("unchecked")
   @Override

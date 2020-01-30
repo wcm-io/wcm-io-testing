@@ -37,6 +37,8 @@ import com.day.cq.wcm.api.designer.Designer;
 import com.day.cq.wcm.api.designer.Style;
 import com.day.cq.wcm.commons.WCMUtils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Provides AEM-specific sling script bindings.
  */
@@ -86,104 +88,121 @@ final class MockAemSlingBindings {
     // static methods only
   }
 
-  static @Nullable Object resolveSlingBindingProperty(@NotNull AemContextImpl context, @NotNull String property) {
+  static @Nullable Object resolveSlingBindingProperty(@NotNull AemContextImpl context, @NotNull String property,
+      @Nullable SlingHttpServletRequest givenRequest) {
+    SlingHttpServletRequest request = givenRequest;
+    if (givenRequest == null) {
+      request = context.request();
+    }
 
     if (StringUtils.equals(property, SlingBindingsProperty.COMPONENT_CONTEXT.key)) {
-      return getWcmComponentContext(context);
+      return getWcmComponentContext(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.EDIT_CONTEXT.key())) {
-      return getEditContext(context);
+      return getEditContext(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.PROPERTIES.key())) {
-      return getProperties(context);
+      return getProperties(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.PAGE_MANAGER.key())) {
       return context.pageManager();
     }
     if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_PAGE.key())) {
-      return context.currentPage();
+      return getCurrentPage(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.RESOURCE_PAGE.key())) {
-      return getResourcePage(context);
+      return getResourcePage(request, context);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.PAGE_PROPERTIES.key())) {
-      return getPageProperties(context);
+      return getPageProperties(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.COMPONENT.key())) {
-      return getComponent(context);
+      return getComponent(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.DESIGNER.key())) {
-      return getDesigner(context);
+      return getDesigner(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_DESIGN.key())) {
-      return getCurrentDesign(context);
+      return getCurrentDesign(request);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.RESOURCE_DESIGN.key())) {
-      return getResourceDesign(context);
+      return getResourceDesign(request, context);
     }
     if (StringUtils.equals(property, SlingBindingsProperty.CURRENT_STYLE.key())) {
-      return getStyle(context);
+      return getStyle(request);
     }
 
     return null;
   }
 
-  private static ComponentContext getWcmComponentContext(AemContextImpl context) {
-    return WCMUtils.getComponentContext(context.request());
+  private static ComponentContext getWcmComponentContext(SlingHttpServletRequest request) {
+    return WCMUtils.getComponentContext(request);
   }
 
-  private static EditContext getEditContext(AemContextImpl context) {
-    ComponentContext wcmComponentContext = getWcmComponentContext(context);
+  private static EditContext getEditContext(SlingHttpServletRequest request) {
+    ComponentContext wcmComponentContext = getWcmComponentContext(request);
     if (wcmComponentContext != null) {
       return wcmComponentContext.getEditContext();
     }
     return null;
   }
 
-  @SuppressWarnings("null")
-  private static ValueMap getProperties(AemContextImpl context) {
-    return wrap(ResourceUtil.getValueMap(context.currentResource()));
+  private static ValueMap getProperties(SlingHttpServletRequest request) {
+    return wrap(ResourceUtil.getValueMap(request.getResource()));
   }
 
-  private static Page getResourcePage(AemContextImpl context) {
-    Resource resource = context.currentResource();
+  private static Page getCurrentPage(SlingHttpServletRequest request) {
+    ComponentContext wcmComponentContext = getWcmComponentContext(request);
+    if (wcmComponentContext != null) {
+      return wcmComponentContext.getPage();
+    }
+    return null;
+  }
+
+  @SuppressWarnings({ "null", "unused" })
+  @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
+  private static Page getResourcePage(SlingHttpServletRequest request, AemContextImpl context) {
+    Resource resource = request.getResource();
     if (resource != null) {
       return context.pageManager().getContainingPage(resource);
     }
     return null;
   }
 
-  private static ValueMap getPageProperties(AemContextImpl context) {
-    Page page = context.currentPage();
-    if (page != null) {
-      return wrap(page.getProperties());
+  private static ValueMap getPageProperties(SlingHttpServletRequest request) {
+    Page currentPage = getCurrentPage(request);
+    if (currentPage != null) {
+      return wrap(currentPage.getProperties());
     }
     return null;
   }
 
-  private static Component getComponent(AemContextImpl context) {
-    Resource resource = context.currentResource();
+  @SuppressWarnings({ "null", "unused" })
+  @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
+  private static Component getComponent(SlingHttpServletRequest request) {
+    Resource resource = request.getResource();
     if (resource != null) {
       return WCMUtils.getComponent(resource);
     }
     return null;
   }
 
-  private static Designer getDesigner(AemContextImpl context) {
-    return context.resourceResolver().adaptTo(Designer.class);
+  private static Designer getDesigner(SlingHttpServletRequest request) {
+    return request.getResourceResolver().adaptTo(Designer.class);
   }
 
-  private static Design getCurrentDesign(AemContextImpl context) {
-    return getAndCacheDesign(context.currentPage(), context.request(), getDesigner(context));
+  private static Design getCurrentDesign(SlingHttpServletRequest request) {
+    Page currentPage = getCurrentPage(request);
+    return getAndCacheDesign(currentPage, request, getDesigner(request));
   }
 
-  private static Design getResourceDesign(AemContextImpl context) {
-    return getAndCacheDesign(getResourcePage(context), context.request(), getDesigner(context));
+  private static Design getResourceDesign(SlingHttpServletRequest request, AemContextImpl context) {
+    return getAndCacheDesign(getResourcePage(request, context), request, getDesigner(request));
   }
 
-  private static Style getStyle(AemContextImpl context) {
-    ComponentContext wcmComponentContext = getWcmComponentContext(context);
-    Design currentDesign = getCurrentDesign(context);
+  private static Style getStyle(SlingHttpServletRequest request) {
+    ComponentContext wcmComponentContext = getWcmComponentContext(request);
+    Design currentDesign = getCurrentDesign(request);
     if (wcmComponentContext != null && currentDesign != null) {
       return currentDesign.getStyle(wcmComponentContext.getCell());
     }

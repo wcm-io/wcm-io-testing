@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
@@ -64,20 +64,12 @@
 
     <dependency>
       <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.caconfig.api</artifactId>
-      <version>1.1.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.caconfig.spi</artifactId>
-      <version>1.3.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.caconfig.impl</artifactId>
-      <version>1.4.2</version>
       <scope>provided</scope>
     </dependency>
 
@@ -123,6 +115,23 @@
 
   </dependencies>
 
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>org.apache.sling.caconfig.spi</artifactId>
+        <version>1.3.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.sling</groupId>
+        <artifactId>org.apache.sling.caconfig.impl</artifactId>
+        <version>1.4.2</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
   <build>
 
     <plugins>
@@ -146,20 +155,6 @@
       </plugin>
 
     </plugins>
-    <pluginManagement>
-      <plugins>
-      
-        <!-- Disable checkstyle for this project due to https://github.com/checkstyle/checkstyle/issues/4589, https://github.com/checkstyle/checkstyle/issues/3236 -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-
-      </plugins>
-    </pluginManagement>
   </build>
 
   <distributionManagement>

@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-    <version>2.7.2</version>
+    <version>3.0.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -60,14 +60,14 @@
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.aem-mock.core</artifactId>
-      <version>2.7.2</version>
+      <version>3.0.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>io.wcm</groupId>
       <artifactId>io.wcm.testing.aem-mock.core</artifactId>
-      <version>2.7.2</version>
+      <version>3.0.0-SNAPSHOT</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
@@ -129,6 +129,11 @@
       <version>${logging-mock.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.hamcrest</artifactId>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
@@ -164,15 +169,6 @@
           <configuration>
             <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
             <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
-          </configuration>
-        </plugin>
-
-        <!-- Disable checkstyle for this project due to https://github.com/checkstyle/checkstyle/issues/4589, https://github.com/checkstyle/checkstyle/issues/3236 -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
           </configuration>
         </plugin>
 

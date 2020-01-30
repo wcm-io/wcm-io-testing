@@ -46,7 +46,7 @@ import com.day.cq.dam.commons.util.DamUtil;
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.dam.api.Rendition"
     })
 @ProviderType
-public class MockAemDamAdapterFactory implements AdapterFactory {
+public final class MockAemDamAdapterFactory implements AdapterFactory {
 
   @Reference
   private EventAdmin eventAdmin;

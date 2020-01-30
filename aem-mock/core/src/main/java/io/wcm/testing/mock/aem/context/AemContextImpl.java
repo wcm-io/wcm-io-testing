@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.testing.mock.osgi.MapUtil;
@@ -44,6 +45,7 @@ import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockContentPolicyStorage;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
+import io.wcm.testing.mock.aem.MockPageManagerFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 import io.wcm.testing.mock.aem.dam.MockAemDamAdapterFactory;
 import io.wcm.testing.mock.aem.dam.MockAssetHandler;
@@ -55,7 +57,6 @@ import io.wcm.testing.mock.aem.granite.MockResourceCollectionManager;
  * Should not be used directly but via the JUnit 4 rule or JUnit 5 extension.
  */
 @ConsumerType
-@SuppressWarnings("null")
 public class AemContextImpl extends SlingContextImpl {
 
   // default to publish instance run mode
@@ -74,6 +75,7 @@ public class AemContextImpl extends SlingContextImpl {
     registerInjectActivateService(new MockAssetStore());
     registerInjectActivateService(new MockAemBindingsValuesProvider(),
         MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
+    registerInjectActivateService(new MockPageManagerFactory());
 
     // Granite resource collection manager
     registerInjectActivateService(new MockResourceCollectionManager());
@@ -151,14 +153,22 @@ public class AemContextImpl extends SlingContextImpl {
    * @return Page manager
    */
   public @NotNull PageManager pageManager() {
-    return resourceResolver().adaptTo(PageManager.class);
+    PageManager pageManager = resourceResolver().adaptTo(PageManager.class);
+    if (pageManager == null) {
+      throw new RuntimeException("No page manager.");
+    }
+    return pageManager;
   }
 
   /**
    * @return Asset manager
    */
   public @NotNull AssetManager assetManager() {
-    return resourceResolver().adaptTo(AssetManager.class);
+    AssetManager assetManager = resourceResolver().adaptTo(AssetManager.class);
+    if (assetManager == null) {
+      throw new RuntimeException("No asset manager");
+    }
+    return assetManager;
   }
 
   /**
@@ -282,10 +292,11 @@ public class AemContextImpl extends SlingContextImpl {
   }
 
   @Override
-  protected @Nullable Object resolveSlingBindingProperty(@NotNull String property) {
-    Object result = super.resolveSlingBindingProperty(property);
+  protected @Nullable Object resolveSlingBindingProperty(@NotNull String property,
+      @NotNull SlingHttpServletRequest bindingsContextRequest) {
+    Object result = super.resolveSlingBindingProperty(property, bindingsContextRequest);
     if (result == null) {
-      result = MockAemSlingBindings.resolveSlingBindingProperty(this, property);
+      result = MockAemSlingBindings.resolveSlingBindingProperty(this, property, bindingsContextRequest);
     }
     return result;
   }

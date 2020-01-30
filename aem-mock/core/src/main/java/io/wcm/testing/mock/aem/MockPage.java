@@ -50,6 +50,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Mock implementation of {@link Page}.
  */
@@ -322,7 +324,7 @@ class MockPage extends SlingAdaptable implements Page {
     return result;
   }
 
-  // AEM 6.3
+  @Override
   public Locale getLanguage() {
     return getLanguage(false);
   }
@@ -379,6 +381,7 @@ class MockPage extends SlingAdaptable implements Page {
   }
 
   @Override
+  @SuppressFBWarnings("STYLE")
   public Tag[] getTags() {
     return resourceResolver.adaptTo(TagManager.class).getTags(contentResource);
   }

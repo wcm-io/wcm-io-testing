@@ -52,7 +52,6 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
   private final Asset asset;
   private final Resource contentResource;
   private final ModifiableValueMap contentProps;
-  private final Resource metadataResource;
   private final ModifiableValueMap metadataProps;
   private final ModifiableValueMap structuredDataProps;
   private final Resource modelElementsResource;
@@ -68,8 +67,8 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
 
     this.contentProps = contentResource.adaptTo(ModifiableValueMap.class);
 
-    this.metadataResource = contentResource.getChild(DamConstants.METADATA_FOLDER);
-    if (this.metadataResource == null) {
+    Resource metadataResource = contentResource.getChild(DamConstants.METADATA_FOLDER);
+    if (metadataResource == null) {
       throw new IllegalArgumentException("Missing jcr:content/metadata node.");
     }
     this.metadataProps = metadataResource.adaptTo(ModifiableValueMap.class);

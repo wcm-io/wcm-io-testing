@@ -149,7 +149,7 @@ class MockContentFragment_ContentElement_Structured extends MockContentFragment_
           JcrConstants.NT_UNSTRUCTURED, false).adaptTo(ModifiableValueMap.class);
     }
     catch (PersistenceException ex) {
-      throw new RuntimeException("Unable to create variation data.");
+      throw new RuntimeException("Unable to create variation data.", ex);
     }
   }
 

@@ -23,12 +23,30 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="3.0.0" date="not released">
+      <action type="add" dev="pklink" issue="WTES-42">
+        Add support for @BeforeAll and @AfterAll annotation.
+      </action>
+      <action type="add" dev="sseifert">
+        Add mock implementation of PageManagerFactory.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch to AEM 6.3 as minimum version.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock, OSGi Mock, ResourceResolver Mock.
+      </action>
+      <action type="fix" dev="sseifert" issue="WTES-49">
+        Incorrect resourcePage provided in mocked model using a wrapped resource from another page.
+      </action>
+    </release>
+
     <release version="2.7.2" date="2019-12-16">
       <action type="update" dev="drudolph" issue="WTES-47">
         MockComponentContext: Implement getRoot(), isRoot() and getParent() considering a single root ComponentContext being provided.
       </action>
       <action type="update" dev="sseifert">
-        Update to Sling Mock, Sling Servlet Helpers.
+        Update to latest Sling Mock, Sling Servlet Helpers.
       </action>
       <action type="fix" dev="sseifert">
         MockComponent: Make sure accessing child resources via the getProperties() method does not work, same way as in AEM itself.

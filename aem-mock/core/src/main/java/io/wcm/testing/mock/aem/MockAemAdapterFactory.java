@@ -74,7 +74,7 @@ import com.day.cq.wcm.api.policies.ContentPolicyMapping;
         AdapterFactory.ADAPTER_CLASSES + "=com.day.cq.wcm.api.policies.ContentPolicyManager"
     })
 @ProviderType
-public class MockAemAdapterFactory implements AdapterFactory {
+public final class MockAemAdapterFactory implements AdapterFactory {
 
   @Override
   public @Nullable <AdapterType> AdapterType getAdapter(final @NotNull Object adaptable, final @NotNull Class<AdapterType> type) {
