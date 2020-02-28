@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="3.0.2" date="not released">
+      <action type="update" dev="sseifert" issue="WTES-50">
+        Include org.apache.sling.testing.hamcrest as compile dependency for convenience.
+      </action>
+    </release>
+
     <release version="3.0.0" date="2020-01-30">
       <action type="add" dev="pklink" issue="WTES-42">
         Add support for @BeforeAll and @AfterAll annotation.
