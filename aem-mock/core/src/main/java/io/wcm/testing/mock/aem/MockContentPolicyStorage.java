@@ -34,11 +34,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.testing.mock.sling.builder.ImmutableValueMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.day.cq.wcm.api.policies.ContentPolicyMapping;
-import com.google.common.collect.ImmutableMap;
 
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 
@@ -85,7 +85,7 @@ public final class MockContentPolicyStorage {
     storeResource(policyPath, properties, resourceResolver, builder);
 
     // store policy mapping
-    Map<String, Object> policyMappingProperties = ImmutableMap.<String, Object>of(
+    Map<String, Object> policyMappingProperties = ImmutableValueMap.of(
         PROPERTY_RESOURCE_TYPE, RT_CONTENT_POLICY_MAPPING,
         PN_POLICY, relativePolicyPath);
     String policyMappingPath = buildPolicyMappingPath(relativeResourceType);

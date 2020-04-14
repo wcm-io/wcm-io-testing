@@ -263,7 +263,6 @@
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.testing.hamcrest</artifactId>
-      <version>${sling-hamcreset.version}</version>
       <scope>compile</scope>
     </dependency>
 

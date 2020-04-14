@@ -27,6 +27,12 @@
       <action type="update" dev="sseifert" issue="WTES-50">
         Include org.apache.sling.testing.hamcrest as compile dependency for convenience.
       </action>
+      <action type="update" dev="sseifert">
+        Remove compile-time dependency on Guava.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock, OSGi Mock, JCR Mock.
+      </action>
     </release>
 
     <release version="3.0.0" date="2020-01-30">

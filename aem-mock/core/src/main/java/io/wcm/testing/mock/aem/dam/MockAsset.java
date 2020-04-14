@@ -22,12 +22,14 @@ package io.wcm.testing.mock.aem.dam;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Binary;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
@@ -46,8 +48,6 @@ import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.api.Revision;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Mock implementation of {@link Asset}.
@@ -138,13 +138,13 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public List<Rendition> getRenditions() {
-    return Lists.newArrayList(listRenditions());
+    return IteratorUtils.toList(listRenditions());
   }
 
   @Override
   public Iterator<Rendition> listRenditions() {
     if (this.renditionsResource == null) {
-      return ImmutableList.<Rendition>of().iterator();
+      return Collections.emptyIterator();
     }
     Iterator<Resource> renditionResources = this.resourceResolver.listChildren(this.renditionsResource);
     return ResourceUtil.adaptTo(renditionResources, Rendition.class);

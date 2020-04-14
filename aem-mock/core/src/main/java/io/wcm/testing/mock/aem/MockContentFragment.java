@@ -30,6 +30,7 @@ import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
+import org.apache.sling.testing.mock.sling.builder.ImmutableValueMap;
 
 import com.adobe.cq.dam.cfm.ContentElement;
 import com.adobe.cq.dam.cfm.ContentFragment;
@@ -41,7 +42,6 @@ import com.adobe.cq.dam.cfm.VariationTemplate;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.DamConstants;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Mock implementation of {@link ContentFragment}.
@@ -202,7 +202,7 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
       if (variations.getChild(name) != null) {
         throw new ContentFragmentException("Variation " + name + " already exists.");
       }
-      Resource child = resourceResolver.create(variations, name, ImmutableMap.<String, Object>of(
+      Resource child = resourceResolver.create(variations, name, ImmutableValueMap.of(
           "name", name,
           JcrConstants.JCR_TITLE, StringUtils.defaultString(title, name),
           JcrConstants.JCR_DESCRIPTION, StringUtils.defaultString(description)));

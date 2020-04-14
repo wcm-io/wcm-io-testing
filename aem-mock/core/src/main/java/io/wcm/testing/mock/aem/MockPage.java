@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jackrabbit.util.Text;
 import org.apache.sling.api.adapter.SlingAdaptable;
@@ -46,9 +47,6 @@ import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.WCMException;
 import com.day.cq.wcm.commons.DeepResourceIterator;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -295,20 +293,12 @@ class MockPage extends SlingAdaptable implements Page {
     }
 
     // transform resources to pages
-    final Iterator<Page> pages = Iterators.transform(resources, new Function<Resource, Page>() {
-      @Override
-      public Page apply(Resource resourceItem) {
-        return resourceItem.adaptTo(Page.class);
-      }
-    });
+    final Iterator<Page> pages = IteratorUtils.transformedIterator(resources,
+        resourceItem -> resourceItem.adaptTo(Page.class));
 
     // filter pages
-    return Iterators.filter(pages, new Predicate<Page>() {
-      @Override
-      public boolean apply(Page pageItem) {
-        return pageItem != null && (filter == null || filter.includes(pageItem));
-      }
-    });
+    return IteratorUtils.filteredIterator(pages,
+        pageItem -> pageItem != null && (filter == null || filter.includes(pageItem)));
   }
 
   @Override
