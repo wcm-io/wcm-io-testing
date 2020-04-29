@@ -39,6 +39,7 @@ import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.event.EventAdmin;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -60,9 +61,10 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ValueMap contentProps;
   private final Resource renditionsResource;
   private final EventAdmin eventAdmin;
+  private final BundleContext bundleContext;
   private boolean batchMode;
 
-  MockAsset(@NotNull Resource resource, EventAdmin eventAdmin) {
+  MockAsset(@NotNull Resource resource, EventAdmin eventAdmin, BundleContext bundleContext) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
     this.resource = resource;
@@ -70,6 +72,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     this.contentProps = ResourceUtil.getValueMap(contentResource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
     this.eventAdmin = eventAdmin;
+    this.bundleContext = bundleContext;
   }
 
   @SuppressWarnings("unchecked")
@@ -190,7 +193,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     if (getRendition(name) != null) {
       removeRendition(name);
     }
-    ContentLoader contentLoader = new ContentLoader(resourceResolver, null, false);
+    ContentLoader contentLoader = new ContentLoader(resourceResolver, bundleContext, false);
     Resource rendition = contentLoader.binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType);
     try {
       if (!isBatchMode()) {

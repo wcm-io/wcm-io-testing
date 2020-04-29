@@ -49,6 +49,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.event.EventAdmin;
 
 import com.day.cq.dam.api.Asset;
@@ -71,10 +72,10 @@ class MockAssetManager implements AssetManager {
   private final ContentLoader contentLoader;
   private final EventAdmin eventAdmin;
 
-  MockAssetManager(@NotNull final ResourceResolver resourceResolver, EventAdmin eventAdmin) {
+  MockAssetManager(@NotNull ResourceResolver resourceResolver, EventAdmin eventAdmin, BundleContext bundleContext) {
     this.resourceResolver = resourceResolver;
     this.contentBuilder = new ContentBuilder(resourceResolver);
-    this.contentLoader = new ContentLoader(resourceResolver);
+    this.contentLoader = new ContentLoader(resourceResolver, bundleContext, false);
     this.eventAdmin = eventAdmin;
   }
 

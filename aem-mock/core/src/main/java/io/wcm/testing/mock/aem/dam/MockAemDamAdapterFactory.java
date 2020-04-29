@@ -25,6 +25,8 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.osgi.annotation.versioning.ProviderType;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.event.EventAdmin;
@@ -51,6 +53,13 @@ public final class MockAemDamAdapterFactory implements AdapterFactory {
   @Reference
   private EventAdmin eventAdmin;
 
+  private BundleContext bundleContext;
+
+  @Activate
+  private void activate(BundleContext context) {
+    this.bundleContext = context;
+  }
+
   @Override
   public @Nullable <AdapterType> AdapterType getAdapter(final @NotNull Object adaptable, final @NotNull Class<AdapterType> type) {
     if (adaptable instanceof Resource) {
@@ -65,7 +74,7 @@ public final class MockAemDamAdapterFactory implements AdapterFactory {
   @SuppressWarnings("unchecked")
   private @Nullable <AdapterType> AdapterType getAdapter(@NotNull final Resource resource, @NotNull final Class<AdapterType> type) {
     if (type == Asset.class && DamUtil.isAsset(resource)) {
-      return (AdapterType)new MockAsset(resource, eventAdmin);
+      return (AdapterType)new MockAsset(resource, eventAdmin, bundleContext);
     }
     if (type == Rendition.class && DamUtil.isRendition(resource)) {
       return (AdapterType)new MockRendition(resource);
@@ -76,7 +85,7 @@ public final class MockAemDamAdapterFactory implements AdapterFactory {
   @SuppressWarnings("unchecked")
   private @Nullable <AdapterType> AdapterType getAdapter(@NotNull final ResourceResolver resolver, @NotNull final Class<AdapterType> type) {
     if (type == AssetManager.class) {
-      return (AdapterType)new MockAssetManager(resolver, eventAdmin);
+      return (AdapterType)new MockAssetManager(resolver, eventAdmin, bundleContext);
     }
     return null;
   }

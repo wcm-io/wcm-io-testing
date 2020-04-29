@@ -33,6 +33,9 @@
       <action type="update" dev="sseifert">
         Update to latest Sling Mock, OSGi Mock, JCR Mock.
       </action>
+      <action type="fix" dev="sseifert" issue="WTES-52"><![CDATA[
+        MockAssetManager#createaAsset(<path>,<inputstream>,<mimeType>, false) commits changes.
+      ]}></action>
     </release>
 
     <release version="3.0.0" date="2020-01-30">
