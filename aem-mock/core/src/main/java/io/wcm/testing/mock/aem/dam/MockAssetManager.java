@@ -205,4 +205,16 @@ class MockAssetManager implements AssetManager {
     throw new UnsupportedOperationException();
   }
 
+  // AEM Cloud
+  @SuppressWarnings("unused")
+  public Asset createOrReplaceAsset(String arg0, Binary arg1, String arg2, boolean arg3) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM Cloud
+  @SuppressWarnings("unused")
+  public Asset createOrUpdateAsset(String arg0, Binary arg1, String arg2, boolean arg3, boolean arg4, String arg5, String arg6) {
+    throw new UnsupportedOperationException();
+  }
+
 }

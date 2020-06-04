@@ -329,4 +329,10 @@ class MockAsset extends ResourceWrapper implements Asset {
     throw new UnsupportedOperationException();
   }
 
+  // AEM Cloud
+  @SuppressWarnings("unused")
+  public Rendition setRendition(String arg0, Binary arg1, String arg2) {
+    throw new UnsupportedOperationException();
+  }
+
 }
