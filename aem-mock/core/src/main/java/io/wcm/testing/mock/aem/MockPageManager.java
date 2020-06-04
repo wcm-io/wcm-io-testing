@@ -435,4 +435,10 @@ class MockPageManager extends SlingAdaptable implements PageManager {
     throw new UnsupportedOperationException();
   }
 
+  // AEM Cloud
+  @SuppressWarnings("unused")
+  public void delete(Resource arg0, boolean arg1, boolean arg2, boolean arg3) throws WCMException {
+    throw new UnsupportedOperationException();
+  }
+
 }

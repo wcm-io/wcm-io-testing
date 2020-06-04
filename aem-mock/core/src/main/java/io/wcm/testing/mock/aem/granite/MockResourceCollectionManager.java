@@ -22,6 +22,7 @@ package io.wcm.testing.mock.aem.granite;
 import static org.apache.jackrabbit.vault.packaging.JcrPackage.NT_VLT_PACKAGE_DEFINITION;
 import static org.apache.jackrabbit.vault.packaging.JcrPackageDefinition.NN_FILTER;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 
 import com.adobe.granite.workflow.collection.ResourceCollection;
 import com.adobe.granite.workflow.collection.ResourceCollectionManager;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Mock implementation of {@link ResourceCollectionManager}.
@@ -76,7 +76,7 @@ public final class MockResourceCollectionManager implements ResourceCollectionMa
     catch (RepositoryException ex) {
       log.warn("Unable to get resource collections for node.", ex);
     }
-    return ImmutableList.copyOf(resourceCollections.values());
+    return new ArrayList<>(resourceCollections.values());
   }
 
   private void getCollectionsForNode(Node baseNode, Map<String, ResourceCollection> resourceCollections)

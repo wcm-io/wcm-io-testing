@@ -113,4 +113,10 @@ class MockContentPolicyManager implements ContentPolicyManager {
     throw new UnsupportedOperationException();
   }
 
+  // AEM Cloud
+  @SuppressWarnings("unused")
+  public boolean isPolicyUsed(String arg0, @Nullable Predicate arg1) {
+    throw new UnsupportedOperationException();
+  }
+
 }

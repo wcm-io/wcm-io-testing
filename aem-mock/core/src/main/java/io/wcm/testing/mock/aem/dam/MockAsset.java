@@ -22,13 +22,16 @@ package io.wcm.testing.mock.aem.dam;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Binary;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.api.security.user.User;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -37,6 +40,7 @@ import org.apache.sling.api.resource.ResourceWrapper;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.event.EventAdmin;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -46,8 +50,6 @@ import com.day.cq.dam.api.DamEvent;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.dam.api.RenditionPicker;
 import com.day.cq.dam.api.Revision;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Mock implementation of {@link Asset}.
@@ -60,9 +62,10 @@ class MockAsset extends ResourceWrapper implements Asset {
   private final ValueMap contentProps;
   private final Resource renditionsResource;
   private final EventAdmin eventAdmin;
+  private final BundleContext bundleContext;
   private boolean batchMode;
 
-  MockAsset(@NotNull Resource resource, EventAdmin eventAdmin) {
+  MockAsset(@NotNull Resource resource, EventAdmin eventAdmin, BundleContext bundleContext) {
     super(resource);
     this.resourceResolver = resource.getResourceResolver();
     this.resource = resource;
@@ -70,6 +73,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     this.contentProps = ResourceUtil.getValueMap(contentResource);
     this.renditionsResource = resource.getChild(JcrConstants.JCR_CONTENT + "/" + DamConstants.RENDITIONS_FOLDER);
     this.eventAdmin = eventAdmin;
+    this.bundleContext = bundleContext;
   }
 
   @SuppressWarnings("unchecked")
@@ -138,13 +142,13 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   @Override
   public List<Rendition> getRenditions() {
-    return Lists.newArrayList(listRenditions());
+    return IteratorUtils.toList(listRenditions());
   }
 
   @Override
   public Iterator<Rendition> listRenditions() {
     if (this.renditionsResource == null) {
-      return ImmutableList.<Rendition>of().iterator();
+      return Collections.emptyIterator();
     }
     Iterator<Resource> renditionResources = this.resourceResolver.listChildren(this.renditionsResource);
     return ResourceUtil.adaptTo(renditionResources, Rendition.class);
@@ -190,7 +194,7 @@ class MockAsset extends ResourceWrapper implements Asset {
     if (getRendition(name) != null) {
       removeRendition(name);
     }
-    ContentLoader contentLoader = new ContentLoader(resourceResolver, null, false);
+    ContentLoader contentLoader = new ContentLoader(resourceResolver, bundleContext, false);
     Resource rendition = contentLoader.binaryFile(is, renditionsResource.getPath() + "/" + name, mimeType);
     try {
       if (!isBatchMode()) {
@@ -316,6 +320,18 @@ class MockAsset extends ResourceWrapper implements Asset {
   // AEM 6.5
   @SuppressWarnings("unused")
   public Rendition addRendition(String arg0, Binary arg1, Map<String, Object> arg2) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.5
+  @SuppressWarnings("unused")
+  public Revision createRevision(String arg0, String arg1, User arg2) throws Exception {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM Cloud
+  @SuppressWarnings("unused")
+  public Rendition setRendition(String arg0, Binary arg1, String arg2) {
     throw new UnsupportedOperationException();
   }
 

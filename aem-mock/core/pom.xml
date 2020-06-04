@@ -19,13 +19,13 @@
   #L%
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.2</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -259,6 +259,13 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- Sling Hamcrest - include as compile dependency for convenience -->
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.testing.hamcrest</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- JUnit 4 -->
     <dependency>
       <groupId>junit</groupId>
@@ -281,11 +288,6 @@
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.testing.logging-mock</artifactId>
       <version>${logging-mock.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.sling</groupId>
-      <artifactId>org.apache.sling.testing.hamcrest</artifactId>
       <scope>test</scope>
     </dependency>
 

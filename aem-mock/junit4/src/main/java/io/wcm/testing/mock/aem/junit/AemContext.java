@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem.junit;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.sling.testing.mock.osgi.context.ContextCallback;
@@ -33,8 +34,6 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.osgi.annotation.versioning.ProviderType;
-
-import com.google.common.collect.ImmutableList;
 
 import io.wcm.testing.junit.rules.parameterized.Callback;
 import io.wcm.testing.junit.rules.parameterized.ListGenerator;
@@ -210,7 +209,7 @@ public final class AemContext extends AemContextImpl implements TestRule {
           plugins.executeAfterTearDownCallback(AemContext.this);
         }
       };
-      this.delegate = new ListGenerator<ResourceResolverType>(ImmutableList.copyOf(this.resourceResolverTypes),
+      this.delegate = new ListGenerator<ResourceResolverType>(Arrays.asList(this.resourceResolverTypes),
           parameterizedSetUpCallback, parameterizedTearDownCallback);
     }
   }

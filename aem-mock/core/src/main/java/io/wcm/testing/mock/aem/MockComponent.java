@@ -20,6 +20,7 @@
 package io.wcm.testing.mock.aem;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +38,6 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentEditConfig;
 import com.day.cq.wcm.api.components.VirtualComponent;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Mock implementation of {@link Component}.
@@ -124,7 +124,7 @@ class MockComponent extends SlingAdaptable implements Component {
         }
       }
     }
-    return ImmutableMap.copyOf(attrs);
+    return Collections.unmodifiableMap(attrs);
   }
 
   @Override

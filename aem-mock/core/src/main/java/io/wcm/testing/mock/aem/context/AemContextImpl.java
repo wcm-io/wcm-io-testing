@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem.context;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,6 @@ import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.policies.ContentPolicyMapping;
 import com.day.cq.wcm.commons.WCMUtils;
-import com.google.common.collect.ImmutableSet;
 
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
@@ -60,7 +60,7 @@ import io.wcm.testing.mock.aem.granite.MockResourceCollectionManager;
 public class AemContextImpl extends SlingContextImpl {
 
   // default to publish instance run mode
-  static final Set<String> DEFAULT_RUN_MODES = ImmutableSet.<String>builder().add("publish").build();
+  static final Set<String> DEFAULT_RUN_MODES = Collections.singleton("publish");
 
   @Override
   protected void registerDefaultServices() {

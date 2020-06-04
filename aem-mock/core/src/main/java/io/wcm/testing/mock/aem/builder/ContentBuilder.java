@@ -36,6 +36,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.testing.mock.osgi.MapUtil;
+import org.apache.sling.testing.mock.sling.builder.ImmutableValueMap;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,7 +58,6 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
 import com.day.image.Layer;
-import com.google.common.collect.ImmutableMap;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.wcm.testing.mock.aem.context.AemContextImpl;
@@ -122,9 +122,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @return Page object
    */
   public Page page(@NotNull String path, @Nullable String template, @NotNull String title) {
-    return page(path, template, ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TITLE, title)
-        .build());
+    return page(path, template, ImmutableValueMap.of(NameConstants.PN_TITLE, title));
   }
 
   /**
@@ -208,9 +206,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @return Page object
    */
   public Page page(@NotNull Page parentPage, @NotNull String name, @Nullable String template, @NotNull String title) {
-    return page(parentPage, name, template, ImmutableMap.<String, Object>builder()
-        .put(NameConstants.PN_TITLE, title)
-        .build());
+    return page(parentPage, name, template, ImmutableValueMap.of(NameConstants.PN_TITLE, title));
   }
 
   /**

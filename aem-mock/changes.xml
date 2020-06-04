@@ -23,6 +23,21 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="3.0.2" date="2020-06-04">
+      <action type="update" dev="sseifert" issue="WTES-50">
+        Include org.apache.sling.testing.hamcrest as compile dependency for convenience.
+      </action>
+      <action type="update" dev="sseifert">
+        Remove compile-time dependency on Guava.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock, OSGi Mock, JCR Mock.
+      </action>
+      <action type="fix" dev="sseifert" issue="WTES-52">
+        MockAssetManager.createaAsset commits changes.
+      </action>
+    </release>
+
     <release version="3.0.0" date="2020-01-30">
       <action type="add" dev="pklink" issue="WTES-42">
         Add support for @BeforeAll and @AfterAll annotation.
