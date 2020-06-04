@@ -31,6 +31,7 @@ import javax.jcr.Binary;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.api.security.user.User;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -319,6 +320,12 @@ class MockAsset extends ResourceWrapper implements Asset {
   // AEM 6.5
   @SuppressWarnings("unused")
   public Rendition addRendition(String arg0, Binary arg1, Map<String, Object> arg2) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.5
+  @SuppressWarnings("unused")
+  public Revision createRevision(String arg0, String arg1, User arg2) throws Exception {
     throw new UnsupportedOperationException();
   }
 

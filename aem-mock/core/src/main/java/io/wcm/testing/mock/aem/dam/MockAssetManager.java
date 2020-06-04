@@ -44,6 +44,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.jackrabbit.api.security.user.User;
 import org.apache.sling.api.resource.ModifiableValueMap;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -195,6 +196,12 @@ class MockAssetManager implements AssetManager {
   // AEM 6.5
   @SuppressWarnings("unused")
   public Asset createOrUpdateAsset(String arg0, Binary arg1, String arg2, boolean arg3) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.5
+  @SuppressWarnings("unused")
+  public Revision createRevision(Asset arg0, String arg1, String arg2, User arg3) throws Exception {
     throw new UnsupportedOperationException();
   }
 
