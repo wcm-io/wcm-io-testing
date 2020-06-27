@@ -44,6 +44,7 @@ import com.day.cq.wcm.commons.WCMUtils;
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockContentPolicyStorage;
+import io.wcm.testing.mock.aem.MockLanguageManager;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.MockPageManagerFactory;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
@@ -76,6 +77,7 @@ public class AemContextImpl extends SlingContextImpl {
     registerInjectActivateService(new MockAemBindingsValuesProvider(),
         MockAemBindingsValuesProvider.PROPERTY_CONTEXT, this);
     registerInjectActivateService(new MockPageManagerFactory());
+    registerInjectActivateService(new MockLanguageManager());
 
     // Granite resource collection manager
     registerInjectActivateService(new MockResourceCollectionManager());
