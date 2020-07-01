@@ -345,29 +345,6 @@
       </plugin>
 
     </plugins>
-    <pluginManagement>
-      <plugins>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <!-- Travis build workaround, see https://github.com/travis-ci/travis-ci/issues/3396 -->
-            <argLine>-Xmx1024m -XX:MaxPermSize=512M</argLine>
-          </configuration>
-        </plugin>
-
-        <!-- Skip until https://github.com/checkstyle/checkstyle/issues/3238 / https://github.com/checkstyle/checkstyle/issues/3238 is solved -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-        
-      </plugins>
-    </pluginManagement>
   </build>
 
 </project>
