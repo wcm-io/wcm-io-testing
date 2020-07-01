@@ -47,14 +47,12 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.text.Text;
 
+/**
+ * Mock implementation of {@link LanguageManager}.
+ */
 @Component(service = LanguageManager.class)
 @ProviderType
 public class MockLanguageManager implements LanguageManager {
-
-  @Override
-  public String getIsoCountry(final Locale locale) {
-    throw new UnsupportedOperationException();
-  }
 
   @Override
   @Deprecated
@@ -95,6 +93,7 @@ public class MockLanguageManager implements LanguageManager {
   }
 
   @Override
+  @SuppressWarnings("null")
   public Language getCqLanguage(final Resource resource, final boolean respectContent) {
     Optional<Page> page = Optional.ofNullable(resource.getResourceResolver().adaptTo(PageManager.class))
         .map(pm -> pm.getContainingPage(resource));
@@ -117,6 +116,7 @@ public class MockLanguageManager implements LanguageManager {
   }
 
   @Override
+  @SuppressWarnings("null")
   public Page getLanguageRoot(final Resource resource) {
     return Optional.ofNullable(LanguageUtil.getLanguageRoot(resource.getPath()))
         .map(resource.getResourceResolver()::getResource)
@@ -139,6 +139,7 @@ public class MockLanguageManager implements LanguageManager {
   }
 
   @Override
+  @SuppressWarnings("null")
   public Collection<Page> getLanguageRoots(final ResourceResolver resourceResolver, final String path) {
     return this.getLanguageRootStream(resourceResolver, path)
         .map(InfoImpl::getResource)
@@ -148,6 +149,7 @@ public class MockLanguageManager implements LanguageManager {
         .collect(Collectors.toList());
   }
 
+  @SuppressWarnings("null")
   private Stream<InfoImpl> getLanguageRootStream(final ResourceResolver resourceResolver, final String path) {
     return Optional.ofNullable(LanguageUtil.getLanguageRoot(path))
         .map(resourceResolver::getResource)
@@ -157,11 +159,6 @@ public class MockLanguageManager implements LanguageManager {
         .orElseGet(Stream::empty)
         .filter(res -> Objects.nonNull(LanguageUtil.getLanguage(res.getName())))
         .map(res -> new InfoImpl(res.getPath(), res, LanguageUtil.getLanguage(res.getName())));
-  }
-
-  @Override
-  public Tree compareLanguageTrees(final ResourceResolver resourceResolver, final String path) {
-    throw new UnsupportedOperationException();
   }
 
   /**
@@ -187,13 +184,26 @@ public class MockLanguageManager implements LanguageManager {
         LinkedHashMap::new);
   }
 
+  // --- unsupported operations ---
+
+  @Override
+  public String getIsoCountry(final Locale locale) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Tree compareLanguageTrees(final ResourceResolver resourceResolver, final String path) {
+    throw new UnsupportedOperationException();
+  }
+
+
   private static final class InfoImpl implements LanguageManager.Info {
 
     private final String path;
     private final Resource resource;
     private final Language language;
 
-    public InfoImpl(@NotNull final String path, @Nullable final Resource resource, @NotNull final Language language) {
+    InfoImpl(@NotNull final String path, @Nullable final Resource resource, @NotNull final Language language) {
       this.path = path;
       this.resource = resource;
       this.language = language;
@@ -217,6 +227,7 @@ public class MockLanguageManager implements LanguageManager {
     }
 
     @Override
+    @SuppressWarnings("null")
     public long getLastModified() {
       return Optional.ofNullable(this.resource)
           .map(res -> resource.getChild(JcrConstants.JCR_CONTENT))
@@ -247,6 +258,7 @@ public class MockLanguageManager implements LanguageManager {
      * Gets the InfoImpl for a child resource under the current InfoImpl's path.
      * <p>
      * This constructs a new InfoImpl using the path getPath() + / + relPath.
+     * </p>
      * @param relPath Path relative to the current path.
      * @param resourceResolver A resource resolver.
      * @return A new InfoImpl for the resource specified at relPath.
@@ -255,9 +267,9 @@ public class MockLanguageManager implements LanguageManager {
       if (relPath.isEmpty()) {
         return this;
       }
-      String path = String.join("/", this.path, relPath);
-      Resource child = resourceResolver.getResource(path);
-      return new InfoImpl(path, child, this.getLanguage());
+      String childPath = String.join("/", this.path, relPath);
+      Resource child = resourceResolver.getResource(childPath);
+      return new InfoImpl(childPath, child, this.getLanguage());
     }
   }
 }

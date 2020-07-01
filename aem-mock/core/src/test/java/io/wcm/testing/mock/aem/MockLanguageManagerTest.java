@@ -49,7 +49,6 @@ public class MockLanguageManagerTest {
   private static final String ENGLISH_HOMEPAGE = String.join("/", SITE_ROOT, "en");
   private static final String FRENCH_HOMEPAGE = String.join("/", SITE_ROOT, "fr");
 
-
   // Run all unit tests for each resource resolver types listed here
   @Rule
   public AemContext context = TestAemContext.newAemContext();
@@ -154,6 +153,7 @@ public class MockLanguageManagerTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation")
   public void getLanguages() {
     LanguageManager languageManager = new MockLanguageManager();
     Collection<Locale> locales = languageManager.getLanguages(context.resourceResolver(), ENGLISH_HOMEPAGE + "/subpage/jcr:content");
@@ -237,6 +237,7 @@ public class MockLanguageManagerTest {
   }
 
   @Test
+  @SuppressWarnings("deprecation")
   public void getAdjacentInfo() {
     LanguageManager languageManager = new MockLanguageManager();
     // have to use a page path, doesn't work on a non-page resource
