@@ -325,7 +325,7 @@ class MockAsset extends ResourceWrapper implements Asset {
 
   // AEM 6.5.5
   @SuppressWarnings("unused")
-  public Revision createRevision(String arg0, String arg1, User arg2) throws Exception {
+  public Revision createRevision(String arg0, String arg1, User arg2) {
     throw new UnsupportedOperationException();
   }
 

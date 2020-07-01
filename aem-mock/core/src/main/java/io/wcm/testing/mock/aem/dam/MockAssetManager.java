@@ -201,7 +201,7 @@ class MockAssetManager implements AssetManager {
 
   // AEM 6.5.5
   @SuppressWarnings("unused")
-  public Revision createRevision(Asset arg0, String arg1, String arg2, User arg3) throws Exception {
+  public Revision createRevision(Asset arg0, String arg1, String arg2, User arg3) {
     throw new UnsupportedOperationException();
   }
 
@@ -212,7 +212,7 @@ class MockAssetManager implements AssetManager {
   }
 
   // AEM Cloud
-  @SuppressWarnings("unused")
+  @SuppressWarnings({ "unused", "PMD.UseObjectForClearerAPI" })
   public Asset createOrUpdateAsset(String arg0, Binary arg1, String arg2, boolean arg3, boolean arg4, String arg5, String arg6) {
     throw new UnsupportedOperationException();
   }
