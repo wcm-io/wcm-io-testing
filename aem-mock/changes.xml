@@ -27,6 +27,9 @@
       <action type="add" dev="kgiovannetti">
         Add MockLanguageManager.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock, Servlet Helpers.
+      </action>
     </release>
 
     <release version="3.0.2" date="2020-06-04">

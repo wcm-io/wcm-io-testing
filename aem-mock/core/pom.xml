@@ -175,6 +175,11 @@
           <groupId>org.apache.sling</groupId>
           <artifactId>org.apache.sling.settings</artifactId>
         </exclusion>
+        <!-- exclude to control dependency ordering ist it includes embedded Batik files -->
+        <exclusion>
+          <groupId>org.apache.sling</groupId>
+          <artifactId>org.apache.sling.xss</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -263,6 +268,13 @@
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.testing.hamcrest</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    
+    <!-- Put Sling XSS dependency last as it includes embedded Batik files -->
+    <dependency>
+      <groupId>org.apache.sling</groupId>
+      <artifactId>org.apache.sling.xss</artifactId>
       <scope>compile</scope>
     </dependency>
 
