@@ -52,7 +52,7 @@ import com.day.text.Text;
  */
 @Component(service = LanguageManager.class)
 @ProviderType
-public class MockLanguageManager implements LanguageManager {
+public final class MockLanguageManager implements LanguageManager {
 
   @Override
   @Deprecated
@@ -272,5 +272,40 @@ public class MockLanguageManager implements LanguageManager {
       return new InfoImpl(childPath, child, this.getLanguage());
     }
   }
+
+
+  // --- unsupported operations ---
+  // CHECKSTYLE:OFF
+
+  // AEM 6.5.6
+  @SuppressWarnings("unused")
+  public @Nullable Page getLanguageRoot(Resource res, boolean respectContent) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.6
+  @SuppressWarnings("unused")
+  public Resource getLanguageRootResource(Resource res) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.6
+  @SuppressWarnings("unused")
+  public @Nullable Resource getLanguageRootResource(Resource res, boolean respectContent) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.6
+  @SuppressWarnings("unused")
+  public Collection<Resource> getLanguageRootResources(ResourceResolver resolver, String path) {
+    throw new UnsupportedOperationException();
+  }
+
+  // AEM 6.5.6
+  @SuppressWarnings("unused")
+  public Collection<Resource> getLanguageRootResources(ResourceResolver resolver, String path, boolean respectContent) {
+    throw new UnsupportedOperationException();
+  }
+
 }
 
