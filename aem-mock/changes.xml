@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="3.1.0" date="2020-09-15">
+      <action type="add" dev="kgiovannetti">
+        Add MockLanguageManager.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock, Servlet Helpers.
+      </action>
+    </release>
+
     <release version="3.0.2" date="2020-06-04">
       <action type="update" dev="sseifert" issue="WTES-50">
         Include org.apache.sling.testing.hamcrest as compile dependency for convenience.

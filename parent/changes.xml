@@ -23,12 +23,17 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.3.2" date="2020-09-15">
+      <action type="update" dev="sseifert">
+        Update dependencies.
+      </action>
+    </release>
+
     <release version="1.3.0" date="2020-01-30">
       <action type="update" dev="sseifert">
         Switch to AEM 6.3 as minimum version.
       </action>
     </release>
-
 
     <release version="1.2.0" date="2019-12-16">
       <action type="update" dev="sseifert">
