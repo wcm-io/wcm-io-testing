@@ -19,10 +19,12 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +40,8 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentEditConfig;
 import com.day.cq.wcm.api.components.VirtualComponent;
+
+import static org.apache.sling.api.resource.ResourceResolver.PROPERTY_RESOURCE_TYPE;
 
 /**
  * Mock implementation of {@link Component}.
@@ -83,7 +87,14 @@ class MockComponent extends SlingAdaptable implements Component {
 
   @Override
   public String getResourceType() {
-    return resource.getResourceType();
+    return Optional.ofNullable(this.props.get(PROPERTY_RESOURCE_TYPE, String.class))
+            .orElseGet(() -> Optional.of(this.getPath())
+                    .filter(path -> path.startsWith("/"))
+                    .flatMap(path -> Arrays.stream(this.resource.getResourceResolver().getSearchPath())
+                            .filter(path::startsWith)
+                            .map(searchPath -> path.substring(searchPath.length()))
+                            .findFirst())
+                    .orElseGet(this::getPath));
   }
 
   @Override
