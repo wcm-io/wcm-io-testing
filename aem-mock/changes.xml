@@ -27,6 +27,9 @@
       <action type="fix" dev="kgiovannetti" issue="WTES-65">
         Fix behavior of MockComponent#getResourceType(): Take node path into account when not resource type property is set.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Sling Mock.
+      </action>
     </release>
 
     <release version="3.1.0" date="2020-09-15">
