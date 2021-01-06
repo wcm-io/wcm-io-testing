@@ -74,6 +74,9 @@ public final class ContextPlugins {
         "threadPoolSize", 0, // switch to synchronous mode for unit test
         "allowedRunMode", new String[0]); // support all run modes (unit tests use 'publish' by default)
 
+    // dynamic media support service - since Media Handler 1.10.0
+    registerOptional(context, "io.wcm.handler.mediasource.dam.impl.dynamicmedia.DynamicMediaSupportServiceImpl");
+
     // link handler
     context.registerInjectActivateService(new LinkHandlerConfigAdapterFactory());
     context.registerInjectActivateService(new DefaultLinkHandlerConfig());
