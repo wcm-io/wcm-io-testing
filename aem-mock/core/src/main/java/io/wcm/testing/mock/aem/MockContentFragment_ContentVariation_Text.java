@@ -21,6 +21,7 @@ package io.wcm.testing.mock.aem;
 
 import com.adobe.cq.dam.cfm.ContentFragmentException;
 import com.adobe.cq.dam.cfm.ContentVariation;
+import com.adobe.cq.dam.cfm.FragmentData;
 import com.adobe.cq.dam.cfm.SyncStatus;
 import com.adobe.cq.dam.cfm.VariationDef;
 import com.day.cq.dam.api.Asset;
@@ -82,29 +83,27 @@ class MockContentFragment_ContentVariation_Text extends MockContentFragment_Vers
   }
 
   // AEM 6.4/6.5
-  @SuppressWarnings("unused")
+  @Override
   public void setTitle(String title) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
   // AEM 6.4/6.5
-  @SuppressWarnings("unused")
+  @Override
   public void setDescription(String description) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
-  /*  -- compiles only with uber-jar >= 6.4.0 --
   // AEM 6.4/6.5
   @Override
   public FragmentData getValue() {
     throw new UnsupportedOperationException();
   }
-  
+
   // AEM 6.4/6.5
   @Override
   public void setValue(FragmentData fragmentDataq) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
-  */
 
 }

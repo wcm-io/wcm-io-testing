@@ -87,6 +87,7 @@ class MockDesign implements Design {
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   public String getPath() {
     return Designer.DEFAULT_DESIGN_PATH;
   }
