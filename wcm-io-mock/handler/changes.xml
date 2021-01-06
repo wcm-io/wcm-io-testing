@@ -25,7 +25,7 @@
 
     <release version="1.4.0" date="not released">
       <action type="update" dev="sseifert">
-        Switch to AEM 6.3 as minimum version.
+        Switch to AEM 6.4 as minimum version.
       </action>
       <action type="update" dev="sseifert">
         Support dynamic media support service with Media Handler 1.10.0.
