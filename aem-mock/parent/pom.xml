@@ -39,7 +39,7 @@
   
   <properties>
   
-    <osgi-mock.version>2.4.16</osgi-mock.version>
+    <osgi-mock.version>2.4.17-SNAPSHOT</osgi-mock.version>
     <jcr-mock.version>1.4.6</jcr-mock.version>
     <resourceresolver-mock.version>1.1.26</resourceresolver-mock.version>
     <logging-mock.version>2.0.0</logging-mock.version>
