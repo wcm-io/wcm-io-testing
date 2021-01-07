@@ -34,7 +34,7 @@
         Fix behavior of MockComponent#getResourceType(): Take node path into account when not resource type property is set.
       </action>
       <action type="update" dev="sseifert">
-        Update to latest Sling Mock.
+        Update to latest OSGi Mock, Sling Mock.
       </action>
     </release>
 
