@@ -24,11 +24,14 @@
   <body>
 
     <release version="4.0.0" date="not released">
-      <action type="add" dev="sseifert">
-        Add support for dynamic media/scene7 PublishUtils service.
-      </action>
       <action type="update" dev="sseifert">
         Switch to AEM 6.4 as minimum version.
+      </action>
+    </release>
+
+    <release version="3.2.0" date="not released">
+      <action type="add" dev="sseifert">
+        Add support for dynamic media/scene7 PublishUtils service.
       </action>
       <action type="fix" dev="kgiovannetti" issue="WTES-65">
         Fix behavior of MockComponent#getResourceType(): Take node path into account when not resource type property is set.
