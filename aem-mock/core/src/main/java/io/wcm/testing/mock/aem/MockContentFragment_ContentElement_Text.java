@@ -174,13 +174,11 @@ class MockContentFragment_ContentElement_Text extends MockContentFragment_Versio
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
   @Override
   public FragmentData getValue() {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
   @Override
   public void setValue(FragmentData arg0) throws ContentFragmentException {
     throw new UnsupportedOperationException();

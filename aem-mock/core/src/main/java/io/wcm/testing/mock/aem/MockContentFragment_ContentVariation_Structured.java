@@ -86,25 +86,21 @@ class MockContentFragment_ContentVariation_Structured extends MockContentFragmen
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
   @Override
   public void setTitle(String title) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
   @Override
   public void setDescription(String description) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
   @Override
   public FragmentData getValue() {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
   @Override
   public void setValue(FragmentData arg0) throws ContentFragmentException {
     throw new UnsupportedOperationException();

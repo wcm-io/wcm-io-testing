@@ -69,9 +69,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
     return null;
   }
 
-  // AEM 6.4
   @Override
-  @SuppressWarnings("unused")
   public @Nullable ContentPolicy getPolicy(@NotNull Resource contentResource, @Nullable SlingHttpServletRequest request) {
     return getPolicy(contentResource);
   }
