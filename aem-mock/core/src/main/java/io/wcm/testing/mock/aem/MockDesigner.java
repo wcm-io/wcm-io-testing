@@ -78,7 +78,7 @@ class MockDesigner implements Designer {
     return getStyle(resource);
   }
 
-  // AEM 6.4
+  @Override
   public Design getDefaultDesign() {
     return new MockDesign(resourceResolver);
   }

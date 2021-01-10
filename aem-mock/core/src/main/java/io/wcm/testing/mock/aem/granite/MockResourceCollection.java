@@ -28,6 +28,7 @@ import javax.jcr.Session;
 
 import org.apache.jackrabbit.vault.fs.api.ProgressTrackerListener;
 import org.apache.jackrabbit.vault.fs.api.WorkspaceFilter;
+import org.jetbrains.annotations.NotNull;
 
 import com.adobe.granite.workflow.collection.ResourceCollection;
 
@@ -47,7 +48,7 @@ class MockResourceCollection implements ResourceCollection {
   }
 
   @Override
-  public List<Node> list(String[] allowedNodesTypes) throws RepositoryException {
+  public @NotNull List<Node> list(String[] allowedNodesTypes) throws RepositoryException {
     List<Node> nodes = new ArrayList<>();
     FilterPathCollector filterPathCollector = new FilterPathCollector();
 

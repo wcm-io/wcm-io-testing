@@ -535,13 +535,12 @@ public final class MockTagManager implements TagManager {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4
-  @SuppressWarnings("unused")
+  @Override
   public Iterable<Tag> findTagsByKeyword(String arg0, Locale arg1, String arg2) {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4
+  @Override
   public List<String> getSupportedLanguageCodes() {
     throw new UnsupportedOperationException();
   }

@@ -171,6 +171,7 @@ public class MockContentPolicyManagerTest {
     assertEquals("value3", child2.getValueMap().get("prop3", String.class));
   }
 
+  @SuppressWarnings("deprecation")
   private Style getStyle() {
     SlingBindings bindings = (SlingBindings)context.request().getAttribute(SlingBindings.class.getName());
     if (bindings != null) {
