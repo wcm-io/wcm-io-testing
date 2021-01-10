@@ -35,7 +35,8 @@ import io.wcm.testing.mock.aem.context.MockAemSlingBindings.SlingBindingsPropert
  * This {@link BindingsValuesProvider} is required additionally to the dynamic resolving of SlingBinding
  * properties in {@link MockAemSlingBindings} to also support models created by ModelFactory.getModelFromWrappedRequest.
  */
-@Component(service = BindingsValuesProvider.class)
+@Component(service = BindingsValuesProvider.class,
+    property = "MockSlingBindings-ignore=true")
 class MockAemBindingsValuesProvider implements BindingsValuesProvider {
 
   static final String PROPERTY_CONTEXT = "context";

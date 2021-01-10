@@ -21,7 +21,6 @@ package io.wcm.testing.mock.aem;
 
 import static com.day.cq.commons.jcr.JcrConstants.JCR_DESCRIPTION;
 import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
-import static com.day.cq.commons.jcr.JcrConstants.NT_UNSTRUCTURED;
 import static com.day.cq.wcm.api.NameConstants.NN_HTML_TAG;
 import static com.day.cq.wcm.api.NameConstants.PN_COMPONENT_GROUP;
 import static com.day.cq.wcm.api.NameConstants.PN_NO_DECORATION;
@@ -31,7 +30,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
 import org.junit.Before;
 import org.junit.Rule;
@@ -88,8 +86,7 @@ public class MockComponentManagerTest {
     assertEquals("myTitle", component.getTitle());
     assertEquals("myDescription", component.getDescription());
     assertEquals("myTitle", component.getProperties().get(JCR_TITLE, String.class));
-    assertTrue(StringUtils.isEmpty(component.getResourceType())
-        || StringUtils.equals(NT_UNSTRUCTURED, component.getResourceType()));
+    assertEquals("app1/components/c1", component.getResourceType());
     assertTrue(component.isAccessible());
     assertNotNull(component.adaptTo(Resource.class));
     assertEquals("myGroup", component.getComponentGroup());
