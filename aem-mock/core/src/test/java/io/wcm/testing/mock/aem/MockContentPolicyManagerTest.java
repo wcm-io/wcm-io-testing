@@ -39,13 +39,15 @@ import com.day.cq.wcm.api.policies.ContentPolicyManager;
 import com.day.cq.wcm.commons.WCMUtils;
 import com.google.common.collect.ImmutableMap;
 
+import io.wcm.testing.mock.aem.context.ResourceTypeForcingResourceWrapper;
 import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class MockContentPolicyManagerTest {
 
   private static final String RT_TEST = "app1/components/test";
-  private static final String RT_TEST_2 = "/apps/app1/components/test2";
+  private static final String RT_TEST_2_ABSOLUTE = "/apps/app1/components/test2";
+  private static final String RT_TEST_3 = "app1/components/test3";
 
   @Rule
   public AemContext context = TestAemContext.newAemContext();
@@ -122,10 +124,10 @@ public class MockContentPolicyManagerTest {
   @Test
   public void testWithAbsoluteResourceType() {
     context.currentResource(context.create().resource(page, "resource1",
-        PROPERTY_RESOURCE_TYPE, RT_TEST_2));
+        PROPERTY_RESOURCE_TYPE, RT_TEST_2_ABSOLUTE));
 
     // create policy
-    context.contentPolicyMapping(RT_TEST_2,
+    context.contentPolicyMapping(RT_TEST_2_ABSOLUTE,
         "prop1", "value1");
 
     ComponentContext componentContext = WCMUtils.getComponentContext(context.request());
@@ -169,6 +171,32 @@ public class MockContentPolicyManagerTest {
 
     Resource child2 = child1.getChild("child2");
     assertEquals("value3", child2.getValueMap().get("prop3", String.class));
+  }
+
+  @Test
+  public void testWithWrappedResource() {
+    context.create().resource("/apps/" + RT_TEST);
+    context.create().resource("/apps/" + RT_TEST_3,
+        "sling:resourceSuperType", RT_TEST);
+
+    Resource resource = context.create().resource(page, "resource1",
+        PROPERTY_RESOURCE_TYPE, RT_TEST_3);
+
+    // set current resource to wrapped resource with resource type of super component
+    context.currentResource(new ResourceTypeForcingResourceWrapper(resource, RT_TEST));
+
+    // create policy
+    context.contentPolicyMapping(RT_TEST_3,
+        "prop1", "value1");
+
+    ComponentContext componentContext = WCMUtils.getComponentContext(context.request());
+    ContentPolicy policy = underTest.getPolicy(componentContext);
+
+    assertNotNull(policy);
+    assertEquals("value1", policy.getProperties().get("prop1", String.class));
+
+    Style style = getStyle();
+    assertEquals("value1", style.get("prop1", String.class));
   }
 
   @SuppressWarnings("deprecation")

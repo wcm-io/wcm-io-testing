@@ -29,6 +29,7 @@ import javax.servlet.jsp.PageContext;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
 
 import com.day.cq.wcm.api.designer.Cell;
@@ -73,7 +74,9 @@ class MockDesign implements Design {
   public Style getStyle(Resource resource) {
     ContentPolicyManager contentPolicyManager = resource.getResourceResolver().adaptTo(ContentPolicyManager.class);
     if (contentPolicyManager != null && (contentPolicyManager instanceof MockContentPolicyManager)) {
-      ContentPolicy policy = ((MockContentPolicyManager)contentPolicyManager).getPolicy(resource);
+      // unwrap resource to make sure the correct resource type is used when using resource-type forcing wrappers
+      Resource unwrappedResource = ResourceUtil.unwrap(resource);
+      ContentPolicy policy = ((MockContentPolicyManager)contentPolicyManager).getPolicy(unwrappedResource);
       if (policy != null) {
         return new MockStyle(policy.getProperties(), this);
       }
