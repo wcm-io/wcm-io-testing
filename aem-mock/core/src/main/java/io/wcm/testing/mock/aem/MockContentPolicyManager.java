@@ -26,7 +26,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.api.resource.ResourceUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,9 +53,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
 
   @Override
   public ContentPolicyMapping getPolicyMapping(Resource contentResource) {
-    // unwrap resource to make sure the correct resource type is used when using resource-type forcing wrappers
-    Resource unwrappedResource = ResourceUtil.unwrap(contentResource);
-    String resourceType = unwrappedResource.getResourceType();
+    String resourceType = contentResource.getResourceType();
     if (StringUtils.isNotBlank(resourceType)) {
       return MockContentPolicyStorage.getContentPolicyMapping(resourceType, resourceResolver);
     }

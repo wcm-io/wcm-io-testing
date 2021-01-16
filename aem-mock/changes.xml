@@ -28,7 +28,7 @@
         Switch to AEM 6.4 as minimum version.
       </action>
       <action type="fix" dev="sseifert">
-        Unwrap wrapped resources in MockContentPolicyManager and MockDesign to better support delegation pattern for sling models.
+        Make sure content policy based on unwrapped resource is injected in Sling Bindings (e.g. when used with Sling Model Delegation Pattern).
       </action>
       <action type="update" dev="sseifert">
         Switch to individual OSGi artifacts with compile dependency instead of osgi.core and osgi.cmpn with provided dependency.

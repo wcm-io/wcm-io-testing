@@ -42,6 +42,9 @@ import io.wcm.testing.mock.aem.models.SlingBindingsModel;
 @SuppressWarnings("null")
 public class MockAemSlingBindingsTest {
 
+  private static final String COMPONENT_RESOURCE_SUPER_TYPE = "app1/components/component2";
+  private static final String COMPONENT_RESOURCE_TYPE = "app1/components/component1";
+
   @Rule
   public AemContext context = TestAemContext.newAemContext();
 
@@ -54,10 +57,14 @@ public class MockAemSlingBindingsTest {
 
     currentPage = context.create().page("/content/testPage");
     currentResource = context.create().resource(currentPage.getContentResource().getPath() + "/testResource",
-        "sling:resourceType", "/apps/app1/components/component1");
+        "sling:resourceType", COMPONENT_RESOURCE_TYPE);
 
-    context.create().resource("/apps/app1/components/component1",
+    context.create().resource("/apps/" + COMPONENT_RESOURCE_SUPER_TYPE,
         JcrConstants.JCR_PRIMARYTYPE, NameConstants.NT_COMPONENT);
+
+    context.create().resource("/apps/" + COMPONENT_RESOURCE_TYPE,
+        JcrConstants.JCR_PRIMARYTYPE, NameConstants.NT_COMPONENT,
+        "sling:resourceSuperType", COMPONENT_RESOURCE_SUPER_TYPE);
   }
 
   @Test
@@ -113,7 +120,7 @@ public class MockAemSlingBindingsTest {
     // create a new sibling page
     Page page2 = context.create().page("/content/testPage2");
     Resource resourcePage2 = context.create().resource(page2.getContentResource().getPath() + "/testResource",
-            "sling:resourceType", "/apps/app1/components/component1");
+        "sling:resourceType", COMPONENT_RESOURCE_TYPE);
 
     // use the model factory to wrap the request to get the model for the resource on the NEW page
     ModelFactory modelFactory = context.getService(ModelFactory.class);
@@ -197,6 +204,30 @@ public class MockAemSlingBindingsTest {
     assertNotNull(model.getCurrentDesign());
     assertNotNull(model.getResourceDesign());
     assertNotNull(model.getCurrentStyle());
+  }
+
+  @Test
+  public void testContentPolicy() {
+    context.contentPolicyMapping(COMPONENT_RESOURCE_TYPE,
+        "policyProp1", "value1");
+
+    context.currentResource(currentResource);
+
+    SlingBindingsModel model = context.request().adaptTo(SlingBindingsModel.class);
+    assertEquals("value1", model.getCurrentStyle().get("policyProp1", String.class));
+  }
+
+  @Test
+  public void testContentPolicy_SlingModelDelegation() {
+    context.contentPolicyMapping(COMPONENT_RESOURCE_TYPE,
+        "policyProp1", "value1");
+
+    // wrap current resource with resource type forced to resource super type
+    // to simulate Sling Model Delegation Pattern
+    context.currentResource(new ResourceTypeForcingResourceWrapper(currentResource, COMPONENT_RESOURCE_SUPER_TYPE));
+
+    SlingBindingsModel model = context.request().adaptTo(SlingBindingsModel.class);
+    assertEquals("value1", model.getCurrentStyle().get("policyProp1", String.class));
   }
 
 }
