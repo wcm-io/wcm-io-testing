@@ -25,7 +25,10 @@
 
     <release version="1.1.0" date="not released">
       <action type="update" dev="sseifert">
-        Switch to AEM 6.3 as minimum version.
+        Switch to AEM 6.4 as minimum version.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch to individual OSGi artifacts with compile dependency instead of osgi.core and osgi.cmpn with provided dependency.
       </action>
     </release>
 

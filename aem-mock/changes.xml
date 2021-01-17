@@ -23,6 +23,21 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="4.0.0" date="not released">
+      <action type="update" dev="sseifert">
+        Switch to AEM 6.4 as minimum version.
+      </action>
+      <action type="update" dev="sseifert">
+        Switch to individual OSGi artifacts with compile dependency instead of osgi.core and osgi.cmpn with provided dependency.
+      </action>
+      <action type="update" dev="sseifert">
+        Update to latest JCR Mock, ResourceResolver Mock, OSGi Mock (3.x), Sling Mock (3.x).
+      </action>
+      <action type="fix" dev="sseifert">
+        Make sure content policy based on unwrapped resource is injected in Sling Bindings (e.g. when used with Sling Model Delegation Pattern).
+      </action>
+    </release>
+
     <release version="3.2.0" date="2021-01-10">
       <action type="add" dev="sseifert">
         Add support for dynamic media/scene7 PublishUtils service.

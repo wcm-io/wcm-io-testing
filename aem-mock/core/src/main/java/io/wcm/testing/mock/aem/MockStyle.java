@@ -71,6 +71,7 @@ class MockStyle implements Style {
   }
 
   @Override
+  @SuppressWarnings("null")
   public <T> T get(String name, T defaultValue) {
     return this.props.get(name, defaultValue);
   }

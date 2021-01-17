@@ -62,4 +62,9 @@ public final class MockPublishUtils implements PublishUtils {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public String getISProperty(String arg0, String arg1) {
+    throw new UnsupportedOperationException();
+  }
+
 }

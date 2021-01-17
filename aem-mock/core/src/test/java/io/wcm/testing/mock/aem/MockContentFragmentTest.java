@@ -42,6 +42,7 @@ public class MockContentFragmentTest {
   public AemContext context = TestAemContext.newAemContext();
 
   @Test
+  @SuppressWarnings("null")
   public void testContentFragmentStructure() throws Exception {
     String assetPath = context.uniqueRoot().dam() + "/cfStructure";
     ContentFragment cf = context.create().contentFragmentStructured(assetPath,
@@ -96,6 +97,7 @@ public class MockContentFragmentTest {
   }
 
   @Test
+  @SuppressWarnings("null")
   public void testContentFragmentText() throws Exception {
     String assetPath = context.uniqueRoot().dam() + "/cfText";
     ContentFragment cf = context.create().contentFragmentText(assetPath,

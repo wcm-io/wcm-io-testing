@@ -116,7 +116,7 @@ public final class MockLanguageManager implements LanguageManager {
   }
 
   @Override
-  @SuppressWarnings("null")
+  @SuppressWarnings({ "null", "resource" })
   public Page getLanguageRoot(final Resource resource) {
     return Optional.ofNullable(LanguageUtil.getLanguageRoot(resource.getPath()))
         .map(resource.getResourceResolver()::getResource)
@@ -278,30 +278,35 @@ public final class MockLanguageManager implements LanguageManager {
   // CHECKSTYLE:OFF
 
   // AEM 6.5.6
+  @Override
   @SuppressWarnings("unused")
   public @Nullable Page getLanguageRoot(Resource res, boolean respectContent) {
     throw new UnsupportedOperationException();
   }
 
   // AEM 6.5.6
+  @Override
   @SuppressWarnings("unused")
   public Resource getLanguageRootResource(Resource res) {
     throw new UnsupportedOperationException();
   }
 
   // AEM 6.5.6
+  @Override
   @SuppressWarnings("unused")
   public @Nullable Resource getLanguageRootResource(Resource res, boolean respectContent) {
     throw new UnsupportedOperationException();
   }
 
   // AEM 6.5.6
+  @Override
   @SuppressWarnings("unused")
   public Collection<Resource> getLanguageRootResources(ResourceResolver resolver, String path) {
     throw new UnsupportedOperationException();
   }
 
   // AEM 6.5.6
+  @Override
   @SuppressWarnings("unused")
   public Collection<Resource> getLanguageRootResources(ResourceResolver resolver, String path, boolean respectContent) {
     throw new UnsupportedOperationException();

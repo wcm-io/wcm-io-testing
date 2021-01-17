@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import com.adobe.cq.dam.cfm.ContentElement;
 import com.adobe.cq.dam.cfm.ContentFragmentException;
 import com.adobe.cq.dam.cfm.ContentVariation;
+import com.adobe.cq.dam.cfm.FragmentData;
 import com.adobe.cq.dam.cfm.VariationDef;
 import com.adobe.cq.dam.cfm.VariationTemplate;
 import com.day.cq.commons.jcr.JcrConstants;
@@ -173,16 +174,14 @@ class MockContentFragment_ContentElement_Text extends MockContentFragment_Versio
     throw new UnsupportedOperationException();
   }
 
-  /*  -- compiles only with uber-jar >= 6.4.0 --
-  // AEM 6.4/6.5
+  @Override
   public FragmentData getValue() {
     throw new UnsupportedOperationException();
   }
 
-  // AEM 6.4/6.5
+  @Override
   public void setValue(FragmentData arg0) throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
-  */
 
 }

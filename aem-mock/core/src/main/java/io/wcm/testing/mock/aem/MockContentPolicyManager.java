@@ -47,7 +47,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
   }
 
   @Override
-  public ContentPolicy getPolicy(ComponentContext componentContext) {
+  public ContentPolicy getPolicy(@NotNull ComponentContext componentContext) {
     return getPolicy(componentContext.getResource());
   }
 
@@ -61,7 +61,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
   }
 
   @Override
-  public ContentPolicy getPolicy(Resource contentResource) {
+  public ContentPolicy getPolicy(@NotNull Resource contentResource) {
     ContentPolicyMapping mapping = getPolicyMapping(contentResource);
     if (mapping != null) {
       return mapping.getPolicy();
@@ -69,8 +69,7 @@ class MockContentPolicyManager implements ContentPolicyManager {
     return null;
   }
 
-  // AEM 6.4
-  @SuppressWarnings("unused")
+  @Override
   public @Nullable ContentPolicy getPolicy(@NotNull Resource contentResource, @Nullable SlingHttpServletRequest request) {
     return getPolicy(contentResource);
   }
