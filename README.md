@@ -8,7 +8,7 @@ Helper tools for supporting Unit Tests, Integration test and test automation in 
 Documentation: https://wcm.io/testing/<br/>
 Issues: https://wcm-io.atlassian.net/browse/WTES<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
-Continuous Integration: https://travis-ci.com/wcm-io/wcm-io-testing/<br/>
+Continuous Integration: https://github.com/wcm-io/wcm-io-testing/actions<br/>
 Commercial support: https://wcm.io/commercial-support.html
 
 
