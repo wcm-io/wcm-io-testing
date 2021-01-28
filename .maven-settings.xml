@@ -42,35 +42,6 @@
           </snapshots>
         </repository>
 
-        <!-- no longer required - AEM uber-jar is available on public adobe repo since 6.2.0 -->
-        <!--
-        <repository>
-          <id>adobe-unobfuscated</id>
-          <name>adobe-unobfuscated</name>
-          <url>https://www.pvtool.de/maven/adobe-unobfuscated</url>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
-        -->
-
-        <repository>
-          <id>adobe-public-releases</id>
-          <name>Adobe Public Repository</name>
-          <url>https://repo.adobe.com/nexus/content/groups/public/</url>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
-
         <repository>
           <id>wcm-io-apache-intermediate-release</id>
           <url>https://wcm.io/maven/repositories/apache-intermediate-release</url>
@@ -118,19 +89,6 @@
           <id>central</id>
           <url>https://repo1.maven.org/maven2/</url>
           <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </pluginRepository>
-
-        <pluginRepository>
-          <id>adobe-public-releases</id>
-          <name>Adobe Public Repository</name>
-          <url>https://repo.adobe.com/nexus/content/groups/public/</url>
           <releases>
             <enabled>true</enabled>
             <updatePolicy>never</updatePolicy>

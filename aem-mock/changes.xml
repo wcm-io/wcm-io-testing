@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="4.0.2" date="not released">
+      <action type="fix" dev="sseifert">
+        Switch to commons-imaging 1.0-alpha1 because version 1.0-R1534292 is not available on maven central.
+      </action>
+    </release>
+
     <release version="4.0.0" date="2021-01-17">
       <action type="update" dev="sseifert">
         Switch to AEM 6.4 as minimum version.
