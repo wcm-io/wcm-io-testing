@@ -19,7 +19,10 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Calendar;
+
 import org.apache.sling.api.resource.ModifiableValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import com.adobe.cq.dam.cfm.ContentFragmentException;
 import com.adobe.cq.dam.cfm.ContentVariation;
@@ -103,6 +106,11 @@ class MockContentFragment_ContentVariation_Structured extends MockContentFragmen
 
   @Override
   public void setValue(FragmentData arg0) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
+  // latest AEM Cloud API
+  public @NotNull Calendar getCreated() {
     throw new UnsupportedOperationException();
   }
 
