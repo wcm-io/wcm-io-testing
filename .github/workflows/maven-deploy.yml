@@ -4,11 +4,9 @@
 name: Deploy
 
 on:
-  # Run automatically when workflow "Build" completes on develop branch
-  workflow_run:
-    workflows: [Build]
-    branches: [develop]
-    types: [completed]
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 
 jobs:
