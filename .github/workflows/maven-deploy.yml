@@ -1,5 +1,4 @@
 # Deploy snapshots to Sonatpe OSS repository and deploy site to GitHub Pages
-# This runs once after the build validation is completed for all environments
 
 name: Deploy
 
@@ -40,7 +39,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Build, deploy to ossrh, deploy site to Github Pages, generate and stage site
+      # Build, deploy to ossrh, generate and stage site
       - name: Build, verify, deploy, generate site
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
