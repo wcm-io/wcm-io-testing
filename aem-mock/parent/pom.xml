@@ -93,6 +93,7 @@
         <artifactId>maven-site-plugin</artifactId>
         <inherited>false</inherited>
         <configuration>
+          <skip>true</skip>
           <skipDeploy>true</skipDeploy>
         </configuration>
       </plugin>

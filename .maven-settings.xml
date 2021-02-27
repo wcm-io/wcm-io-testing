@@ -147,15 +147,12 @@
     <activeProfile>default</activeProfile>
   </activeProfiles>
 
-  <!-- no longer required - AEM uber-jar is available on public adobe repo since 6.2.0 -->
-  <!--
   <servers>
     <server>
-      <id>adobe-unobfuscated</id>
-      <username>${env.ADOBE_UNOBFUSCATED_USER}</username>
-      <password>${env.ADOBE_UNOBFUSCATED_PASSWORD}</password>
+      <id>ossrh</id>
+      <username>${env.SONATYPE_USERNAME}</username>
+      <password>${env.SONATYPE_PASSWORD}</password>
     </server>
   </servers>
-  -->
 
 </settings>

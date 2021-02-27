@@ -1,17 +1,17 @@
-# Default build validation "clean verify" for non-experimental branches
-# "master" branch is excluded, it's updated only on an gitflow release
+# Build validation
 
 name: Build
 
 on:
   push:
     branches-ignore:
-      - 'master'
-      - 'experimental/**'
+      - master
+      - experimental/**
   pull_request:
     branches-ignore:
-      - 'master'
-      - 'experimental/**'
+      - master
+      - experimental/**
+  workflow_dispatch:
 
 jobs:
   build:

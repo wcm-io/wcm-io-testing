@@ -60,16 +60,32 @@
         </configuration>
       </plugin>
 
-      <!-- do not generate site for this project -->
+      <!-- do generate site for this project, but push it into a separate staging directory because we are not using it -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <configuration>
           <skipDeploy>true</skipDeploy>
+          <stagingDirectory>${project.build.directory}/staging-not-used</stagingDirectory>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <configuration>
+          <skipDeletedFiles>true</skipDeletedFiles>
         </configuration>
       </plugin>
 
     </plugins>
   </build>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}</url>
+    </site>
+  </distributionManagement>
 
 </project>
