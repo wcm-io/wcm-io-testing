@@ -32,6 +32,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.testing.mock.sling.builder.ImmutableValueMap;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.dam.cfm.ContentElement;
@@ -261,6 +262,11 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
 
   // latest AEM Cloud API
   public @Nullable Calendar getLastModifiedDate() {
+    throw new UnsupportedOperationException();
+  }
+
+  // latest AEM Cloud API
+  public @NotNull Calendar getLastModifiedDeep() throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
