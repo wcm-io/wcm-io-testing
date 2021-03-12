@@ -40,16 +40,16 @@
   <properties>
 
     <!-- OSGi Mocks -->
-    <osgi-mock.version>3.0.1-SNAPSHOT</osgi-mock.version>
+    <osgi-mock.version>3.1.0</osgi-mock.version>
 
     <!-- JCR Mocks -->
-    <jcr-mock.version>1.5.1-SNAPSHOT</jcr-mock.version>
+    <jcr-mock.version>1.5.2</jcr-mock.version>
 
     <!-- Resource Resolver Mock -->
     <resourceresolver-mock.version>1.2.0</resourceresolver-mock.version>
 
     <!-- Sling Mock -->
-    <sling-mock.version>3.0.0</sling-mock.version>
+    <sling-mock.version>3.0.2</sling-mock.version>
 
     <!-- Servlet Helpers -->
     <servlet-helpers.version>1.4.2</servlet-helpers.version>
