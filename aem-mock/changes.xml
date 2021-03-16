@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to latest Sling Mock, JCR Mock, OSGi Mock.
       </action>
+      <action type="update" dev="sseifert">
+        ContentBuilder: Change all width/height properties to long.
+      </action>
       <action type="fix" dev="sseifert">
         Switch to commons-imaging 1.0-alpha1 because version 1.0-R1534292 is not available on maven central.
       </action>

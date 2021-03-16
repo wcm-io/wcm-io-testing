@@ -266,6 +266,7 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
   }
 
   // latest AEM Cloud API
+  @SuppressWarnings("unused")
   public @NotNull Calendar getLastModifiedDeep() throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }

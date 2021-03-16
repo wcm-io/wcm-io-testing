@@ -287,7 +287,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param mimeType Mime type
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType) {
+  public Asset asset(@NotNull String path, long width, long height, @NotNull String mimeType) {
     return asset(path, width, height, mimeType, (Map<String, Object>)null);
   }
 
@@ -300,7 +300,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param metadata Asset metadata properties
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
+  public Asset asset(@NotNull String path, long width, long height, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
     try (InputStream is = createDummyImage(width, height, mimeType)) {
       return asset(path, is, mimeType, metadata);
     }
@@ -318,7 +318,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param metadata Asset metadata properties
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
+  public Asset asset(@NotNull String path, long width, long height, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
     return asset(path, width, height, mimeType, MapUtil.toMap(metadata));
   }
 
@@ -383,11 +383,11 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param mimeType Mime type
    * @return Input stream
    */
-  public static @NotNull InputStream createDummyImage(int width, int height, String mimeType) {
+  public static @NotNull InputStream createDummyImage(long width, long height, String mimeType) {
     String key = width + "x" + height + ":" + mimeType;
     byte[] data = DUMMY_IMAGE_CACHE.get(key);
     if (data == null) {
-      Layer layer = new Layer(width, height, null);
+      Layer layer = new Layer((int)width, (int)height, null);
       try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
         double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
         layer.write(mimeType, quality, bos);
@@ -430,7 +430,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param mimeType Mime type
    * @return Asset
    */
-  public Rendition assetRendition(@NotNull Asset asset, @NotNull String name, int width, int height, @NotNull String mimeType) {
+  public Rendition assetRendition(@NotNull Asset asset, @NotNull String name, long width, long height, @NotNull String mimeType) {
     try (InputStream is = createDummyImage(width, height, mimeType)) {
       return assetRendition(asset, name, is, mimeType);
     }
