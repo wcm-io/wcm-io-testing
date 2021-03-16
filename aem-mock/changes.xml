@@ -30,6 +30,9 @@
       <action type="update" dev="sseifert">
         ContentBuilder: Change all width/height properties to long.
       </action>
+      <action type="update" dev="sseifert">
+        ContentBuilder: Add convenience method assetRenditionWebEnabled to create a fitting web-enabled web rendition.
+      </action>
       <action type="fix" dev="sseifert">
         Switch to commons-imaging 1.0-alpha1 because version 1.0-R1534292 is not available on maven central.
       </action>
