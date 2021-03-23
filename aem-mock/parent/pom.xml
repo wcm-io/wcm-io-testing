@@ -40,7 +40,7 @@
   <properties>
 
     <!-- OSGi Mocks -->
-    <osgi-mock.version>3.1.1-SNAPSHOT</osgi-mock.version>
+    <osgi-mock.version>3.1.2</osgi-mock.version>
 
     <!-- JCR Mocks -->
     <jcr-mock.version>1.5.2</jcr-mock.version>
