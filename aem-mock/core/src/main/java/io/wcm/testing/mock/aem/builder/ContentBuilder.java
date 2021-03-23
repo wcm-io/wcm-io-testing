@@ -19,6 +19,9 @@
  */
 package io.wcm.testing.mock.aem.builder;
 
+import static com.day.cq.dam.api.DamConstants.TIFF_IMAGELENGTH;
+import static com.day.cq.dam.api.DamConstants.TIFF_IMAGEWIDTH;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -287,7 +290,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param mimeType Mime type
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType) {
+  public Asset asset(@NotNull String path, long width, long height, @NotNull String mimeType) {
     return asset(path, width, height, mimeType, (Map<String, Object>)null);
   }
 
@@ -300,7 +303,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param metadata Asset metadata properties
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
+  public Asset asset(@NotNull String path, long width, long height, @NotNull String mimeType, @Nullable Map<String, Object> metadata) {
     try (InputStream is = createDummyImage(width, height, mimeType)) {
       return asset(path, is, mimeType, metadata);
     }
@@ -318,7 +321,7 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param metadata Asset metadata properties
    * @return Asset
    */
-  public Asset asset(@NotNull String path, int width, int height, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
+  public Asset asset(@NotNull String path, long width, long height, @NotNull String mimeType, @NotNull Object @NotNull... metadata) {
     return asset(path, width, height, mimeType, MapUtil.toMap(metadata));
   }
 
@@ -383,11 +386,11 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @param mimeType Mime type
    * @return Input stream
    */
-  public static @NotNull InputStream createDummyImage(int width, int height, String mimeType) {
+  public static @NotNull InputStream createDummyImage(long width, long height, String mimeType) {
     String key = width + "x" + height + ":" + mimeType;
     byte[] data = DUMMY_IMAGE_CACHE.get(key);
     if (data == null) {
-      Layer layer = new Layer(width, height, null);
+      Layer layer = new Layer((int)width, (int)height, null);
       try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
         double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
         layer.write(mimeType, quality, bos);
@@ -402,12 +405,12 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Adds an rendition to DAM asset.
+   * Adds a rendition to DAM asset.
    * @param asset DAM asset
    * @param name Rendition name
    * @param classpathResource Classpath resource URL for binary file.
    * @param mimeType Mime type
-   * @return Asset
+   * @return Rendition
    */
   public Rendition assetRendition(@NotNull Asset asset, @NotNull String name, @NotNull String classpathResource, @NotNull String mimeType) {
     try (InputStream is = ContentLoader.class.getResourceAsStream(classpathResource)) {
@@ -422,15 +425,15 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Adds an rendition with a generated dummy image to DAM asset. The image is empty.
+   * Adds a rendition with a generated dummy image to DAM asset. The image is empty.
    * @param asset DAM asset
    * @param name Rendition name
    * @param width Dummy image width
    * @param height Dummy image height
    * @param mimeType Mime type
-   * @return Asset
+   * @return Rendition
    */
-  public Rendition assetRendition(@NotNull Asset asset, @NotNull String name, int width, int height, @NotNull String mimeType) {
+  public Rendition assetRendition(@NotNull Asset asset, @NotNull String name, long width, long height, @NotNull String mimeType) {
     try (InputStream is = createDummyImage(width, height, mimeType)) {
       return assetRendition(asset, name, is, mimeType);
     }
@@ -440,15 +443,45 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
   }
 
   /**
-   * Adds an rendition to DAM asset.
+   * Adds a rendition to DAM asset.
    * @param asset DAM asset
    * @param name Rendition name
    * @param inputStream Binary data for original rendition
    * @param mimeType Mime type
-   * @return Asset
+   * @return Rendition
    */
   public Rendition assetRendition(@NotNull Asset asset, String name, @NotNull InputStream inputStream, @NotNull String mimeType) {
     return asset.addRendition(name, inputStream, mimeType);
+  }
+
+  /**
+   * Adds a web-enabled rendition to DAM asset.
+   * The rendition has max a width/height of 1280px, but is never bigger then the original rendition.
+   * @param asset DAM asset
+   * @return Rendition
+   */
+  public Rendition assetRenditionWebEnabled(@NotNull Asset asset) {
+    return assetRenditionWebEnabled(asset, 1280, 1280);
+  }
+
+  /**
+   * Adds a web-enabled rendition to DAM asset.
+   * The rendition has max the given width/height, but is never bigger then the original rendition.
+   * @param asset DAM asset
+   * @param maxWidth Max. width
+   * @param maxHeight Max. width
+   * @return Rendition
+   */
+  public Rendition assetRenditionWebEnabled(@NotNull Asset asset, long maxWidth, long maxHeight) {
+    int originalWidth = Integer.parseInt(StringUtils.defaultString(asset.getMetadataValueFromJcr(TIFF_IMAGEWIDTH), "0"));
+    int originalHeight = Integer.parseInt(StringUtils.defaultString(asset.getMetadataValueFromJcr(TIFF_IMAGELENGTH), "0"));
+    if (originalWidth == 0 || originalHeight == 0) {
+      throw new IllegalArgumentException("Asset has no valid width/height: " + asset.getPath());
+    }
+    String renditionName = DamConstants.PREFIX_ASSET_WEB + "." + maxWidth + "." + maxHeight + ".jpg";
+    long width = originalWidth > maxWidth ? maxWidth : originalWidth;
+    long height = originalHeight > maxHeight ? maxHeight : originalHeight;
+    return assetRendition(asset, renditionName, width, height, "image/jpeg");
   }
 
   /**

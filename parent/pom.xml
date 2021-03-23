@@ -25,13 +25,13 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.parent_toplevel</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.4</version>
     <relativePath />
   </parent>
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.parent</artifactId>
-  <version>1.4.1-SNAPSHOT</version>
+  <version>1.4.2</version>
   <packaging>pom</packaging>
 
   <name>Testing</name>
@@ -43,6 +43,11 @@
     <url>https://github.com/wcm-io/wcm-io-testing</url>
     <tag>HEAD</tag>
   </scm>
+
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/wcm-io/wcm-io-testing/actions</url>
+  </ciManagement>
 
   <properties>
     <site.url.module.prefix>testing</site.url.module.prefix>
@@ -59,10 +64,24 @@
 
   </dependencies>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <configuration>
+            <topSiteURL>${site.deploy.url}</topSiteURL>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
   <distributionManagement>
     <site>
       <id>${site.deploy.id}</id>
-      <url>${site.deploy.url}${site.url.module.prefix}</url>
+      <url>${site.deploy.url}/${site.url.module.prefix}</url>
     </site>
   </distributionManagement>
 

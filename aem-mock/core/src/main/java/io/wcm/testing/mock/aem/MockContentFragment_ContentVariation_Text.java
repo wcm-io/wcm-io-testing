@@ -19,6 +19,10 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Calendar;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.adobe.cq.dam.cfm.ContentFragmentException;
 import com.adobe.cq.dam.cfm.ContentVariation;
 import com.adobe.cq.dam.cfm.FragmentData;
@@ -99,6 +103,11 @@ class MockContentFragment_ContentVariation_Text extends MockContentFragment_Vers
 
   @Override
   public void setValue(FragmentData fragmentDataq) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
+  // latest AEM Cloud API
+  public @NotNull Calendar getCreated() {
     throw new UnsupportedOperationException();
   }
 

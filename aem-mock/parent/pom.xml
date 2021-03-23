@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
@@ -36,17 +36,29 @@
 
   <name>AEM Mocks</name>
   <description>Mock implementation of selected AEM APIs.</description>
-  
+
   <properties>
-  
-    <osgi-mock.version>3.0.0</osgi-mock.version>
-    <jcr-mock.version>1.5.0</jcr-mock.version>
+
+    <!-- OSGi Mocks -->
+    <osgi-mock.version>3.1.2</osgi-mock.version>
+
+    <!-- JCR Mocks -->
+    <jcr-mock.version>1.5.2</jcr-mock.version>
+
+    <!-- Resource Resolver Mock -->
     <resourceresolver-mock.version>1.2.0</resourceresolver-mock.version>
-    <logging-mock.version>2.0.0</logging-mock.version>
-    <sling-mock.version>3.0.0</sling-mock.version>
-    <sling-mock.oak.version>2.1.6</sling-mock.oak.version>
+
+    <!-- Sling Mock -->
+    <sling-mock.version>3.0.2</sling-mock.version>
+
+    <!-- Servlet Helpers -->
     <servlet-helpers.version>1.4.2</servlet-helpers.version>
-    <sling-hamcreset.version>1.0.2</sling-hamcreset.version>
+
+    <!-- Sling Mock Oak (testing dependency only) -->
+    <sling-mock.oak.version>2.1.6</sling-mock.oak.version>
+
+    <!-- Loggin in unit tests (testing dependency only) -->
+    <logging-mock.version>2.0.0</logging-mock.version>
 
     <!-- Enable reproducible builds -->
     <project.build.outputTimestamp>${timestamp}</project.build.outputTimestamp>
@@ -81,6 +93,7 @@
         <artifactId>maven-site-plugin</artifactId>
         <inherited>false</inherited>
         <configuration>
+          <skip>true</skip>
           <skipDeploy>true</skipDeploy>
         </configuration>
       </plugin>

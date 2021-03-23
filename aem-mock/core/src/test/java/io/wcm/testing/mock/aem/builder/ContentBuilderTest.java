@@ -225,6 +225,11 @@ public class ContentBuilderTest {
     assertEquals("sample2.jpg", rendition.getName());
     assertEquals("image/jpeg", rendition.getMimeType());
     assertEquals(2, asset.getRenditions().size());
+
+    Rendition webEnabledRendition = context.create().assetRenditionWebEnabled(asset);
+    assertEquals("cq5dam.web.1280.1280.jpg", webEnabledRendition.getName());
+    assertEquals("image/jpeg", webEnabledRendition.getMimeType());
+    assertEquals(3, asset.getRenditions().size());
   }
 
   @Test

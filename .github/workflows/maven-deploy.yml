@@ -1,0 +1,55 @@
+# Deploy snapshots to Sonatpe OSS repository and deploy site to GitHub Pages
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out Git repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Configure GIT
+      - name: Configure GIT
+        run: |
+          git config --global user.email "${{ secrets.GH_SITE_DEPLOY_EMAIL }}"
+          git config --global user.name "${{ secrets.GH_SITE_DEPLOY_NAME }}"
+
+      # Set up environment with Java and Maven
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      # Set up dependency cache
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Build, deploy to ossrh, generate and stage site
+      - name: Build, verify, deploy, generate site
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: mvn -s ./.maven-settings.xml -Pcontinuous-integration -B -U clean deploy site
+
+      # Deploy site to Github Pages
+      - name: Stage and deploy site
+        run: >
+          mvn -s ./.maven-settings.xml -Pcontinuous-integration -B site:stage scm-publish:publish-scm
+          -Dscmpublish.checkinComment="Maven site: ${{ github.repository }}"
+          -Dusername=${{ secrets.GH_SITE_DEPLOY_USERNAME }}
+          -Dpassword=${{ secrets.GH_SITE_DEPLOY_PAT }}

@@ -19,6 +19,7 @@
  */
 package io.wcm.testing.mock.aem;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,6 +32,8 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.testing.mock.sling.builder.ImmutableValueMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.dam.cfm.ContentElement;
 import com.adobe.cq.dam.cfm.ContentFragment;
@@ -254,6 +257,17 @@ class MockContentFragment extends MockContentFragment_Versionable implements Con
 
   @Override
   public void removeVariation(String variation) throws ContentFragmentException {
+    throw new UnsupportedOperationException();
+  }
+
+  // latest AEM Cloud API
+  public @Nullable Calendar getLastModifiedDate() {
+    throw new UnsupportedOperationException();
+  }
+
+  // latest AEM Cloud API
+  @SuppressWarnings("unused")
+  public @NotNull Calendar getLastModifiedDeep() throws ContentFragmentException {
     throw new UnsupportedOperationException();
   }
 
