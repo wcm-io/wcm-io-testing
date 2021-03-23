@@ -25,13 +25,13 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.4.1-SNAPSHOT</version>
+    <version>1.4.2</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-  <version>4.0.1-SNAPSHOT</version>
+  <version>4.0.2</version>
   <packaging>pom</packaging>
 
   <name>AEM Mocks</name>
