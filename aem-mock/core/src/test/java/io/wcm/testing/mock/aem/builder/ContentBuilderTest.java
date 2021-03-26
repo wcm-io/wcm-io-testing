@@ -230,6 +230,36 @@ public class ContentBuilderTest {
     assertEquals("cq5dam.web.1280.1280.jpg", webEnabledRendition.getName());
     assertEquals("image/jpeg", webEnabledRendition.getMimeType());
     assertEquals(3, asset.getRenditions().size());
+
+    assertRatio(asset.getOriginal(), webEnabledRendition);
+  }
+
+  @Test
+  public void testAssetFromWidthHeight_Jpeg_BigImage_WebEnabled_Ratio1() throws Exception {
+    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 2000, 1000, "image/jpeg");
+    assertNotNull(asset);
+
+    assertEquals("2000", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("1000", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    Rendition webEnabledRendition = context.create().assetRenditionWebEnabled(asset);
+    assertEquals("cq5dam.web.1280.1280.jpg", webEnabledRendition.getName());
+
+    assertRatio(asset.getOriginal(), webEnabledRendition);
+  }
+
+  @Test
+  public void testAssetFromWidthHeight_Jpeg_BigImage_WebEnabled_Ratio2() throws Exception {
+    Asset asset = context.create().asset(damRoot + "/sample1.jpg", 1000, 2000, "image/jpeg");
+    assertNotNull(asset);
+
+    assertEquals("1000", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("2000", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    Rendition webEnabledRendition = context.create().assetRenditionWebEnabled(asset);
+    assertEquals("cq5dam.web.1280.1280.jpg", webEnabledRendition.getName());
+
+    assertRatio(asset.getOriginal(), webEnabledRendition);
   }
 
   @Test
@@ -295,6 +325,15 @@ public class ContentBuilderTest {
     assertNotNull(resource2);
     assertEquals(contentRoot + "/test1/page1/jcr:content/test2/test21", resource2.getPath());
     assertEquals("value1", resource2.getValueMap().get("prop1", String.class));
+  }
+
+  @SuppressWarnings("null")
+  private void assertRatio(Rendition expected, Rendition actual) {
+    Layer expectedLayer = expected.adaptTo(Resource.class).adaptTo(Layer.class);
+    Layer actualLayer = actual.adaptTo(Resource.class).adaptTo(Layer.class);
+    assertEquals("Ratio does not match",
+        expectedLayer.getWidth() / expectedLayer.getHeight(),
+        actualLayer.getWidth() / actualLayer.getHeight(), 0.0001d);
   }
 
 }

@@ -479,8 +479,20 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
       throw new IllegalArgumentException("Asset has no valid width/height: " + asset.getPath());
     }
     String renditionName = DamConstants.PREFIX_ASSET_WEB + "." + maxWidth + "." + maxHeight + ".jpg";
-    long width = originalWidth > maxWidth ? maxWidth : originalWidth;
-    long height = originalHeight > maxHeight ? maxHeight : originalHeight;
+    long width = originalWidth;
+    long height = originalHeight;
+    double ratio = (double)width / (double)height;
+
+    // downscale web rendition if original is too big
+    if (width > maxWidth) {
+      width = maxWidth;
+      height = Math.round(width / ratio);
+    }
+    if (height > maxHeight) {
+      height = maxHeight;
+      width = Math.round(height * ratio);
+    }
+
     return assetRendition(asset, renditionName, width, height, "image/jpeg");
   }
 
