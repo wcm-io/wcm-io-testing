@@ -473,8 +473,8 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
    * @return Rendition
    */
   public Rendition assetRenditionWebEnabled(@NotNull Asset asset, long maxWidth, long maxHeight) {
-    int originalWidth = Integer.parseInt(StringUtils.defaultString(asset.getMetadataValueFromJcr(TIFF_IMAGEWIDTH), "0"));
-    int originalHeight = Integer.parseInt(StringUtils.defaultString(asset.getMetadataValueFromJcr(TIFF_IMAGELENGTH), "0"));
+    int originalWidth = Integer.parseInt(StringUtils.defaultIfBlank(asset.getMetadataValueFromJcr(TIFF_IMAGEWIDTH), "0"));
+    int originalHeight = Integer.parseInt(StringUtils.defaultIfBlank(asset.getMetadataValueFromJcr(TIFF_IMAGELENGTH), "0"));
     if (originalWidth == 0 || originalHeight == 0) {
       throw new IllegalArgumentException("Asset has no valid width/height: " + asset.getPath());
     }
