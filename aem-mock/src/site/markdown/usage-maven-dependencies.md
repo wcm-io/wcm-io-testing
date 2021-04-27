@@ -42,17 +42,29 @@ It contains a dependency to `slf4-simple`, and a sensible default configuration 
 
 ### Further Sling and AEM dependencies
 
-AEM Mocks (and the underlying libraries like Sling Mocks) are designed to work with a broader range of AEM versions and not only the current version (see [AEM Version Support Matrix][aem-mock-version-support-matrix]). AEM Mocks relies on a set of additional transitive Maven dependencies for certain internal Sling bundles that are not part of the AEM "Uber Jar". For supporting also older version of AEM the versions included by default of those bundles are older ones as well, roughly matching the oldest supported AEM version. This may lead to the problem that some features e.g. in Sling Models that are available in the more recent version of AEM will not work in the unit tests.
+AEM Mocks (and the underlying libraries like Sling Mocks) are designed to work with a broader range of AEM versions and not only the current version (see [AEM Version Support Matrix][aem-mock-version-support-matrix]). AEM Mocks relies on a set of additional transitive Maven dependencies for certain internal Sling bundles that are not part of the AEM SDK API (or "Uber Jar"). For supporting also older version of AEM the versions included by default of those bundles are older ones as well, roughly matching the oldest supported AEM version. This may lead to the problem that some features e.g. in Sling Models that are available in the more recent version of AEM will not work in the unit tests.
 
 The solution is to update the versions of the transitive dependencies to the version that are actually running in the AEM version you are targeting with your application.
 
 To make this easier the wcm.io project maintains the [AEM Dependencies][aem-dependencies] - which is a POM for each AEM version and each AEM service pack which includes:
 
-* The AEM Uber Jar Version
+* The AEM SDK API / "Uber Jar" Version
 * All "internal" dependencies required for AEM Mocks and Sling Mocks in the matching versions
 * Further dependencies includes in AEM but not in the AEM Uber Jar
 
-You can include this POM with `import` scope into your project - example:
+You can include this POM with `import` scope into your project - example for AEMaaCS:
+
+```xml
+<dependency>
+  <groupId>io.wcm.maven</groupId>
+  <artifactId>io.wcm.maven.aem-cloud-dependencies</artifactId>
+  <version><!-- latest version --></version>
+  <type>pom</type>
+  <scope>import</scope>
+</dependency>
+```
+
+Example for AEM 6.5 an below:
 
 ```xml
 <dependency>
@@ -62,7 +74,6 @@ You can include this POM with `import` scope into your project - example:
   <type>pom</type>
   <scope>import</scope>
 </dependency>
-
 ```
 
 ### Order of dependencies
