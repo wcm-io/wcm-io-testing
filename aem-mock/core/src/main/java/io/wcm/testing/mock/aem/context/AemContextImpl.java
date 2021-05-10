@@ -47,6 +47,7 @@ import io.wcm.testing.mock.aem.MockContentPolicyStorage;
 import io.wcm.testing.mock.aem.MockLanguageManager;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.MockPageManagerFactory;
+import io.wcm.testing.mock.aem.MockSlingModelFilter;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 import io.wcm.testing.mock.aem.dam.MockAemDamAdapterFactory;
 import io.wcm.testing.mock.aem.dam.MockAssetHandler;
@@ -83,6 +84,7 @@ public class AemContextImpl extends SlingContextImpl {
     registerInjectActivateService(new MockPageManagerFactory());
     registerInjectActivateService(new MockLanguageManager());
     registerInjectActivateService(new MockResourceCollectionManager());
+    registerInjectActivateService(new MockSlingModelFilter());
   }
 
   @Override
