@@ -72,7 +72,8 @@ import io.wcm.testing.mock.aem.context.AemContextImpl;
 @SuppressWarnings("null")
 public final class ContentBuilder extends org.apache.sling.testing.mock.sling.builder.ContentBuilder {
 
-  static final @NotNull String DUMMY_TEMPLATE = "/apps/sample/templates/template1";
+  static final String DUMMY_TEMPLATE = "/apps/sample/templates/template1";
+  private static final String MIMETYPE_SVG = "image/svg+xml";
 
   // cache generated dummy images in cache because often the a dummy image with the same parameter is reused.
   private static final Map<String, byte[]> DUMMY_IMAGE_CACHE = new HashMap<>();
@@ -390,18 +391,35 @@ public final class ContentBuilder extends org.apache.sling.testing.mock.sling.bu
     String key = width + "x" + height + ":" + mimeType;
     byte[] data = DUMMY_IMAGE_CACHE.get(key);
     if (data == null) {
-      Layer layer = new Layer((int)width, (int)height, null);
-      try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-        double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
-        layer.write(mimeType, quality, bos);
-        data = bos.toByteArray();
-        DUMMY_IMAGE_CACHE.put(key, data);
+      if (StringUtils.equals(mimeType, MIMETYPE_SVG)) {
+        data = createDummySVGImage(width, height);
       }
-      catch (IOException ex) {
-        throw new RuntimeException(ex);
+      else {
+        data = createDummyRasterImage(width, height, mimeType);
       }
     }
     return new ByteArrayInputStream(data);
+  }
+
+  private static byte[] createDummyRasterImage(long width, long height, String mimeType) {
+    Layer layer = new Layer((int)width, (int)height, null);
+    try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+      double quality = StringUtils.equals(mimeType, "image/gif") ? 256d : 1.0d;
+      layer.write(mimeType, quality, bos);
+      return bos.toByteArray();
+    }
+    catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  private static byte[] createDummySVGImage(long width, long height) {
+    String svgSource = "<?xml version=\"1.0\"?>\n"
+        + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.0//EN\" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n"
+        + "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + width + "\" height=\"" + height + "\">\n"
+        + "<rect width=\"" + width + "\" height=\"" + height + "\" style=\"fill:rgb(0,0,255);\"/>\n"
+        + "</svg>";
+    return svgSource.getBytes(StandardCharsets.UTF_8);
   }
 
   /**

@@ -221,14 +221,14 @@
     <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-tiff</artifactId>
-      <version>3.4.1</version>
+      <version>3.7.0</version>
       <scope>test</scope>
     </dependency>
     <!-- Java ImageIO Support for SVG -->
     <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-batik</artifactId>
-      <version>3.4.1</version>
+      <version>3.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

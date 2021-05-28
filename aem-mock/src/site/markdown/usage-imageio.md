@@ -18,7 +18,7 @@ For adding support for TIFF images add to your POM:
 <dependency>
   <groupId>com.twelvemonkeys.imageio</groupId>
   <artifactId>imageio-tiff</artifactId>
-  <version>3.4.1</version>
+  <version>3.7.0</version>
   <scope>test</scope>
 </dependency>
 ```
@@ -31,7 +31,7 @@ For adding support for SVG vector images add to your POM:
 <dependency>
   <groupId>com.twelvemonkeys.imageio</groupId>
   <artifactId>imageio-batik</artifactId>
-  <version>3.4.1</version>
+  <version>3.7.0</version>
   <scope>test</scope>
 </dependency>
 <dependency>

@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Add mock implementation of SlingModelFilter.
       </action>
+      <action type="add" dev="sseifert">
+        ContentBuilder: Special handling for creating SVG dummy images.
+      </action>
     </release>
 
     <release version="4.0.4" date="2021-04-12">
