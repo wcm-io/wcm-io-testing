@@ -25,6 +25,9 @@
 
     <release version="4.1.0" date="not released">
       <action type="add" dev="sseifert">
+        Add mock implementation of Externalizer.
+      </action>
+      <action type="add" dev="sseifert">
         Add mock implementation of SlingModelFilter.
       </action>
       <action type="add" dev="sseifert">
