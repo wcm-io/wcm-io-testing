@@ -36,6 +36,9 @@
       <action type="update" dev="sseifert">
         Update to latest Resource Resolver Mock.
       </action>
+      <action type="fix" dev="sseifert" issue="WTES-62">
+        JUnit5: Alternatively retrieve current AEM context from parent extension context to support nested tests.
+      </action>
     </release>
 
     <release version="4.0.4" date="2021-04-12">
