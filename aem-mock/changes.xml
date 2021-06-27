@@ -33,6 +33,9 @@
       <action type="add" dev="sseifert">
         ContentBuilder: Special handling for creating SVG dummy images.
       </action>
+      <action type="update" dev="sseifert">
+        Update to latest Resource Resolver Mock.
+      </action>
     </release>
 
     <release version="4.0.4" date="2021-04-12">
