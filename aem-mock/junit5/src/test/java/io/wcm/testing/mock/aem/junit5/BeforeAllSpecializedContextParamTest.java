@@ -20,7 +20,7 @@
 package io.wcm.testing.mock.aem.junit5;
 
 import static org.apache.sling.hamcrest.ResourceMatchers.props;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
