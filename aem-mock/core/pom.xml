@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-    <version>4.0.4</version>
+    <version>4.0.5-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -221,14 +221,14 @@
     <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-tiff</artifactId>
-      <version>3.4.1</version>
+      <version>3.7.0</version>
       <scope>test</scope>
     </dependency>
     <!-- Java ImageIO Support for SVG -->
     <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-batik</artifactId>
-      <version>3.4.1</version>
+      <version>3.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

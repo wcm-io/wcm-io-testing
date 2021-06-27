@@ -44,9 +44,11 @@ import com.day.cq.wcm.commons.WCMUtils;
 import io.wcm.testing.mock.aem.MockAemAdapterFactory;
 import io.wcm.testing.mock.aem.MockComponentContext;
 import io.wcm.testing.mock.aem.MockContentPolicyStorage;
+import io.wcm.testing.mock.aem.MockExternalizer;
 import io.wcm.testing.mock.aem.MockLanguageManager;
 import io.wcm.testing.mock.aem.MockLayerAdapterFactory;
 import io.wcm.testing.mock.aem.MockPageManagerFactory;
+import io.wcm.testing.mock.aem.MockSlingModelFilter;
 import io.wcm.testing.mock.aem.builder.ContentBuilder;
 import io.wcm.testing.mock.aem.dam.MockAemDamAdapterFactory;
 import io.wcm.testing.mock.aem.dam.MockAssetHandler;
@@ -83,6 +85,8 @@ public class AemContextImpl extends SlingContextImpl {
     registerInjectActivateService(new MockPageManagerFactory());
     registerInjectActivateService(new MockLanguageManager());
     registerInjectActivateService(new MockResourceCollectionManager());
+    registerInjectActivateService(new MockSlingModelFilter());
+    registerInjectActivateService(new MockExternalizer());
   }
 
   @Override
@@ -129,8 +133,7 @@ public class AemContextImpl extends SlingContextImpl {
         "/-/"
     });
     props.put("resource.resolver.map.location", "/etc/map");
-    props.put("resource.resolver.default.vanity.redirect.status", "");
-    props.put("resource.resolver.virtual", "302");
+    props.put("resource.resolver.default.vanity.redirect.status", "302");
     props.put("resource.resolver.enable.vanitypath", false);
     props.put("resource.resolver.vanitypath.maxEntries", -1);
     props.put("resource.resolver.vanitypath.bloomfilter.maxBytes", 1024000);

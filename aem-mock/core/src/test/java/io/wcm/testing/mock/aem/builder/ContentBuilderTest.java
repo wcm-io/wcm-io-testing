@@ -280,6 +280,40 @@ public class ContentBuilderTest {
   }
 
   @Test
+  public void testAssetFromWidthHeight_Tiff() throws Exception {
+    Asset asset = context.create().asset(damRoot + "/sample1.tif", 100, 50, "image/tiff");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.tif", asset.getName());
+    assertEquals("image/tiff", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    Rendition rendition = context.create().assetRendition(asset, "sample2.tif", 20, 20, "image/tiff");
+    assertEquals("sample2.tif", rendition.getName());
+    assertEquals("image/tiff", rendition.getMimeType());
+    assertEquals(2, asset.getRenditions().size());
+  }
+
+  @Test
+  public void testAssetFromWidthHeight_SVG() throws Exception {
+    Asset asset = context.create().asset(damRoot + "/sample1.svg", 100, 50, "image/svg+xml");
+    assertNotNull(asset);
+
+    assertEquals(1, asset.getRenditions().size());
+    assertEquals("sample1.svg", asset.getName());
+    assertEquals("image/svg+xml", asset.getOriginal().getMimeType());
+    assertEquals("100", asset.getMetadataValue(DamConstants.TIFF_IMAGEWIDTH));
+    assertEquals("50", asset.getMetadataValue(DamConstants.TIFF_IMAGELENGTH));
+
+    Rendition rendition = context.create().assetRendition(asset, "sample2.svg", 20, 20, "image/svg+xml");
+    assertEquals("sample2.svg", rendition.getName());
+    assertEquals("image/svg+xml", rendition.getMimeType());
+    assertEquals(2, asset.getRenditions().size());
+  }
+
+  @Test
   public void testAssetWithMetadata() throws Exception {
     Asset asset = context.create().asset(damRoot + "/sample1.jpg", 100, 50, "image/jpeg",
         "prop1", "value1", "prop2", 1);

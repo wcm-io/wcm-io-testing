@@ -22,12 +22,9 @@ package io.wcm.testing.mock.aem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.sling.api.adapter.Adaptable;
@@ -55,25 +52,23 @@ public class MockLayerAdapterFactoryTest {
   }
 
   @Test
-  public void testImage() throws IOException {
-    InputStream is = spy(getClass().getResourceAsStream("/sample-image.gif"));
+  public void testImage() {
+    InputStream is = getClass().getResourceAsStream("/sample-image.gif");
     when(adaptable.adaptTo(InputStream.class)).thenReturn(is);
     Layer layer = underTest.getAdapter(adaptable, Layer.class);
     assertNotNull(layer);
     assertEquals(2, layer.getWidth());
     assertEquals(2, layer.getHeight());
-    verify(is).close();
   }
 
   @Test
-  public void testInvalidInputStream() throws IOException {
-    InputStream is = spy(new ByteArrayInputStream(new byte[] {
+  public void testInvalidInputStream() {
+    InputStream is = new ByteArrayInputStream(new byte[] {
         0x01, 0x02, 0x03
-    }));
+    });
     when(adaptable.adaptTo(InputStream.class)).thenReturn(is);
     Layer layer = underTest.getAdapter(adaptable, Layer.class);
     assertNull(layer);
-    verify(is).close();
   }
 
   @Test

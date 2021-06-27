@@ -25,13 +25,13 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-  <version>4.0.4</version>
+  <version>4.0.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>AEM Mocks</name>
@@ -46,7 +46,7 @@
     <jcr-mock.version>1.5.2</jcr-mock.version>
 
     <!-- Resource Resolver Mock -->
-    <resourceresolver-mock.version>1.2.0</resourceresolver-mock.version>
+    <resourceresolver-mock.version>1.2.2</resourceresolver-mock.version>
 
     <!-- Sling Mock -->
     <sling-mock.version>3.0.2</sling-mock.version>
@@ -61,7 +61,7 @@
     <logging-mock.version>2.0.0</logging-mock.version>
 
     <!-- Enable reproducible builds -->
-    <project.build.outputTimestamp>${timestamp}</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2021-05-27T00:00:00Z</project.build.outputTimestamp>
 
   </properties>
 

@@ -20,8 +20,8 @@
 package io.wcm.testing.mock.aem.junit5;
 
 import static org.apache.sling.hamcrest.ResourceMatchers.props;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 import org.apache.sling.api.resource.PersistenceException;
 import org.junit.jupiter.api.AfterEach;

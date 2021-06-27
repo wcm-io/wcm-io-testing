@@ -46,9 +46,15 @@ final class AemContextStore {
    * @param extensionContext Extension context
    * @return AemContext or null
    */
+  @SuppressWarnings("null")
   public static @Nullable AemContext getAemContext(@NotNull ExtensionContext extensionContext) {
-    Class<?> testClass = extensionContext.getRequiredTestClass();
-    return getStore(extensionContext).get(testClass, AemContext.class);
+    Class<?> testClass = extensionContext.getTestClass().orElse(null);
+    if (testClass == null) {
+      return null;
+    }
+    // try to get existing context from current extension context, or any parent extension context (in case of nested tests)
+    return Optional.ofNullable(AemContextStore.getStore(extensionContext).get(testClass, AemContext.class))
+        .orElseGet(() -> extensionContext.getParent().map(AemContextStore::getAemContext).orElse(null));
   }
 
   /**
