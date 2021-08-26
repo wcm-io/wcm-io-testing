@@ -43,13 +43,13 @@
     <osgi-mock.version>3.1.2</osgi-mock.version>
 
     <!-- JCR Mocks -->
-    <jcr-mock.version>1.5.2</jcr-mock.version>
+    <jcr-mock.version>1.5.3-SNAPSHOT</jcr-mock.version>
 
     <!-- Resource Resolver Mock -->
     <resourceresolver-mock.version>1.2.2</resourceresolver-mock.version>
 
     <!-- Sling Mock -->
-    <sling-mock.version>3.0.2</sling-mock.version>
+    <sling-mock.version>3.0.3-SNAPSHOT</sling-mock.version>
 
     <!-- Servlet Helpers -->
     <servlet-helpers.version>1.4.2</servlet-helpers.version>

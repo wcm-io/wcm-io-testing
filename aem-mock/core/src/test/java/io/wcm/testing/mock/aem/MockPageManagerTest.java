@@ -30,14 +30,11 @@ import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATED_BY;
 import static com.day.cq.wcm.api.NameConstants.PN_PAGE_LAST_REPLICATION_ACTION;
 import static com.day.cq.wcm.api.NameConstants.PN_TEMPLATE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.Calendar;
 
@@ -73,8 +70,7 @@ public class MockPageManagerTest {
 
   @Before
   public void setUp() throws Exception {
-    // allow to verify calls to resource resolver
-    this.resourceResolver = spy(this.context.resourceResolver());
+    this.resourceResolver = this.context.resourceResolver();
 
     context.load().json("/json-import-samples/content.json", "/content/sample/en");
 
@@ -88,15 +84,15 @@ public class MockPageManagerTest {
   }
 
   @Test
-  public void testCreatePage() throws WCMException, PersistenceException {
+  public void testCreatePage() throws WCMException {
     testCreatePageInternal(false, "/apps/sample/templates/homepage");
-    verify(this.resourceResolver, never()).commit();
+    assertTrue(this.resourceResolver.hasChanges());
   }
 
   @Test
-  public void testCreatePageWithAutoSave() throws WCMException, PersistenceException {
+  public void testCreatePageWithAutoSave() throws WCMException {
     testCreatePageInternal(true, "/apps/sample/templates/homepage");
-    verify(this.resourceResolver, times(1)).commit();
+    assertFalse(this.resourceResolver.hasChanges());
   }
 
   @Test
@@ -191,9 +187,9 @@ public class MockPageManagerTest {
   }
 
   @Test
-  public void testDeletePage() throws WCMException, PersistenceException {
+  public void testDeletePage() throws WCMException {
     this.pageManager.delete(this.pageManager.getPage("/content/sample/en"), false);
-    verify(this.resourceResolver, never()).commit();
+    assertTrue(this.resourceResolver.hasChanges());
 
     assertNull(this.resourceResolver.getResource("/content/sample/en"));
     assertNull(this.resourceResolver.getResource("/content/sample/en/jcr:content"));
@@ -202,9 +198,9 @@ public class MockPageManagerTest {
   }
 
   @Test
-  public void testDeletePageWithAutoSave() throws WCMException, PersistenceException {
+  public void testDeletePageWithAutoSave() throws WCMException {
     this.pageManager.delete(this.pageManager.getPage("/content/sample/en"), false, true);
-    verify(this.resourceResolver, times(1)).commit();
+    assertFalse(this.resourceResolver.hasChanges());
 
     assertNull(this.resourceResolver.getResource("/content/sample/en"));
     assertNull(this.resourceResolver.getResource("/content/sample/en/jcr:content"));
@@ -213,9 +209,9 @@ public class MockPageManagerTest {
   }
 
   @Test
-  public void testDeletePageShallow() throws WCMException, PersistenceException {
+  public void testDeletePageShallow() throws WCMException {
     this.pageManager.delete(this.pageManager.getPage("/content/sample/en"), true, false);
-    verify(this.resourceResolver, never()).commit();
+    assertTrue(this.resourceResolver.hasChanges());
 
     assertNotNull(this.resourceResolver.getResource("/content/sample/en"));
     assertNull(this.resourceResolver.getResource("/content/sample/en/jcr:content"));
@@ -224,9 +220,9 @@ public class MockPageManagerTest {
   }
 
   @Test
-  public void testDeletePageShallowWithAutoSave() throws WCMException, PersistenceException {
+  public void testDeletePageShallowWithAutoSave() throws WCMException {
     this.pageManager.delete(this.pageManager.getPage("/content/sample/en"), true, true);
-    verify(this.resourceResolver, times(1)).commit();
+    assertFalse(this.resourceResolver.hasChanges());
 
     assertNotNull(this.resourceResolver.getResource("/content/sample/en"));
     assertNull(this.resourceResolver.getResource("/content/sample/en/jcr:content"));
@@ -304,7 +300,6 @@ public class MockPageManagerTest {
 
     pageManager.touch(resource.adaptTo(Node.class), true, calendar, true);
 
-    verify(resourceResolver, times(1)).commit();
     Page page = pageManager.getPage("/content/sample/en");
     assertEquals(calendar.getTimeInMillis(), page.getLastModified().getTimeInMillis());
     assertEquals("admin", page.getLastModifiedBy());
