@@ -25,7 +25,7 @@
 
     <release version="4.1.2" date="not released">
       <action type="update" dev="sseifert">
-        Update to latest JCR Mock and Sling Mock.
+        Update to latest OSGi Mock, JCR Mock and Sling Mock.
       </action>
       <action type="fix" dev="rbrouns" issue="WTES-65">
         Switch ContentPolicy extending SlingAdaptable to have it behave the same as in AEM implementation.
