@@ -117,12 +117,6 @@
       <artifactId>org.apache.sling.testing.sling-mock-oak</artifactId>
       <version>${sling-mock.oak.version}</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.sling</groupId>
-          <artifactId>org.apache.sling.testing.sling-mock.core</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
