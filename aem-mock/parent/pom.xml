@@ -40,22 +40,22 @@
   <properties>
 
     <!-- OSGi Mocks -->
-    <osgi-mock.version>3.1.3-SNAPSHOT</osgi-mock.version>
+    <osgi-mock.version>3.1.4</osgi-mock.version>
 
     <!-- JCR Mocks -->
-    <jcr-mock.version>1.5.3-SNAPSHOT</jcr-mock.version>
+    <jcr-mock.version>1.5.4</jcr-mock.version>
 
     <!-- Resource Resolver Mock -->
     <resourceresolver-mock.version>1.2.2</resourceresolver-mock.version>
 
     <!-- Sling Mock -->
-    <sling-mock.version>3.0.3-SNAPSHOT</sling-mock.version>
+    <sling-mock.version>3.1.0</sling-mock.version>
 
     <!-- Servlet Helpers -->
     <servlet-helpers.version>1.4.2</servlet-helpers.version>
 
     <!-- Sling Mock Oak (testing dependency only) -->
-    <sling-mock.oak.version>3.0.0-1.16.0-SNAPSHOT</sling-mock.oak.version>
+    <sling-mock.oak.version>3.0.0-1.16.0</sling-mock.oak.version>
 
     <!-- Loggin in unit tests (testing dependency only) -->
     <logging-mock.version>2.0.0</logging-mock.version>
