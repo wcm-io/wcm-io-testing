@@ -23,6 +23,15 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="4.1.2" date="2021-09-02">
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock, JCR Mock and Sling Mock.
+      </action>
+      <action type="fix" dev="rbrouns" issue="WTES-65">
+        Switch ContentPolicy extending SlingAdaptable to have it behave the same as in AEM implementation.
+      </action>
+    </release>
+
     <release version="4.1.0" date="2021-06-27">
       <action type="add" dev="sseifert">
         Add mock implementation of Externalizer.

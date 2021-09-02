@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.resourceresolver.MockResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +40,7 @@ class AemContextMemberTest {
   @BeforeEach
   void setUp() {
     assertTrue(context instanceof ResourceResolverMockAemContext);
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
+    assertEquals(ResourceResolverType.RESOURCERESOLVER_MOCK, context.resourceResolverType());
 
     context.create().resource("/content/test",
         "prop1", "value1");

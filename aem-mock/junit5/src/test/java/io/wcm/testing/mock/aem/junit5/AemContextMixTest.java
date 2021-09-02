@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.resourceresolver.impl.ResourceResolverImpl;
-import org.apache.sling.testing.resourceresolver.MockResourceResolver;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,8 +52,7 @@ class AemContextMixTest {
 
   @Test
   void testResource(ResourceResolverMockAemContext context) {
-    assertTrue(context.resourceResolver() instanceof MockResourceResolver);
-
+    assertEquals(ResourceResolverType.RESOURCERESOLVER_MOCK, context.resourceResolverType());
 
     Resource resource = context.resourceResolver().getResource("/content/test");
     assertEquals("value1", resource.getValueMap().get("prop1"));
