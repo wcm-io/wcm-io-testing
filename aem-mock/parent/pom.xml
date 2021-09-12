@@ -49,7 +49,7 @@
     <resourceresolver-mock.version>1.2.2</resourceresolver-mock.version>
 
     <!-- Sling Mock -->
-    <sling-mock.version>3.1.0</sling-mock.version>
+    <sling-mock.version>3.1.1-SNAPSHOT</sling-mock.version>
 
     <!-- Servlet Helpers -->
     <servlet-helpers.version>1.4.2</servlet-helpers.version>
