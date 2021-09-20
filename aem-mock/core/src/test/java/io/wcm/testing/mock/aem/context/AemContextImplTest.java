@@ -19,6 +19,8 @@
  */
 package io.wcm.testing.mock.aem.context;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_PRIMARYTYPE;
+import static com.day.cq.commons.jcr.JcrConstants.NT_UNSTRUCTURED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -26,6 +28,7 @@ import static org.junit.Assert.assertNull;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.apache.sling.testing.mock.sling.loader.ContentLoader;
 import org.junit.After;
 import org.junit.Before;
@@ -135,6 +138,19 @@ public class AemContextImplTest {
     context.currentResource(context.resourceResolver().getResource(contentRoot + "/toolbar/jcr:content"));
     assertEquals(contentRoot + "/toolbar", context.currentPage().getPath());
     assertEquals(contentRoot + "/toolbar/jcr:content", context.currentResource().getPath());
+  }
+
+  @Test
+  public void testSlingAlias() {
+    if (context.resourceResolverType() == ResourceResolverType.RESOURCERESOLVER_MOCK) {
+      // sling:alias is not supported for RESOURCERESOLVER_MOCK
+      return;
+    }
+    Resource resource = context.create().resource(contentRoot + "/myresource",
+        JCR_PRIMARYTYPE, NT_UNSTRUCTURED,
+        "sling:alias", "myalias");
+    assertEquals(contentRoot + "/myresource", resource.getPath());
+    assertEquals(contentRoot + "/myalias", context.resourceResolver().map(resource.getPath()));
   }
 
 }

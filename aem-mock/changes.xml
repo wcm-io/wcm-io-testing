@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to latest Sling Mock.
       </action>
+      <action type="update" dev="sseifert">
+        Resource Resolver default configuration: Set resource.resolver.optimize.alias.resolution=false because there is no filling of the mapping cache map on startup.
+      </action>
     </release>
 
     <release version="4.1.2" date="2021-09-02">
