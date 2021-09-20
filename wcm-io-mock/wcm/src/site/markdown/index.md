@@ -15,7 +15,7 @@ Helps setting up mock environment for [wcm.io WCM][wcmio-wcm] Commons.
 
 |WCM Mock Helper version |AEM version supported
 |------------------------|----------------------
-|1.1.x or higher         |AEM 6.4+
+|1.1.x or higher         |AEM 6.4+, AEMaaCS
 |1.0.x                   |AEM 6.3+
 
 

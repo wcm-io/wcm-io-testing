@@ -137,7 +137,7 @@ public class AemContextImpl extends SlingContextImpl {
     props.put("resource.resolver.enable.vanitypath", false);
     props.put("resource.resolver.vanitypath.maxEntries", -1);
     props.put("resource.resolver.vanitypath.bloomfilter.maxBytes", 1024000);
-    props.put("resource.resolver.optimize.alias.resolution", true);
+    props.put("resource.resolver.optimize.alias.resolution", false);
     props.put("resource.resolver.vanitypath.whitelist", new String[] {
         "/apps/",
         "/libs/",

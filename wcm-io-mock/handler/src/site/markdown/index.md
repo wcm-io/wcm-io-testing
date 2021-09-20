@@ -15,7 +15,7 @@ Helps setting up mock environment for [wcm.io Handler][handler].
 
 |Handler Mock Helper version |AEM version supported
 |----------------------------|----------------------
-|1.4.x or higher             |AEM 6.4+
+|1.4.x or higher             |AEM 6.4+, AEMaaCS
 |1.1.x - 1.3.x               |AEM 6.2+
 |1.0.x                       |AEM 6.1+
 |0.x                         |AEM 6.0+

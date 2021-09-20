@@ -44,12 +44,12 @@ jobs:
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-        run: mvn -s ./.maven-settings.xml -Pcontinuous-integration -B -U clean deploy site
+        run: ./mvnw -s ./.maven-settings.xml -Pcontinuous-integration -B -U clean deploy site
 
       # Deploy site to Github Pages
       - name: Stage and deploy site
         run: >
-          mvn -s ./.maven-settings.xml -Pcontinuous-integration -B site:stage scm-publish:publish-scm
+          ./mvnw -s ./.maven-settings.xml -Pcontinuous-integration -B site:stage scm-publish:publish-scm
           -Dscmpublish.checkinComment="Maven site: ${{ github.repository }}"
           -Dusername=${{ secrets.GH_SITE_DEPLOY_USERNAME }}
           -Dpassword=${{ secrets.GH_SITE_DEPLOY_PAT }}
