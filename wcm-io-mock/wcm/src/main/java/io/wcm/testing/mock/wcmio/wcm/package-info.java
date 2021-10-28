@@ -20,5 +20,5 @@
 /**
  * Helps setting up mock environment for wcm.io WCM Commons.
  */
-@org.osgi.annotation.versioning.Version("1.0.0")
+@org.osgi.annotation.versioning.Version("1.1.0")
 package io.wcm.testing.mock.wcmio.wcm;

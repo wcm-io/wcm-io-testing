@@ -22,15 +22,18 @@ package io.wcm.testing.mock.wcmio.wcm;
 import org.apache.sling.testing.mock.osgi.context.AbstractContextPlugin;
 import org.apache.sling.testing.mock.osgi.context.ContextPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.osgi.annotation.versioning.ProviderType;
 
 import io.wcm.testing.mock.aem.context.AemContextImpl;
 import io.wcm.wcm.commons.bundleinfo.impl.BundleInfoServiceImpl;
 import io.wcm.wcm.commons.caservice.impl.WcmPathPreprocessor;
 import io.wcm.wcm.commons.component.impl.ComponentPropertyResolverFactoryImpl;
+import io.wcm.wcm.commons.instancetype.InstanceTypeService;
 
 /**
  * Mock context plugins.
  */
+@ProviderType
 public final class ContextPlugins {
 
   private ContextPlugins() {
@@ -54,9 +57,10 @@ public final class ContextPlugins {
   static void setUp(AemContextImpl context) {
 
     // WCM Commons
-    context.registerInjectActivateService(new BundleInfoServiceImpl());
-    context.registerInjectActivateService(new WcmPathPreprocessor());
-    context.registerInjectActivateService(new ComponentPropertyResolverFactoryImpl());
+    context.registerInjectActivateService(BundleInfoServiceImpl.class);
+    context.registerInjectActivateService(WcmPathPreprocessor.class);
+    context.registerInjectActivateService(ComponentPropertyResolverFactoryImpl.class);
+    context.registerService(InstanceTypeService.class, new MockInstanceTypeService());
 
   }
 
