@@ -33,6 +33,7 @@ import java.util.Queue;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.util.ISO9075;
 import org.apache.sling.api.adapter.SlingAdaptable;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -316,19 +317,31 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   public String getXPathSearchExpression(String property) {
     String tagRoot = MockTagManager.getTagRootPath();
     String ns = getNamespace().getName();
-    String relPath = StringUtils.substringAfter(getPath(), tagRoot + "/" + ns + "/");
+    String relPath = StringUtils.substringAfter(getPath(), tagRoot + '/' + ns + '/');
     boolean isDefaultNamespace = StringUtils.equals(ns, TagConstants.DEFAULT_NAMESPACE);
+
+    final String propertyName = StringUtils.removeStart(StringUtils.contains(property, String.valueOf('/'))
+        ? StringUtils.substringAfterLast(property, String.valueOf('/'))
+        : property,
+        String.valueOf('@')
+    );
+    final String propertyPath = StringUtils.removeStart(StringUtils.contains(property, String.valueOf('/'))
+        ? StringUtils.substringBeforeLast(property, String.valueOf('/'))
+        : StringUtils.EMPTY,
+        String.valueOf('@'));
+    final String propertyInXpath = (StringUtils.isEmpty(propertyPath) ? "" : ISO9075.encodePath(propertyPath) + '/') + '@' + ISO9075.encode(propertyName);
+
     if (isDefaultNamespace) {
-      return "(@" + property + "='" + relPath + "' "
-          + "or @" + property + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
-          + "or jcr:like(@" + property + ", '" + relPath + "/%') or "
-          + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
+      return "(" + propertyInXpath + "='" + relPath + "' "
+          + "or " + propertyInXpath + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
+          + "or jcr:like(" + propertyInXpath + ", '" + relPath + "/%') or "
+          + "jcr:like(" + propertyInXpath + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
     }
     else {
-      return "(@" + property + "='" + ns + ":" + relPath + "' "
-          + "or @" + property + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
-          + "or jcr:like(@" + property + ", '" + ns + ":" + relPath + "/%') or "
-          + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
+      return "(" + propertyInXpath + "='" + ns + ":" + relPath + "' "
+          + "or " + propertyInXpath + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
+          + "or jcr:like(" + propertyInXpath + ", '" + ns + ":" + relPath + "/%') or "
+          + "jcr:like(" + propertyInXpath + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
     }
   }
 
