@@ -28,6 +28,11 @@
         Fix expression that MockTag#getXPathSearchExpression produces, to be compliant with the XPATH spec.
       </action>
     </release>
+    <release version="4.1.6" date="not released">
+      <action type="update" dev="sseifert">
+        Update to latest OSGi Mock and Sling Mock.
+      </action>
+    </release>
 
     <release version="4.1.4" date="2021-09-20">
       <action type="update" dev="sseifert">
