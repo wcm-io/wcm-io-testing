@@ -271,31 +271,19 @@ public class MockTagTest {
   @Test
   public void testGetXPathSearchExpression() throws Exception {
     Tag tag = tagManager.createTag("test:tag1", "Tag 1", null);
-    final String tagId = "test:tag1";
-    final String tagPath = "test/tag1";
-    assertTagExpression(tag, tagId, tagPath);
-    assertTagExpression(tag, tagId, tagPath);
-    assertTagExpression(tag, tagId, tagPath);
+    assertTagExpression(tag, "test:tag1", "test/tag1");
   }
 
   @Test
   public void testGetXPathSearchExpression_2Level() throws Exception {
     Tag tag = tagManager.createTag("test:tag1/tag2", "Tag 2", null);
-    final String tagId = "test:tag1/tag2";
-    final String tagPath = "test/tag1/tag2";
-    assertTagExpression(tag, tagId, tagPath);
-    assertTagExpression(tag, tagId, tagPath);
-    assertTagExpression(tag, tagId, tagPath);
+    assertTagExpression(tag, "test:tag1/tag2", "test/tag1/tag2");
   }
 
   @Test
   public void testGetXPathSearchExpression_DefaultNamespace() throws Exception {
     Tag tag = tagManager.createTag("tag3", "Tag 3", null);
-    final String tagId = "tag3";
-    final String tagPath = "default/tag3";
-    assertTagExpression(tag, tagId, tagPath);
-    assertTagExpression(tag, tagId, tagPath);
-    assertTagExpression(tag, tagId, tagPath);
+    assertTagExpression(tag, "tag3", "default/tag3");
   }
 
   private void assertTagExpression(@NotNull final Tag tag,
