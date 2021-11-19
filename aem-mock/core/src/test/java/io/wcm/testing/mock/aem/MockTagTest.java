@@ -29,8 +29,10 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,6 +46,20 @@ import io.wcm.testing.mock.aem.context.TestAemContext;
 import io.wcm.testing.mock.aem.junit.AemContext;
 
 public class MockTagTest {
+  private static final String XPATH_PROPERTY = "@p";
+  private static final String XPATH_PROPERTY_IN_JCR_CONTENT = "jcr:content/@p";
+  private static final String XPATH_PROPERTY_IN_SUB_SUB_NODE = "jcr:content/test/@p";
+  private static final Map<String, String> TAG_PROPERTY_CONVERSIONS = ImmutableMap.<String, String>builder()
+      .put(XPATH_PROPERTY_IN_JCR_CONTENT, XPATH_PROPERTY_IN_JCR_CONTENT)
+      .put("jcr:content/p", XPATH_PROPERTY_IN_JCR_CONTENT)
+      .put("@jcr:content/p", XPATH_PROPERTY_IN_JCR_CONTENT)
+      .put("p", XPATH_PROPERTY)
+      .put("@p", XPATH_PROPERTY)
+      .put(XPATH_PROPERTY_IN_SUB_SUB_NODE, XPATH_PROPERTY_IN_SUB_SUB_NODE)
+      .put("@jcr:content/test/p", XPATH_PROPERTY_IN_SUB_SUB_NODE)
+      .put("@jcr:content/@test/p", "jcr:content/_x0040_test/@p")
+      .put("123", "@_x0031_23")
+      .build();
 
   @Rule
   public AemContext context = TestAemContext.newAemContext();
@@ -255,23 +271,36 @@ public class MockTagTest {
   @Test
   public void testGetXPathSearchExpression() throws Exception {
     Tag tag = tagManager.createTag("test:tag1", "Tag 1", null);
-    assertEquals("(@p='test:tag1' or @p='" + tagRoot + "/test/tag1' or jcr:like(@p, 'test:tag1/%') or jcr:like(@p, '" + tagRoot + "/test/tag1/%'))",
-        tag.getXPathSearchExpression("p"));
+    assertTagExpression(tag, "test:tag1", "test/tag1");
   }
 
   @Test
   public void testGetXPathSearchExpression_2Level() throws Exception {
     Tag tag = tagManager.createTag("test:tag1/tag2", "Tag 2", null);
-    assertEquals(
-        "(@p='test:tag1/tag2' or @p='" + tagRoot + "/test/tag1/tag2' or jcr:like(@p, 'test:tag1/tag2/%') or jcr:like(@p, '" + tagRoot + "/test/tag1/tag2/%'))",
-        tag.getXPathSearchExpression("p"));
+    assertTagExpression(tag, "test:tag1/tag2", "test/tag1/tag2");
   }
 
   @Test
   public void testGetXPathSearchExpression_DefaultNamespace() throws Exception {
     Tag tag = tagManager.createTag("tag3", "Tag 3", null);
-    assertEquals("(@p='tag3' or @p='" + tagRoot + "/default/tag3' or jcr:like(@p, 'tag3/%') or jcr:like(@p, '" + tagRoot + "/default/tag3/%'))",
-        tag.getXPathSearchExpression("p"));
+    assertTagExpression(tag, "tag3", "default/tag3");
+  }
+
+  private void assertTagExpression(@NotNull final Tag tag,
+                                   @NotNull final String tagId,
+                                   @NotNull final String tagPath) {
+    for (final Map.Entry<String, String> entry : TAG_PROPERTY_CONVERSIONS.entrySet()) {
+      final String property = entry.getKey();
+      final String expectedXpathProperty = entry.getValue();
+      assertEquals(
+          "(" + expectedXpathProperty + "='" + tagId + "'" +
+              " or " + expectedXpathProperty + "='" + tagRoot + "/" + tagPath + "'" +
+              " or jcr:like(" + expectedXpathProperty + ", '" + tagId + "/%')" +
+              " or jcr:like(" + expectedXpathProperty + ", '" + tagRoot + "/" + tagPath + "/%'" +
+              "))",
+          tag.getXPathSearchExpression(property)
+      );
+    }
   }
 
   private static class NothingFilter implements Filter<Tag> {
