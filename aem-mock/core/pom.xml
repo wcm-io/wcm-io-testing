@@ -230,8 +230,7 @@
     <!-- Include AEM APIs in 'provided' scope to let the consuming project decide which to use -->
     <dependency>
       <groupId>com.adobe.aem</groupId>
-      <artifactId>uber-jar</artifactId>
-      <classifier>apis</classifier>
+      <artifactId>aem-sdk-api</artifactId>
       <scope>provided</scope>
     </dependency>
     

@@ -65,6 +65,20 @@
 
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>io.wcm.maven</groupId>
+        <artifactId>io.wcm.maven.aem-cloud-dependencies</artifactId>
+        <version>2021.11.6058.20211123T163652Z-211000.0000</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
   <build>
     <plugins>
 

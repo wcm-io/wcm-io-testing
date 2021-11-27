@@ -96,8 +96,7 @@
     <!-- (other versions of this APIs use other artifact ids) -->
     <dependency>
       <groupId>com.adobe.aem</groupId>
-      <artifactId>uber-jar</artifactId>
-      <classifier>apis</classifier>
+      <artifactId>aem-sdk-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
