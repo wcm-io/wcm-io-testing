@@ -58,12 +58,38 @@
     <sling-mock.oak.version>3.1.1-1.40.0-SNAPSHOT</sling-mock.oak.version>
 
     <!-- Loggin in unit tests (testing dependency only) -->
-    <logging-mock.version>2.0.0</logging-mock.version>
+    <logging-logback.version>1.0.0</logging-logback.version>
 
     <!-- Enable reproducible builds -->
     <project.build.outputTimestamp>2021-05-27T00:00:00Z</project.build.outputTimestamp>
 
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>io.wcm.maven</groupId>
+        <artifactId>io.wcm.maven.aem-dependencies</artifactId>
+        <version>6.5.7.0002</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.25</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.jackrabbit.vault</groupId>
+        <artifactId>org.apache.jackrabbit.vault</artifactId>
+        <version>3.1.44</version>
+      </dependency>
+      
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
