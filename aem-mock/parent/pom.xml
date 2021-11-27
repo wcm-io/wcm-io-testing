@@ -65,24 +65,6 @@
 
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>1.7.25</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.jackrabbit.vault</groupId>
-        <artifactId>org.apache.jackrabbit.vault</artifactId>
-        <version>3.1.44</version>
-      </dependency>
-      
-    </dependencies>
-  </dependencyManagement>
-
   <build>
 
     <plugins>
