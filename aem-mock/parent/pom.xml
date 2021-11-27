@@ -58,12 +58,26 @@
     <sling-mock.oak.version>3.1.0-1.40.0</sling-mock.oak.version>
 
     <!-- Loggin in unit tests (testing dependency only) -->
-    <logging-mock.version>2.0.0</logging-mock.version>
+    <logging-logback.version>1.0.0</logging-logback.version>
 
     <!-- Enable reproducible builds -->
     <project.build.outputTimestamp>2021-05-27T00:00:00Z</project.build.outputTimestamp>
 
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>io.wcm.maven</groupId>
+        <artifactId>io.wcm.maven.aem-dependencies</artifactId>
+        <version>6.5.10.0001</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
