@@ -31,6 +31,8 @@ import org.apache.sling.testing.mock.sling.ResourceResolverType;
 import org.jetbrains.annotations.NotNull;
 import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -40,6 +42,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @ProviderType
 final class ContextResourceResolverFactory {
 
+  private static final Logger log = LoggerFactory.getLogger(ContextResourceResolverFactory.class);
+
   private ContextResourceResolverFactory() {
     // static methods only
   }
@@ -47,6 +51,7 @@ final class ContextResourceResolverFactory {
   public static @NotNull ResourceResolverFactory get(@NotNull final ResourceResolverType resourceResolverType,
       @NotNull final BundleContext bundleContext) {
     try {
+      log.debug("Start initialize resource resolver factory, bundleContext={}", bundleContext);
       ResourceResolverFactory factory = MockSling.newResourceResolverFactory(resourceResolverType, bundleContext);
 
       switch (resourceResolverType) {
@@ -66,9 +71,12 @@ final class ContextResourceResolverFactory {
           throw new IllegalArgumentException("Invalid resource resolver type: " + resourceResolverType);
       }
 
+      log.debug("Finished initializing resource resolver factory, bundleContext={}", bundleContext);
+
       return factory;
     }
     /*CHECKSTYLE:OFF*/ catch (Exception ex) { /*CHECKSTYLE:ON*/
+      log.error("Failed initializing resource resolver factory, bundleContext={}", bundleContext, ex);
       throw new RuntimeException("Unable to initialize " + resourceResolverType + " resource resolver factory: " + ex.getMessage(), ex);
     }
   }
