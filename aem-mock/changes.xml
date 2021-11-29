@@ -27,6 +27,9 @@
       <action type="update" dev="sseifert">
         Update to latest OSGi Mock and Sling Mock.
       </action>
+      <action type="update" dev="kwindszus">
+        Remove obsolete direct dependency to oak-jcr to make it compatible with latest sling-mock-oak.
+      </action>
       <action type="fix" dev="hkuijpers" issue="WTOOL-81">
         Fix expression that MockTag#getXPathSearchExpression produces, to be compliant with the XPATH spec.
       </action>
