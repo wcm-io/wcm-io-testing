@@ -40,7 +40,7 @@
   <properties>
 
     <!-- OSGi Mocks -->
-    <osgi-mock.version>3.1.5-SNAPSHOT</osgi-mock.version>
+    <osgi-mock.version>3.2.0</osgi-mock.version>
 
     <!-- JCR Mocks -->
     <jcr-mock.version>1.5.4</jcr-mock.version>
@@ -55,7 +55,7 @@
     <servlet-helpers.version>1.4.2</servlet-helpers.version>
 
     <!-- Sling Mock Oak (testing dependency only) -->
-    <sling-mock.oak.version>3.0.1-1.40.0-SNAPSHOT</sling-mock.oak.version>
+    <sling-mock.oak.version>3.1.0-1.40.0</sling-mock.oak.version>
 
     <!-- Loggin in unit tests (testing dependency only) -->
     <logging-mock.version>2.0.0</logging-mock.version>
