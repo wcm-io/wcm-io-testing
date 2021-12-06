@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-  <version>4.1.6</version>
+  <version>4.1.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>AEM Mocks</name>
