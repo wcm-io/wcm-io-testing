@@ -28,6 +28,7 @@ import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.scripting.api.BindingsValuesProvider;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 
 import io.wcm.testing.mock.aem.context.MockAemSlingBindings.SlingBindingsProperty;
 
@@ -41,15 +42,23 @@ class MockAemBindingsValuesProvider implements BindingsValuesProvider {
 
   static final String PROPERTY_CONTEXT = "context";
 
-  private AemContextImpl context;
+  private volatile AemContextImpl context;
 
   @Activate
   private void activate(Map<String, Object> config) {
-    context = (AemContextImpl)config.get(PROPERTY_CONTEXT);
+    this.context = (AemContextImpl)config.get(PROPERTY_CONTEXT);
+  }
+
+  @Deactivate
+  private void deactivate() {
+    this.context = null;
   }
 
   @Override
   public void addBindings(Bindings bindings) {
+    if (this.context == null) {
+      return;
+    }
     SlingHttpServletRequest request = (SlingHttpServletRequest)bindings.get(SlingBindings.REQUEST);
     for (SlingBindingsProperty property : SlingBindingsProperty.values()) {
       putProperty(bindings, property.key(), request);

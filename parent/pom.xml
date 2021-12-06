@@ -25,13 +25,13 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.parent_toplevel</artifactId>
-    <version>1.6.8</version>
+    <version>1.6.10</version>
     <relativePath />
   </parent>
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.parent</artifactId>
-  <version>1.4.5-SNAPSHOT</version>
+  <version>1.4.6</version>
   <packaging>pom</packaging>
 
   <name>Testing</name>

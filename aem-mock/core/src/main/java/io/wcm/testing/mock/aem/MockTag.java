@@ -19,8 +19,21 @@
  */
 package io.wcm.testing.mock.aem;
 
-import static com.day.cq.tagging.TagConstants.NAMESPACE_DELIMITER;
-import static com.day.cq.tagging.TagConstants.SEPARATOR;
+import com.day.cq.commons.Filter;
+import com.day.cq.commons.LanguageUtil;
+import com.day.cq.commons.jcr.JcrConstants;
+import com.day.cq.tagging.Tag;
+import com.day.cq.tagging.TagConstants;
+import com.day.cq.tagging.TagManager;
+import com.day.cq.wcm.api.NameConstants;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.util.ISO9075;
+import org.apache.sling.api.adapter.SlingAdaptable;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -30,23 +43,10 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
+import java.util.function.BinaryOperator;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.adapter.SlingAdaptable;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
-import org.jetbrains.annotations.NotNull;
-
-import com.day.cq.commons.Filter;
-import com.day.cq.commons.LanguageUtil;
-import com.day.cq.commons.jcr.JcrConstants;
-import com.day.cq.tagging.Tag;
-import com.day.cq.tagging.TagConstants;
-import com.day.cq.tagging.TagManager;
-import com.day.cq.wcm.api.NameConstants;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import static com.day.cq.tagging.TagConstants.NAMESPACE_DELIMITER;
+import static com.day.cq.tagging.TagConstants.SEPARATOR;
 
 
 /**
@@ -316,20 +316,16 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
   public String getXPathSearchExpression(String property) {
     String tagRoot = MockTagManager.getTagRootPath();
     String ns = getNamespace().getName();
-    String relPath = StringUtils.substringAfter(getPath(), tagRoot + "/" + ns + "/");
-    boolean isDefaultNamespace = StringUtils.equals(ns, TagConstants.DEFAULT_NAMESPACE);
-    if (isDefaultNamespace) {
-      return "(@" + property + "='" + relPath + "' "
-          + "or @" + property + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
-          + "or jcr:like(@" + property + ", '" + relPath + "/%') or "
-          + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
-    }
-    else {
-      return "(@" + property + "='" + ns + ":" + relPath + "' "
-          + "or @" + property + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
-          + "or jcr:like(@" + property + ", '" + ns + ":" + relPath + "/%') or "
-          + "jcr:like(@" + property + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
-    }
+    String relPath = StringUtils.substringAfter(getPath(), tagRoot + '/' + ns + '/');
+
+    final String propertyName = extractPathPart(property, StringUtils::substringAfterLast, property);
+    final String propertyPath = extractPathPart(property, StringUtils::substringBeforeLast, StringUtils.EMPTY);
+    final String xpathProperty = (StringUtils.isEmpty(propertyPath) ? "" : ISO9075.encodePath(propertyPath) + '/') + '@' + ISO9075.encode(propertyName);
+    final String xpathNamespace = TagConstants.DEFAULT_NAMESPACE.equals(ns) ? relPath : ns + ":" + relPath;
+    return "(" + xpathProperty + "='" + xpathNamespace + "' "
+        + "or " + xpathProperty + "='" + tagRoot + "/" + ns + "/" + relPath + "' "
+        + "or jcr:like(" + xpathProperty + ", '" + xpathNamespace + "/%') or "
+        + "jcr:like(" + xpathProperty + ", '" + tagRoot + "/" + ns + "/" + relPath + "/%'))";
   }
 
   private static String escapeTitle(String title) {
@@ -358,4 +354,12 @@ class MockTag extends SlingAdaptable implements Tag, Comparable<Tag> {
     throw new UnsupportedOperationException("Unsupported operation");
   }
 
+  private String extractPathPart(final String property, final BinaryOperator<String> pathPartExtractor, final String defaultValue) {
+    // If the path contains a slash, we can simply extract the desired part, otherwise, we have to do a fallback to the default value
+    // At the same time, we need to always remove the @-sign from any of the returned values, so we can append them correctly later
+    return StringUtils.removeStart(StringUtils.contains(property, String.valueOf('/'))
+            ? pathPartExtractor.apply(property, String.valueOf('/'))
+            : defaultValue,
+        String.valueOf('@'));
+  }
 }

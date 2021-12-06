@@ -25,7 +25,7 @@
   <parent>
     <groupId>io.wcm</groupId>
     <artifactId>io.wcm.testing.parent</artifactId>
-    <version>1.4.4</version>
+    <version>1.4.5-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
@@ -40,22 +40,22 @@
   <properties>
 
     <!-- OSGi Mocks -->
-    <osgi-mock.version>3.1.4</osgi-mock.version>
+    <osgi-mock.version>3.2.0</osgi-mock.version>
 
     <!-- JCR Mocks -->
     <jcr-mock.version>1.5.4</jcr-mock.version>
 
     <!-- Resource Resolver Mock -->
-    <resourceresolver-mock.version>1.2.2</resourceresolver-mock.version>
+    <resourceresolver-mock.version>1.2.4</resourceresolver-mock.version>
 
     <!-- Sling Mock -->
-    <sling-mock.version>3.1.2</sling-mock.version>
+    <sling-mock.version>3.2.2</sling-mock.version>
 
     <!-- Servlet Helpers -->
     <servlet-helpers.version>1.4.2</servlet-helpers.version>
 
     <!-- Sling Mock Oak (testing dependency only) -->
-    <sling-mock.oak.version>3.0.0-1.16.0</sling-mock.oak.version>
+    <sling-mock.oak.version>3.1.0-1.40.0</sling-mock.oak.version>
 
     <!-- Loggin in unit tests (testing dependency only) -->
     <logging-mock.version>2.0.0</logging-mock.version>
@@ -65,26 +65,7 @@
 
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>1.7.25</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.jackrabbit.vault</groupId>
-        <artifactId>org.apache.jackrabbit.vault</artifactId>
-        <version>3.1.44</version>
-      </dependency>
-      
-    </dependencies>
-  </dependencyManagement>
-
   <build>
-
     <plugins>
 
       <!-- do not generate site for this project -->
