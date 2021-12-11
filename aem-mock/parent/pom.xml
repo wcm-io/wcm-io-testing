@@ -31,7 +31,7 @@
 
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.parent</artifactId>
-  <version>4.1.6</version>
+  <version>4.1.8</version>
   <packaging>pom</packaging>
 
   <name>AEM Mocks</name>
@@ -40,7 +40,7 @@
   <properties>
 
     <!-- OSGi Mocks -->
-    <osgi-mock.version>3.2.0</osgi-mock.version>
+    <osgi-mock.version>3.2.2</osgi-mock.version>
 
     <!-- JCR Mocks -->
     <jcr-mock.version>1.5.4</jcr-mock.version>
