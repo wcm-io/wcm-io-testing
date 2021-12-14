@@ -43,19 +43,6 @@
         </repository>
 
         <repository>
-          <id>wcm-io-apache-intermediate-release</id>
-          <url>https://wcm.io/maven/repositories/apache-intermediate-release</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
-
-        <repository>
           <id>oss-snapshots</id>
           <url>https://oss.sonatype.org/content/repositories/snapshots</url>
           <layout>default</layout>
@@ -88,19 +75,6 @@
         <pluginRepository>
           <id>central</id>
           <url>https://repo1.maven.org/maven2/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </pluginRepository>
-
-        <pluginRepository>
-          <id>wcm-io-apache-intermediate-release</id>
-          <url>https://wcm.io/maven/repositories/apache-intermediate-release</url>
           <layout>default</layout>
           <releases>
             <enabled>true</enabled>
