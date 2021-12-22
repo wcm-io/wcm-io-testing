@@ -23,6 +23,12 @@
     xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
   <body>
 
+    <release version="1.2.0" date="not released">
+      <action type="add" dev="sseifert">
+        Add support for io.wcm.caconfig.extensions 1.9.0.
+      </action>
+    </release>
+
     <release version="1.1.0" date="2021-01-17">
       <action type="update" dev="sseifert">
         Switch to AEM 6.4 as minimum version.
