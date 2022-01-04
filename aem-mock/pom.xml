@@ -32,6 +32,7 @@
   <groupId>io.wcm</groupId>
   <artifactId>io.wcm.testing.aem-mock.root</artifactId>
   <packaging>pom</packaging>
+  <version>4.1.9-SNAPSHOT</version>
 
   <name>AEM Mocks</name>
   <url>${site.url}/${site.url.module.prefix}/</url>
