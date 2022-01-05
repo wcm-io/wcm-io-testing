@@ -27,6 +27,9 @@
       <action type="add" dev="sseifert">
         Add support for io.wcm.caconfig.extensions 1.9.0.
       </action>
+      <action type="update" dev="sseifert">
+        Switch to AEM 6.5 as minimum version.
+      </action>
     </release>
 
     <release version="1.1.0" date="2021-01-17">
