@@ -22,7 +22,6 @@ package io.wcm.testing.mock.aem;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.sling.api.adapter.Adaptable;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.jetbrains.annotations.NotNull;
@@ -47,17 +46,13 @@ public final class MockLayerAdapterFactory implements AdapterFactory {
   @Override
   public @Nullable <AdapterType> AdapterType getAdapter(@NotNull Object object, @NotNull Class<AdapterType> type) {
     if (type == Layer.class && object instanceof Adaptable) {
-      InputStream is = ((Adaptable)object).adaptTo(InputStream.class);
-      if (is != null) {
-        try {
+      try (InputStream is = ((Adaptable)object).adaptTo(InputStream.class)) {
+        if (is != null) {
           return (AdapterType)new Layer(is);
         }
-        catch (IOException ex) {
-          // ignore
-        }
-        finally {
-          IOUtils.closeQuietly(is);
-        }
+      }
+      catch (IOException ex) {
+        // ignore
       }
     }
     return null;
