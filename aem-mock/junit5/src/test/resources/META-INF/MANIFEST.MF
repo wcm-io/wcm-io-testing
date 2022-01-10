@@ -1,1 +1,0 @@
-Sling-Model-Packages: io.wcm.testing.mock.aem.modelsautoreg
