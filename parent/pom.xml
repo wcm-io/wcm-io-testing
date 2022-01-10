@@ -53,17 +53,6 @@
     <site.url.module.prefix>testing</site.url.module.prefix>
   </properties>
 
-  <dependencies>
-
-    <!-- For build compatibility with Java 11 -->
-    <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-annotation_1.3_spec</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
